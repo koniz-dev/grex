@@ -1,0 +1,2 @@
+What's new in this version:
+- Bug fixes and performance improvements
