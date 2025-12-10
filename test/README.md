@@ -1,6 +1,6 @@
 # Test Suite Documentation
 
-This directory contains the comprehensive test suite for the Flutter Starter project.
+This directory contains the comprehensive test suite for the Grex project.
 
 > 📖 **For comprehensive testing guidelines, see [Testing Guide](../../docs/guides/testing.md)**
 

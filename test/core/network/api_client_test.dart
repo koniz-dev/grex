@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/logging/logging_service.dart';
-import 'package:flutter_starter/core/network/api_client.dart';
-import 'package:flutter_starter/core/network/interceptors/auth_interceptor.dart';
-import 'package:flutter_starter/core/performance/performance_service.dart';
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
+import 'package:grex/core/logging/logging_service.dart';
+import 'package:grex/core/network/api_client.dart';
+import 'package:grex/core/network/interceptors/auth_interceptor.dart';
+import 'package:grex/core/performance/performance_service.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
+import 'package:grex/core/storage/storage_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

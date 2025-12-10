@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/core/routing/app_routes.dart';
+import 'package:grex/core/routing/app_routes.dart';
 import 'package:go_router/go_router.dart';
 
 /// Navigation extensions for GoRouter

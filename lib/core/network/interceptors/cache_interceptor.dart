@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
-import 'package:flutter_starter/core/utils/json_helper.dart';
+import 'package:grex/core/config/app_config.dart';
+import 'package:grex/core/storage/storage_service.dart';
+import 'package:grex/core/utils/json_helper.dart';
 
 /// Cache configuration for HTTP responses
 class CacheConfig {

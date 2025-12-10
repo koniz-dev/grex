@@ -2,20 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/logging/logging_providers.dart';
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
-import 'package:flutter_starter/core/storage/storage_migration_service.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
-import 'package:flutter_starter/features/auth/data/datasources/auth_local_datasource.dart';
-import 'package:flutter_starter/features/tasks/data/datasources/tasks_local_datasource.dart';
-import 'package:flutter_starter/features/tasks/domain/repositories/tasks_repository.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/create_task_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/delete_task_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/get_all_tasks_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/get_task_by_id_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/toggle_task_completion_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/update_task_usecase.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/logging/logging_providers.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
+import 'package:grex/core/storage/storage_migration_service.dart';
+import 'package:grex/core/storage/storage_service.dart';
+import 'package:grex/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:grex/features/tasks/data/datasources/tasks_local_datasource.dart';
+import 'package:grex/features/tasks/domain/repositories/tasks_repository.dart';
+import 'package:grex/features/tasks/domain/usecases/create_task_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/delete_task_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/get_all_tasks_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/get_task_by_id_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/toggle_task_completion_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/update_task_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

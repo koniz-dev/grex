@@ -1,6 +1,6 @@
 # Deployment Documentation
 
-Complete guide for deploying Flutter Starter across Android (Play Store), iOS (App Store), and Web platforms.
+Complete guide for deploying Grex across Android (Play Store), iOS (App Store), and Web platforms.
 
 ## Table of Contents
 
@@ -74,17 +74,17 @@ android {
             dimension = "environment"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
-            resValue("string", "app_name", "Flutter Starter Dev")
+            resValue("string", "app_name", "Grex Dev")
         }
         create("staging") {
             dimension = "environment"
             applicationIdSuffix = ".staging"
             versionNameSuffix = "-staging"
-            resValue("string", "app_name", "Flutter Starter Staging")
+            resValue("string", "app_name", "Grex Staging")
         }
         create("production") {
             dimension = "environment"
-            resValue("string", "app_name", "Flutter Starter")
+            resValue("string", "app_name", "Grex")
         }
     }
 }

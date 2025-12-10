@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/core/constants/app_constants.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
+import 'package:grex/core/constants/app_constants.dart';
+import 'package:grex/core/storage/storage_service.dart';
 
 /// Supported locales in the application
 enum SupportedLocale {

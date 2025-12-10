@@ -1,6 +1,6 @@
 # Android Deployment Guide
 
-Complete guide for deploying Flutter Starter to Google Play Store.
+Complete guide for deploying Grex to Google Play Store.
 
 ## Prerequisites
 
@@ -74,7 +74,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.flutter_starter"
+    namespace = "com.example.grex"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -88,7 +88,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.flutter_starter"
+        applicationId = "com.example.grex"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -123,17 +123,17 @@ android {
             dimension = "environment"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
-            resValue("string", "app_name", "Flutter Starter Dev")
+            resValue("string", "app_name", "Grex Dev")
         }
         create("staging") {
             dimension = "environment"
             applicationIdSuffix = ".staging"
             versionNameSuffix = "-staging"
-            resValue("string", "app_name", "Flutter Starter Staging")
+            resValue("string", "app_name", "Grex Staging")
         }
         create("production") {
             dimension = "environment"
-            resValue("string", "app_name", "Flutter Starter")
+            resValue("string", "app_name", "Grex")
         }
     }
 }

@@ -1,6 +1,6 @@
-# Contributing to Flutter Starter
+# Contributing to Grex
 
-First off, thank you for considering contributing to Flutter Starter! 🎉
+First off, thank you for considering contributing to Grex! 🎉
 
 This document provides guidelines and instructions for contributing to this project. Following these guidelines helps communicate that you respect the time of the developers managing and developing this open source project.
 
@@ -153,8 +153,8 @@ Before submitting a PR, make sure:
 
 1. **Fork and clone the repository**
    ```bash
-   git clone https://github.com/your-username/flutter_starter.git
-   cd flutter_starter
+   git clone https://github.com/koniz-dev/grex.git
+   cd grex
    ```
 
 2. **Install dependencies**
@@ -502,7 +502,7 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ## Thank You! 🙏
 
-Thank you for taking the time to contribute to Flutter Starter! Your contributions make this project better for everyone.
+Thank you for taking the time to contribute to Grex! Your contributions make this project better for everyone.
 
 ---
 

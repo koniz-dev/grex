@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/errors/exceptions.dart';
+import 'package:grex/core/errors/exceptions.dart';
 
 /// Mapper for converting DioException to domain exceptions
 class DioExceptionMapper {

@@ -38,7 +38,7 @@ git commit -m "Backup before upgrading to vX.Y.Z"
 git checkout main
 
 # Or create a full backup
-cp -r . ../flutter_starter_backup
+cp -r . ../grex_backup
 ```
 
 ### Step 4: Update Dependencies

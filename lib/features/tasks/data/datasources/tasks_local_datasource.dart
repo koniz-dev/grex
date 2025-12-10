@@ -1,7 +1,7 @@
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
-import 'package:flutter_starter/core/utils/json_helper.dart';
-import 'package:flutter_starter/features/tasks/data/models/task_model.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/storage/storage_service.dart';
+import 'package:grex/core/utils/json_helper.dart';
+import 'package:grex/features/tasks/data/models/task_model.dart';
 
 /// Local data source for tasks
 abstract class TasksLocalDataSource {

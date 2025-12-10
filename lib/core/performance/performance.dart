@@ -63,10 +63,10 @@
 /// See `performance_examples.dart` for more examples.
 library;
 
-export 'package:flutter_starter/core/performance/performance_attributes.dart';
-export 'package:flutter_starter/core/performance/performance_providers.dart';
-export 'package:flutter_starter/core/performance/performance_repository_mixin.dart';
-export 'package:flutter_starter/core/performance/performance_screen_mixin.dart';
-export 'package:flutter_starter/core/performance/performance_service.dart';
-export 'package:flutter_starter/core/performance/performance_usecase_mixin.dart';
-export 'package:flutter_starter/core/performance/performance_utils.dart';
+export 'package:grex/core/performance/performance_attributes.dart';
+export 'package:grex/core/performance/performance_providers.dart';
+export 'package:grex/core/performance/performance_repository_mixin.dart';
+export 'package:grex/core/performance/performance_screen_mixin.dart';
+export 'package:grex/core/performance/performance_service.dart';
+export 'package:grex/core/performance/performance_usecase_mixin.dart';
+export 'package:grex/core/performance/performance_utils.dart';

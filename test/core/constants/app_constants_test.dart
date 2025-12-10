@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/constants/app_constants.dart';
+import 'package:grex/core/constants/app_constants.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -6,7 +6,7 @@ void main() {
     test('should have appName constant', () {
       expect(AppConstants.appName, isA<String>());
       expect(AppConstants.appName, isNotEmpty);
-      expect(AppConstants.appName, 'Flutter Starter');
+      expect(AppConstants.appName, 'Grex');
     });
 
     test('should have defaultPageSize constant', () {

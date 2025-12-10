@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/core/utils/pagination_helper.dart'
+import 'package:grex/core/utils/pagination_helper.dart'
     show PaginationScrollExtension;
 
 /// Optimized ListView with pagination support

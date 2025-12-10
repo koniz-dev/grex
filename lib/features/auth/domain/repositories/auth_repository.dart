@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
 
 /// Authentication repository interface (domain layer)
 abstract class AuthRepository {

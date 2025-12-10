@@ -1,4 +1,4 @@
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';

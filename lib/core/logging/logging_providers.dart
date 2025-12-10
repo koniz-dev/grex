@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter_starter/core/logging/logging_service.dart';
+import 'package:grex/core/logging/logging_service.dart';
 
 /// Provider for [LoggingService] instance
 ///

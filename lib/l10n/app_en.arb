@@ -1,10 +1,10 @@
 {
   "@@locale": "en",
-  "appTitle": "Flutter Starter",
+  "appTitle": "Grex",
   "@appTitle": {
     "description": "The application title"
   },
-  "welcome": "Welcome to Flutter Starter with Clean Architecture!",
+  "welcome": "Welcome to Grex with Clean Architecture!",
   "@welcome": {
     "description": "Welcome message on home screen"
   },

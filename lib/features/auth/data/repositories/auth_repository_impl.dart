@@ -1,11 +1,11 @@
-import 'package:flutter_starter/core/errors/exception_to_failure_mapper.dart';
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/data/datasources/auth_local_datasource.dart';
-import 'package:flutter_starter/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/core/errors/exception_to_failure_mapper.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
 /// Implementation of authentication repository
 class AuthRepositoryImpl implements AuthRepository {

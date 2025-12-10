@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Release automation script for Flutter Starter
+# Release automation script for Grex
 # Usage: ./scripts/release.sh [major|minor|patch]
 
 set -e

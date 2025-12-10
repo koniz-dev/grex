@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-import 'package:flutter_starter/shared/accessibility/accessibility_constants.dart';
+import 'package:grex/shared/accessibility/accessibility_constants.dart';
 
 /// Accessibility helper functions
 ///

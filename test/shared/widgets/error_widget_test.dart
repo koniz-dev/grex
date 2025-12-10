@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/shared/widgets/error_widget.dart';
+import 'package:grex/shared/widgets/error_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

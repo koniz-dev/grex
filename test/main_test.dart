@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter_starter/core/localization/localization_service.dart';
-import 'package:flutter_starter/l10n/app_localizations.dart';
-import 'package:flutter_starter/main.dart';
-import 'package:flutter_starter/shared/screens/home_screen.dart';
+import 'package:grex/core/localization/localization_service.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/main.dart';
+import 'package:grex/shared/screens/home_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -31,7 +31,7 @@ void main() {
       // Check that MaterialApp is built (title is a property, not displayed
       // text)
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      expect(materialApp.title, 'Flutter Starter');
+      expect(materialApp.title, 'Grex');
     });
 
     testWidgets('should use light theme by default', (tester) async {
@@ -176,7 +176,7 @@ void main() {
       );
 
       expect(
-        find.text('Welcome to Flutter Starter with Clean Architecture!'),
+        find.text('Welcome to Grex with Clean Architecture!'),
         findsOneWidget,
       );
     });
@@ -197,7 +197,7 @@ void main() {
         ),
       );
 
-      expect(find.text('Flutter Starter'), findsWidgets);
+      expect(find.text('Grex'), findsWidgets);
     });
   });
 }

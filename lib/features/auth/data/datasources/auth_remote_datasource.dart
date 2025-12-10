@@ -1,6 +1,6 @@
-import 'package:flutter_starter/core/constants/api_endpoints.dart';
-import 'package:flutter_starter/core/network/api_client.dart';
-import 'package:flutter_starter/features/auth/data/models/auth_response_model.dart';
+import 'package:grex/core/constants/api_endpoints.dart';
+import 'package:grex/core/network/api_client.dart';
+import 'package:grex/features/auth/data/models/auth_response_model.dart';
 
 /// Remote data source for authentication
 abstract class AuthRemoteDataSource {

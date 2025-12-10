@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/utils/date_formatter.dart';
+import 'package:grex/core/utils/date_formatter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

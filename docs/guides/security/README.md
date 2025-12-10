@@ -1,6 +1,6 @@
 # Security
 
-Security audit, implementation guides, and checklists for the Flutter Starter app.
+Security audit, implementation guides, and checklists for the Grex app.
 
 ## Documentation
 

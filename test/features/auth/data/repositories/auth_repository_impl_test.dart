@@ -1,11 +1,11 @@
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/data/datasources/auth_local_datasource.dart';
-import 'package:flutter_starter/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:flutter_starter/features/auth/data/models/auth_response_model.dart';
-import 'package:flutter_starter/features/auth/data/models/user_model.dart';
-import 'package:flutter_starter/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:grex/features/auth/data/models/auth_response_model.dart';
+import 'package:grex/features/auth/data/models/user_model.dart';
+import 'package:grex/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

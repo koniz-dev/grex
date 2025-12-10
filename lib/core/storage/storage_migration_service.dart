@@ -1,8 +1,8 @@
-import 'package:flutter_starter/core/logging/logging_service.dart';
-import 'package:flutter_starter/core/storage/migration/migration_executor.dart';
-import 'package:flutter_starter/core/storage/migration/migration_registry.dart';
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
+import 'package:grex/core/logging/logging_service.dart';
+import 'package:grex/core/storage/migration/migration_executor.dart';
+import 'package:grex/core/storage/migration/migration_registry.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
+import 'package:grex/core/storage/storage_service.dart';
 
 /// Service for managing storage migrations
 ///

@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/storage/storage_service.dart';
-import 'package:flutter_starter/core/storage/storage_version.dart';
+import 'package:grex/core/storage/storage_service.dart';
+import 'package:grex/core/storage/storage_version.dart';
 
 /// Abstract base class for storage migrations
 ///

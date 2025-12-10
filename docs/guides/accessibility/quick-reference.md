@@ -1,6 +1,6 @@
 # Accessibility Quick Reference
 
-A quick reference guide for implementing accessibility in the Flutter Starter app.
+A quick reference guide for implementing accessibility in the Grex app.
 
 ## Quick Start
 

@@ -1,6 +1,6 @@
 # Performance Optimization
 
-Performance optimization guides and documentation for the Flutter Starter app.
+Performance optimization guides and documentation for the Grex app.
 
 ## Documentation
 

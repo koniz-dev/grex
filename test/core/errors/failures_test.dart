@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/errors/failures.dart';
+import 'package:grex/core/errors/failures.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides a comprehensive summary of all performance optimizations implemented in the Flutter Starter app, including before/after metrics and implementation details.
+This document provides a comprehensive summary of all performance optimizations implemented in the Grex app, including before/after metrics and implementation details.
 
 ## 📊 Performance Metrics Summary
 

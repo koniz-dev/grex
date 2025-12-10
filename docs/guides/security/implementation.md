@@ -52,7 +52,7 @@ openssl s_client -servername api.example.com -connect api.example.com:443 < /dev
 // lib/core/network/api_client.dart
 import 'package:dio/dio.dart';
 import 'package:dio_certificate_pinning/dio_certificate_pinning.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 // ... other imports
 
 class ApiClient {
@@ -394,8 +394,8 @@ class LogSanitizer {
 // lib/core/network/interceptors/logging_interceptor.dart
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
-import 'package:flutter_starter/core/utils/log_sanitizer.dart';
+import 'package:grex/core/config/app_config.dart';
+import 'package:grex/core/utils/log_sanitizer.dart';
 
 /// Interceptor for logging HTTP requests and responses
 class LoggingInterceptor extends Interceptor {
@@ -516,7 +516,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.flutter_starter"
+    namespace = "com.example.grex"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -530,7 +530,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.flutter_starter"
+        applicationId = "com.example.grex"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -596,7 +596,7 @@ flutter {
 }
 
 # Keep your models (adjust package name)
--keep class com.example.flutter_starter.** { *; }
+-keep class com.example.grex.** { *; }
 ```
 
 #### Step 5: Update .gitignore
@@ -660,13 +660,13 @@ signingConfigs {
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="flutter_starter">
+  <meta name="apple-mobile-web-app-title" content="grex">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>flutter_starter</title>
+  <title>grex</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -722,7 +722,7 @@ signingConfigs {
 <!-- android/app/src/main/AndroidManifest.xml -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="flutter_starter"
+        android:label="grex"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="false"
@@ -764,7 +764,7 @@ dependencies:
 ```dart
 // lib/core/security/device_security.dart
 import 'package:root_jailbreak/root_jailbreak.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 /// Service for checking device security status
 class DeviceSecurity {
@@ -813,7 +813,7 @@ class DeviceSecurityException implements Exception {
 
 ```dart
 // lib/main.dart
-import 'package:flutter_starter/core/security/device_security.dart';
+import 'package:grex/core/security/device_security.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -844,9 +844,9 @@ void main() async {
 ```dart
 // lib/core/security/session_manager.dart
 import 'dart:async';
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
-import 'package:flutter_starter/core/constants/app_constants.dart';
-import 'package:flutter_starter/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
+import 'package:grex/core/constants/app_constants.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
 /// Manages user session timeout and activity tracking
 class SessionManager {
@@ -917,7 +917,7 @@ class SessionManager {
 ```dart
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/core/security/session_manager.dart';
+import 'package:grex/core/security/session_manager.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -977,7 +977,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
 ```dart
 // lib/core/privacy/consent_manager.dart
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
 
 /// Manages user consent for GDPR compliance
 class ConsentManager {
@@ -1072,7 +1072,7 @@ class ConsentManager {
 // lib/features/privacy/presentation/screens/consent_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/privacy/consent_manager.dart';
+import 'package:grex/core/privacy/consent_manager.dart';
 
 class ConsentScreen extends ConsumerStatefulWidget {
   const ConsentScreen({super.key});

@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/routing/app_routes.dart';
+import 'package:grex/core/routing/app_routes.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

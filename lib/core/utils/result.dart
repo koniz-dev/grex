@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/errors/failures.dart';
+import 'package:grex/core/errors/failures.dart';
 
 /// Result class for handling success and failure states
 ///

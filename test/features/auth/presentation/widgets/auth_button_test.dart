@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/features/auth/presentation/widgets/auth_button.dart';
+import 'package:grex/features/auth/presentation/widgets/auth_button.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

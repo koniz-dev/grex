@@ -102,7 +102,7 @@ jobs:
       #   uses: r0adkll/upload-google-play@v1
       #   with:
       #     serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-      #     packageName: com.example.flutter_starter
+      #     packageName: com.example.grex
       #     releaseFiles: build/app/outputs/bundle/${ENV}Release/app-${ENV}-release.aab
       #     track: ${{ steps.env.outputs.environment == 'production' && 'production' || 'internal' }}
       #     status: completed

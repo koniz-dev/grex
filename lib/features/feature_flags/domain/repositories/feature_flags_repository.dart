@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/feature_flags/domain/entities/feature_flag.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
 
 /// Feature flags repository interface (domain layer)
 ///

@@ -14,7 +14,7 @@ This guide covers common patterns for making API requests, handling responses, a
 
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
+import 'package:grex/core/di/providers.dart';
 
 class UserService {
   UserService(this.apiClient);
@@ -84,7 +84,7 @@ final response = await apiClient.get(
 ### Handling API Errors
 
 ```dart
-import 'package:flutter_starter/core/errors/exceptions.dart';
+import 'package:grex/core/errors/exceptions.dart';
 
 Future<void> makeApiCall() async {
   try {
@@ -226,10 +226,10 @@ final result = await executeWithRetry(() => loginUseCase(email, password));
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/shared/extensions/context_extensions.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -317,7 +317,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
+import 'package:grex/core/di/providers.dart';
 
 class AuthGuard extends ConsumerWidget {
   final Widget authenticatedChild;

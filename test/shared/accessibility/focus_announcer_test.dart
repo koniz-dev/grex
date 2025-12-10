@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/shared/accessibility/focus_announcer.dart';
+import 'package:grex/shared/accessibility/focus_announcer.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

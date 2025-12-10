@@ -38,8 +38,8 @@ The migration system consists of:
 Create a new file in `lib/core/storage/migration/migrations/`:
 
 ```dart
-import 'package:flutter_starter/core/storage/migration/storage_migration.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
+import 'package:grex/core/storage/migration/storage_migration.dart';
+import 'package:grex/core/storage/storage_service.dart';
 
 class MigrationV2ToV3 extends StorageMigration {
   @override

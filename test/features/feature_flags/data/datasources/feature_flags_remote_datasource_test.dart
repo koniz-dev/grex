@@ -1,4 +1,4 @@
-import 'package:flutter_starter/features/feature_flags/data/datasources/feature_flags_remote_datasource.dart';
+import 'package:grex/features/feature_flags/data/datasources/feature_flags_remote_datasource.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

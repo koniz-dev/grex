@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
 
 /// Tasks state
 class TasksState {

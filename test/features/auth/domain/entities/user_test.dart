@@ -1,4 +1,4 @@
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

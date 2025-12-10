@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/shared/accessibility/accessibility_constants.dart';
-import 'package:flutter_starter/shared/accessibility/accessibility_helpers.dart';
+import 'package:grex/shared/accessibility/accessibility_constants.dart';
+import 'package:grex/shared/accessibility/accessibility_helpers.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

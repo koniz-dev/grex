@@ -1,4 +1,4 @@
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
 
 /// Task model (data layer) - extends entity
 class TaskModel extends Task {

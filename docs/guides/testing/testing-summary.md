@@ -1,6 +1,6 @@
 # Testing Summary
 
-Quick reference guide for testing in the Flutter Starter project.
+Quick reference guide for testing in the Grex project.
 
 ## Quick Start
 

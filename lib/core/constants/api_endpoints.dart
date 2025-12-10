@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 /// API endpoints constants
 ///

@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/config/env_config.dart';
+import 'package:grex/core/config/env_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

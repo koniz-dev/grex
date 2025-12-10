@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/utils/json_helper.dart';
+import 'package:grex/core/utils/json_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

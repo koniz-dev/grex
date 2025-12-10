@@ -123,8 +123,8 @@ class AuthController {
 **After (Clean Architecture Repository Interface):**
 ```dart
 // lib/features/auth/domain/repositories/auth_repository.dart
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
 
 abstract class AuthRepository {
   Future<Result<User>> login(String email, String password);
@@ -162,9 +162,9 @@ class AuthController {
 **After (Clean Architecture Use Case):**
 ```dart
 // lib/features/auth/domain/usecases/login_usecase.dart
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
 class LoginUseCase {
   LoginUseCase(this.repository);
@@ -195,7 +195,7 @@ class LoginUseCase {
 **After (Data Model with JSON serialization):**
 ```dart
 // lib/features/auth/data/models/user_model.dart
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
@@ -228,8 +228,8 @@ class UserModel extends User {
 **After (Remote Data Source):**
 ```dart
 // lib/features/auth/data/datasources/auth_remote_datasource.dart
-import 'package:flutter_starter/core/network/api_client.dart';
-import 'package:flutter_starter/features/auth/data/models/user_model.dart';
+import 'package:grex/core/network/api_client.dart';
+import 'package:grex/features/auth/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<UserModel> login(String email, String password);
@@ -260,11 +260,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 **After (Repository Implementation):**
 ```dart
 // lib/features/auth/data/repositories/auth_repository_impl.dart
-import 'package:flutter_starter/core/errors/exception_to_failure_mapper.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/core/errors/exception_to_failure_mapper.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource);
@@ -351,10 +351,10 @@ class _LoginScreenState extends State<LoginScreen> {
 ```dart
 // lib/features/auth/presentation/providers/auth_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/login_usecase.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_provider.freezed.dart';
@@ -407,7 +407,7 @@ final authProvider = NotifierProvider<AuthNotifier, AuthState>(
 // lib/features/auth/presentation/screens/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/features/auth/presentation/providers/auth_provider.dart';
+import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -495,7 +495,7 @@ class MyApp extends StatelessWidget {
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/config/env_config.dart';
+import 'package:grex/core/config/env_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

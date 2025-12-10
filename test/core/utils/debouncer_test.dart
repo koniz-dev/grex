@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/utils/debouncer.dart';
+import 'package:grex/core/utils/debouncer.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

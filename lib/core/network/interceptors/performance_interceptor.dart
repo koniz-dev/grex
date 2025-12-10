@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/performance/performance_attributes.dart';
-import 'package:flutter_starter/core/performance/performance_service.dart';
+import 'package:grex/core/performance/performance_attributes.dart';
+import 'package:grex/core/performance/performance_service.dart';
 
 /// Interceptor for automatically tracking HTTP request performance
 ///

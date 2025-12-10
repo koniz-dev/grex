@@ -6,7 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/main.dart';
+import 'package:grex/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -26,7 +26,7 @@ void main() {
     // The router may redirect, so check for either home screen or login screen
     // content
     final welcomeText = find.text(
-      'Welcome to Flutter Starter with Clean Architecture!',
+      'Welcome to Grex with Clean Architecture!',
     );
     final loginText = find.text('Login'); // Login screen might be shown
 

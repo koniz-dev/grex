@@ -1,6 +1,6 @@
 # Test Coverage Guide
 
-This guide explains how test coverage is measured, enforced, and improved in the Flutter Starter project.
+This guide explains how test coverage is measured, enforced, and improved in the Grex project.
 
 ## Overview
 

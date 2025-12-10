@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/utils/memory_helper.dart';
-import 'package:flutter_starter/core/utils/provider_disposal.dart';
+import 'package:grex/core/utils/memory_helper.dart';
+import 'package:grex/core/utils/provider_disposal.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

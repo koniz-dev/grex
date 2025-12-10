@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/utils/memory_helper.dart';
+import 'package:grex/core/utils/memory_helper.dart';
 
 /// Mixin for automatic provider disposal tracking
 ///

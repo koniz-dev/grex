@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/localization/localization_service.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/localization/localization_service.dart';
 
 /// Provider for [LocalizationService] instance
 ///

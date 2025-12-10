@@ -206,8 +206,8 @@ class MyEntity extends Equatable {
 
 ```dart
 // lib/features/my_feature/domain/repositories/my_repository.dart
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/my_feature/domain/entities/my_entity.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/my_feature/domain/entities/my_entity.dart';
 
 abstract class MyRepository {
   Future<Result<List<MyEntity>>> getItems();
@@ -219,9 +219,9 @@ abstract class MyRepository {
 
 ```dart
 // lib/features/my_feature/domain/usecases/get_items_usecase.dart
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/my_feature/domain/entities/my_entity.dart';
-import 'package:flutter_starter/features/my_feature/domain/repositories/my_repository.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/my_feature/domain/entities/my_entity.dart';
+import 'package:grex/features/my_feature/domain/repositories/my_repository.dart';
 
 class GetItemsUseCase {
   GetItemsUseCase(this.repository);
@@ -240,7 +240,7 @@ class GetItemsUseCase {
 
 ```dart
 // lib/features/my_feature/data/models/my_entity_model.dart
-import 'package:flutter_starter/features/my_feature/domain/entities/my_entity.dart';
+import 'package:grex/features/my_feature/domain/entities/my_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'my_entity_model.g.dart';
@@ -270,8 +270,8 @@ class MyEntityModel extends MyEntity {
 
 ```dart
 // lib/features/my_feature/data/datasources/my_remote_datasource.dart
-import 'package:flutter_starter/core/network/api_client.dart';
-import 'package:flutter_starter/features/my_feature/data/models/my_entity_model.dart';
+import 'package:grex/core/network/api_client.dart';
+import 'package:grex/features/my_feature/data/models/my_entity_model.dart';
 
 abstract class MyRemoteDataSource {
   Future<List<MyEntityModel>> getItems();
@@ -301,11 +301,11 @@ class MyRemoteDataSourceImpl implements MyRemoteDataSource {
 
 ```dart
 // lib/features/my_feature/data/repositories/my_repository_impl.dart
-import 'package:flutter_starter/core/errors/exception_to_failure_mapper.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/my_feature/data/datasources/my_remote_datasource.dart';
-import 'package:flutter_starter/features/my_feature/domain/entities/my_entity.dart';
-import 'package:flutter_starter/features/my_feature/domain/repositories/my_repository.dart';
+import 'package:grex/core/errors/exception_to_failure_mapper.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/my_feature/data/datasources/my_remote_datasource.dart';
+import 'package:grex/features/my_feature/domain/entities/my_entity.dart';
+import 'package:grex/features/my_feature/domain/repositories/my_repository.dart';
 
 class MyRepositoryImpl implements MyRepository {
   MyRepositoryImpl(this.remoteDataSource);
@@ -333,9 +333,9 @@ class MyRepositoryImpl implements MyRepository {
 ```dart
 // lib/features/my_feature/presentation/providers/my_feature_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/features/my_feature/domain/entities/my_entity.dart';
-import 'package:flutter_starter/features/my_feature/domain/usecases/get_items_usecase.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/features/my_feature/domain/entities/my_entity.dart';
+import 'package:grex/features/my_feature/domain/usecases/get_items_usecase.dart';
 
 class MyFeatureNotifier extends AsyncNotifier<List<MyEntity>> {
   @override
@@ -373,7 +373,7 @@ final myFeatureProvider = AsyncNotifierProvider<MyFeatureNotifier, List<MyEntity
 // lib/features/my_feature/presentation/screens/my_feature_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/features/my_feature/presentation/providers/my_feature_provider.dart';
+import 'package:grex/features/my_feature/presentation/providers/my_feature_provider.dart';
 
 class MyFeatureScreen extends ConsumerWidget {
   const MyFeatureScreen({super.key});

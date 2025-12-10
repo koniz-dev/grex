@@ -1,10 +1,10 @@
 # API Documentation
 
-Complete API reference for the Flutter Starter project.
+Complete API reference for the Grex project.
 
 ## Overview
 
-This documentation provides comprehensive reference for all public APIs in the Flutter Starter project, organized by architectural layer and component type.
+This documentation provides comprehensive reference for all public APIs in the Grex project, organized by architectural layer and component type.
 
 ## Documentation Structure
 

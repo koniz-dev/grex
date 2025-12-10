@@ -1,7 +1,7 @@
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/tasks/domain/repositories/tasks_repository.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/toggle_task_completion_usecase.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/tasks/domain/repositories/tasks_repository.dart';
+import 'package:grex/features/tasks/domain/usecases/toggle_task_completion_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

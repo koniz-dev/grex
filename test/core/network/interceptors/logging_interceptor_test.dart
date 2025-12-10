@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/network/interceptors/logging_interceptor.dart';
+import 'package:grex/core/network/interceptors/logging_interceptor.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Test handler for request interceptor

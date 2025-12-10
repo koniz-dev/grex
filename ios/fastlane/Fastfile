@@ -11,8 +11,8 @@ platform :ios do
   # ========================================================================
   
   # App configuration
-  APP_IDENTIFIER = "com.example.flutterStarter" # TODO: Update to match your bundle ID
-  APP_NAME = "Flutter Starter" # TODO: Update to match your app name
+  APP_IDENTIFIER = "com.example.grex" # TODO: Update to match your bundle ID
+  APP_NAME = "Grex" # TODO: Update to match your app name
   
   # ========================================================================
   # Helper Lanes

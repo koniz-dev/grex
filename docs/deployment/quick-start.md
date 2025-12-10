@@ -1,6 +1,6 @@
 # Deployment Quick Start
 
-Get started with deploying Flutter Starter in 5 minutes.
+Get started with deploying Grex in 5 minutes.
 
 ## Prerequisites Checklist
 

@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/performance/performance_service.dart';
+import 'package:grex/core/performance/performance_service.dart';
 
 /// Performance monitoring utilities
 ///

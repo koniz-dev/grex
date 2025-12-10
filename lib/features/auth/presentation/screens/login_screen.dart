@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter_starter/core/routing/navigation_extensions.dart';
-import 'package:flutter_starter/core/utils/validators.dart';
-import 'package:flutter_starter/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutter_starter/l10n/app_localizations.dart';
+import 'package:grex/core/routing/navigation_extensions.dart';
+import 'package:grex/core/utils/validators.dart';
+import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
+import 'package:grex/l10n/app_localizations.dart';
 
 /// Login screen for user authentication
 class LoginScreen extends ConsumerStatefulWidget {

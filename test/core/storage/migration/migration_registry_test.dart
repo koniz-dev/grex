@@ -1,6 +1,6 @@
-import 'package:flutter_starter/core/storage/migration/migration_registry.dart';
-import 'package:flutter_starter/core/storage/migration/migrations/migration_v1_to_v2.dart';
-import 'package:flutter_starter/core/storage/migration/storage_migration.dart';
+import 'package:grex/core/storage/migration/migration_registry.dart';
+import 'package:grex/core/storage/migration/migrations/migration_v1_to_v2.dart';
+import 'package:grex/core/storage/migration/storage_migration.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

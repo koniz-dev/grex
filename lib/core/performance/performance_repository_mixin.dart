@@ -1,6 +1,6 @@
-import 'package:flutter_starter/core/performance/performance_attributes.dart';
-import 'package:flutter_starter/core/performance/performance_service.dart';
-import 'package:flutter_starter/core/utils/result.dart';
+import 'package:grex/core/performance/performance_attributes.dart';
+import 'package:grex/core/performance/performance_service.dart';
+import 'package:grex/core/utils/result.dart';
 
 /// Mixin for repository performance monitoring
 ///

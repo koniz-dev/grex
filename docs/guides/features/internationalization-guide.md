@@ -1,6 +1,6 @@
 # Internationalization (i18n) Implementation Guide
 
-This guide provides a comprehensive overview of the internationalization system implemented in the Flutter Starter app.
+This guide provides a comprehensive overview of the internationalization system implemented in the Grex app.
 
 ## Table of Contents
 
@@ -156,8 +156,8 @@ For context-specific translations, use different keys:
 Use `LocalizedFormatters` for date formatting:
 
 ```dart
-import 'package:flutter_starter/core/localization/localized_formatters.dart';
-import 'package:flutter_starter/core/localization/localization_providers.dart';
+import 'package:grex/core/localization/localized_formatters.dart';
+import 'package:grex/core/localization/localization_providers.dart';
 
 class MyWidget extends ConsumerWidget {
   @override
@@ -266,7 +266,7 @@ assets/
 
 **Usage:**
 ```dart
-import 'package:flutter_starter/core/localization/localization_providers.dart';
+import 'package:grex/core/localization/localization_providers.dart';
 
 class LocalizedImage extends ConsumerWidget {
   final String imagePath;
@@ -300,7 +300,7 @@ assets/
 The app includes a ready-to-use language switcher:
 
 ```dart
-import 'package:flutter_starter/shared/widgets/language_switcher.dart';
+import 'package:grex/shared/widgets/language_switcher.dart';
 
 // As an icon button in AppBar
 AppBar(
@@ -324,8 +324,8 @@ Navigator.push(
 ### Programmatic Language Switching
 
 ```dart
-import 'package:flutter_starter/core/localization/localization_providers.dart';
-import 'package:flutter_starter/core/localization/localization_service.dart';
+import 'package:grex/core/localization/localization_providers.dart';
+import 'package:grex/core/localization/localization_service.dart';
 
 class MyWidget extends ConsumerWidget {
   @override
@@ -361,7 +361,7 @@ final languageCode = locale.languageCode; // 'en', 'es', 'ar'
 RTL is automatically handled for Arabic and other RTL languages:
 
 ```dart
-import 'package:flutter_starter/core/localization/localization_providers.dart';
+import 'package:grex/core/localization/localization_providers.dart';
 
 class MyWidget extends ConsumerWidget {
   @override
@@ -481,8 +481,8 @@ Text(LocalizedFormatters.formatDate(date, locale: locale));
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_starter/core/localization/localization_providers.dart';
-import 'package:flutter_starter/core/localization/localized_formatters.dart';
+import 'package:grex/core/localization/localization_providers.dart';
+import 'package:grex/core/localization/localized_formatters.dart';
 
 class LocalizedFormExample extends ConsumerStatefulWidget {
   @override
@@ -573,8 +573,8 @@ class _LocalizedFormExampleState extends ConsumerState<LocalizedFormExample> {
 ### Example: Currency Display
 
 ```dart
-import 'package:flutter_starter/core/localization/localization_providers.dart';
-import 'package:flutter_starter/core/localization/localized_formatters.dart';
+import 'package:grex/core/localization/localization_providers.dart';
+import 'package:grex/core/localization/localized_formatters.dart';
 
 class PriceDisplay extends ConsumerWidget {
   final double price;

@@ -9,11 +9,10 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appTitle => 'Flutter Starter';
+  String get appTitle => 'Grex';
 
   @override
-  String get welcome =>
-      '¡Bienvenido a Flutter Starter con Arquitectura Limpia!';
+  String get welcome => '¡Bienvenido a Grex con Arquitectura Limpia!';
 
   @override
   String get featureFlagsReady => '¡El Sistema de Feature Flags está listo!';

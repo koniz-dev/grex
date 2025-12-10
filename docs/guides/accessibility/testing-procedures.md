@@ -1,6 +1,6 @@
 # Accessibility Testing Procedures
 
-This document outlines the procedures for testing accessibility in the Flutter Starter app.
+This document outlines the procedures for testing accessibility in the Grex app.
 
 ## Table of Contents
 

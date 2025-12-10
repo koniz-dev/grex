@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
 
 /// Tasks repository interface (domain layer)
 abstract class TasksRepository {

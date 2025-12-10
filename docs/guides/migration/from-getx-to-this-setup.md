@@ -166,10 +166,10 @@ class AuthController extends GetxController {
 ```dart
 // lib/features/auth/providers/auth_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/login_usecase.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_provider.freezed.dart';
@@ -538,7 +538,7 @@ final response = await apiService.getProducts();
 ```dart
 // lib/core/network/api_client.dart
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 class ApiClient {
   ApiClient(this.dio);
@@ -671,7 +671,7 @@ class MyApp extends StatelessWidget {
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/config/env_config.dart';
+import 'package:grex/core/config/env_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

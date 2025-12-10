@@ -1,6 +1,6 @@
 # Accessibility
 
-Accessibility implementation guides and documentation for the Flutter Starter app.
+Accessibility implementation guides and documentation for the Grex app.
 
 ## Documentation
 

@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/storage/migration/storage_migration.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
+import 'package:grex/core/storage/migration/storage_migration.dart';
+import 'package:grex/core/storage/storage_service.dart';
 
 /// Example migration from version 1 to version 2
 ///

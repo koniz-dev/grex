@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide will help you set up your development environment and get the Flutter Starter project running.
+This guide will help you set up your development environment and get the Grex project running.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 git clone <repository-url>
-cd flutter_starter
+cd grex
 ```
 
 ### 2. Install Dependencies
@@ -173,7 +173,7 @@ flutter run \
 ### Accessing Configuration in Code
 
 ```dart
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 // Get environment
 final env = AppConfig.environment;

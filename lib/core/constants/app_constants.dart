@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 /// Application-wide constants
 ///
@@ -9,7 +9,7 @@ class AppConstants {
   AppConstants._();
 
   /// Application name displayed to users
-  static const String appName = 'Flutter Starter';
+  static const String appName = 'Grex';
 
   /// Default number of items per page for pagination
   static const int defaultPageSize = 20;

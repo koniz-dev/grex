@@ -1,6 +1,6 @@
 # Understanding the Codebase
 
-This guide explains the architecture, code organization, and key patterns used in the Flutter Starter project.
+This guide explains the architecture, code organization, and key patterns used in the Grex project.
 
 ## Architecture Overview
 

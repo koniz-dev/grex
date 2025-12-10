@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Git Hooks Setup Script for Flutter Starter
+# Git Hooks Setup Script for Grex
 # This script sets up Git hooks for code quality checks
 
 set -e

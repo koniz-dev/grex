@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_performance/firebase_performance.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 /// Performance monitoring service that wraps Firebase Performance
 ///

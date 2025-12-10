@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_starter/core/config/env_config.dart';
+import 'package:grex/core/config/env_config.dart';
 
 /// Application configuration with environment-aware defaults
 ///

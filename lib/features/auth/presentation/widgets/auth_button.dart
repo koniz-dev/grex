@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_starter/shared/accessibility/accessibility_widgets.dart';
+import 'package:grex/shared/accessibility/accessibility_widgets.dart';
 
 /// Reusable authentication button widget
 ///

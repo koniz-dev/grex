@@ -1,6 +1,6 @@
 # Onboarding Guides
 
-Welcome to the Flutter Starter project! These guides will help you get up and running quickly and understand how to contribute effectively.
+Welcome to the Grex project! These guides will help you get up and running quickly and understand how to contribute effectively.
 
 ## Quick Start
 

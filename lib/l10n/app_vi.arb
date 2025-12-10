@@ -1,10 +1,10 @@
 {
   "@@locale": "vi",
-  "appTitle": "Flutter Starter",
+  "appTitle": "Grex",
   "@appTitle": {
     "description": "The application title"
   },
-  "welcome": "Chào mừng đến với Flutter Starter với Clean Architecture!",
+  "welcome": "Chào mừng đến với Grex với Clean Architecture!",
   "@welcome": {
     "description": "Welcome message on home screen"
   },

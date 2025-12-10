@@ -1,4 +1,4 @@
-import 'package:flutter_starter/shared/extensions/datetime_extensions.dart';
+import 'package:grex/shared/extensions/datetime_extensions.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

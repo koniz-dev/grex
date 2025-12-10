@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/errors/dio_exception_mapper.dart';
-import 'package:flutter_starter/core/errors/exceptions.dart';
+import 'package:grex/core/errors/dio_exception_mapper.dart';
+import 'package:grex/core/errors/exceptions.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

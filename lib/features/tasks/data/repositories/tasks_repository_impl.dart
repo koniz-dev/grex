@@ -1,11 +1,11 @@
-import 'package:flutter_starter/core/errors/exception_to_failure_mapper.dart';
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/tasks/data/datasources/tasks_local_datasource.dart';
-import 'package:flutter_starter/features/tasks/data/models/task_model.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
-import 'package:flutter_starter/features/tasks/domain/repositories/tasks_repository.dart';
+import 'package:grex/core/errors/exception_to_failure_mapper.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/tasks/data/datasources/tasks_local_datasource.dart';
+import 'package:grex/features/tasks/data/models/task_model.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
+import 'package:grex/features/tasks/domain/repositories/tasks_repository.dart';
 
 /// Implementation of tasks repository
 class TasksRepositoryImpl implements TasksRepository {

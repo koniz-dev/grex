@@ -11,6 +11,7 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+.kiro/
 
 # IntelliJ related
 *.iml
@@ -49,3 +50,17 @@ app.*.map.json
 .env
 .env.local
 .env.*.local
+
+# Firebase configuration files
+# Note: According to Firebase docs, API keys are not secret but should have restrictions applied.
+# .firebaserc and firebase.json are usually committed for team projects.
+# Config files with API keys can be ignored for better security practice.
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+lib/firebase_options.dart
+
+# Android local configuration
+android/local.properties
+android/key.properties
+android/app/upload-keystore.jks
+android/app/upload-keystore.key

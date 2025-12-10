@@ -1,12 +1,13 @@
-# 🚀 Flutter Starter
+# 🚀 Grex
 
-A production-ready Flutter starter project with **Clean Architecture**, enterprise-grade configuration management, and comprehensive developer tooling.
+A production-ready Grex project with **Clean Architecture**, enterprise-grade configuration management, and comprehensive developer tooling.
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?logo=flutter)](https://flutter.dev)
 [![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?logo=dart)](https://dart.dev)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-66%20files-success)](test/)
 [![Architecture](https://img.shields.io/badge/architecture-Clean%20Architecture-blue)](docs/architecture/)
+[![codecov](https://codecov.io/gh/koniz-dev/grex/graph/badge.svg?token=WJ4JJ4D20V)](https://codecov.io/gh/koniz-dev/grex)
 
 ## ✨ Features
 
@@ -178,7 +179,7 @@ lib/
    **OR clone directly** (if not using template):
    ```bash
    git clone <repository-url>
-   cd flutter_starter
+   cd grex
    ```
 
 2. **Install dependencies**
@@ -216,7 +217,7 @@ lib/
 
 ### First Steps
 
-1. **Rename the project** (if needed) - Update package name from `flutter_starter` to your project name
+1. **Rename the project** (if needed) - Update package name from `grex` to your project name
 2. **Configure your environment** - See [Configuration System](#-configuration-system) below
 3. **Set up Firebase** (optional) - For remote feature flags and performance monitoring
    - Add `google-services.json` (Android) and `GoogleService-Info.plist` (iOS)
@@ -321,7 +322,7 @@ flutter build apk \
 #### Basic Usage
 
 ```dart
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 // Get environment
 final env = AppConfig.environment; // 'development', 'staging', or 'production'
@@ -347,7 +348,7 @@ if (AppConfig.enableAnalytics) {
 #### Network Configuration
 
 ```dart
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 import 'package:dio/dio.dart';
 
 final dio = Dio(
@@ -363,7 +364,7 @@ final dio = Dio(
 #### Debug Utilities
 
 ```dart
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 // Print configuration to console (only in debug mode)
 AppConfig.printConfig();

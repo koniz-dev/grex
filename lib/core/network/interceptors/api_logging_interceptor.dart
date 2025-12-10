@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import 'package:flutter_starter/core/config/app_config.dart';
-import 'package:flutter_starter/core/logging/logging_service.dart';
+import 'package:grex/core/config/app_config.dart';
+import 'package:grex/core/logging/logging_service.dart';
 
 /// Enhanced interceptor for logging HTTP requests and responses
 ///

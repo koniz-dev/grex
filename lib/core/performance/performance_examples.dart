@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/performance/performance_attributes.dart';
-import 'package:flutter_starter/core/performance/performance_providers.dart';
-import 'package:flutter_starter/core/performance/performance_screen_mixin.dart';
-import 'package:flutter_starter/core/performance/performance_service.dart';
-import 'package:flutter_starter/core/performance/performance_utils.dart';
-import 'package:flutter_starter/core/utils/result.dart';
+import 'package:grex/core/performance/performance_attributes.dart';
+import 'package:grex/core/performance/performance_providers.dart';
+import 'package:grex/core/performance/performance_screen_mixin.dart';
+import 'package:grex/core/performance/performance_service.dart';
+import 'package:grex/core/performance/performance_utils.dart';
+import 'package:grex/core/utils/result.dart';
 
 /// Examples of using performance monitoring in different scenarios
 ///

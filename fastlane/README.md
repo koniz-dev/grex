@@ -126,7 +126,7 @@ fastlane ios release environment:production
 
 Edit `fastlane/Appfile`:
 ```ruby
-package_name("com.example.flutter_starter") # Your package name
+package_name("com.example.grex") # Your package name
 ```
 
 ### iOS Configuration
@@ -134,7 +134,7 @@ package_name("com.example.flutter_starter") # Your package name
 Edit `ios/fastlane/Appfile`:
 ```ruby
 team_id("YOUR_TEAM_ID") # Your Apple Team ID
-app_identifier("com.example.flutterStarter") # Your bundle ID
+app_identifier("com.example.grex") # Your bundle ID
 ```
 
 ## 🔐 Authentication

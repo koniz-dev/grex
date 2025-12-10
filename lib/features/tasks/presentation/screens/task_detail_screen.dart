@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
-import 'package:flutter_starter/features/tasks/presentation/providers/tasks_provider.dart';
-import 'package:flutter_starter/l10n/app_localizations.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
+import 'package:grex/features/tasks/presentation/providers/tasks_provider.dart';
+import 'package:grex/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 /// Task detail/edit screen

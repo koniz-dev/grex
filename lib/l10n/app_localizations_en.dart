@@ -9,10 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Flutter Starter';
+  String get appTitle => 'Grex';
 
   @override
-  String get welcome => 'Welcome to Flutter Starter with Clean Architecture!';
+  String get welcome => 'Welcome to Grex with Clean Architecture!';
 
   @override
   String get featureFlagsReady => 'Feature Flags System is ready!';

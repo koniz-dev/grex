@@ -1,0 +1,23 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "grex-ed282",
+                    "appId": "1:845872905568:android:691c8e8b71b664086f7205",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "grex-ed282",
+                    "configurations": {
+                        "android": "1:845872905568:android:691c8e8b71b664086f7205",
+                        "ios": "1:845872905568:ios:200d07af1e0875c76f7205",
+                        "web": "1:845872905568:web:4313b81048db1f456f7205"
+                    }
+                }
+            }
+        }
+    }
+}

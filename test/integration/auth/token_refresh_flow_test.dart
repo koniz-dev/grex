@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/constants/app_constants.dart';
-import 'package:flutter_starter/core/network/interceptors/auth_interceptor.dart';
-import 'package:flutter_starter/core/utils/result.dart';
+import 'package:grex/core/constants/app_constants.dart';
+import 'package:grex/core/network/interceptors/auth_interceptor.dart';
+import 'package:grex/core/utils/result.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

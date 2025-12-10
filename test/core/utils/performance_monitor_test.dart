@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/core/utils/performance_monitor.dart';
+import 'package:grex/core/utils/performance_monitor.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

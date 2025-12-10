@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/create_task_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/delete_task_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/get_all_tasks_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/toggle_task_completion_usecase.dart';
-import 'package:flutter_starter/features/tasks/domain/usecases/update_task_usecase.dart';
-import 'package:flutter_starter/features/tasks/presentation/providers/tasks_provider.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
+import 'package:grex/features/tasks/domain/usecases/create_task_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/delete_task_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/get_all_tasks_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/toggle_task_completion_usecase.dart';
+import 'package:grex/features/tasks/domain/usecases/update_task_usecase.dart';
+import 'package:grex/features/tasks/presentation/providers/tasks_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

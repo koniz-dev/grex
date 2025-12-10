@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/storage/storage_service.dart';
-import 'package:flutter_starter/features/feature_flags/data/datasources/feature_flags_local_datasource.dart';
+import 'package:grex/core/storage/storage_service.dart';
+import 'package:grex/features/feature_flags/data/datasources/feature_flags_local_datasource.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';

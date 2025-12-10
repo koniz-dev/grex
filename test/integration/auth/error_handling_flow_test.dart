@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/errors/dio_exception_mapper.dart';
-import 'package:flutter_starter/core/errors/exception_to_failure_mapper.dart';
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
+import 'package:grex/core/errors/dio_exception_mapper.dart';
+import 'package:grex/core/errors/exception_to_failure_mapper.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Integration test for error handling flow

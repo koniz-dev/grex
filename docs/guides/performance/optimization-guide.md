@@ -1,6 +1,6 @@
 # Performance Optimization Guide
 
-This document provides a comprehensive guide to the performance optimizations implemented in the Flutter Starter app, along with before/after metrics and best practices.
+This document provides a comprehensive guide to the performance optimizations implemented in the Grex app, along with before/after metrics and best practices.
 
 ## Table of Contents
 

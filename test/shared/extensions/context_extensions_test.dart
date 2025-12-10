@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

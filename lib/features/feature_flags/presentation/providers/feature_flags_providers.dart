@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/feature_flags/feature_flags_manager.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/feature_flags/data/datasources/feature_flags_local_datasource.dart';
-import 'package:flutter_starter/features/feature_flags/data/datasources/feature_flags_remote_datasource.dart';
-import 'package:flutter_starter/features/feature_flags/data/repositories/feature_flags_repository_impl.dart';
-import 'package:flutter_starter/features/feature_flags/domain/entities/feature_flag.dart';
-import 'package:flutter_starter/features/feature_flags/domain/repositories/feature_flags_repository.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/feature_flags/feature_flags_manager.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/feature_flags/data/datasources/feature_flags_local_datasource.dart';
+import 'package:grex/features/feature_flags/data/datasources/feature_flags_remote_datasource.dart';
+import 'package:grex/features/feature_flags/data/repositories/feature_flags_repository_impl.dart';
+import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
+import 'package:grex/features/feature_flags/domain/repositories/feature_flags_repository.dart';
 
 // ============================================================================
 // Feature Flags Data Source Providers

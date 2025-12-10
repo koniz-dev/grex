@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/feature_flags/feature_flags_manager.dart';
-import 'package:flutter_starter/features/feature_flags/domain/entities/feature_flag.dart';
-import 'package:flutter_starter/features/feature_flags/presentation/providers/feature_flags_providers.dart';
+import 'package:grex/core/feature_flags/feature_flags_manager.dart';
+import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
+import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
 
 /// Debug screen for managing feature flags
 ///

@@ -1,10 +1,10 @@
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/features/auth/data/models/auth_response_model.dart';
-import 'package:flutter_starter/features/auth/data/models/user_model.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter/features/tasks/data/models/task_model.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/features/auth/data/models/auth_response_model.dart';
+import 'package:grex/features/auth/data/models/user_model.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/tasks/data/models/task_model.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
 
 /// Test fixtures for creating test data
 ///

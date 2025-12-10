@@ -1,7 +1,7 @@
 {
   "@@locale": "ar",
-  "appTitle": "Flutter Starter",
-  "welcome": "مرحباً بك في Flutter Starter مع Clean Architecture!",
+  "appTitle": "Grex",
+  "welcome": "مرحباً بك في Grex مع Clean Architecture!",
   "featureFlagsReady": "نظام Feature Flags جاهز!",
   "checkExamples": "تحقق من الأمثلة في feature_flags_example_screen.dart",
   "login": "تسجيل الدخول",

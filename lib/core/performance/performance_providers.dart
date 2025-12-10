@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/network/interceptors/performance_interceptor.dart';
-import 'package:flutter_starter/core/performance/performance_service.dart';
+import 'package:grex/core/network/interceptors/performance_interceptor.dart';
+import 'package:grex/core/performance/performance_service.dart';
 
 /// Provider for [PerformanceService] instance
 ///

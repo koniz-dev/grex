@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/logging/logging_service.dart';
+import 'package:grex/core/logging/logging_service.dart';
 
 /// Mixin for adding logging to storage operations
 ///

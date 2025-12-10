@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_starter/core/config/env_config.dart';
-import 'package:flutter_starter/features/feature_flags/domain/entities/feature_flag.dart';
+import 'package:grex/core/config/env_config.dart';
+import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
 
 /// Service for managing local feature flags
 ///

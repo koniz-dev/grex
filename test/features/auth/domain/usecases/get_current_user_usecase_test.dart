@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

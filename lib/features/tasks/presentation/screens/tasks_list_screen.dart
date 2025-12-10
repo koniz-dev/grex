@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/routing/app_routes.dart';
-import 'package:flutter_starter/core/routing/navigation_extensions.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
-import 'package:flutter_starter/features/tasks/presentation/providers/tasks_provider.dart';
-import 'package:flutter_starter/l10n/app_localizations.dart';
+import 'package:grex/core/routing/app_routes.dart';
+import 'package:grex/core/routing/navigation_extensions.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
+import 'package:grex/features/tasks/presentation/providers/tasks_provider.dart';
+import 'package:grex/l10n/app_localizations.dart';
 
 /// Tasks list screen
 class TasksListScreen extends ConsumerWidget {

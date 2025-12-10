@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/constants/api_endpoints.dart';
+import 'package:grex/core/constants/api_endpoints.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

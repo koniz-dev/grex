@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_starter/core/logging/logging_service.dart';
+import 'package:grex/core/logging/logging_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

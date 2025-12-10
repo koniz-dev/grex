@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter_starter/core/localization/localization_providers.dart';
-import 'package:flutter_starter/core/localization/localization_service.dart';
-import 'package:flutter_starter/l10n/app_localizations.dart';
-import 'package:flutter_starter/shared/accessibility/accessibility_widgets.dart';
+import 'package:grex/core/localization/localization_providers.dart';
+import 'package:grex/core/localization/localization_service.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/accessibility/accessibility_widgets.dart';
 
 /// Language switcher widget
 ///

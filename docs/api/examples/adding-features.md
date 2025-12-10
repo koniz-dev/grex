@@ -42,8 +42,8 @@ Define the repository interface in the domain layer.
 
 ```dart
 // lib/features/products/domain/repositories/product_repository.dart
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/products/domain/entities/product.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/products/domain/entities/product.dart';
 
 abstract class ProductRepository {
   /// Get all products
@@ -69,9 +69,9 @@ Create use cases for each business operation.
 
 ```dart
 // lib/features/products/domain/usecases/get_products_usecase.dart
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/products/domain/entities/product.dart';
-import 'package:flutter_starter/features/products/domain/repositories/product_repository.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/products/domain/entities/product.dart';
+import 'package:grex/features/products/domain/repositories/product_repository.dart';
 
 /// Use case for getting all products
 class GetProductsUseCase {
@@ -98,7 +98,7 @@ Create the data model that extends the entity.
 
 ```dart
 // lib/features/products/data/models/product_model.dart
-import 'package:flutter_starter/features/products/domain/entities/product.dart';
+import 'package:grex/features/products/domain/entities/product.dart';
 
 class ProductModel extends Product {
   const ProductModel({
@@ -143,8 +143,8 @@ Create the remote data source for API calls.
 
 ```dart
 // lib/features/products/data/datasources/product_remote_datasource.dart
-import 'package:flutter_starter/core/network/api_client.dart';
-import 'package:flutter_starter/features/products/data/models/product_model.dart';
+import 'package:grex/core/network/api_client.dart';
+import 'package:grex/features/products/data/models/product_model.dart';
 
 abstract class ProductRemoteDataSource {
   Future<List<ProductModel>> getProducts();
@@ -186,9 +186,9 @@ Create local data source for caching if needed.
 
 ```dart
 // lib/features/products/data/datasources/product_local_datasource.dart
-import 'package:flutter_starter/core/storage/storage_service.dart';
-import 'package:flutter_starter/core/utils/json_helper.dart';
-import 'package:flutter_starter/features/products/data/models/product_model.dart';
+import 'package:grex/core/storage/storage_service.dart';
+import 'package:grex/core/utils/json_helper.dart';
+import 'package:grex/features/products/data/models/product_model.dart';
 
 abstract class ProductLocalDataSource {
   Future<void> cacheProducts(List<ProductModel> products);
@@ -237,12 +237,12 @@ Implement the repository interface.
 
 ```dart
 // lib/features/products/data/repositories/product_repository_impl.dart
-import 'package:flutter_starter/core/errors/exception_to_failure_mapper.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/products/data/datasources/product_local_datasource.dart';
-import 'package:flutter_starter/features/products/data/datasources/product_remote_datasource.dart';
-import 'package:flutter_starter/features/products/domain/entities/product.dart';
-import 'package:flutter_starter/features/products/domain/repositories/product_repository.dart';
+import 'package:grex/core/errors/exception_to_failure_mapper.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/products/data/datasources/product_local_datasource.dart';
+import 'package:grex/features/products/data/datasources/product_remote_datasource.dart';
+import 'package:grex/features/products/domain/entities/product.dart';
+import 'package:grex/features/products/domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   ProductRepositoryImpl({

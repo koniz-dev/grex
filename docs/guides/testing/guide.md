@@ -1,6 +1,6 @@
 # Testing Guide
 
-This guide covers testing practices, patterns, and best practices for the Flutter Starter project following Clean Architecture principles.
+This guide covers testing practices, patterns, and best practices for the Grex project following Clean Architecture principles.
 
 ## Table of Contents
 
@@ -127,8 +127,8 @@ Use cases are the core business logic and should have **100% coverage**:
 ```dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/login_usecase.dart';
-import 'package:flutter_starter/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 
@@ -180,9 +180,9 @@ Test repository implementations with mocked data sources:
 ```dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_starter/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:flutter_starter/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:flutter_starter/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:grex/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:grex/features/auth/data/datasources/auth_local_datasource.dart';
 
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
 class MockAuthLocalDataSource extends Mock implements AuthLocalDataSource {}
@@ -237,8 +237,8 @@ Test Riverpod providers with provider overrides:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_starter/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/login_usecase.dart';
+import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
+import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
 
 class MockLoginUseCase extends Mock implements LoginUseCase {}
 
@@ -281,9 +281,9 @@ Test widgets with Riverpod providers:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_starter/features/auth/presentation/screens/login_screen.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/login_usecase.dart';
-import 'package:flutter_starter/test/helpers/pump_app.dart';
+import 'package:grex/features/auth/presentation/screens/login_screen.dart';
+import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
+import 'package:grex/test/helpers/pump_app.dart';
 
 class MockLoginUseCase extends Mock implements LoginUseCase {}
 
@@ -381,7 +381,7 @@ await pumpApp(
 Use test fixtures for creating test data:
 
 ```dart
-import 'package:flutter_starter/test/helpers/test_fixtures.dart';
+import 'package:grex/test/helpers/test_fixtures.dart';
 
 // Create test entities
 final user = createUser(

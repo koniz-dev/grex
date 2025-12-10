@@ -1,6 +1,6 @@
 # Accessibility Guide
 
-This guide provides comprehensive information about accessibility implementation in the Flutter Starter app, including best practices, testing procedures, and common patterns.
+This guide provides comprehensive information about accessibility implementation in the Grex app, including best practices, testing procedures, and common patterns.
 
 ## Table of Contents
 

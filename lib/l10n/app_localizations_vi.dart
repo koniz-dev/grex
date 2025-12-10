@@ -9,11 +9,10 @@ class AppLocalizationsVi extends AppLocalizations {
   AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
   @override
-  String get appTitle => 'Flutter Starter';
+  String get appTitle => 'Grex';
 
   @override
-  String get welcome =>
-      'Chào mừng đến với Flutter Starter với Clean Architecture!';
+  String get welcome => 'Chào mừng đến với Grex với Clean Architecture!';
 
   @override
   String get featureFlagsReady => 'Hệ thống Feature Flags đã sẵn sàng!';

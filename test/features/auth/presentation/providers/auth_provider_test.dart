@@ -1,15 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/get_current_user_usecase.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/is_authenticated_usecase.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/login_usecase.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/refresh_token_usecase.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/register_usecase.dart';
-import 'package:flutter_starter/features/auth/presentation/providers/auth_provider.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:grex/features/auth/domain/usecases/is_authenticated_usecase.dart';
+import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
+import 'package:grex/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:grex/features/auth/domain/usecases/refresh_token_usecase.dart';
+import 'package:grex/features/auth/domain/usecases/register_usecase.dart';
+import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

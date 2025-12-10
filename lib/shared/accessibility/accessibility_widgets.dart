@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_starter/shared/accessibility/accessibility_helpers.dart';
+import 'package:grex/shared/accessibility/accessibility_helpers.dart';
 
 /// Accessible button widget with proper semantics and touch targets
 ///

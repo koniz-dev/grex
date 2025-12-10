@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/core/utils/memory_helper.dart';
+import 'package:grex/core/utils/memory_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/shared/theme/app_colors.dart';
-import 'package:flutter_starter/shared/theme/app_text_styles.dart';
+import 'package:grex/shared/theme/app_colors.dart';
+import 'package:grex/shared/theme/app_text_styles.dart';
 
 /// Application theme configuration
 class AppTheme {

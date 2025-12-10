@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
-import 'package:flutter_starter/core/constants/api_endpoints.dart';
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/logging/logging_service.dart';
-import 'package:flutter_starter/core/network/interceptors/api_logging_interceptor.dart';
-import 'package:flutter_starter/core/network/interceptors/auth_interceptor.dart';
-import 'package:flutter_starter/core/network/interceptors/cache_interceptor.dart';
-import 'package:flutter_starter/core/network/interceptors/error_interceptor.dart';
-import 'package:flutter_starter/core/network/interceptors/logging_interceptor.dart';
-import 'package:flutter_starter/core/network/interceptors/performance_interceptor.dart';
-import 'package:flutter_starter/core/performance/performance_service.dart';
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
+import 'package:grex/core/config/app_config.dart';
+import 'package:grex/core/constants/api_endpoints.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/logging/logging_service.dart';
+import 'package:grex/core/network/interceptors/api_logging_interceptor.dart';
+import 'package:grex/core/network/interceptors/auth_interceptor.dart';
+import 'package:grex/core/network/interceptors/cache_interceptor.dart';
+import 'package:grex/core/network/interceptors/error_interceptor.dart';
+import 'package:grex/core/network/interceptors/logging_interceptor.dart';
+import 'package:grex/core/network/interceptors/performance_interceptor.dart';
+import 'package:grex/core/performance/performance_service.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
+import 'package:grex/core/storage/storage_service.dart';
 
 /// API client for making HTTP requests
 class ApiClient {

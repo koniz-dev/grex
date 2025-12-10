@@ -1,5 +1,5 @@
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/errors/failures.dart';
 
 /// Mapper for converting domain exceptions to typed failures
 class ExceptionToFailureMapper {

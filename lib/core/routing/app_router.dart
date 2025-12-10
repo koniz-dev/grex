@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/logging/logging_providers.dart';
-import 'package:flutter_starter/core/routing/app_routes.dart';
-import 'package:flutter_starter/core/routing/navigation_logging.dart';
-import 'package:flutter_starter/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutter_starter/features/auth/presentation/screens/login_screen.dart';
-import 'package:flutter_starter/features/auth/presentation/screens/register_screen.dart';
-import 'package:flutter_starter/features/feature_flags/presentation/screens/feature_flags_debug_screen.dart';
-import 'package:flutter_starter/features/tasks/presentation/screens/task_detail_screen.dart';
-import 'package:flutter_starter/features/tasks/presentation/screens/tasks_list_screen.dart';
-import 'package:flutter_starter/shared/screens/home_screen.dart';
+import 'package:grex/core/logging/logging_providers.dart';
+import 'package:grex/core/routing/app_routes.dart';
+import 'package:grex/core/routing/navigation_logging.dart';
+import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
+import 'package:grex/features/auth/presentation/screens/login_screen.dart';
+import 'package:grex/features/auth/presentation/screens/register_screen.dart';
+import 'package:grex/features/feature_flags/presentation/screens/feature_flags_debug_screen.dart';
+import 'package:grex/features/tasks/presentation/screens/task_detail_screen.dart';
+import 'package:grex/features/tasks/presentation/screens/tasks_list_screen.dart';
+import 'package:grex/shared/screens/home_screen.dart';
 import 'package:go_router/go_router.dart';
 
 /// Provider for GoRouter instance

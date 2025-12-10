@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter_starter/core/config/app_config.dart';
-import 'package:flutter_starter/core/routing/navigation_extensions.dart';
-import 'package:flutter_starter/l10n/app_localizations.dart';
-import 'package:flutter_starter/shared/widgets/language_switcher.dart';
+import 'package:grex/core/config/app_config.dart';
+import 'package:grex/core/routing/navigation_extensions.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/widgets/language_switcher.dart';
 
 /// Home screen widget
 class HomeScreen extends ConsumerWidget {

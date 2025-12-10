@@ -1,11 +1,11 @@
-import 'package:flutter_starter/core/errors/exception_to_failure_mapper.dart';
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/feature_flags/data/datasources/feature_flags_local_datasource.dart';
-import 'package:flutter_starter/features/feature_flags/data/datasources/feature_flags_remote_datasource.dart';
-import 'package:flutter_starter/features/feature_flags/data/services/local_feature_flags_service.dart';
-import 'package:flutter_starter/features/feature_flags/domain/entities/feature_flag.dart';
-import 'package:flutter_starter/features/feature_flags/domain/repositories/feature_flags_repository.dart';
+import 'package:grex/core/errors/exception_to_failure_mapper.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/feature_flags/data/datasources/feature_flags_local_datasource.dart';
+import 'package:grex/features/feature_flags/data/datasources/feature_flags_remote_datasource.dart';
+import 'package:grex/features/feature_flags/data/services/local_feature_flags_service.dart';
+import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
+import 'package:grex/features/feature_flags/domain/repositories/feature_flags_repository.dart';
 
 /// Implementation of [FeatureFlagsRepository]
 class FeatureFlagsRepositoryImpl implements FeatureFlagsRepository {

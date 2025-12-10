@@ -1,9 +1,9 @@
-import 'package:flutter_starter/core/constants/app_constants.dart';
-import 'package:flutter_starter/core/errors/exceptions.dart';
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
-import 'package:flutter_starter/core/utils/json_helper.dart';
-import 'package:flutter_starter/features/auth/data/models/user_model.dart';
+import 'package:grex/core/constants/app_constants.dart';
+import 'package:grex/core/errors/exceptions.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
+import 'package:grex/core/storage/storage_service.dart';
+import 'package:grex/core/utils/json_helper.dart';
+import 'package:grex/features/auth/data/models/user_model.dart';
 
 /// Local data source for authentication
 abstract class AuthLocalDataSource {

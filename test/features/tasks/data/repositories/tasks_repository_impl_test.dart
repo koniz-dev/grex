@@ -1,9 +1,9 @@
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/tasks/data/datasources/tasks_local_datasource.dart';
-import 'package:flutter_starter/features/tasks/data/models/task_model.dart';
-import 'package:flutter_starter/features/tasks/data/repositories/tasks_repository_impl.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/tasks/data/datasources/tasks_local_datasource.dart';
+import 'package:grex/features/tasks/data/models/task_model.dart';
+import 'package:grex/features/tasks/data/repositories/tasks_repository_impl.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

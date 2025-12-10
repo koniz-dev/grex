@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_starter/core/storage/storage_service.dart';
+import 'package:grex/core/storage/storage_service.dart';
 
 /// Secure storage service implementation using flutter_secure_storage
 ///

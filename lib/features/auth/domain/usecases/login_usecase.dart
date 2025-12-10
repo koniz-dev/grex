@@ -1,6 +1,6 @@
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
-import 'package:flutter_starter/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
 /// Use case for user login
 class LoginUseCase {

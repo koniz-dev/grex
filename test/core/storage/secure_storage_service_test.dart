@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

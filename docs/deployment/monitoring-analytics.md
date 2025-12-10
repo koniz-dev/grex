@@ -1,6 +1,6 @@
 # Monitoring & Analytics Setup
 
-Complete guide for setting up monitoring, crash reporting, and analytics in Flutter Starter.
+Complete guide for setting up monitoring, crash reporting, and analytics in Grex.
 
 ## Table of Contents
 
@@ -35,7 +35,7 @@ Create `lib/core/firebase/firebase_config.dart`:
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 class FirebaseConfig {
   static Future<void> initialize() async {
@@ -65,7 +65,7 @@ class FirebaseConfig {
 #### 3. Update main.dart
 
 ```dart
-import 'package:flutter_starter/core/firebase/firebase_config.dart';
+import 'package:grex/core/firebase/firebase_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -141,7 +141,7 @@ Create `lib/core/analytics/analytics_service.dart`:
 
 ```dart
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 class AnalyticsService {
   AnalyticsService._();
@@ -242,7 +242,7 @@ class AnalyticsService {
 #### 3. Usage Examples
 
 ```dart
-import 'package:flutter_starter/core/analytics/analytics_service.dart';
+import 'package:grex/core/analytics/analytics_service.dart';
 
 // Track screen views
 class HomeScreen extends StatelessWidget {
@@ -290,7 +290,7 @@ Create `lib/core/performance/performance_service.dart`:
 
 ```dart
 import 'package:firebase_performance/firebase_performance.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 class PerformanceService {
   PerformanceService._();
@@ -357,7 +357,7 @@ class PerformanceService {
 #### 3. Usage Examples
 
 ```dart
-import 'package:flutter_starter/core/performance/performance_service.dart';
+import 'package:grex/core/performance/performance_service.dart';
 
 // Measure API calls
 final data = await PerformanceService.measureApiCall(
@@ -392,7 +392,7 @@ if (trace != null) {
 Create `lib/core/analytics/custom_analytics.dart`:
 
 ```dart
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 abstract class AnalyticsProvider {
   Future<void> trackEvent(String name, Map<String, dynamic>? parameters);
@@ -547,7 +547,7 @@ Create `lib/core/logging/logger.dart`:
 
 ```dart
 import 'package:flutter/foundation.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 enum LogLevel {
   debug,
@@ -610,7 +610,7 @@ class Logger {
 ### Usage
 
 ```dart
-import 'package:flutter_starter/core/logging/logger.dart';
+import 'package:grex/core/logging/logger.dart';
 
 Logger.debug('Debug message');
 Logger.info('Info message');

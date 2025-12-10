@@ -11,8 +11,8 @@ platform :android do
   # ========================================================================
   
   # App configuration
-  PACKAGE_NAME = "com.example.flutter_starter" # TODO: Update to match your package name
-  APP_NAME = "Flutter Starter" # TODO: Update to match your app name
+  PACKAGE_NAME = "com.example.grex" # TODO: Update to match your package name
+  APP_NAME = "Grex" # TODO: Update to match your app name
   
   # ========================================================================
   # Helper Lanes

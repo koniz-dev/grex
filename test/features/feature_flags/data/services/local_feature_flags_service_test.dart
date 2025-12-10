@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_starter/features/feature_flags/data/services/local_feature_flags_service.dart';
-import 'package:flutter_starter/features/feature_flags/domain/entities/feature_flag.dart';
+import 'package:grex/features/feature_flags/data/services/local_feature_flags_service.dart';
+import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

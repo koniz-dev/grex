@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version bumping script for Flutter Starter
+# Version bumping script for Grex
 # Usage: ./scripts/bump_version.sh [major|minor|patch|build] [build_number]
 
 set -e

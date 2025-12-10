@@ -1,4 +1,4 @@
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

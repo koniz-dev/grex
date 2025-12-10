@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Changelog generation script for Flutter Starter
+# Changelog generation script for Grex
 # Usage: ./scripts/generate_changelog.sh [version]
 
 set -e

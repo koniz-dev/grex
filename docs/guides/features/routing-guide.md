@@ -1,6 +1,6 @@
 # Routing Guide
 
-This guide explains how to use the GoRouter-based routing system in the Flutter Starter project.
+This guide explains how to use the GoRouter-based routing system in the Grex project.
 
 ## Overview
 
@@ -30,7 +30,7 @@ lib/core/routing/
 The easiest way to navigate is using the provided extensions:
 
 ```dart
-import 'package:flutter_starter/core/routing/navigation_extensions.dart';
+import 'package:grex/core/routing/navigation_extensions.dart';
 
 // Navigate to home screen
 context.goToHome();
@@ -54,7 +54,7 @@ You can also use GoRouter methods directly:
 
 ```dart
 import 'package:go_router/go_router.dart';
-import 'package:flutter_starter/core/routing/app_routes.dart';
+import 'package:grex/core/routing/app_routes.dart';
 
 // Navigate to a route (replaces current route)
 context.go(AppRoutes.home);

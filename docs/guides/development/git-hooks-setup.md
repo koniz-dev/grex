@@ -288,7 +288,7 @@ Add to `README.md` or setup instructions:
 
 ## Recommended Setup
 
-For this Flutter Starter template, we recommend using **manual Git hooks** because:
+For this Grex template, we recommend using **manual Git hooks** because:
 
 1. **No dependencies** - Keeps `pubspec.yaml` clean
 2. **Simple** - Easy to understand and modify

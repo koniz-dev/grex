@@ -4,7 +4,7 @@ Common usage patterns and best practices.
 
 ## Overview
 
-This guide covers common patterns used throughout the Flutter Starter project.
+This guide covers common patterns used throughout the Grex project.
 
 ---
 
@@ -151,7 +151,7 @@ final token = await secureStorage.getString(StorageKeys.token);
 ### Accessing Configuration
 
 ```dart
-import 'package:flutter_starter/core/config/app_config.dart';
+import 'package:grex/core/config/app_config.dart';
 
 void setupServices() {
   final baseUrl = AppConfig.baseUrl;
@@ -360,10 +360,10 @@ await storage.setString('token', token);
 ```dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_starter/features/auth/domain/usecases/login_usecase.dart';
-import 'package:flutter_starter/features/auth/domain/repositories/auth_repository.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 

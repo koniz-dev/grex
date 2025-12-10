@@ -1,4 +1,4 @@
-import 'package:flutter_starter/core/storage/storage_service.dart';
+import 'package:grex/core/storage/storage_service.dart';
 
 /// Local data source for feature flags
 ///

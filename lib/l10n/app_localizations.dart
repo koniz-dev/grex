@@ -105,13 +105,13 @@ abstract class AppLocalizations {
   /// The application title
   ///
   /// In en, this message translates to:
-  /// **'Flutter Starter'**
+  /// **'Grex'**
   String get appTitle;
 
   /// Welcome message on home screen
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Flutter Starter with Clean Architecture!'**
+  /// **'Welcome to Grex with Clean Architecture!'**
   String get welcome;
 
   /// Message indicating feature flags are ready

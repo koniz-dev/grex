@@ -12,10 +12,10 @@ library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter_starter/core/errors/failures.dart';
-import 'package:flutter_starter/core/logging/logging_providers.dart';
-import 'package:flutter_starter/core/logging/logging_service.dart';
-import 'package:flutter_starter/core/utils/result.dart';
+import 'package:grex/core/errors/failures.dart';
+import 'package:grex/core/logging/logging_providers.dart';
+import 'package:grex/core/logging/logging_service.dart';
+import 'package:grex/core/utils/result.dart';
 
 // ============================================================================
 // Example 1: Logging in Use Cases (Domain Layer)

@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
-import 'package:flutter_starter/core/constants/api_endpoints.dart';
-import 'package:flutter_starter/core/constants/app_constants.dart';
-import 'package:flutter_starter/core/storage/secure_storage_service.dart';
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/core/config/app_config.dart';
+import 'package:grex/core/constants/api_endpoints.dart';
+import 'package:grex/core/constants/app_constants.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
 /// Pending request data structure for queuing requests during token refresh
 class _PendingRequest {

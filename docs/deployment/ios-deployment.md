@@ -1,6 +1,6 @@
 # iOS Deployment Guide
 
-Complete guide for deploying Flutter Starter to Apple App Store.
+Complete guide for deploying Grex to Apple App Store.
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ Complete guide for deploying Flutter Starter to Apple App Store.
 4. Select "App" → Continue
 5. Fill in:
    - **Description**: Your app name
-   - **Bundle ID**: `com.example.flutter_starter` (must match your app)
+   - **Bundle ID**: `com.example.grex` (must match your app)
 6. Select capabilities (Push Notifications, In-App Purchase, etc.)
 7. Register
 
@@ -35,7 +35,7 @@ Complete guide for deploying Flutter Starter to Apple App Store.
 1. Open `ios/Runner.xcworkspace` in Xcode
 2. Select Runner target
 3. General tab → Bundle Identifier
-4. Set to your App ID: `com.example.flutter_starter`
+4. Set to your App ID: `com.example.grex`
 
 ### Configure Signing
 
@@ -84,7 +84,7 @@ Update `ios/Runner/Info.plist`:
 
 ```xml
 <key>CFBundleDisplayName</key>
-<string>Flutter Starter</string>
+<string>Grex</string>
 <key>CFBundleIdentifier</key>
 <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 <key>CFBundleVersion</key>

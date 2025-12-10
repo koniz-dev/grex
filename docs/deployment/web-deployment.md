@@ -1,6 +1,6 @@
 # Web Deployment Guide
 
-Complete guide for deploying Flutter Starter web app to various hosting platforms.
+Complete guide for deploying Grex web app to various hosting platforms.
 
 ## Prerequisites
 
@@ -258,7 +258,7 @@ Create `package.json` (if not exists):
 
 ```json
 {
-  "name": "flutter_starter",
+  "name": "grex",
   "version": "1.0.0",
   "scripts": {
     "build": "flutter build web --release"
@@ -288,7 +288,7 @@ vercel --prod
 
 1. **Build web app**:
 ```bash
-flutter build web --release --base-href /flutter_starter/
+flutter build web --release --base-href /grex/
 ```
 
 2. **Push to GitHub**:
@@ -316,7 +316,7 @@ jobs:
         with:
           flutter-version: 'stable'
       - run: flutter pub get
-      - run: flutter build web --release --base-href /flutter_starter/
+      - run: flutter build web --release --base-href /grex/
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -373,13 +373,13 @@ frontend:
 
 ### Configuration
 
-Create `/etc/nginx/sites-available/flutter_starter`:
+Create `/etc/nginx/sites-available/grex`:
 
 ```nginx
 server {
     listen 80;
     server_name your-domain.com;
-    root /var/www/flutter_starter/build/web;
+    root /var/www/grex/build/web;
     index index.html;
 
     # Gzip compression
@@ -413,7 +413,7 @@ server {
 flutter build web --release
 
 # Copy to server
-scp -r build/web/* user@server:/var/www/flutter_starter/build/web/
+scp -r build/web/* user@server:/var/www/grex/build/web/
 
 # Reload Nginx
 ssh user@server "sudo nginx -t && sudo systemctl reload nginx"

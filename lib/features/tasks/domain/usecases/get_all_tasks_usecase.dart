@@ -1,6 +1,6 @@
-import 'package:flutter_starter/core/utils/result.dart';
-import 'package:flutter_starter/features/tasks/domain/entities/task.dart';
-import 'package:flutter_starter/features/tasks/domain/repositories/tasks_repository.dart';
+import 'package:grex/core/utils/result.dart';
+import 'package:grex/features/tasks/domain/entities/task.dart';
+import 'package:grex/features/tasks/domain/repositories/tasks_repository.dart';
 
 /// Use case for getting all tasks
 class GetAllTasksUseCase {

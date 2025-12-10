@@ -1,6 +1,6 @@
 # Deployment Documentation
 
-Complete deployment documentation for Flutter Starter across all platforms.
+Complete deployment documentation for Grex across all platforms.
 
 ## Quick Start
 

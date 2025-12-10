@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_starter/core/config/app_config.dart';
-import 'package:flutter_starter/core/config/env_config.dart';
-import 'package:flutter_starter/core/di/providers.dart';
-import 'package:flutter_starter/core/localization/localization_providers.dart';
-import 'package:flutter_starter/core/localization/localization_service.dart';
-import 'package:flutter_starter/core/routing/app_router.dart';
-import 'package:flutter_starter/features/feature_flags/presentation/providers/feature_flags_providers.dart';
-import 'package:flutter_starter/l10n/app_localizations.dart';
-import 'package:flutter_starter/shared/theme/app_theme.dart';
+import 'package:grex/core/config/app_config.dart';
+import 'package:grex/core/config/env_config.dart';
+import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/localization/localization_providers.dart';
+import 'package:grex/core/localization/localization_service.dart';
+import 'package:grex/core/routing/app_router.dart';
+import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/theme/app_theme.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized first (required for all Flutter APIs)
@@ -74,7 +74,7 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
-      title: 'Flutter Starter',
+      title: 'Grex',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       // Router configuration

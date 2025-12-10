@@ -9,10 +9,10 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appTitle => 'Flutter Starter';
+  String get appTitle => 'Grex';
 
   @override
-  String get welcome => 'مرحباً بك في Flutter Starter مع Clean Architecture!';
+  String get welcome => 'مرحباً بك في Grex مع Clean Architecture!';
 
   @override
   String get featureFlagsReady => 'نظام Feature Flags جاهز!';
