@@ -1,7 +1,7 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/errors/exception_to_failure_mapper.dart';
 import 'package:grex/core/errors/exceptions.dart';
 import 'package:grex/core/errors/failures.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('ExceptionToFailureMapper', () {

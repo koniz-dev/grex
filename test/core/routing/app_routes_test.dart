@@ -1,5 +1,5 @@
-import 'package:grex/core/routing/app_routes.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/core/routing/app_routes.dart';
 
 void main() {
   group('AppRoutes', () {

@@ -1,5 +1,5 @@
-import 'package:grex/core/config/env_config.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/core/config/env_config.dart';
 
 void main() {
   group('EnvConfig', () {

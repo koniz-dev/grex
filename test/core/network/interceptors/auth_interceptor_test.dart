@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/constants/api_endpoints.dart';
 import 'package:grex/core/constants/app_constants.dart';
 import 'package:grex/core/errors/failures.dart';
@@ -6,7 +7,6 @@ import 'package:grex/core/network/interceptors/auth_interceptor.dart';
 import 'package:grex/core/storage/secure_storage_service.dart';
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockSecureStorageService extends Mock implements SecureStorageService {}

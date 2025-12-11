@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/logging/logging_service.dart';
 import 'package:grex/core/network/interceptors/api_logging_interceptor.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLoggingService extends Mock implements LoggingService {}

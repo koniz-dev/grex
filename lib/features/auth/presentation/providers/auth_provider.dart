@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_provider.freezed.dart';
 

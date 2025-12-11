@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/errors/failures.dart';
 import 'package:grex/core/utils/result.dart';
@@ -10,7 +11,6 @@ import 'package:grex/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:grex/features/auth/domain/usecases/refresh_token_usecase.dart';
 import 'package:grex/features/auth/domain/usecases/register_usecase.dart';
 import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLoginUseCase extends Mock implements LoginUseCase {}

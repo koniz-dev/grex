@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grex/shared/widgets/optimized_image.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/shared/widgets/optimized_image.dart';
 
 void main() {
   group('OptimizedImage', () {

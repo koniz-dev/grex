@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/screens/home_screen.dart';
 import 'package:grex/shared/widgets/language_switcher.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 
 void main() {
   group('HomeScreen', () {

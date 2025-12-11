@@ -63,6 +63,9 @@ dependencies:
   # Storage - Simple key-value storage for non-sensitive data
   shared_preferences: ^2.5.3
 
+  # Backend - Supabase client for PostgreSQL database, auth, and real-time
+  supabase_flutter: ^2.9.0
+
   # REMOVED UNUSED DEPENDENCIES:
   # cached_network_image: ^3.4.1 - Not used, can add back when needed for image loading
   # flutter_screenutil: ^5.9.3 - Not used, can add back when needed for responsive design
@@ -124,7 +127,7 @@ flutter:
   # The .env file is optional - the app works with --dart-define flags too
   assets:
     - .env.example
-    - .env
+    # - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

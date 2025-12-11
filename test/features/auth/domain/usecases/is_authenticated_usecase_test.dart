@@ -1,6 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/usecases/is_authenticated_usecase.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../helpers/mock_factories.dart';

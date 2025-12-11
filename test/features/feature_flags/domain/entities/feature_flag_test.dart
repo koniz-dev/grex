@@ -1,5 +1,5 @@
-import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
 
 void main() {
   group('FeatureFlag', () {

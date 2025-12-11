@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grex/core/logging/logging_providers.dart';
 import 'package:grex/core/routing/app_routes.dart';
 import 'package:grex/core/routing/navigation_logging.dart';
@@ -10,7 +11,6 @@ import 'package:grex/features/feature_flags/presentation/screens/feature_flags_d
 import 'package:grex/features/tasks/presentation/screens/task_detail_screen.dart';
 import 'package:grex/features/tasks/presentation/screens/tasks_list_screen.dart';
 import 'package:grex/shared/screens/home_screen.dart';
-import 'package:go_router/go_router.dart';
 
 /// Provider for GoRouter instance
 ///

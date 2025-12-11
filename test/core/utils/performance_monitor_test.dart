@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grex/core/utils/performance_monitor.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/core/utils/performance_monitor.dart';
 
 void main() {
   group('PerformanceMonitor', () {

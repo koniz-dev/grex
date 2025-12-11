@@ -1,5 +1,5 @@
-import 'package:grex/core/constants/app_constants.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/core/constants/app_constants.dart';
 
 void main() {
   group('AppConstants', () {

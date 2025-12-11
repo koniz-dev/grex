@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grex/core/logging/logging_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grex/core/logging/logging_service.dart';
 
 /// Navigator observer for logging navigation events
 ///
