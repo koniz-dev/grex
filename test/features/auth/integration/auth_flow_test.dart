@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 /// Integration test for complete authentication flow
 ///

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/errors/exceptions.dart';
 import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:grex/features/auth/data/models/auth_response_model.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../helpers/mock_factories.dart';

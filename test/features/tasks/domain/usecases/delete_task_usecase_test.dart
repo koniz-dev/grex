@@ -1,8 +1,8 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/errors/failures.dart';
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/tasks/domain/repositories/tasks_repository.dart';
 import 'package:grex/features/tasks/domain/usecases/delete_task_usecase.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../helpers/test_helpers.dart';

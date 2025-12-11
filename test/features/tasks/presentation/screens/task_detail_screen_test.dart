@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/errors/failures.dart';
 import 'package:grex/core/localization/localization_service.dart';
@@ -15,8 +17,6 @@ import 'package:grex/features/tasks/domain/usecases/get_task_by_id_usecase.dart'
 import 'package:grex/features/tasks/domain/usecases/update_task_usecase.dart';
 import 'package:grex/features/tasks/presentation/screens/task_detail_screen.dart';
 import 'package:grex/l10n/app_localizations.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../helpers/test_fixtures.dart';

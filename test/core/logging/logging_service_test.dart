@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:grex/core/logging/logging_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/core/logging/logging_service.dart';
 
 void main() {
   // Initialize Flutter binding for path_provider

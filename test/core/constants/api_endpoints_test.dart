@@ -1,5 +1,5 @@
-import 'package:grex/core/constants/api_endpoints.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/core/constants/api_endpoints.dart';
 
 void main() {
   group('ApiEndpoints', () {

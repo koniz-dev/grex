@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grex/shared/accessibility/focus_announcer.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/shared/accessibility/focus_announcer.dart';
 
 void main() {
   group('FocusAnnouncer', () {

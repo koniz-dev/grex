@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:grex/core/network/interceptors/logging_interceptor.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/core/network/interceptors/logging_interceptor.dart';
 
 /// Test handler for request interceptor
 class TestRequestInterceptorHandler extends RequestInterceptorHandler {

@@ -1,5 +1,5 @@
-import 'package:grex/shared/extensions/string_extensions.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/shared/extensions/string_extensions.dart';
 
 void main() {
   group('StringExtensions', () {

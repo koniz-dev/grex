@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/feature_flags/feature_flags_manager.dart';
 import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
 import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
 import 'package:grex/features/feature_flags/presentation/screens/feature_flags_debug_screen.dart';
 import 'package:grex/l10n/app_localizations.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFeatureFlagsManager extends Mock implements FeatureFlagsManager {}

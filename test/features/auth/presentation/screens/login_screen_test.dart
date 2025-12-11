@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/errors/failures.dart';
 import 'package:grex/core/localization/localization_service.dart';
@@ -13,8 +15,6 @@ import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
 import 'package:grex/features/auth/presentation/screens/login_screen.dart';
 import 'package:grex/features/auth/presentation/screens/register_screen.dart';
 import 'package:grex/l10n/app_localizations.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLoginUseCase extends Mock implements LoginUseCase {}

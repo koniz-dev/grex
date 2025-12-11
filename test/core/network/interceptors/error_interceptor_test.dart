@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/errors/exceptions.dart';
 import 'package:grex/core/network/interceptors/error_interceptor.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 /// Test handler that captures rejected exceptions
 class TestErrorInterceptorHandler extends ErrorInterceptorHandler {

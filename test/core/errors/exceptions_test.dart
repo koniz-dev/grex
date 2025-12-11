@@ -1,5 +1,5 @@
-import 'package:grex/core/errors/exceptions.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/core/errors/exceptions.dart';
 
 void main() {
   group('AppException', () {

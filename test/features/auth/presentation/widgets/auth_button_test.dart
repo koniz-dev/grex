@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grex/features/auth/presentation/widgets/auth_button.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/features/auth/presentation/widgets/auth_button.dart';
 
 void main() {
   group('AuthButton', () {

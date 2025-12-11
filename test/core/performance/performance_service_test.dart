@@ -1,7 +1,7 @@
 import 'package:firebase_performance/firebase_performance.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/config/app_config.dart';
 import 'package:grex/core/performance/performance_service.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockTrace extends Mock implements Trace {}

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/network/interceptors/performance_interceptor.dart';
 import 'package:grex/core/performance/performance_providers.dart';
 import 'package:grex/core/performance/performance_service.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('performanceServiceProvider', () {

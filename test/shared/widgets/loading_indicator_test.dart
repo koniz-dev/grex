@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grex/shared/widgets/loading_indicator.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/shared/widgets/loading_indicator.dart';
 
 void main() {
   group('LoadingIndicator', () {

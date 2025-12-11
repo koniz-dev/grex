@@ -1,6 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/data/models/auth_response_model.dart';
 import 'package:grex/features/auth/data/models/user_model.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('AuthResponseModel', () {

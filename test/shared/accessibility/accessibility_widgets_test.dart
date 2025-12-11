@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/shared/accessibility/accessibility_widgets.dart'
     as app_widgets;
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('AccessibleButton', () {

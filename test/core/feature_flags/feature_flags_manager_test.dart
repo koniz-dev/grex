@@ -1,9 +1,9 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/errors/failures.dart';
 import 'package:grex/core/feature_flags/feature_flags_manager.dart';
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
 import 'package:grex/features/feature_flags/domain/repositories/feature_flags_repository.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFeatureFlagsRepository extends Mock

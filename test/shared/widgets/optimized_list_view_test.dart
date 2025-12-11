@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grex/shared/widgets/optimized_list_view.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grex/shared/widgets/optimized_list_view.dart';
 
 void main() {
   group('OptimizedListView', () {

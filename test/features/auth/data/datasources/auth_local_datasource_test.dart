@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/constants/app_constants.dart';
 import 'package:grex/core/errors/exceptions.dart';
 import 'package:grex/core/storage/secure_storage_service.dart';
 import 'package:grex/core/storage/storage_service.dart';
 import 'package:grex/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:grex/features/auth/data/models/user_model.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

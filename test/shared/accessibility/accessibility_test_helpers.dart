@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/shared/accessibility/accessibility_constants.dart';
 import 'package:grex/shared/accessibility/accessibility_helpers.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 /// Accessibility testing helpers
 ///

@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/core/errors/exceptions.dart';
 import 'package:grex/core/errors/failures.dart';
 import 'package:grex/core/utils/result.dart';
@@ -5,7 +6,6 @@ import 'package:grex/features/feature_flags/data/datasources/feature_flags_local
 import 'package:grex/features/feature_flags/data/datasources/feature_flags_remote_datasource.dart';
 import 'package:grex/features/feature_flags/data/repositories/feature_flags_repository_impl.dart';
 import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFeatureFlagsRemoteDataSource extends Mock
