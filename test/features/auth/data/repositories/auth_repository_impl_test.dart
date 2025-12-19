@@ -37,12 +37,12 @@ void main() {
     group('login', () {
       test('should return User when login succeeds', () async {
         // Arrange
-        const userModel = UserModel(
+        final userModel = UserModel(
           id: '1',
           email: 'test@example.com',
-          name: 'Test User',
+          createdAt: DateTime(2024),
         );
-        const authResponse = AuthResponseModel(
+        final authResponse = AuthResponseModel(
           user: userModel,
           token: 'access_token',
           refreshToken: 'refresh_token',
@@ -61,14 +61,20 @@ void main() {
         ).thenAnswer((_) async => {});
 
         // Act
-        final result = await repository.login('test@example.com', 'password');
+        final result = await repository.signInWithEmail(
+          email: 'test@example.com',
+          password: 'password',
+        );
 
         // Assert
-        expect(result.isSuccess, isTrue);
-        final user = result.dataOrNull;
+        expect(result.isRight(), isTrue);
+        final user = result.fold(
+          (l) => throw Exception('Expected success'),
+          (r) => r,
+        );
         expect(user, isNotNull);
-        expect(user?.id, '1');
-        expect(user?.email, 'test@example.com');
+        expect(user.id, '1');
+        expect(user.email, 'test@example.com');
         verify(
           () => mockRemoteDataSource.login('test@example.com', 'password'),
         ).called(1);
@@ -89,14 +95,20 @@ void main() {
           ).thenThrow(const ServerException('Server error', code: '500'));
 
           // Act
-          final result = await repository.login('test@example.com', 'password');
+          final result = await repository.signInWithEmail(
+            email: 'test@example.com',
+            password: 'password',
+          );
 
           // Assert
-          expect(result.isFailure, isTrue);
-          final failure = result.failureOrNull;
+          expect(result.isLeft(), isTrue);
+          final failure = result.fold(
+            (l) => l,
+            (r) => throw Exception('Expected failure'),
+          );
           expect(failure, isA<ServerFailure>());
-          expect(failure?.message, 'Server error');
-          expect(failure?.code, '500');
+          expect(failure.message, 'Server error');
+          // Note: AuthFailure doesn't have a code property
           verify(
             () => mockRemoteDataSource.login('test@example.com', 'password'),
           ).called(1);
@@ -120,23 +132,30 @@ void main() {
           ).thenAnswer((_) async => {});
 
           // Act
-          final result = await repository.login('test@example.com', 'password');
+          final result = await repository.signInWithEmail(
+            email: 'test@example.com',
+            password: 'password',
+          );
 
           // Assert
-          expect(result.isFailure, isTrue);
-          final failure = result.failureOrNull;
+          expect(result.isLeft(), isTrue);
+          final failure = result.fold(
+            (l) => l,
+            (r) => throw Exception('Expected failure'),
+          );
           expect(failure, isA<NetworkFailure>());
-          expect(failure?.message, 'Network error');
+          expect(failure.message, 'Network error');
         },
       );
 
       test('should cache refresh token only if provided', () async {
         // Arrange
-        const userModel = UserModel(
+        final userModel = UserModel(
           id: '1',
           email: 'test@example.com',
+          createdAt: DateTime(2024),
         );
-        const authResponse = AuthResponseModel(
+        final authResponse = AuthResponseModel(
           user: userModel,
           token: 'access_token',
           // refreshToken is null
@@ -152,7 +171,10 @@ void main() {
         ).thenAnswer((_) async => {});
 
         // Act
-        await repository.login('test@example.com', 'password');
+        await repository.signInWithEmail(
+          email: 'test@example.com',
+          password: 'password',
+        );
 
         // Assert
         verifyNever(() => mockLocalDataSource.cacheRefreshToken(any()));
@@ -162,12 +184,12 @@ void main() {
     group('register', () {
       test('should return User when registration succeeds', () async {
         // Arrange
-        const userModel = UserModel(
+        final userModel = UserModel(
           id: '1',
           email: 'test@example.com',
-          name: 'Test User',
+          createdAt: DateTime(2024),
         );
-        const authResponse = AuthResponseModel(
+        final authResponse = AuthResponseModel(
           user: userModel,
           token: 'access_token',
         );
@@ -182,15 +204,14 @@ void main() {
         ).thenAnswer((_) async => {});
 
         // Act
-        final result = await repository.register(
-          'test@example.com',
-          'password',
-          'Test User',
+        final result = await repository.signUpWithEmail(
+          email: 'test@example.com',
+          password: 'password',
         );
 
         // Assert
-        expect(result.isSuccess, isTrue);
-        final user = result.dataOrNull;
+        expect(result.isRight(), isTrue);
+        final user = result.fold((l) => null, (r) => r);
         expect(user, isNotNull);
         expect(user?.email, 'test@example.com');
         verify(
@@ -215,15 +236,17 @@ void main() {
         ).thenAnswer((_) async => {});
 
         // Act
-        final result = await repository.register(
-          'test@example.com',
-          'password',
-          'Test User',
+        final result = await repository.signUpWithEmail(
+          email: 'test@example.com',
+          password: 'password',
         );
 
         // Assert
-        expect(result.isFailure, isTrue);
-        expect(result.failureOrNull, isA<ServerFailure>());
+        expect(result.isLeft(), isTrue);
+        expect(
+          result.fold((l) => l, (r) => throw Exception('Expected failure')),
+          isA<ServerFailure>(),
+        );
       });
     });
 
@@ -236,10 +259,10 @@ void main() {
         ).thenAnswer((_) async => {});
 
         // Act
-        final result = await repository.logout();
+        final result = await repository.signOut();
 
         // Assert
-        expect(result.isSuccess, isTrue);
+        expect(result.isRight(), isTrue);
         verify(() => mockRemoteDataSource.logout()).called(1);
         verify(() => mockLocalDataSource.clearCache()).called(1);
       });
@@ -254,21 +277,24 @@ void main() {
         ).thenAnswer((_) async => {});
 
         // Act
-        final result = await repository.logout();
+        final result = await repository.signOut();
 
         // Assert
-        expect(result.isFailure, isTrue);
-        expect(result.failureOrNull, isA<NetworkFailure>());
+        expect(result.isLeft(), isTrue);
+        expect(
+          result.fold((l) => l, (r) => throw Exception('Expected failure')),
+          isA<NetworkFailure>(),
+        );
       });
     });
 
     group('getCurrentUser', () {
       test('should return User when cached user exists', () async {
         // Arrange
-        const userModel = UserModel(
+        final userModel = UserModel(
           id: '1',
           email: 'test@example.com',
-          name: 'Test User',
+          createdAt: DateTime(2024),
         );
         when(
           () => mockLocalDataSource.getCachedUser(),
@@ -317,9 +343,10 @@ void main() {
     group('isAuthenticated', () {
       test('should return true when cached user exists', () async {
         // Arrange
-        const userModel = UserModel(
+        final userModel = UserModel(
           id: '1',
           email: 'test@example.com',
+          createdAt: DateTime(2024),
         );
         when(
           () => mockLocalDataSource.getCachedUser(),
@@ -351,11 +378,12 @@ void main() {
     group('refreshToken', () {
       test('should return new token when refresh succeeds', () async {
         // Arrange
-        const userModel = UserModel(
+        final userModel = UserModel(
           id: '1',
           email: 'test@example.com',
+          createdAt: DateTime(2024),
         );
-        const authResponse = AuthResponseModel(
+        final authResponse = AuthResponseModel(
           user: userModel,
           token: 'new_access_token',
           refreshToken: 'new_refresh_token',
@@ -431,11 +459,12 @@ void main() {
 
       test('should cache refresh token only if provided', () async {
         // Arrange
-        const userModel = UserModel(
+        final userModel = UserModel(
           id: '1',
           email: 'test@example.com',
+          createdAt: DateTime(2024),
         );
-        const authResponse = AuthResponseModel(
+        final authResponse = AuthResponseModel(
           user: userModel,
           token: 'new_access_token',
           // refreshToken is null
@@ -461,12 +490,12 @@ void main() {
     group('Edge Cases', () {
       test('register should cache refresh token when provided', () async {
         // Arrange
-        const userModel = UserModel(
+        final userModel = UserModel(
           id: '1',
           email: 'test@example.com',
-          name: 'Test User',
+          createdAt: DateTime(2024),
         );
-        const authResponse = AuthResponseModel(
+        final authResponse = AuthResponseModel(
           user: userModel,
           token: 'access_token',
           refreshToken: 'refresh_token',
@@ -485,7 +514,10 @@ void main() {
         ).thenAnswer((_) async => {});
 
         // Act
-        await repository.register('test@example.com', 'password', 'Test User');
+        await repository.signUpWithEmail(
+          email: 'test@example.com',
+          password: 'password',
+        );
 
         // Assert
         verify(
@@ -500,11 +532,17 @@ void main() {
         ).thenThrow(Exception('Generic error'));
 
         // Act
-        final result = await repository.login('test@example.com', 'password');
+        final result = await repository.signInWithEmail(
+          email: 'test@example.com',
+          password: 'password',
+        );
 
         // Assert
-        expect(result.isFailure, isTrue);
-        expect(result.failureOrNull, isA<UnknownFailure>());
+        expect(result.isLeft(), isTrue);
+        expect(
+          result.fold((l) => l, (r) => throw Exception('Expected failure')),
+          isA<UnknownFailure>(),
+        );
       });
 
       test('register should handle generic Exception', () async {
@@ -514,15 +552,17 @@ void main() {
         ).thenThrow(Exception('Generic error'));
 
         // Act
-        final result = await repository.register(
-          'test@example.com',
-          'password',
-          'Test User',
+        final result = await repository.signUpWithEmail(
+          email: 'test@example.com',
+          password: 'password',
         );
 
         // Assert
-        expect(result.isFailure, isTrue);
-        expect(result.failureOrNull, isA<UnknownFailure>());
+        expect(result.isLeft(), isTrue);
+        expect(
+          result.fold((l) => l, (r) => throw Exception('Expected failure')),
+          isA<UnknownFailure>(),
+        );
       });
 
       test('logout should handle generic Exception', () async {
@@ -532,11 +572,14 @@ void main() {
         ).thenThrow(Exception('Generic error'));
 
         // Act
-        final result = await repository.logout();
+        final result = await repository.signOut();
 
         // Assert
-        expect(result.isFailure, isTrue);
-        expect(result.failureOrNull, isA<UnknownFailure>());
+        expect(result.isLeft(), isTrue);
+        expect(
+          result.fold((l) => l, (r) => throw Exception('Expected failure')),
+          isA<UnknownFailure>(),
+        );
       });
 
       test('getCurrentUser should handle generic Exception', () async {

@@ -16,6 +16,18 @@ class AppRoutes {
   /// Register route path
   static const String register = '/register';
 
+  /// Forgot password route path
+  static const String forgotPassword = '/forgot-password';
+
+  /// Email verification route path
+  static const String emailVerification = '/email-verification';
+
+  /// Profile route path
+  static const String profile = '/profile';
+
+  /// Edit profile route path
+  static const String editProfile = '/profile/edit';
+
   /// Feature flags debug route path (nested route)
   static const String featureFlagsDebug = '/feature-flags-debug';
 
@@ -34,6 +46,18 @@ class AppRoutes {
 
   /// Register route name
   static const String registerName = 'register';
+
+  /// Forgot password route name
+  static const String forgotPasswordName = 'forgot-password';
+
+  /// Email verification route name
+  static const String emailVerificationName = 'email-verification';
+
+  /// Profile route name
+  static const String profileName = 'profile';
+
+  /// Edit profile route name
+  static const String editProfileName = 'edit-profile';
 
   /// Feature flags debug route name
   static const String featureFlagsDebugName = 'feature-flags-debug';

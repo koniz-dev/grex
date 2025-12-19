@@ -3,10 +3,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grex/core/config/app_config.dart';
 import 'package:grex/core/config/env_config.dart';
+import 'package:grex/core/config/supabase_config.dart';
+import 'package:grex/core/di/injection.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/localization/localization_providers.dart';
 import 'package:grex/core/localization/localization_service.dart';
 import 'package:grex/core/routing/app_router.dart';
+import 'package:grex/core/services/error_logging_service.dart';
+import 'package:grex/core/widgets/global_error_handler.dart';
 import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/theme/app_theme.dart';
@@ -15,13 +19,19 @@ void main() async {
   // Ensure Flutter binding is initialized first (required for all Flutter APIs)
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Load environment configuration first (required for Supabase)
+  await EnvConfig.load();
+
   // Run initialization tasks in parallel where possible
   await Future.wait([
-    // Load environment configuration
-    EnvConfig.load(),
+    // Initialize Supabase with environment configuration
+    SupabaseConfig.initialize(),
     // Initialize image cache settings for better performance
     _initializeImageCache(),
   ]);
+
+  // Initialize dependency injection after Supabase is ready
+  await configureDependencies();
 
   // Print configuration in debug mode (optional, useful for development)
   if (AppConfig.isDebugMode) {
@@ -47,9 +57,23 @@ void main() async {
   container.read(localeStateProvider.notifier).locale = savedLocale;
 
   runApp(
-    UncontrolledProviderScope(
-      container: container,
-      child: const MyApp(),
+    GlobalErrorHandler(
+      onError: (details) {
+        // Log critical errors
+        ErrorLoggingService.logError(
+          details.exception,
+          stackTrace: details.stack,
+          context: {
+            'library': details.library,
+            'context': details.context?.toString(),
+          },
+          severity: ErrorSeverity.critical,
+        );
+      },
+      child: UncontrolledProviderScope(
+        container: container,
+        child: const MyApp(),
+      ),
     ),
   );
 }

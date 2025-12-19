@@ -5,8 +5,7 @@ import 'package:grex/core/logging/logging_providers.dart';
 import 'package:grex/core/routing/app_routes.dart';
 import 'package:grex/core/routing/navigation_logging.dart';
 import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
-import 'package:grex/features/auth/presentation/screens/login_screen.dart';
-import 'package:grex/features/auth/presentation/screens/register_screen.dart';
+import 'package:grex/features/auth/presentation/screens/auth_screen_wrappers.dart';
 import 'package:grex/features/feature_flags/presentation/screens/feature_flags_debug_screen.dart';
 import 'package:grex/features/tasks/presentation/screens/task_detail_screen.dart';
 import 'package:grex/features/tasks/presentation/screens/tasks_list_screen.dart';
@@ -45,12 +44,22 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.login,
         name: AppRoutes.loginName,
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => const LoginScreenWrapper(),
       ),
       GoRoute(
         path: AppRoutes.register,
         name: AppRoutes.registerName,
-        builder: (context, state) => const RegisterScreen(),
+        builder: (context, state) => const RegisterScreenWrapper(),
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        name: AppRoutes.forgotPasswordName,
+        builder: (context, state) => const ForgotPasswordScreenWrapper(),
+      ),
+      GoRoute(
+        path: AppRoutes.emailVerification,
+        name: AppRoutes.emailVerificationName,
+        builder: (context, state) => const EmailVerificationScreenWrapper(),
       ),
 
       // Protected routes (require authentication)
@@ -64,6 +73,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             path: 'feature-flags-debug',
             name: AppRoutes.featureFlagsDebugName,
             builder: (context, state) => const FeatureFlagsDebugScreen(),
+          ),
+        ],
+      ),
+      // Profile routes (protected)
+      GoRoute(
+        path: AppRoutes.profile,
+        name: AppRoutes.profileName,
+        builder: (context, state) => const ProfileScreenWrapper(),
+        routes: [
+          GoRoute(
+            path: 'edit',
+            name: AppRoutes.editProfileName,
+            builder: (context, state) => const EditProfileScreenWrapper(),
           ),
         ],
       ),
@@ -91,18 +113,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       // Read current auth state (safe because redirect is synchronous)
       final authState = ref.read(authNotifierProvider);
       final isAuthenticated = authState.user != null;
-      final isAuthRoute =
-          state.matchedLocation == AppRoutes.login ||
-          state.matchedLocation == AppRoutes.register;
+      final isAuthRoute = _isAuthRoute(state.matchedLocation);
+      final isProtectedRoute = _isProtectedRoute(state.matchedLocation);
 
-      // Redirect to login if not authenticated and trying to access protected
-      // route
-      if (!isAuthenticated && !isAuthRoute) {
+      // Redirect to login if not authenticated and trying to access
+      // protected route
+      if (!isAuthenticated && isProtectedRoute) {
         return AppRoutes.login;
       }
 
       // Redirect to home if authenticated and trying to access auth routes
-      if (isAuthenticated && isAuthRoute) {
+      // (except email verification which might be needed even when
+      // authenticated)
+      if (isAuthenticated &&
+          isAuthRoute &&
+          state.matchedLocation != AppRoutes.emailVerification) {
         return AppRoutes.home;
       }
 
@@ -154,4 +179,17 @@ class _AuthStateNotifier extends ChangeNotifier {
     // is disposed
     super.dispose();
   }
+}
+
+/// Helper function to check if a route is an authentication route
+bool _isAuthRoute(String location) {
+  return location == AppRoutes.login ||
+      location == AppRoutes.register ||
+      location == AppRoutes.forgotPassword ||
+      location == AppRoutes.emailVerification;
+}
+
+/// Helper function to check if a route requires authentication
+bool _isProtectedRoute(String location) {
+  return !_isAuthRoute(location);
 }

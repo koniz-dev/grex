@@ -1,37 +1,116 @@
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
-/// User entity (domain layer)
-@immutable
-class User {
-  /// Creates a [User] with the given [id], [email], optional [name], and
-  /// optional [avatarUrl]
+/// User entity representing authenticated user from Supabase Auth
+///
+/// This entity contains core authentication information managed by
+/// Supabase Auth. For profile information (display name, preferences),
+/// see UserProfile entity.
+class User extends Equatable {
+  /// Creates a [User] with the provided authentication data.
+  ///
+  /// Required parameters:
+  /// - [id]: Unique user identifier
+  /// - [email]: User's email address
+  /// - [createdAt]: Account creation timestamp
+  ///
+  /// Optional parameters:
+  /// - [emailConfirmed]: Whether email is verified (default: true)
+  /// - [lastSignInAt]: Last sign-in timestamp
   const User({
     required this.id,
     required this.email,
-    this.name,
-    this.avatarUrl,
+    required this.createdAt,
+    this.emailConfirmed = true,
+    this.lastSignInAt,
   });
 
-  /// Unique user identifier
+  /// Create User from Supabase Auth JSON response
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'] as String,
+      email: json['email'] as String,
+      emailConfirmed: json['email_confirmed_at'] != null,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      lastSignInAt: json['last_sign_in_at'] != null
+          ? DateTime.parse(json['last_sign_in_at'] as String)
+          : null,
+    );
+  }
+
+  /// Create User from Supabase User object
+  factory User.fromSupabaseUser(supabase.User supabaseUser) {
+    return User(
+      id: supabaseUser.id,
+      email: supabaseUser.email ?? '',
+      emailConfirmed: supabaseUser.emailConfirmedAt != null,
+      createdAt: DateTime.parse(supabaseUser.createdAt),
+      lastSignInAt: supabaseUser.lastSignInAt != null
+          ? DateTime.parse(supabaseUser.lastSignInAt!)
+          : null,
+    );
+  }
+
+  /// Unique user identifier from Supabase Auth
   final String id;
 
   /// User's email address
   final String email;
 
-  /// User's display name
-  final String? name;
+  /// Whether the user's email has been confirmed
+  final bool emailConfirmed;
 
-  /// URL to user's avatar image
-  final String? avatarUrl;
+  /// When the user account was created
+  final DateTime createdAt;
+
+  /// When the user last signed in (null if never signed in)
+  final DateTime? lastSignInAt;
+
+  /// Convert User to JSON for serialization
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'email': email,
+      'email_confirmed_at': emailConfirmed ? createdAt.toIso8601String() : null,
+      'created_at': createdAt.toIso8601String(),
+      'last_sign_in_at': lastSignInAt?.toIso8601String(),
+    };
+  }
+
+  /// Create a copy of this User with updated fields
+  User copyWith({
+    String? id,
+    String? email,
+    bool? emailConfirmed,
+    DateTime? createdAt,
+    DateTime? lastSignInAt,
+  }) {
+    return User(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      emailConfirmed: emailConfirmed ?? this.emailConfirmed,
+      createdAt: createdAt ?? this.createdAt,
+      lastSignInAt: lastSignInAt ?? this.lastSignInAt,
+    );
+  }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is User &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          email == other.email;
+  List<Object?> get props => [
+    id,
+    email,
+    emailConfirmed,
+    createdAt,
+    lastSignInAt,
+  ];
 
   @override
-  int get hashCode => id.hashCode ^ email.hashCode;
+  String toString() {
+    return 'User('
+        'id: $id, '
+        'email: $email, '
+        'emailConfirmed: $emailConfirmed, '
+        'createdAt: $createdAt, '
+        'lastSignInAt: $lastSignInAt'
+        ')';
+  }
 }

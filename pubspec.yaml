@@ -11,6 +11,9 @@ dependencies:
   # UI Components - iOS style icons
   cupertino_icons: ^1.0.8
 
+  # Functional Programming - Either type for error handling
+  dartz: ^0.10.1
+
   # Network Layer - HTTP client with interceptors support
   dio: ^5.9.0
 
@@ -25,6 +28,9 @@ dependencies:
   # Flutter SDK - Core Flutter framework
   flutter:
     sdk: flutter
+
+  # State Management - BLoC pattern for authentication state management
+  flutter_bloc: ^8.1.6
 
   # Configuration - Environment variable loader from .env files
   flutter_dotenv: ^6.0.0
@@ -41,6 +47,9 @@ dependencies:
 
   # Code Generation - Runtime annotations for Freezed immutable classes
   freezed_annotation: ^3.1.0
+
+  # Dependency Injection - Service locator for dependency injection
+  get_it: ^7.6.0
 
   # Routing - Declarative routing for Flutter with deep linking support
   go_router: ^17.0.0
@@ -76,6 +85,9 @@ dependencies:
   # shimmer: ^3.0.0 - Not used, can add back when implementing loading placeholders
 
 dev_dependencies:
+  # Testing - BLoC testing utilities for state management tests
+  bloc_test: ^9.1.7
+
   # Code Generation - Build system for generating code from annotations
   build_runner: ^2.10.3
 
@@ -90,6 +102,9 @@ dev_dependencies:
   # Code Generation - Generates JSON serialization/deserialization code
   # Used for @JsonSerializable code generation (Group 7 implementation)
   json_serializable: ^6.11.1
+
+  # Testing - Mockito for generating mocks with annotations
+  mockito: ^5.4.4
 
   # Testing - Mocking library for unit tests (no code generation required)
   mocktail: ^1.0.4

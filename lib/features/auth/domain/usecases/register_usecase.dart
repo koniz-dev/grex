@@ -1,3 +1,4 @@
+import 'package:grex/core/errors/failures.dart' as core;
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
@@ -16,6 +17,16 @@ class RegisterUseCase {
     String password,
     String name,
   ) async {
-    return repository.register(email, password, name);
+    final either = await repository.signUpWithEmail(
+      email: email,
+      password: password,
+    );
+
+    return either.fold(
+      (authFailure) => ResultFailure(
+        core.AuthFailure(authFailure.message),
+      ),
+      Success.new,
+    );
   }
 }

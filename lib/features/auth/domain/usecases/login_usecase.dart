@@ -1,3 +1,4 @@
+import 'package:grex/core/errors/failures.dart' as core;
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
@@ -12,6 +13,16 @@ class LoginUseCase {
 
   /// Executes login with [email] and [password]
   Future<Result<User>> call(String email, String password) async {
-    return repository.login(email, password);
+    final either = await repository.signInWithEmail(
+      email: email,
+      password: password,
+    );
+
+    return either.fold(
+      (authFailure) => ResultFailure(
+        core.AuthFailure(authFailure.message),
+      ),
+      Success.new,
+    );
   }
 }

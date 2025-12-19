@@ -1,3 +1,4 @@
+import 'package:grex/core/errors/failures.dart' as core;
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
@@ -11,6 +12,13 @@ class LogoutUseCase {
 
   /// Executes logout for the current user
   Future<Result<void>> call() async {
-    return repository.logout();
+    final either = await repository.signOut();
+
+    return either.fold(
+      (authFailure) => ResultFailure(
+        core.AuthFailure(authFailure.message),
+      ),
+      (_) => const Success(null),
+    );
   }
 }
