@@ -122,7 +122,7 @@ This document provides a comprehensive summary of all performance optimizations 
 
 ### Scripts
 
-1. **Build Size Analysis** (`scripts/analyze_build_size.sh`)
+1. **Build Size Analysis** (`scripts/linux/build/build_all.sh --analyze-size` or `scripts/windows/build/build_all.ps1 -AnalyzeSize`)
    - Automatic APK/App Bundle size analysis
    - Dependency count analysis
    - Optimization recommendations
@@ -302,7 +302,7 @@ imageCache.maximumSizeBytes = 100 << 20; // 100 MB
 
 4. **Build Size**
    ```bash
-   ./scripts/analyze_build_size.sh
+   ./scripts/linux/build/build_all.sh --analyze-size
    ```
 
 ---

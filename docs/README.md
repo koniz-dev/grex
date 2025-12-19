@@ -41,13 +41,13 @@ docs/
 
 ### For DevOps/DBAs
 - **Schema changes?** Follow the [Migration Guide](database/operations/migrations.md)
-- **Database scripts?** Use scripts in `scripts/database/`
+- **Database scripts?** Use scripts in `scripts/windows/database/` (Windows) or `scripts/linux/database/` (Linux)
 - **Performance issues?** Check [Index Documentation](database/schema/indexes.md)
-- **Backup procedures?** See backup scripts in `scripts/database/backup/`
+- **Backup procedures?** See backup scripts in `scripts/windows/database/backup/` or `scripts/linux/database/backup/`
 
 ### For QA/Testing
 - **Database testing?** Review [Workflow Examples](database/examples/workflows.md)
-- **Test data setup?** Use scripts in `scripts/database/testing/`
+- **Test data setup?** Use scripts in `scripts/windows/database/test/` or `scripts/linux/database/test/`
 
 ## Database Overview
 
@@ -63,10 +63,17 @@ The Grex application uses a PostgreSQL database hosted on Supabase with:
 ## Scripts and Tools
 
 ### Database Scripts Location
-All database-related scripts are organized in `scripts/database/`:
+All database-related scripts are organized by platform:
 
+**Windows:**
 ```
-scripts/database/
+scripts/windows/database/
+```
+
+**Linux/macOS:**
+```
+scripts/linux/database/
+```
 ├── migrations/          # Migration management scripts
 ├── backup/             # Backup and restore scripts
 ├── maintenance/        # Database maintenance scripts
@@ -76,15 +83,28 @@ scripts/database/
 
 ### Common Operations
 
+**Windows:**
 ```powershell
 # Apply database migrations
-.\scripts\database\migrations\manage-migrations.ps1 -Action apply -Environment development
+.\scripts\windows\database\migrations\manage-migrations.ps1 -Action apply -Environment development
 
 # Create database backup
-.\scripts\database\backup\backup-database.ps1 -Environment production -Verify
+.\scripts\windows\database\backup\manage-backups.ps1 -Action create -Environment production
 
 # Run database tests
-.\scripts\database\testing\run-db-tests.ps1
+.\scripts\windows\database\test\production-readiness.ps1
+```
+
+**Linux/macOS:**
+```bash
+# Apply database migrations
+./scripts/linux/database/migrations/manage-migrations.sh apply --environment development
+
+# Create database backup
+./scripts/linux/database/backup/manage-backups.sh create --environment production
+
+# Run database tests
+./scripts/linux/database/test/production-readiness.sh
 ```
 
 ## Key Features
@@ -165,7 +185,7 @@ When updating documentation:
 
 - **2024-01-15**: Reorganized database documentation into structured format
 - **2024-01-15**: Added comprehensive query examples and workflows
-- **2024-01-15**: Created organized script structure in `scripts/database/`
+- **2024-01-15**: Created organized script structure in `scripts/windows/` and `scripts/linux/`
 - **2024-01-15**: Enhanced migration management with new PowerShell scripts
 
 ---

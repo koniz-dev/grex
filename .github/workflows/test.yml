@@ -85,8 +85,8 @@ jobs:
       - name: Calculate coverage by layer
         id: layer_coverage
         run: |
-          chmod +x scripts/testing/calculate_layer_coverage.sh
-          ./scripts/testing/calculate_layer_coverage.sh coverage/lcov.info > /tmp/layer_coverage.txt
+          chmod +x scripts/linux/testing/calculate_layer_coverage.sh
+          ./scripts/linux/testing/calculate_layer_coverage.sh coverage/lcov.info > /tmp/layer_coverage.txt
           
           # Read key=value pairs and write to GITHUB_OUTPUT
           while IFS='=' read -r key value; do

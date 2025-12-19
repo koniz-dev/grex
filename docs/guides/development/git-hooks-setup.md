@@ -279,9 +279,16 @@ fi
 
 Add to `README.md` or setup instructions:
 
+**Linux/macOS:**
 ```bash
 # Install Git hooks
-./scripts/setup-git-hooks.sh
+./scripts/linux/development/setup-git-hooks.sh
+```
+
+**Windows:**
+```powershell
+# Install Git hooks
+.\scripts\windows\development\setup-git-hooks.ps1
 ```
 
 ---
@@ -297,7 +304,7 @@ For this Grex template, we recommend using **manual Git hooks** because:
 
 ### Quick Setup Script
 
-Create `scripts/setup-git-hooks.sh`:
+Create `scripts/linux/development/setup-git-hooks.sh` (Linux/macOS) or `scripts/windows/development/setup-git-hooks.ps1` (Windows):
 
 ```bash
 #!/bin/bash
@@ -419,8 +426,8 @@ fi
 
 ```bash
 # Run setup script
-chmod +x scripts/setup-git-hooks.sh
-./scripts/setup-git-hooks.sh
+chmod +x scripts/linux/development/setup-git-hooks.sh
+./scripts/linux/development/setup-git-hooks.sh
 ```
 
 ---
@@ -519,7 +526,7 @@ exit /b 0
 
 3. **Reinstall hooks:**
    ```bash
-   ./scripts/setup-git-hooks.sh
+   ./scripts/linux/development/setup-git-hooks.sh
    ```
 
 ### Hooks Too Slow

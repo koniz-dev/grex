@@ -11,12 +11,12 @@ flutter test
 
 ### Generate Coverage
 ```bash
-./scripts/test_coverage.sh --html
+./scripts/linux/testing/test_coverage.sh --html
 ```
 
 ### Analyze Coverage
 ```bash
-./scripts/analyze_coverage.sh
+./scripts/linux/testing/calculate_layer_coverage.sh
 ```
 
 ## Coverage Targets
@@ -44,8 +44,8 @@ test/
 
 - **Test Helpers:** `test/helpers/test_helpers.dart`
 - **Test Fixtures:** `test/helpers/test_fixtures.dart`
-- **Coverage Script:** `scripts/test_coverage.sh`
-- **Analysis Script:** `scripts/analyze_coverage.sh`
+- **Coverage Script:** `scripts/linux/testing/test_coverage.sh` or `scripts/windows/testing/test_coverage.ps1`
+- **Analysis Script:** `scripts/linux/testing/calculate_layer_coverage.sh` or `scripts/windows/testing/calculate_layer_coverage.ps1`
 
 ## CI/CD
 
@@ -70,10 +70,10 @@ flutter test
 flutter test --coverage
 
 # Generate HTML report
-./scripts/test_coverage.sh --html --open
+./scripts/linux/testing/test_coverage.sh --html --open
 
 # Analyze by layer
-./scripts/analyze_coverage.sh
+./scripts/linux/testing/calculate_layer_coverage.sh
 
 # Run specific test
 flutter test test/features/auth/domain/usecases/login_usecase_test.dart

@@ -266,7 +266,11 @@ SUPABASE_SERVICE_ROLE_KEY=your-production-service-role-key
 
 ```bash
 # Test API key security
-./scripts/database/testing/api-key-security-review.ps1
+# Windows
+.\scripts\windows\database\security\test-api-key-security.ps1
+
+# Linux/macOS
+./scripts/linux/database/security/test-api-key-security.sh
 
 # Expected results:
 # - No hardcoded keys in code

@@ -329,23 +329,47 @@ Format: `MAJOR.MINOR.PATCH+BUILD_NUMBER`
 ### Version Bumping
 
 Use the provided script:
+
+**Linux/macOS:**
 ```bash
-./scripts/bump_version.sh [major|minor|patch] [build_number]
+./scripts/linux/development/bump_version.sh [major|minor|patch] [build_number]
+```
+
+**Windows:**
+```powershell
+.\scripts\windows\development\bump_version.ps1 [major|minor|patch] [build_number]
 ```
 
 Examples:
+
+**Linux/macOS:**
 ```bash
 # Bump patch version
-./scripts/bump_version.sh patch
+./scripts/linux/development/bump_version.sh patch
 
 # Bump minor version
-./scripts/bump_version.sh minor
+./scripts/linux/development/bump_version.sh minor
 
 # Bump major version
-./scripts/bump_version.sh major
+./scripts/linux/development/bump_version.sh major
 
 # Set specific build number
-./scripts/bump_version.sh patch 42
+./scripts/linux/development/bump_version.sh patch 42
+```
+
+**Windows:**
+```powershell
+# Bump patch version
+.\scripts\windows\development\bump_version.ps1 patch
+
+# Bump minor version
+.\scripts\windows\development\bump_version.ps1 minor
+
+# Bump major version
+.\scripts\windows\development\bump_version.ps1 major
+
+# Set specific build number
+.\scripts\windows\development\bump_version.ps1 patch 42
 ```
 
 ### Changelog Generation
@@ -363,8 +387,15 @@ chore: Maintenance tasks
 ```
 
 Generate changelog:
+
+**Linux/macOS:**
 ```bash
-./scripts/generate_changelog.sh
+./scripts/linux/maintenance/generate_changelog.sh
+```
+
+**Windows:**
+```powershell
+.\scripts\windows\maintenance\generate_changelog.ps1
 ```
 
 ### Pre-Release Checklist

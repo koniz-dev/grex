@@ -151,7 +151,7 @@ class EnvConfig {
 ## Deliverables Created
 
 ### 1. Security Review Script
-**File**: `scripts/database/testing/api-key-security-review.ps1`
+**File**: `scripts/windows/database/security/test-api-key-security.ps1` or `scripts/linux/database/security/test-api-key-security.sh`
 - Comprehensive automated security scanning
 - Pattern detection for common vulnerabilities
 - Scoring system for security posture assessment
@@ -165,7 +165,7 @@ class EnvConfig {
 - Incident response procedures
 
 ### 3. Key Rotation Script
-**File**: `scripts/database/utilities/rotate-api-keys.ps1`
+**File**: `scripts/windows/database/utils/rotate-api-keys.ps1` or `scripts/linux/database/utils/rotate-api-keys.sh`
 - Automated key rotation process
 - Backup and verification procedures
 - Environment-specific rotation support

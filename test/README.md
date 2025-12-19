@@ -33,13 +33,13 @@ flutter test --coverage
 ### Using Coverage Scripts
 ```bash
 # Generate HTML report and check coverage
-./scripts/test_coverage.sh --html
+./scripts/linux/testing/test_coverage.sh --html
 
 # Analyze coverage by layer
-./scripts/analyze_coverage.sh
+./scripts/linux/testing/calculate_layer_coverage.sh
 
 # Open HTML report automatically
-./scripts/test_coverage.sh --html --open
+./scripts/linux/testing/test_coverage.sh --html --open
 ```
 
 ### Specific Test File

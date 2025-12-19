@@ -131,7 +131,7 @@ CERTIFICATE_FINGERPRINTS=AA:BB:CC:DD:EE:FF:11:22:33:44:55:66:77:88:99:00:AA:BB:C
 Create a build script:
 
 ```bash
-# scripts/build_release.sh
+# scripts/linux/build/release.sh (or scripts/windows/build/release.ps1)
 #!/bin/bash
 
 ENVIRONMENT=${1:-production}
@@ -168,7 +168,8 @@ echo "⚠️  IMPORTANT: Store debug-info files securely for crash symbolication
 
 Make it executable:
 ```bash
-chmod +x scripts/build_release.sh
+chmod +x scripts/linux/build/release.sh  # Linux/macOS
+# Or use: .\scripts\windows\build\release.ps1  # Windows
 ```
 
 #### Step 2: Update CI/CD

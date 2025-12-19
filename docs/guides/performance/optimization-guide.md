@@ -263,11 +263,13 @@ await loader.load();
 - Remove unused assets
 
 #### ✅ Build Size Analysis Script
-**New Script:** `scripts/analyze_build_size.sh`
+**Scripts:**
+- **Linux/macOS:** `scripts/linux/build/build_all.sh --analyze-size`
+- **Windows:** `scripts/windows/build/build_all.ps1 -AnalyzeSize`
 
 ```bash
 # Run build size analysis
-./scripts/analyze_build_size.sh
+./scripts/linux/build/build_all.sh --analyze-size
 ```
 
 **Features:**
@@ -521,7 +523,7 @@ The app now tracks:
    - Memory leak prevention
 
 ### Scripts
-1. **Build Size Analysis** (`scripts/analyze_build_size.sh`)
+1. **Build Size Analysis** (`scripts/linux/build/build_all.sh --analyze-size` or `scripts/windows/build/build_all.ps1 -AnalyzeSize`)
    - APK/App Bundle size analysis
    - Dependency analysis
    - Optimization recommendations

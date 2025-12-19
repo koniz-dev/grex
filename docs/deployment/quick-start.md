@@ -80,15 +80,28 @@ flutter build web --release
 
 ## Step 4: Create Your First Release (5 minutes)
 
+**Linux/macOS:**
 ```bash
 # Bump version
-./scripts/bump_version.sh patch
+./scripts/linux/development/bump_version.sh patch
 
 # Generate changelog
-./scripts/generate_changelog.sh
+./scripts/linux/maintenance/generate_changelog.sh
 
 # Create release (automated)
-./scripts/release.sh patch
+./scripts/linux/build/release.sh patch
+```
+
+**Windows:**
+```powershell
+# Bump version
+.\scripts\windows\development\bump_version.ps1 patch
+
+# Generate changelog
+.\scripts\windows\maintenance\generate_changelog.ps1
+
+# Create release (automated)
+.\scripts\windows\build\release.ps1 patch
 ```
 
 Or manually:

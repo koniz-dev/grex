@@ -33,7 +33,7 @@ Test coverage measures how much of the codebase is executed during tests. We aim
 
 2. **Generate HTML report:**
    ```bash
-   ./scripts/test_coverage.sh --html
+   ./scripts/linux/testing/test_coverage.sh --html
    ```
 
 3. **View report:**
@@ -47,29 +47,54 @@ Test coverage measures how much of the codebase is executed during tests. We aim
 
 Main coverage script with options:
 
+**Linux/macOS:**
 ```bash
 # Basic coverage check
-./scripts/test_coverage.sh
+./scripts/linux/testing/test_coverage.sh
 
 # Generate HTML report
-./scripts/test_coverage.sh --html
+./scripts/linux/testing/test_coverage.sh --html
 
 # Open HTML report automatically
-./scripts/test_coverage.sh --html --open
+./scripts/linux/testing/test_coverage.sh --html --open
 
 # Set minimum threshold
-./scripts/test_coverage.sh --min=85
+./scripts/linux/testing/test_coverage.sh --min=85
 
 # Exclude paths from coverage
-./scripts/test_coverage.sh --exclude=lib/generated
+./scripts/linux/testing/test_coverage.sh --exclude=lib/generated
 ```
 
-#### analyze_coverage.sh
+**Windows:**
+```powershell
+# Basic coverage check
+.\scripts\windows\testing\test_coverage.ps1
+
+# Generate HTML report
+.\scripts\windows\testing\test_coverage.ps1 -Html
+
+# Open HTML report automatically
+.\scripts\windows\testing\test_coverage.ps1 -Html -Open
+
+# Set minimum threshold
+.\scripts\windows\testing\test_coverage.ps1 -Min 85
+
+# Exclude paths from coverage
+.\scripts\windows\testing\test_coverage.ps1 -Exclude lib/generated
+```
+
+#### Layer Coverage Analysis
 
 Analyzes coverage by layer:
 
+**Linux/macOS:**
 ```bash
-./scripts/analyze_coverage.sh
+./scripts/linux/testing/calculate_layer_coverage.sh
+```
+
+**Windows:**
+```powershell
+.\scripts\windows\testing\calculate_layer_coverage.ps1
 ```
 
 Output shows:
@@ -125,7 +150,7 @@ To increase the minimum threshold:
    MIN_COVERAGE=85  # Change from 80 to 85
    ```
 
-2. **Update coverage script** (`scripts/test_coverage.sh`):
+2. **Update coverage script** (`scripts/linux/testing/test_coverage.sh` or `scripts/windows/testing/test_coverage.ps1`):
    ```bash
    MIN_COVERAGE=85  # Change default
    ```
@@ -138,7 +163,7 @@ To increase the minimum threshold:
 
 1. **Run coverage analysis:**
    ```bash
-   ./scripts/analyze_coverage.sh
+   ./scripts/linux/testing/calculate_layer_coverage.sh
    ```
 
 2. **View HTML report:**
@@ -168,7 +193,7 @@ To increase the minimum threshold:
 3. **Verify coverage:**
    ```bash
    flutter test --coverage
-   ./scripts/test_coverage.sh
+   ./scripts/linux/testing/test_coverage.sh
    ```
 
 ### Common Coverage Gaps
@@ -382,7 +407,7 @@ When reviewing coverage reports, focus on **executable code coverage** rather th
 **Problem:** Coverage below 80%
 
 **Solutions:**
-1. Identify gaps: `./scripts/analyze_coverage.sh`
+1. Identify gaps: `./scripts/linux/testing/calculate_layer_coverage.sh`
 2. Add tests for uncovered code
 3. Focus on high-impact areas first
 4. Set incremental goals (e.g., 75% → 80% → 85%)

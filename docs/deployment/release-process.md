@@ -51,27 +51,52 @@ Follow [Semantic Versioning 2.0.0](https://semver.org/):
 
 Use the provided script:
 
+**Linux/macOS:**
 ```bash
-./scripts/bump_version.sh [major|minor|patch] [build_number]
+./scripts/linux/development/bump_version.sh [major|minor|patch] [build_number]
+```
+
+**Windows:**
+```powershell
+.\scripts\windows\development\bump_version.ps1 [major|minor|patch] [build_number]
 ```
 
 **Examples**:
 
+**Linux/macOS:**
 ```bash
 # Bump patch version (1.0.0+1 → 1.0.1+2)
-./scripts/bump_version.sh patch
+./scripts/linux/development/bump_version.sh patch
 
 # Bump minor version (1.0.0+1 → 1.1.0+2)
-./scripts/bump_version.sh minor
+./scripts/linux/development/bump_version.sh minor
 
 # Bump major version (1.0.0+1 → 2.0.0+2)
-./scripts/bump_version.sh major
+./scripts/linux/development/bump_version.sh major
 
 # Set specific build number (1.0.0+1 → 1.0.0+42)
-./scripts/bump_version.sh patch 42
+./scripts/linux/development/bump_version.sh patch 42
 
 # Keep version, only bump build (1.0.0+1 → 1.0.0+2)
-./scripts/bump_version.sh build
+./scripts/linux/development/bump_version.sh build
+```
+
+**Windows:**
+```powershell
+# Bump patch version (1.0.0+1 → 1.0.1+2)
+.\scripts\windows\development\bump_version.ps1 patch
+
+# Bump minor version (1.0.0+1 → 1.1.0+2)
+.\scripts\windows\development\bump_version.ps1 minor
+
+# Bump major version (1.0.0+1 → 2.0.0+2)
+.\scripts\windows\development\bump_version.ps1 major
+
+# Set specific build number (1.0.0+1 → 1.0.0+42)
+.\scripts\windows\development\bump_version.ps1 patch 42
+
+# Keep version, only bump build (1.0.0+1 → 1.0.0+2)
+.\scripts\windows\development\bump_version.ps1 build
 ```
 
 ### Manual Bumping
@@ -130,7 +155,11 @@ chore(deps): Update dependencies
 ### Generate Changelog
 
 ```bash
-./scripts/generate_changelog.sh [version]
+# Linux/macOS
+./scripts/linux/maintenance/generate_changelog.sh [version]
+
+# Windows
+.\scripts\windows\maintenance\generate_changelog.ps1 [version]
 ```
 
 This script:
@@ -286,7 +315,11 @@ git checkout -b hotfix/v1.0.2
 # Make fix
 # Test thoroughly
 # Bump patch version
-./scripts/bump_version.sh patch
+# Linux/macOS
+./scripts/linux/development/bump_version.sh patch
+
+# Windows
+.\scripts\windows\development\bump_version.ps1 patch
 ```
 
 ### 3. Release
@@ -350,7 +383,7 @@ The release workflow can be automated:
 
 ### Release Script
 
-See `scripts/release.sh` for complete release automation.
+See `scripts/linux/build/release.sh` (Linux/macOS) or `scripts/windows/build/release.ps1` (Windows) for complete release automation.
 
 ---
 

@@ -565,20 +565,39 @@ SELECT * FROM table_name WHERE suspicious_condition;
 
 ### PowerShell Management Script
 
-The `scripts/manage-migrations.ps1` script provides automated migration management:
+The migration management scripts provide automated migration management:
 
+**Windows:** `scripts/windows/database/migrations/manage-migrations.ps1`  
+**Linux/macOS:** `scripts/linux/database/migrations/manage-migrations.sh`
+
+**Windows:**
 ```powershell
 # Apply all pending migrations
-.\scripts\manage-migrations.ps1 -Action Apply
+.\scripts\windows\database\migrations\manage-migrations.ps1 -Action apply
 
 # Check migration status
-.\scripts\manage-migrations.ps1 -Action Status
+.\scripts\windows\database\migrations\manage-migrations.ps1 -Action status
 
 # Validate schema integrity
-.\scripts\manage-migrations.ps1 -Action Validate
+.\scripts\windows\database\migrations\manage-migrations.ps1 -Action validate
 
 # Create new migration
-.\scripts\manage-migrations.ps1 -Action Create -Name "add_expense_tags"
+.\scripts\windows\database\migrations\manage-migrations.ps1 -Action create -MigrationName "add_expense_tags"
+```
+
+**Linux/macOS:**
+```bash
+# Apply all pending migrations
+./scripts/linux/database/migrations/manage-migrations.sh apply
+
+# Check migration status
+./scripts/linux/database/migrations/manage-migrations.sh status
+
+# Validate schema integrity
+./scripts/linux/database/migrations/manage-migrations.sh validate
+
+# Create new migration
+./scripts/linux/database/migrations/manage-migrations.sh create --migration-name "add_expense_tags"
 ```
 
 ### Bash Scripts (Alternative)

@@ -97,30 +97,34 @@ Located in `.github/workflows/`:
 
 Located in `scripts/`:
 
-1. **bump_version.sh** - Version bumping:
+1. **bump_version** - Version bumping:
    - Bumps major, minor, or patch version
    - Increments build number
    - Updates pubspec.yaml
-   - Usage: `./scripts/bump_version.sh [major|minor|patch|build] [build_number]`
+   - **Linux/macOS:** `./scripts/linux/development/bump_version.sh [major|minor|patch|build] [build_number]`
+   - **Windows:** `.\scripts\windows\development\bump_version.ps1 [major|minor|patch|build] [build_number]`
 
-2. **generate_changelog.sh** - Changelog generation:
+2. **generate_changelog** - Changelog generation:
    - Reads git commits since last tag
    - Groups by commit type (feat, fix, etc.)
    - Generates markdown changelog
    - Updates CHANGELOG.md
-   - Usage: `./scripts/generate_changelog.sh [version]`
+   - **Linux/macOS:** `./scripts/linux/maintenance/generate_changelog.sh [version]`
+   - **Windows:** `.\scripts\windows\maintenance\generate_changelog.ps1 [version]`
 
-3. **release.sh** - Release automation:
+3. **release** - Release automation:
    - Runs tests and analysis
    - Bumps version
    - Generates changelog
    - Creates release branch and tag
-   - Usage: `./scripts/release.sh [major|minor|patch]`
+   - **Linux/macOS:** `./scripts/linux/build/release.sh [major|minor|patch]`
+   - **Windows:** `.\scripts\windows\build\release.ps1 [major|minor|patch]`
 
-4. **build_all.sh** - Build all platforms:
+4. **build_all** - Build all platforms:
    - Builds Android, iOS, and Web
    - Environment-specific builds
-   - Usage: `./scripts/build_all.sh [environment]`
+   - **Linux/macOS:** `./scripts/linux/build/build_all.sh [environment]`
+   - **Windows:** `.\scripts\windows\build\build_all.ps1 [environment]`
 
 ## 📋 Configuration Files
 
@@ -176,7 +180,9 @@ Located in `scripts/`:
 1. **Quick Start**: Read [quick-start.md](./quick-start.md)
 2. **Platform Setup**: Follow platform-specific guides
 3. **CI/CD Setup**: Configure GitHub Actions secrets
-4. **First Release**: Use `./scripts/release.sh`
+4. **First Release**: 
+   - **Linux/macOS:** `./scripts/linux/build/release.sh`
+   - **Windows:** `.\scripts\windows\build\release.ps1`
 
 ## 📚 Documentation Structure
 

@@ -4,73 +4,147 @@ This directory contains all automation scripts for the Grex expense splitting ap
 
 ## Script Organization
 
+Scripts are organized by platform (Windows and Linux) to ensure cross-platform compatibility. Each script has a corresponding version for the other platform.
+
 ```
 scripts/
 ├── README.md                    # This file - scripts overview
-├── build/                       # Build and deployment scripts
-│   ├── build_all.sh            # Multi-platform build script
-│   └── release.sh              # Automated release process
-├── development/                 # Development workflow scripts
-│   ├── setup-git-hooks.sh      # Git hooks setup
-│   └── bump_version.sh         # Version management
-├── testing/                     # Testing and quality assurance
-│   ├── test_coverage.sh        # Test coverage analysis
-│   └── calculate_layer_coverage.sh # Architecture layer coverage
-├── maintenance/                 # Project maintenance scripts
-│   └── generate_changelog.sh   # Changelog generation
-├── database/                    # Database management scripts
-│   ├── README.md               # Database scripts overview
-│   ├── migrations/             # Migration management
-│   ├── backup/                 # Backup and restore
-│   ├── maintenance/            # Database maintenance
-│   ├── testing/                # Database testing
-│   └── utilities/              # Database utilities
-└── utilities/                   # General utility scripts
-    └── reorganize-scripts.ps1   # Script reorganization utility
+├── windows/                     # Windows PowerShell scripts (.ps1)
+│   ├── build/                  # Build and deployment scripts
+│   │   ├── build_all.ps1      # Multi-platform build script
+│   │   └── release.ps1        # Automated release process
+│   ├── development/           # Development workflow scripts
+│   │   ├── setup-git-hooks.ps1 # Git hooks setup
+│   │   └── bump_version.ps1   # Version management
+│   ├── testing/               # Testing and quality assurance
+│   │   ├── test_coverage.ps1  # Test coverage analysis
+│   │   └── calculate_layer_coverage.ps1 # Architecture layer coverage
+│   ├── maintenance/           # Project maintenance scripts
+│   │   └── generate_changelog.ps1 # Changelog generation
+│   ├── database/              # Database management scripts
+│   │   ├── migrations/        # Migration management
+│   │   ├── backup/            # Backup and restore
+│   │   ├── monitoring/        # Database monitoring
+│   │   ├── security/          # Security testing
+│   │   ├── test/              # Database testing
+│   │   └── utils/             # Database utilities
+│   └── utilities/             # General utility scripts
+└── linux/                      # Linux bash scripts (.sh)
+    ├── build/                  # Build and deployment scripts
+    │   ├── build_all.sh        # Multi-platform build script
+    │   └── release.sh          # Automated release process
+    ├── development/           # Development workflow scripts
+    │   ├── setup-git-hooks.sh  # Git hooks setup
+    │   └── bump_version.sh     # Version management
+    ├── testing/               # Testing and quality assurance
+    │   ├── test_coverage.sh   # Test coverage analysis
+    │   └── calculate_layer_coverage.sh # Architecture layer coverage
+    ├── maintenance/           # Project maintenance scripts
+    │   └── generate_changelog.sh # Changelog generation
+    ├── database/              # Database management scripts
+    │   ├── migrations/        # Migration management
+    │   ├── backup/            # Backup and restore
+    │   ├── monitoring/        # Database monitoring
+    │   ├── security/          # Security testing
+    │   ├── test/              # Database testing
+    │   └── utils/             # Database utilities
+    └── utilities/             # General utility scripts
 ```
 
 ## Quick Reference
 
 ### Build & Deployment
+
+**Linux/macOS:**
 ```bash
 # Build for all platforms
-./scripts/build/build_all.sh production --analyze-size
+./scripts/linux/build/build_all.sh production --analyze-size
 
 # Create a release
-./scripts/build/release.sh minor
+./scripts/linux/build/release.sh minor
+```
+
+**Windows:**
+```powershell
+# Build for all platforms
+.\scripts\windows\build\build_all.ps1 production -AnalyzeSize
+
+# Create a release
+.\scripts\windows\build\release.ps1 minor
 ```
 
 ### Development Workflow
+
+**Linux/macOS:**
 ```bash
 # Set up Git hooks
-./scripts/development/setup-git-hooks.sh
+./scripts/linux/development/setup-git-hooks.sh
 
 # Bump version
-./scripts/development/bump_version.sh patch
+./scripts/linux/development/bump_version.sh patch
+```
+
+**Windows:**
+```powershell
+# Set up Git hooks
+.\scripts\windows\development\setup-git-hooks.ps1
+
+# Bump version
+.\scripts\windows\development\bump_version.ps1 patch
 ```
 
 ### Testing & Quality
+
+**Linux/macOS:**
 ```bash
 # Run tests with coverage
-./scripts/testing/test_coverage.sh --html --open --analyze
+./scripts/linux/testing/test_coverage.sh --html --open --analyze
 
 # Calculate layer coverage
-./scripts/testing/calculate_layer_coverage.sh
+./scripts/linux/testing/calculate_layer_coverage.sh
+```
+
+**Windows:**
+```powershell
+# Run tests with coverage
+.\scripts\windows\testing\test_coverage.ps1 -Html -Open -Analyze
+
+# Calculate layer coverage
+.\scripts\windows\testing\calculate_layer_coverage.ps1
 ```
 
 ### Maintenance
+
+**Linux/macOS:**
 ```bash
 # Generate changelog
-./scripts/maintenance/generate_changelog.sh
+./scripts/linux/maintenance/generate_changelog.sh
+```
+
+**Windows:**
+```powershell
+# Generate changelog
+.\scripts\windows\maintenance\generate_changelog.ps1
 ```
 
 ### Database Operations
+
+**Linux/macOS:**
 ```bash
 # Apply migrations
-./scripts/database/migrations/manage-migrations.ps1 -Action apply
+./scripts/linux/database/migrations/manage-migrations.sh apply --environment development
 
 # Create backup
-./scripts/database/backup/backup-database.ps1 -Environment production
+./scripts/linux/database/backup/manage-backups.sh create --environment production
+```
+
+**Windows:**
+```powershell
+# Apply migrations
+.\scripts\windows\database\migrations\manage-migrations.ps1 -Action apply -Environment development
+
+# Create backup
+.\scripts\windows\database\backup\manage-backups.ps1 -Action create -Environment production
 ```
 
 ## Script Categories
@@ -118,9 +192,12 @@ General-purpose utility scripts:
 ## Usage Guidelines
 
 ### Script Naming Conventions
-- Use descriptive names with underscores: `build_all.sh`
+- Use descriptive names with underscores: `build_all.sh` / `build_all.ps1`
 - Include file extensions: `.sh` for bash, `.ps1` for PowerShell
 - Use consistent prefixes for related scripts: `test_*`, `build_*`
+- Maintain same base name across platforms: `build_all.sh` ↔ `build_all.ps1`
+- Place Windows scripts in `windows/` directory
+- Place Linux scripts in `linux/` directory
 
 ### Error Handling
 All scripts implement:
@@ -130,10 +207,13 @@ All scripts implement:
 - **Logging**: Timestamped log messages for debugging
 
 ### Cross-platform Support
-Scripts support multiple platforms:
-- **macOS**: Primary development platform
-- **Linux**: CI/CD and server environments
-- **Windows**: PowerShell scripts for Windows users
+Scripts are organized by platform for optimal compatibility:
+- **Windows**: PowerShell scripts (.ps1) in `windows/` directory
+- **Linux/macOS**: Bash scripts (.sh) in `linux/` directory
+- **Corresponding Versions**: Each script has a corresponding version for the other platform
+  - Some scripts are native implementations
+  - Some scripts are wrappers that call the other platform's version
+  - All scripts maintain the same functionality across platforms
 
 ### Environment Variables
 Scripts use environment variables for configuration:
@@ -159,27 +239,55 @@ git --version
 ```
 
 ### First-time Setup
+
+**Linux/macOS:**
 ```bash
 # 1. Set up Git hooks for code quality
-./scripts/development/setup-git-hooks.sh
+./scripts/linux/development/setup-git-hooks.sh
 
 # 2. Run initial tests
-./scripts/testing/test_coverage.sh --html
+./scripts/linux/testing/test_coverage.sh --html
 
 # 3. Build for your platform
-./scripts/build/build_all.sh development
+./scripts/linux/build/build_all.sh development
+```
+
+**Windows:**
+```powershell
+# 1. Set up Git hooks for code quality
+.\scripts\windows\development\setup-git-hooks.ps1
+
+# 2. Run initial tests
+.\scripts\windows\testing\test_coverage.ps1 -Html
+
+# 3. Build for your platform
+.\scripts\windows\build\build_all.ps1 development
 ```
 
 ### Daily Development Workflow
+
+**Linux/macOS:**
 ```bash
 # 1. Run tests before committing
-./scripts/testing/test_coverage.sh
+./scripts/linux/testing/test_coverage.sh
 
 # 2. Commit with conventional format (enforced by hooks)
 git commit -m "feat(auth): add login functionality"
 
 # 3. Before releasing
-./scripts/build/release.sh patch
+./scripts/linux/build/release.sh patch
+```
+
+**Windows:**
+```powershell
+# 1. Run tests before committing
+.\scripts\windows\testing\test_coverage.ps1
+
+# 2. Commit with conventional format (enforced by hooks)
+git commit -m "feat(auth): add login functionality"
+
+# 3. Before releasing
+.\scripts\windows\build\release.ps1 patch
 ```
 
 ## Contributing
@@ -263,15 +371,29 @@ echo -e "${GREEN}Script completed successfully!${NC}"
 
 ### Script Health Checks
 Run periodic checks to ensure scripts are working correctly:
+
+**Linux/macOS:**
 ```bash
 # Test all build scripts
-./scripts/build/build_all.sh development
+./scripts/linux/build/build_all.sh development
 
 # Verify test coverage
-./scripts/testing/test_coverage.sh --analyze
+./scripts/linux/testing/test_coverage.sh --analyze
 
 # Check database scripts
-./scripts/database/utilities/validate-structure.ps1
+./scripts/linux/database/utils/validate-structure.sh
+```
+
+**Windows:**
+```powershell
+# Test all build scripts
+.\scripts\windows\build\build_all.ps1 development
+
+# Verify test coverage
+.\scripts\windows\testing\test_coverage.ps1 -Analyze
+
+# Check database scripts
+.\scripts\windows\database\utils\validate-structure.ps1
 ```
 
 This organized script structure provides a professional, maintainable foundation for all automation needs in the Grex project.

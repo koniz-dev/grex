@@ -202,8 +202,15 @@ lib/
    ```
 
 5. **Set up Git hooks** (optional but recommended)
+   
+   **Linux/macOS:**
    ```bash
-   ./scripts/setup-git-hooks.sh
+   ./scripts/linux/development/setup-git-hooks.sh
+   ```
+   
+   **Windows:**
+   ```powershell
+   .\scripts\windows\development\setup-git-hooks.ps1
    ```
    This will install Git hooks for:
    - Code formatting checks (pre-commit)
