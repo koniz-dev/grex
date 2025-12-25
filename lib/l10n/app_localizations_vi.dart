@@ -165,54 +165,10 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get tasks => 'Nhiệm vụ';
-
-  @override
-  String get addTask => 'Thêm nhiệm vụ';
-
-  @override
-  String get editTask => 'Chỉnh sửa nhiệm vụ';
-
-  @override
-  String get taskTitle => 'Tiêu đề';
-
-  @override
-  String get taskDescription => 'Mô tả';
-
-  @override
-  String get taskTitleRequired => 'Vui lòng nhập tiêu đề nhiệm vụ';
-
-  @override
-  String get noTasks => 'Chưa có nhiệm vụ nào';
-
-  @override
-  String get addYourFirstTask => 'Nhấn nút + để thêm nhiệm vụ đầu tiên của bạn';
-
-  @override
-  String get incompleteTasks => 'Chưa hoàn thành';
-
-  @override
-  String get completedTasks => 'Đã hoàn thành';
-
-  @override
-  String get completed => 'Đã hoàn thành';
-
-  @override
-  String get incomplete => 'Chưa hoàn thành';
-
-  @override
   String get edit => 'Chỉnh sửa';
 
   @override
   String get delete => 'Xóa';
-
-  @override
-  String get deleteTask => 'Xóa nhiệm vụ';
-
-  @override
-  String deleteTaskConfirmation(String taskTitle) {
-    return 'Bạn có chắc chắn muốn xóa \"$taskTitle\"?';
-  }
 
   @override
   String get save => 'Lưu';
@@ -225,16 +181,4 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get refresh => 'Làm mới';
-
-  @override
-  String get taskDetails => 'Chi tiết nhiệm vụ';
-
-  @override
-  String get taskStatus => 'Trạng thái';
-
-  @override
-  String get createdAt => 'Đã tạo';
-
-  @override
-  String get updatedAt => 'Đã cập nhật';
 }

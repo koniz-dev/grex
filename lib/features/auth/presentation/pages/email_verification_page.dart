@@ -129,11 +129,12 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Email Icon
-                const Icon(
-                  Icons.mark_email_unread,
-                  size: 100,
-                  color: Colors.orange,
+                // App Logo
+                Center(
+                  child: Image.asset(
+                    'assets/images/app_icon.png',
+                    height: 80,
+                  ),
                 ),
                 const SizedBox(height: 24),
 

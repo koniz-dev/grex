@@ -163,54 +163,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get tasks => 'Tasks';
-
-  @override
-  String get addTask => 'Add Task';
-
-  @override
-  String get editTask => 'Edit Task';
-
-  @override
-  String get taskTitle => 'Title';
-
-  @override
-  String get taskDescription => 'Description';
-
-  @override
-  String get taskTitleRequired => 'Please enter a task title';
-
-  @override
-  String get noTasks => 'No tasks yet';
-
-  @override
-  String get addYourFirstTask => 'Tap the + button to add your first task';
-
-  @override
-  String get incompleteTasks => 'Incomplete';
-
-  @override
-  String get completedTasks => 'Completed';
-
-  @override
-  String get completed => 'Completed';
-
-  @override
-  String get incomplete => 'Incomplete';
-
-  @override
   String get edit => 'Edit';
 
   @override
   String get delete => 'Delete';
-
-  @override
-  String get deleteTask => 'Delete Task';
-
-  @override
-  String deleteTaskConfirmation(String taskTitle) {
-    return 'Are you sure you want to delete \"$taskTitle\"?';
-  }
 
   @override
   String get save => 'Save';
@@ -223,16 +179,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get refresh => 'Refresh';
-
-  @override
-  String get taskDetails => 'Task Details';
-
-  @override
-  String get taskStatus => 'Status';
-
-  @override
-  String get createdAt => 'Created';
-
-  @override
-  String get updatedAt => 'Updated';
 }

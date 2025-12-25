@@ -8,6 +8,7 @@ import 'package:grex/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 /// Implementation of authentication repository
 class AuthRepositoryImpl implements AuthRepository {
@@ -41,6 +42,14 @@ class AuthRepositoryImpl implements AuthRepository {
       if (authResponse.refreshToken != null) {
         await localDataSource.cacheRefreshToken(authResponse.refreshToken!);
       }
+
+      // Sync with Supabase SDK to enable RLS-compliant database calls
+      if (authResponse.token.isNotEmpty) {
+        await supabase.Supabase.instance.client.auth.setSession(
+          authResponse.token,
+        );
+      }
+
       _authStateController.add(user);
       return Right(user);
     } on AppException catch (e) {
@@ -72,6 +81,17 @@ class AuthRepositoryImpl implements AuthRepository {
       if (authResponse.refreshToken != null) {
         await localDataSource.cacheRefreshToken(authResponse.refreshToken!);
       }
+
+      // Sync with Supabase SDK to enable RLS-compliant database calls
+      // Note: During signup, token might be empty if email confirmation
+      // is required.
+      // Supabase SDK handles the unauthenticated/pending state correctly.
+      if (authResponse.token.isNotEmpty) {
+        await supabase.Supabase.instance.client.auth.setSession(
+          authResponse.token,
+        );
+      }
+
       _authStateController.add(user);
       return Right(user);
     } on AppException catch (e) {
@@ -90,6 +110,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await remoteDataSource.logout();
       await localDataSource.clearCache();
+
+      // Clear the Supabase SDK session
+      await supabase.Supabase.instance.client.auth.signOut();
+
       _authStateController.add(null);
       return const Right(null);
     } on AppException catch (e) {

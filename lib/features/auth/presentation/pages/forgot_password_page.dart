@@ -73,7 +73,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             if (state is AuthPasswordResetSent) {
               // Show success dialog
               unawaited(
-                showDialog(
+                showDialog<void>(
                   context: context,
                   barrierDismissible: false,
                   builder: (context) => AlertDialog(
@@ -110,11 +110,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Icon
-                  const Icon(
-                    Icons.lock_reset,
-                    size: 80,
-                    color: Colors.blue,
+                  // App Logo
+                  Center(
+                    child: Image.asset(
+                      'assets/images/app_icon.png',
+                      height: 80,
+                    ),
                   ),
                   const SizedBox(height: 24),
 

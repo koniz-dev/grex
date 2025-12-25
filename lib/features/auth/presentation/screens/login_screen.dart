@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:grex/core/routing/navigation_extensions.dart';
+import 'package:grex/core/routing/auth_navigation_extensions.dart';
 import 'package:grex/core/utils/validators.dart';
 import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
 import 'package:grex/l10n/app_localizations.dart';

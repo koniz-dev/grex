@@ -1,5 +1,10 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:grex/core/di/main_app_injection.dart';
+import 'package:grex/core/services/export_service.dart';
+import 'package:grex/core/services/offline_queue_storage.dart';
+import 'package:grex/core/services/real_time_manager.dart';
+import 'package:grex/core/services/real_time_service.dart';
 import 'package:grex/features/auth/data/repositories/supabase_auth_repository.dart';
 import 'package:grex/features/auth/data/repositories/supabase_user_repository.dart';
 import 'package:grex/features/auth/data/services/secure_session_service.dart';
@@ -55,6 +60,23 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton<EmailVerificationService>(
       SupabaseEmailVerificationService.new,
     )
+    // Real-time services
+    ..registerLazySingleton<RealTimeService>(
+      () => SupabaseRealTimeService(
+        supabaseClient: getIt<SupabaseClient>(),
+        queueStorage: OfflineQueueStorage(
+          secureStorage: getIt<FlutterSecureStorage>(),
+        ),
+      ),
+    )
+    ..registerLazySingleton<RealTimeManager>(
+      () => RealTimeManager(
+        realTimeService: getIt<RealTimeService>(),
+      ),
+    )
+    ..registerLazySingleton<ExportService>(
+      ExportService.new,
+    )
     // BLoCs
     ..registerFactory<AuthBloc>(
       () => AuthBloc(
@@ -69,4 +91,7 @@ Future<void> configureDependencies() async {
         authRepository: getIt<AuthRepository>(),
       ),
     );
+
+  // Configure main app features dependencies
+  configureMainAppDependencies();
 }

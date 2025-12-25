@@ -1,112 +1,121 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grex/core/routing/app_routes.dart';
 
-/// Navigation extensions for GoRouter
-///
-/// This extension provides convenient methods for navigation using GoRouter.
-/// It offers type-safe navigation methods that use route constants from
-/// [AppRoutes].
-///
-/// **Usage:**
-/// ```dart
-/// // Basic navigation
-/// context.goToHome();
-/// context.goToLogin();
-///
-/// // Navigation with parameters (example)
-/// context.goToProfile(userId: '123');
-///
-/// // Pop navigation
-/// context.popRoute();
-/// ```
+/// Extension methods for easy navigation using GoRouter
 extension NavigationExtensions on BuildContext {
-  /// Navigate to home screen
-  void goToHome() => go(AppRoutes.home);
+  // Group navigation
 
-  /// Navigate to login screen
-  void goToLogin() => go(AppRoutes.login);
+  /// Navigates to the groups list page.
+  void goToGroups() => go(AppRoutes.groups);
 
-  /// Navigate to register screen
-  void goToRegister() => go(AppRoutes.register);
+  /// Navigates to the group creation page.
+  void goToCreateGroup() => go(AppRoutes.createGroup);
 
-  /// Navigate to feature flags debug screen (nested route)
-  void goToFeatureFlagsDebug() => go(AppRoutes.featureFlagsDebug);
+  /// Navigates to the details page for a specific group.
+  void goToGroupDetails(String groupId) =>
+      go(AppRoutes.groupDetailsPath(groupId));
 
-  /// Navigate to tasks list screen
-  void goToTasks() => go(AppRoutes.tasks);
+  /// Navigates to the settings page for a specific group.
+  void goToGroupSettings(String groupId) =>
+      go(AppRoutes.groupSettingsPath(groupId));
 
-  /// Navigate to task detail screen
-  void goToTaskDetail(String taskId) => go('${AppRoutes.tasks}/$taskId');
+  // Expense navigation
 
-  /// Push a new route (adds to navigation stack)
-  void pushRoute(String location, {Object? extra}) {
-    unawaited(push(location, extra: extra));
-  }
+  /// Navigates to the expenses list page for a specific group.
+  void goToExpenses(String groupId) => go(AppRoutes.expensesPath(groupId));
 
-  /// Push a named route
-  void pushNamedRoute(
-    String name, {
-    Map<String, String> pathParameters = const {},
-    Map<String, dynamic> queryParameters = const {},
-    Object? extra,
-  }) {
-    unawaited(
-      pushNamed(
-        name,
-        pathParameters: pathParameters,
-        queryParameters: queryParameters,
-        extra: extra,
-      ),
-    );
-  }
+  /// Navigates to the expense creation page for a specific group.
+  void goToCreateExpense(String groupId) =>
+      go(AppRoutes.createExpensePath(groupId));
 
-  /// Replace current route
-  void replaceRoute(String location, {Object? extra}) {
-    replace(location, extra: extra);
-  }
+  /// Navigates to the details page for a specific expense.
+  void goToExpenseDetails(String groupId, String expenseId) =>
+      go(AppRoutes.expenseDetailsPath(groupId, expenseId));
 
-  /// Replace current route with named route
-  void replaceNamedRoute(
-    String name, {
-    Map<String, String> pathParameters = const {},
-    Map<String, dynamic> queryParameters = const {},
-    Object? extra,
-  }) {
-    replaceNamed(
-      name,
-      pathParameters: pathParameters,
-      queryParameters: queryParameters,
-      extra: extra,
-    );
-  }
+  /// Navigates to the expense editing page for a specific expense.
+  void goToEditExpense(String groupId, String expenseId) =>
+      go(AppRoutes.editExpensePath(groupId, expenseId));
 
-  /// Pop current route
-  void popRoute<T>([T? result]) {
-    pop<T>(result);
-  }
+  // Payment navigation
 
-  /// Pop until a specific route
-  void popUntilRoute(String location) {
-    while (canPop()) {
-      if (GoRouterState.of(this).matchedLocation == location) {
-        break;
-      }
-      pop();
-    }
-  }
+  /// Navigates to the payments list page for a specific group.
+  void goToPayments(String groupId) => go(AppRoutes.paymentsPath(groupId));
 
-  /// Check if can pop
-  bool canPopRoute() => canPop();
+  /// Navigates to the payment creation page for a specific group.
+  void goToCreatePayment(String groupId) =>
+      go(AppRoutes.createPaymentPath(groupId));
 
-  /// Go back if possible, otherwise go to home
-  void popOrGoToHome() {
+  // Balance navigation
+
+  /// Navigates to the balances list page for a specific group.
+  void goToBalances(String groupId) => go(AppRoutes.balancesPath(groupId));
+
+  /// Navigates to the settlement plan page for a specific group.
+  void goToSettlementPlan(String groupId) =>
+      go(AppRoutes.settlementPlanPath(groupId));
+
+  // Export navigation
+
+  /// Navigates to the export page for a specific group.
+  void goToExport(String groupId, {String? groupName}) =>
+      go(AppRoutes.exportPath(groupId, groupName: groupName));
+
+  // Push navigation (for modal-like behavior)
+
+  /// Pushes the group creation page onto the navigation stack.
+  void pushCreateGroup() => push(AppRoutes.createGroup);
+
+  /// Pushes the expense creation page onto the navigation stack.
+  void pushCreateExpense(String groupId) =>
+      push(AppRoutes.createExpensePath(groupId));
+
+  /// Pushes the payment creation page onto the navigation stack.
+  void pushCreatePayment(String groupId) =>
+      push(AppRoutes.createPaymentPath(groupId));
+
+  /// Pushes the expense editing page onto the navigation stack.
+  void pushEditExpense(String groupId, String expenseId) =>
+      push(AppRoutes.editExpensePath(groupId, expenseId));
+
+  // Named navigation (alternative approach)
+
+  /// Navigates to group details using named routing.
+  void goToGroupDetailsByName(String groupId) => goNamed(
+    AppRoutes.groupDetailsName,
+    pathParameters: {'groupId': groupId},
+  );
+
+  /// Navigates to expense details using named routing.
+  void goToExpenseDetailsByName(String groupId, String expenseId) => goNamed(
+    AppRoutes.expenseDetailsName,
+    pathParameters: {
+      'groupId': groupId,
+      'expenseId': expenseId,
+    },
+  );
+
+  // Utility methods
+
+  /// Returns whether the current navigator can pop.
+  bool canPop() => GoRouter.of(this).canPop();
+
+  /// Pops the current route or navigates to the groups list if unable to pop.
+  void popOrGoToGroups() {
     if (canPop()) {
       pop();
     } else {
-      goToHome();
+      goToGroups();
     }
+  }
+
+  // Deep link handling
+
+  /// Handles a group invitation code and navigates to the groups list.
+  void handleGroupInvite(String inviteCode) {
+    // This would typically validate the invite and navigate to
+    // appropriate screen
+    // For now, we'll navigate to groups list
+    goToGroups();
   }
 }

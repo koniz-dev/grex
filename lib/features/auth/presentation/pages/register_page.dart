@@ -116,11 +116,20 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  // App Logo
+                  Center(
+                    child: Image.asset(
+                      'assets/images/app_icon.png',
+                      height: 80,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   // Welcome Text
                   Text(
                     'Tạo tài khoản mới',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     textAlign: TextAlign.center,
                   ),

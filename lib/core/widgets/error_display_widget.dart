@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grex/features/auth/domain/entities/entities.dart';
+import 'package:grex/core/errors/failures.dart';
 
 /// Widget for displaying different types of errors with appropriate styling
 /// and actions.
@@ -130,8 +130,17 @@ class ErrorDisplayWidget extends StatelessWidget {
   _ErrorInfo _getErrorInfo(dynamic error) {
     if (error is AuthFailure) {
       return _getAuthErrorInfo(error);
-    } else if (error is UserFailure) {
-      return _getUserErrorInfo(error);
+    } else if (error is ValidationFailure) {
+      return _ErrorInfo(
+        title: 'Dữ liệu không hợp lệ',
+        message: error.message,
+        icon: Icons.warning_outlined,
+        backgroundColor: Colors.orange[50]!,
+        borderColor: Colors.orange[300]!,
+        iconColor: Colors.orange[700]!,
+        textColor: Colors.orange[800]!,
+        actionColor: Colors.orange[700]!,
+      );
     } else if (error is NetworkFailure) {
       return _ErrorInfo(
         title: 'Lỗi kết nối',
@@ -144,6 +153,50 @@ class ErrorDisplayWidget extends StatelessWidget {
         iconColor: Colors.orange[700]!,
         textColor: Colors.orange[800]!,
         actionColor: Colors.orange[700]!,
+      );
+    } else if (error is NotFoundFailure) {
+      return _ErrorInfo(
+        title: 'Không tìm thấy',
+        message: error.message,
+        icon: Icons.search_off,
+        backgroundColor: Colors.grey[50]!,
+        borderColor: Colors.grey[300]!,
+        iconColor: Colors.grey[700]!,
+        textColor: Colors.grey[800]!,
+        actionColor: Colors.grey[700]!,
+      );
+    } else if (error is PermissionFailure) {
+      return _ErrorInfo(
+        title: 'Không có quyền',
+        message: error.message,
+        icon: Icons.lock_outline,
+        backgroundColor: Colors.red[50]!,
+        borderColor: Colors.red[300]!,
+        iconColor: Colors.red[700]!,
+        textColor: Colors.red[800]!,
+        actionColor: Colors.red[700]!,
+      );
+    } else if (error is ServerFailure) {
+      return _ErrorInfo(
+        title: 'Lỗi máy chủ',
+        message: error.message,
+        icon: Icons.error_outline,
+        backgroundColor: Colors.red[50]!,
+        borderColor: Colors.red[300]!,
+        iconColor: Colors.red[700]!,
+        textColor: Colors.red[800]!,
+        actionColor: Colors.red[700]!,
+      );
+    } else if (error is CacheFailure) {
+      return _ErrorInfo(
+        title: 'Lỗi lưu trữ',
+        message: error.message,
+        icon: Icons.storage,
+        backgroundColor: Colors.amber[50]!,
+        borderColor: Colors.amber[300]!,
+        iconColor: Colors.amber[700]!,
+        textColor: Colors.amber[800]!,
+        actionColor: Colors.amber[700]!,
       );
     } else {
       return _ErrorInfo(
@@ -160,8 +213,16 @@ class ErrorDisplayWidget extends StatelessWidget {
   }
 
   /// Gets error info for authentication failures
+  /// Uses message and code to determine specific error type
   _ErrorInfo _getAuthErrorInfo(AuthFailure failure) {
-    if (failure is InvalidCredentialsFailure) {
+    final message = failure.message.toLowerCase();
+    final code = failure.code?.toLowerCase() ?? '';
+
+    // Check for specific error patterns in message or code
+    if (message.contains('invalid') ||
+        message.contains('credentials') ||
+        message.contains('email or password') ||
+        code.contains('invalid_credentials')) {
       return _ErrorInfo(
         title: 'Thông tin đăng nhập không đúng',
         message: 'Email hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.',
@@ -172,7 +233,9 @@ class ErrorDisplayWidget extends StatelessWidget {
         textColor: Colors.red[800]!,
         actionColor: Colors.red[700]!,
       );
-    } else if (failure is EmailAlreadyInUseFailure) {
+    } else if (message.contains('already in use') ||
+        message.contains('email already') ||
+        code.contains('email_already_in_use')) {
       return _ErrorInfo(
         title: 'Email đã được sử dụng',
         message:
@@ -185,7 +248,9 @@ class ErrorDisplayWidget extends StatelessWidget {
         textColor: Colors.orange[800]!,
         actionColor: Colors.orange[700]!,
       );
-    } else if (failure is WeakPasswordFailure) {
+    } else if (message.contains('weak password') ||
+        message.contains('password is too weak') ||
+        code.contains('weak_password')) {
       return _ErrorInfo(
         title: 'Mật khẩu không đủ mạnh',
         message:
@@ -198,7 +263,9 @@ class ErrorDisplayWidget extends StatelessWidget {
         textColor: Colors.amber[800]!,
         actionColor: Colors.amber[700]!,
       );
-    } else if (failure is UnverifiedEmailFailure) {
+    } else if (message.contains('unverified') ||
+        message.contains('verify your email') ||
+        code.contains('unverified_email')) {
       return _ErrorInfo(
         title: 'Email chưa được xác thực',
         message:
@@ -214,45 +281,6 @@ class ErrorDisplayWidget extends StatelessWidget {
     } else {
       return _ErrorInfo(
         title: 'Lỗi xác thực',
-        message: failure.message,
-        icon: Icons.error_outline,
-        backgroundColor: Colors.red[50]!,
-        borderColor: Colors.red[300]!,
-        iconColor: Colors.red[700]!,
-        textColor: Colors.red[800]!,
-        actionColor: Colors.red[700]!,
-      );
-    }
-  }
-
-  /// Gets error info for user failures
-  _ErrorInfo _getUserErrorInfo(UserFailure failure) {
-    if (failure is UserNotFoundFailure) {
-      return _ErrorInfo(
-        title: 'Không tìm thấy người dùng',
-        message: 'Thông tin người dùng không tồn tại. Vui lòng liên hệ hỗ trợ.',
-        icon: Icons.person_off_outlined,
-        backgroundColor: Colors.grey[50]!,
-        borderColor: Colors.grey[300]!,
-        iconColor: Colors.grey[700]!,
-        textColor: Colors.grey[800]!,
-        actionColor: Colors.grey[700]!,
-      );
-    } else if (failure is ValidationFailure) {
-      return _ErrorInfo(
-        title: 'Dữ liệu không hợp lệ',
-        message:
-            'Thông tin nhập vào không đúng định dạng. Vui lòng kiểm tra lại.',
-        icon: Icons.warning_outlined,
-        backgroundColor: Colors.orange[50]!,
-        borderColor: Colors.orange[300]!,
-        iconColor: Colors.orange[700]!,
-        textColor: Colors.orange[800]!,
-        actionColor: Colors.orange[700]!,
-      );
-    } else {
-      return _ErrorInfo(
-        title: 'Lỗi người dùng',
         message: failure.message,
         icon: Icons.error_outline,
         backgroundColor: Colors.red[50]!,

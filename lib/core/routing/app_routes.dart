@@ -1,101 +1,175 @@
-/// Application route paths and names
-///
-/// This file defines all route paths and names as constants for type-safe
-/// routing. Use these constants instead of hardcoded strings to prevent typos
-/// and ensure consistency across the application.
+/// A central class containing all route definitions and path constants used
+/// for navigation.
 class AppRoutes {
-  AppRoutes._(); // Private constructor to prevent instantiation
-
-  // Route paths
-  /// Home route path
-  static const String home = '/';
-
-  /// Login route path
+  /// Route path for the login screen.
   static const String login = '/login';
 
-  /// Register route path
+  /// Route path for the user registration screen.
   static const String register = '/register';
 
-  /// Forgot password route path
+  /// Route path for the password recovery screen.
   static const String forgotPassword = '/forgot-password';
 
-  /// Email verification route path
+  /// Route path for the email verification screen.
   static const String emailVerification = '/email-verification';
 
-  /// Profile route path
+  /// Route path for the user profile screen.
   static const String profile = '/profile';
 
-  /// Edit profile route path
+  /// Route path for editing the user profile.
   static const String editProfile = '/profile/edit';
 
-  /// Feature flags debug route path (nested route)
-  static const String featureFlagsDebug = '/feature-flags-debug';
+  /// Root route path that maps to the groups list.
+  static const String home = '/'; // Home maps to groups
 
-  /// Tasks list route path
-  static const String tasks = '/tasks';
+  /// Route path for the groups list.
+  static const String groups = '/';
 
-  /// Task detail route path (with parameter)
-  static const String taskDetail = '/tasks/:taskId';
+  /// Route path for creating a new group.
+  static const String createGroup = '/create-group';
 
-  // Route names (for named navigation)
-  /// Home route name
-  static const String homeName = 'home';
+  /// Route path for specific group details, requiring a `groupId`.
+  static const String groupDetails = '/group/:groupId';
 
-  /// Login route name
+  /// Route path for group settings, requiring a `groupId`.
+  static const String groupSettings = '/group/:groupId/settings';
+
+  /// Route path for expense list within a group, requiring a `groupId`.
+  static const String expenses = '/group/:groupId/expenses';
+
+  /// Route path for creating a new expense, requiring a `groupId`.
+  static const String createExpense = '/group/:groupId/expenses/create';
+
+  /// Route path for specific expense details.
+  static const String expenseDetails = '/group/:groupId/expenses/:expenseId';
+
+  /// Route path for editing an expense.
+  static const String editExpense = '/group/:groupId/expenses/:expenseId/edit';
+
+  /// Route path for payments list within a group.
+  static const String payments = '/group/:groupId/payments';
+
+  /// Route path for creating a new payment.
+  static const String createPayment = '/group/:groupId/payments/create';
+
+  /// Route path for group balances.
+  static const String balances = '/group/:groupId/balances';
+
+  /// Route path for the settlement plan view.
+  static const String settlementPlan = '/group/:groupId/balances/settlement';
+
+  /// Route path for exporting group data.
+  static const String export = '/group/:groupId/export';
+
+  /// Navigation name for the login route.
   static const String loginName = 'login';
 
-  /// Register route name
+  /// Navigation name for the registration route.
   static const String registerName = 'register';
 
-  /// Forgot password route name
+  /// Navigation name for the forgot password route.
   static const String forgotPasswordName = 'forgot-password';
 
-  /// Email verification route name
+  /// Navigation name for the email verification route.
   static const String emailVerificationName = 'email-verification';
 
-  /// Profile route name
+  /// Navigation name for the profile route.
   static const String profileName = 'profile';
 
-  /// Edit profile route name
+  /// Navigation name for the edit profile route.
   static const String editProfileName = 'edit-profile';
 
-  /// Feature flags debug route name
-  static const String featureFlagsDebugName = 'feature-flags-debug';
+  /// Navigation name for the home route.
+  static const String homeName = 'home';
 
-  /// Tasks list route name
-  static const String tasksName = 'tasks';
+  /// Navigation name for the groups route.
+  static const String groupsName = 'groups';
 
-  /// Task detail route name
-  static const String taskDetailName = 'task-detail';
+  /// Navigation name for the create group route.
+  static const String createGroupName = 'create-group';
 
-  // Example routes with parameters (for future use)
-  // static const String profile = '/profile/:userId';
-  // static const String profileName = 'profile';
-  // static const String product = '/product/:productId';
-  // static const String productName = 'product';
-}
+  /// Navigation name for the group details route.
+  static const String groupDetailsName = 'group-details';
 
-/// Route parameter keys
-///
-/// Use these constants when extracting parameters from route state
-class RouteParams {
-  RouteParams._(); // Private constructor to prevent instantiation
+  /// Navigation name for the group settings route.
+  static const String groupSettingsName = 'group-settings';
 
-  /// Task ID parameter key
-  static const String taskId = 'taskId';
+  /// Navigation name for the expenses route.
+  static const String expensesName = 'expenses';
 
-  // Example parameter keys (for future use)
-  // static const String userId = 'userId';
-  // static const String productId = 'productId';
-}
+  /// Navigation name for the create expense route.
+  static const String createExpenseName = 'create-expense';
 
-/// Query parameter keys
-///
-/// Use these constants when extracting query parameters from route state
-class RouteQueryParams {
-  RouteQueryParams._(); // Private constructor to prevent instantiation
+  /// Navigation name for the expense details route.
+  static const String expenseDetailsName = 'expense-details';
 
-  // Example query parameter keys (for future use)
-  // static const String tab = 'tab';
-  // static const String filter = 'filter';
+  /// Navigation name for the edit expense route.
+  static const String editExpenseName = 'edit-expense';
+
+  /// Navigation name for the payments route.
+  static const String paymentsName = 'payments';
+
+  /// Navigation name for the create payment route.
+  static const String createPaymentName = 'create-payment';
+
+  /// Navigation name for the balances route.
+  static const String balancesName = 'balances';
+
+  /// Navigation name for the settlement plan route.
+  static const String settlementPlanName = 'settlement-plan';
+
+  /// Navigation name for the export route.
+  static const String exportName = 'export';
+
+  /// Returns the path for group details for the given [groupId].
+  static String groupDetailsPath(String groupId) => '/group/$groupId';
+
+  /// Returns the path for group settings for the given [groupId].
+  static String groupSettingsPath(String groupId) => '/group/$groupId/settings';
+
+  /// Returns the path for expenses list for the given [groupId].
+  static String expensesPath(String groupId) => '/group/$groupId/expenses';
+
+  /// Returns the path for creating an expense in the given [groupId].
+  static String createExpensePath(String groupId) =>
+      '/group/$groupId/expenses/create';
+
+  /// Returns the path for expense details.
+  static String expenseDetailsPath(String groupId, String expenseId) =>
+      '/group/$groupId/expenses/$expenseId';
+
+  /// Returns the path for editing an expense.
+  static String editExpensePath(String groupId, String expenseId) =>
+      '/group/$groupId/expenses/$expenseId/edit';
+
+  /// Returns the path for payments list for the given [groupId].
+  static String paymentsPath(String groupId) => '/group/$groupId/payments';
+
+  /// Returns the path for creating a payment in the given [groupId].
+  static String createPaymentPath(String groupId) =>
+      '/group/$groupId/payments/create';
+
+  /// Returns the path for group balances for the given [groupId].
+  static String balancesPath(String groupId) => '/group/$groupId/balances';
+
+  /// Returns the path for settlement plan for the given [groupId].
+  static String settlementPlanPath(String groupId) =>
+      '/group/$groupId/balances/settlement';
+
+  /// Returns the path for exporting data from group [groupId].
+  ///
+  /// Optional [groupName] can be provided as a query parameter.
+  static String exportPath(String groupId, {String? groupName}) {
+    final path = '/group/$groupId/export';
+    if (groupName != null) {
+      return '$path?groupName=${Uri.encodeComponent(groupName)}';
+    }
+    return path;
+  }
+
+  /// The regex pattern for extraction group invitation codes from a path.
+  static const String groupInvitePattern = '/invite/([a-zA-Z0-9-]+)';
+
+  /// Returns the path for a group invitation code.
+  static String groupInvitePath(String inviteCode) => '/invite/$inviteCode';
 }

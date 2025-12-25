@@ -26,6 +26,19 @@ abstract class AuthState with _$AuthState {
 class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
+    final repository = ref.watch(authRepositoryProvider);
+
+    // Listen to repository's auth state changes to keep this notifier in sync
+    // with any auth operations (e.g. from BLoC or direct repo calls)
+    final subscription = repository.authStateChanges.listen((user) {
+      if (state.user != user) {
+        state = state.copyWith(user: user, isLoading: false, error: null);
+      }
+    });
+
+    // Clean up subscription when the provider is disposed
+    ref.onDispose(subscription.cancel);
+
     return const AuthState();
   }
 

@@ -14,10 +14,26 @@ class AuthResponseModel {
 
   /// Create AuthResponseModel from JSON
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
+    final session = json['session'] as Map<String, dynamic>?;
+    final userJson =
+        (json['user'] ?? session?['user']) as Map<String, dynamic>?;
+
+    if (userJson == null) {
+      throw Exception('User data not found in auth response');
+    }
+
+    // Handle both app-specific 'token' and Supabase-native 'access_token'
+    final token =
+        (json['token'] ?? session?['access_token'] ?? json['access_token'])
+            as String? ??
+        '';
+    final refreshToken =
+        (json['refresh_token'] ?? session?['refresh_token']) as String?;
+
     return AuthResponseModel(
-      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
-      token: json['token'] as String,
-      refreshToken: json['refresh_token'] as String?,
+      user: UserModel.fromJson(userJson),
+      token: token,
+      refreshToken: refreshToken,
     );
   }
 

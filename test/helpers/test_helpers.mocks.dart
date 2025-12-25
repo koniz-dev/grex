@@ -6,16 +6,19 @@
 import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i2;
+import 'package:grex/core/utils/result.dart' as _i7;
 import 'package:grex/features/auth/domain/entities/entities.dart' as _i6;
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart'
     as _i4;
 import 'package:grex/features/auth/domain/repositories/user_repository.dart'
-    as _i7;
-import 'package:grex/features/auth/domain/services/email_verification_service.dart'
     as _i9;
+import 'package:grex/features/auth/domain/services/email_verification_service.dart'
+    as _i11;
 import 'package:grex/features/auth/domain/services/session_manager.dart' as _i3;
-import 'package:grex/features/auth/domain/services/session_service.dart' as _i8;
+import 'package:grex/features/auth/domain/services/session_service.dart'
+    as _i10;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -142,6 +145,32 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
           as _i5.Future<_i2.Either<_i6.AuthFailure, void>>);
 
   @override
+  _i5.Future<_i7.Result<_i6.User?>> getCurrentUser() =>
+      (super.noSuchMethod(
+            Invocation.method(#getCurrentUser, []),
+            returnValue: _i5.Future<_i7.Result<_i6.User?>>.value(
+              _i8.dummyValue<_i7.Result<_i6.User?>>(
+                this,
+                Invocation.method(#getCurrentUser, []),
+              ),
+            ),
+          )
+          as _i5.Future<_i7.Result<_i6.User?>>);
+
+  @override
+  _i5.Future<_i7.Result<bool>> isAuthenticated() =>
+      (super.noSuchMethod(
+            Invocation.method(#isAuthenticated, []),
+            returnValue: _i5.Future<_i7.Result<bool>>.value(
+              _i8.dummyValue<_i7.Result<bool>>(
+                this,
+                Invocation.method(#isAuthenticated, []),
+              ),
+            ),
+          )
+          as _i5.Future<_i7.Result<bool>>);
+
+  @override
   _i5.Future<_i2.Either<_i6.AuthFailure, void>> sendVerificationEmail() =>
       (super.noSuchMethod(
             Invocation.method(#sendVerificationEmail, []),
@@ -172,12 +201,25 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
             ),
           )
           as _i5.Future<_i2.Either<_i6.AuthFailure, void>>);
+
+  @override
+  _i5.Future<_i7.Result<String>> refreshToken() =>
+      (super.noSuchMethod(
+            Invocation.method(#refreshToken, []),
+            returnValue: _i5.Future<_i7.Result<String>>.value(
+              _i8.dummyValue<_i7.Result<String>>(
+                this,
+                Invocation.method(#refreshToken, []),
+              ),
+            ),
+          )
+          as _i5.Future<_i7.Result<String>>);
 }
 
 /// A class which mocks [UserRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserRepository extends _i1.Mock implements _i7.UserRepository {
+class MockUserRepository extends _i1.Mock implements _i9.UserRepository {
   MockUserRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -234,7 +276,7 @@ class MockUserRepository extends _i1.Mock implements _i7.UserRepository {
 /// A class which mocks [SessionService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSessionService extends _i1.Mock implements _i8.SessionService {
+class MockSessionService extends _i1.Mock implements _i10.SessionService {
   MockSessionService() {
     _i1.throwOnMissingStub(this);
   }
@@ -268,19 +310,21 @@ class MockSessionService extends _i1.Mock implements _i8.SessionService {
           as _i5.Future<_i2.Either<_i6.AuthFailure, void>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>>
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData?>>
   getStoredSession() =>
       (super.noSuchMethod(
             Invocation.method(#getStoredSession, []),
             returnValue:
-                _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>>.value(
-                  _FakeEither_0<_i6.AuthFailure, _i8.SessionData?>(
+                _i5.Future<
+                  _i2.Either<_i6.AuthFailure, _i10.SessionData?>
+                >.value(
+                  _FakeEither_0<_i6.AuthFailure, _i10.SessionData?>(
                     this,
                     Invocation.method(#getStoredSession, []),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>>);
+          as _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData?>>);
 
   @override
   _i5.Future<_i2.Either<_i6.AuthFailure, bool>> validateSession() =>
@@ -296,18 +340,18 @@ class MockSessionService extends _i1.Mock implements _i8.SessionService {
           as _i5.Future<_i2.Either<_i6.AuthFailure, bool>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData>> refreshSession() =>
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData>> refreshSession() =>
       (super.noSuchMethod(
             Invocation.method(#refreshSession, []),
             returnValue:
-                _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData>>.value(
-                  _FakeEither_0<_i6.AuthFailure, _i8.SessionData>(
+                _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData>>.value(
+                  _FakeEither_0<_i6.AuthFailure, _i10.SessionData>(
                     this,
                     Invocation.method(#refreshSession, []),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData>>);
+          as _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData>>);
 
   @override
   _i5.Future<_i2.Either<_i6.AuthFailure, void>> clearSession() =>
@@ -356,18 +400,20 @@ class MockSessionManager extends _i1.Mock implements _i3.SessionManager {
   }
 
   @override
-  _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>> initialize() =>
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData?>> initialize() =>
       (super.noSuchMethod(
             Invocation.method(#initialize, []),
             returnValue:
-                _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>>.value(
-                  _FakeEither_0<_i6.AuthFailure, _i8.SessionData?>(
+                _i5.Future<
+                  _i2.Either<_i6.AuthFailure, _i10.SessionData?>
+                >.value(
+                  _FakeEither_0<_i6.AuthFailure, _i10.SessionData?>(
                     this,
                     Invocation.method(#initialize, []),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>>);
+          as _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData?>>);
 
   @override
   _i5.Future<_i2.Either<_i6.AuthFailure, void>> startSession({
@@ -411,19 +457,21 @@ class MockSessionManager extends _i1.Mock implements _i3.SessionManager {
           as _i5.Future<_i2.Either<_i6.AuthFailure, void>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>>
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData?>>
   getCurrentSession() =>
       (super.noSuchMethod(
             Invocation.method(#getCurrentSession, []),
             returnValue:
-                _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>>.value(
-                  _FakeEither_0<_i6.AuthFailure, _i8.SessionData?>(
+                _i5.Future<
+                  _i2.Either<_i6.AuthFailure, _i10.SessionData?>
+                >.value(
+                  _FakeEither_0<_i6.AuthFailure, _i10.SessionData?>(
                     this,
                     Invocation.method(#getCurrentSession, []),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData?>>);
+          as _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData?>>);
 
   @override
   _i5.Future<_i2.Either<_i6.AuthFailure, bool>> isSessionValid() =>
@@ -439,18 +487,18 @@ class MockSessionManager extends _i1.Mock implements _i3.SessionManager {
           as _i5.Future<_i2.Either<_i6.AuthFailure, bool>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData>> refreshSession() =>
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData>> refreshSession() =>
       (super.noSuchMethod(
             Invocation.method(#refreshSession, []),
             returnValue:
-                _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData>>.value(
-                  _FakeEither_0<_i6.AuthFailure, _i8.SessionData>(
+                _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData>>.value(
+                  _FakeEither_0<_i6.AuthFailure, _i10.SessionData>(
                     this,
                     Invocation.method(#refreshSession, []),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.AuthFailure, _i8.SessionData>>);
+          as _i5.Future<_i2.Either<_i6.AuthFailure, _i10.SessionData>>);
 
   @override
   void dispose() => super.noSuchMethod(
@@ -476,23 +524,23 @@ class MockSessionManager extends _i1.Mock implements _i3.SessionManager {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockEmailVerificationService extends _i1.Mock
-    implements _i9.EmailVerificationService {
+    implements _i11.EmailVerificationService {
   MockEmailVerificationService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Either<_i6.AuthFailure, _i9.EmailVerificationData>
+  _i2.Either<_i6.AuthFailure, _i11.EmailVerificationData>
   processVerificationLink(String? link) =>
       (super.noSuchMethod(
             Invocation.method(#processVerificationLink, [link]),
             returnValue:
-                _FakeEither_0<_i6.AuthFailure, _i9.EmailVerificationData>(
+                _FakeEither_0<_i6.AuthFailure, _i11.EmailVerificationData>(
                   this,
                   Invocation.method(#processVerificationLink, [link]),
                 ),
           )
-          as _i2.Either<_i6.AuthFailure, _i9.EmailVerificationData>);
+          as _i2.Either<_i6.AuthFailure, _i11.EmailVerificationData>);
 
   @override
   bool isVerificationLink(String? url) =>

@@ -81,14 +81,14 @@ extension ContextExtensions on BuildContext {
   /// Navigate to a route
   Future<T?> navigateTo<T>(Widget route) {
     return Navigator.of(this).push<T>(
-      MaterialPageRoute(builder: (_) => route),
+      MaterialPageRoute<T>(builder: (_) => route),
     );
   }
 
   /// Navigate and replace current route
   Future<T?> navigateToReplacement<T>(Widget route) {
     return Navigator.of(this).pushReplacement<T, void>(
-      MaterialPageRoute(builder: (_) => route),
+      MaterialPageRoute<T>(builder: (_) => route),
     );
   }
 

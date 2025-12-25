@@ -8,9 +8,10 @@ import 'package:grex/core/di/injection.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/localization/localization_providers.dart';
 import 'package:grex/core/localization/localization_service.dart';
-import 'package:grex/core/routing/app_router.dart';
+import 'package:grex/core/routing/routing_providers.dart';
 import 'package:grex/core/services/error_logging_service.dart';
 import 'package:grex/core/widgets/global_error_handler.dart';
+import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
 import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/theme/app_theme.dart';
@@ -55,6 +56,16 @@ void main() async {
   final localizationService = container.read(localizationServiceProvider);
   final savedLocale = await localizationService.getCurrentLocale();
   container.read(localeStateProvider.notifier).locale = savedLocale;
+
+  // Restore user session if existing
+  try {
+    await container
+        .read(authNotifierProvider.notifier)
+        .getCurrentUser()
+        .timeout(const Duration(seconds: 5));
+  } on Exception catch (e) {
+    debugPrint('Failed to restore session: $e');
+  }
 
   runApp(
     GlobalErrorHandler(

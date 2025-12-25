@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grex/core/routing/navigation_extensions.dart';
 import 'package:grex/core/utils/validators.dart';
 import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
 import 'package:grex/l10n/app_localizations.dart';
@@ -138,7 +137,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     ? null
                     : () {
                         if (context.canPop()) {
-                          context.popRoute<void>();
+                          context.pop();
                         }
                       },
                 child: Text(l10n.alreadyHaveAccount),

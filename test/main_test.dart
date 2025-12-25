@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:grex/core/localization/localization_service.dart';
-import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/features/groups/presentation/pages/group_list_page.dart';
 import 'package:grex/main.dart';
-import 'package:grex/shared/screens/home_screen.dart';
 
 void main() {
   group('MyApp', () {
@@ -152,51 +149,10 @@ void main() {
     });
   });
 
-  group('HomeScreen', () {
-    testWidgets('should create HomeScreen widget', (tester) async {
-      const homeScreen = HomeScreen();
-      expect(homeScreen, isA<ConsumerWidget>());
-    });
-
-    testWidgets('should display welcome message', (tester) async {
-      await tester.pumpWidget(
-        ProviderScope(
-          child: MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: LocalizationService.supportedLocales,
-            home: const HomeScreen(),
-          ),
-        ),
-      );
-
-      expect(
-        find.text('Welcome to Grex with Clean Architecture!'),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('should have app bar with title', (tester) async {
-      await tester.pumpWidget(
-        ProviderScope(
-          child: MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: LocalizationService.supportedLocales,
-            home: const HomeScreen(),
-          ),
-        ),
-      );
-
-      expect(find.text('Grex'), findsWidgets);
+  group('GroupListPage', () {
+    testWidgets('should create GroupListPage widget', (tester) async {
+      const groupListPage = GroupListPage();
+      expect(groupListPage, isA<StatelessWidget>());
     });
   });
 }

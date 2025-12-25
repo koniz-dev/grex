@@ -192,54 +192,6 @@
       }
     }
   },
-  "tasks": "Nhiệm vụ",
-  "@tasks": {
-    "description": "Tasks screen title"
-  },
-  "addTask": "Thêm nhiệm vụ",
-  "@addTask": {
-    "description": "Add task button and dialog title"
-  },
-  "editTask": "Chỉnh sửa nhiệm vụ",
-  "@editTask": {
-    "description": "Edit task screen title"
-  },
-  "taskTitle": "Tiêu đề",
-  "@taskTitle": {
-    "description": "Task title field label"
-  },
-  "taskDescription": "Mô tả",
-  "@taskDescription": {
-    "description": "Task description field label"
-  },
-  "taskTitleRequired": "Vui lòng nhập tiêu đề nhiệm vụ",
-  "@taskTitleRequired": {
-    "description": "Task title validation error"
-  },
-  "noTasks": "Chưa có nhiệm vụ nào",
-  "@noTasks": {
-    "description": "Empty tasks list message"
-  },
-  "addYourFirstTask": "Nhấn nút + để thêm nhiệm vụ đầu tiên của bạn",
-  "@addYourFirstTask": {
-    "description": "Hint to add first task"
-  },
-  "incompleteTasks": "Chưa hoàn thành",
-  "@incompleteTasks": {
-    "description": "Incomplete tasks section header"
-  },
-  "completedTasks": "Đã hoàn thành",
-  "@completedTasks": {
-    "description": "Completed tasks section header"
-  },
-  "completed": "Đã hoàn thành",
-  "@completed": {
-    "description": "Task status: completed"
-  },
-  "incomplete": "Chưa hoàn thành",
-  "@incomplete": {
-    "description": "Task status: incomplete"
-  },
   "edit": "Chỉnh sửa",
   "@edit": {
     "description": "Edit button label"
@@ -247,19 +199,6 @@
   "delete": "Xóa",
   "@delete": {
     "description": "Delete button label"
-  },
-  "deleteTask": "Xóa nhiệm vụ",
-  "@deleteTask": {
-    "description": "Delete task dialog title"
-  },
-  "deleteTaskConfirmation": "Bạn có chắc chắn muốn xóa \"{taskTitle}\"?",
-  "@deleteTaskConfirmation": {
-    "description": "Delete task confirmation message",
-    "placeholders": {
-      "taskTitle": {
-        "type": "String"
-      }
-    }
   },
   "save": "Lưu",
   "@save": {
@@ -276,22 +215,6 @@
   "refresh": "Làm mới",
   "@refresh": {
     "description": "Refresh button label"
-  },
-  "taskDetails": "Chi tiết nhiệm vụ",
-  "@taskDetails": {
-    "description": "Task details section title"
-  },
-  "taskStatus": "Trạng thái",
-  "@taskStatus": {
-    "description": "Task status label"
-  },
-  "createdAt": "Đã tạo",
-  "@createdAt": {
-    "description": "Created at label"
-  },
-  "updatedAt": "Đã cập nhật",
-  "@updatedAt": {
-    "description": "Updated at label"
   }
 }
 
