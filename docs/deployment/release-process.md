@@ -19,7 +19,7 @@ Complete guide for managing releases, versioning, and changelog generation.
 The app version is defined in `pubspec.yaml`:
 
 ```yaml
-version: 1.0.0+1
+version: 0.0.1+1
 ```
 
 Format: `MAJOR.MINOR.PATCH+BUILD_NUMBER`
@@ -33,9 +33,9 @@ Format: `MAJOR.MINOR.PATCH+BUILD_NUMBER`
 
 Follow [Semantic Versioning 2.0.0](https://semver.org/):
 
-- **MAJOR** (1.0.0 → 2.0.0): Incompatible API changes
-- **MINOR** (1.0.0 → 1.1.0): New functionality (backward compatible)
-- **PATCH** (1.0.0 → 1.0.1): Bug fixes (backward compatible)
+- **MAJOR** (0.0.1 → 2.0.0): Incompatible API changes
+- **MINOR** (0.0.1 → 1.1.0): New functionality (backward compatible)
+- **PATCH** (0.0.1 → 1.0.1): Bug fixes (backward compatible)
 
 ### Build Number Rules
 
@@ -65,37 +65,37 @@ Use the provided script:
 
 **Linux/macOS:**
 ```bash
-# Bump patch version (1.0.0+1 → 1.0.1+2)
+# Bump patch version (0.0.1+1 → 1.0.1+2)
 ./scripts/linux/development/bump_version.sh patch
 
-# Bump minor version (1.0.0+1 → 1.1.0+2)
+# Bump minor version (0.0.1+1 → 1.1.0+2)
 ./scripts/linux/development/bump_version.sh minor
 
-# Bump major version (1.0.0+1 → 2.0.0+2)
+# Bump major version (0.0.1+1 → 2.0.0+2)
 ./scripts/linux/development/bump_version.sh major
 
-# Set specific build number (1.0.0+1 → 1.0.0+42)
+# Set specific build number (0.0.1+1 → 0.0.1+42)
 ./scripts/linux/development/bump_version.sh patch 42
 
-# Keep version, only bump build (1.0.0+1 → 1.0.0+2)
+# Keep version, only bump build (0.0.1+1 → 0.0.1+2)
 ./scripts/linux/development/bump_version.sh build
 ```
 
 **Windows:**
 ```powershell
-# Bump patch version (1.0.0+1 → 1.0.1+2)
+# Bump patch version (0.0.1+1 → 1.0.1+2)
 .\scripts\windows\development\bump_version.ps1 patch
 
-# Bump minor version (1.0.0+1 → 1.1.0+2)
+# Bump minor version (0.0.1+1 → 1.1.0+2)
 .\scripts\windows\development\bump_version.ps1 minor
 
-# Bump major version (1.0.0+1 → 2.0.0+2)
+# Bump major version (0.0.1+1 → 2.0.0+2)
 .\scripts\windows\development\bump_version.ps1 major
 
-# Set specific build number (1.0.0+1 → 1.0.0+42)
+# Set specific build number (0.0.1+1 → 0.0.1+42)
 .\scripts\windows\development\bump_version.ps1 patch 42
 
-# Keep version, only bump build (1.0.0+1 → 1.0.0+2)
+# Keep version, only bump build (0.0.1+1 → 0.0.1+2)
 .\scripts\windows\development\bump_version.ps1 build
 ```
 
@@ -351,19 +351,19 @@ git push origin develop
 
 ### Development
 
-- Use `-dev` suffix: `1.0.0-dev+1`
+- Use `-dev` suffix: `0.0.1-dev+1`
 - Increment build number frequently
 - Don't worry about version for dev builds
 
 ### Staging
 
-- Use `-staging` suffix: `1.0.0-staging+1`
+- Use `-staging` suffix: `0.0.1-staging+1`
 - Match production version when possible
 - Test with production-like configuration
 
 ### Production
 
-- Clean version numbers: `1.0.0+1`
+- Clean version numbers: `0.0.1+1`
 - Follow semantic versioning strictly
 - Document all changes in changelog
 

@@ -94,63 +94,73 @@ final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
   );
 });
 
+/// Base API client without auth interceptor
+/// 
+/// Used for authentication operations (login, register, refresh token)
+/// to avoid circular dependency with AuthInterceptor.
+final baseApiClientProvider = Provider<ApiClient>((ref) {
+  final storageService = ref.watch(storageServiceProvider);
+  final loggingService = ref.read(loggingServiceProvider);
+  final performanceService = ref.read(performanceServiceProvider);
+  
+  return ApiClient.withoutAuth(
+    storageService: storageService,
+    loggingService: loggingService,
+    performanceService: performanceService,
+  );
+});
+
 /// Provider for [AuthRemoteDataSource] instance
 ///
 /// This provider creates a singleton instance of [AuthRemoteDataSourceImpl]
 /// that handles remote authentication operations.
-/// Uses ref.read to break circular dependency with apiClientProvider.
-final Provider<AuthRemoteDataSource> authRemoteDataSourceProvider =
-    Provider<AuthRemoteDataSource>((ref) {
-      final apiClient = ref.read<ApiClient>(apiClientProvider);
-      return AuthRemoteDataSourceImpl(apiClient);
-    });
+/// Uses baseApiClientProvider to avoid circular dependency.
+final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
+  final apiClient = ref.watch(baseApiClientProvider);
+  return AuthRemoteDataSourceImpl(apiClient);
+});
 
 /// Provider for [AuthRepository] instance
 ///
 /// This provider creates a singleton instance of [AuthRepositoryImpl]
 /// that coordinates between remote and local data sources.
-final Provider<AuthRepository> authRepositoryProvider =
-    Provider<AuthRepository>((ref) {
-      final remoteDataSource = ref.read<AuthRemoteDataSource>(
-        authRemoteDataSourceProvider,
-      );
-      final localDataSource = ref.watch(authLocalDataSourceProvider);
-      return AuthRepositoryImpl(
-        remoteDataSource: remoteDataSource,
-        localDataSource: localDataSource,
-      );
-    });
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  final remoteDataSource = ref.watch(authRemoteDataSourceProvider);
+  final localDataSource = ref.watch(authLocalDataSourceProvider);
+  return AuthRepositoryImpl(
+    remoteDataSource: remoteDataSource,
+    localDataSource: localDataSource,
+  );
+});
 
 /// Provider for [AuthInterceptor] instance
 ///
 /// This provider creates a singleton instance of [AuthInterceptor] that handles
 /// authentication token injection and automatic token refresh on 401 errors.
-/// Uses ref.read to break circular dependency with apiClientProvider.
-final Provider<AuthInterceptor> authInterceptorProvider =
-    Provider<AuthInterceptor>((ref) {
-      final secureStorageService = ref.watch(secureStorageServiceProvider);
-      // Use ref.read to break circular dependency with authRepositoryProvider
-      final authRepository = ref.read<AuthRepository>(authRepositoryProvider);
-      return AuthInterceptor(
-        secureStorageService: secureStorageService,
-        authRepository: authRepository,
-      );
-    });
-
-/// Provider for [ApiClient] instance
-///
-/// This provider creates a singleton instance of [ApiClient] that can be used
-/// throughout the application for making HTTP requests.
-final Provider<ApiClient> apiClientProvider = Provider<ApiClient>((ref) {
-  final storageService = ref.watch(storageServiceProvider);
+final authInterceptorProvider = Provider<AuthInterceptor>((ref) {
   final secureStorageService = ref.watch(secureStorageServiceProvider);
-  // Use ref.read to break circular dependency
-  final authInterceptor = ref.read<AuthInterceptor>(authInterceptorProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
+  return AuthInterceptor(
+    secureStorageService: secureStorageService,
+    authRepository: authRepository,
+  );
+});
+
+/// Provider for [ApiClient] instance with full auth support
+///
+/// This is the main API client used throughout the application.
+/// It includes AuthInterceptor for automatic token injection and refresh.
+/// 
+/// For auth operations (login, register, etc.), use [baseApiClientProvider]
+/// to avoid circular dependency.
+final apiClientProvider = Provider<ApiClient>((ref) {
+  final storageService = ref.watch(storageServiceProvider);
+  final authInterceptor = ref.watch(authInterceptorProvider);
   final loggingService = ref.read(loggingServiceProvider);
   final performanceService = ref.read(performanceServiceProvider);
+  
   return ApiClient(
     storageService: storageService,
-    secureStorageService: secureStorageService,
     authInterceptor: authInterceptor,
     loggingService: loggingService,
     performanceService: performanceService,

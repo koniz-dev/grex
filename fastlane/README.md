@@ -186,7 +186,7 @@ Update changelog at:
 
 Or use the script:
 ```bash
-./scripts/linux/maintenance/generate_changelog.sh 1.0.0
+./scripts/linux/maintenance/generate_changelog.sh 0.0.1
 ```
 
 ## 🔗 Integration with CI/CD

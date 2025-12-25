@@ -399,7 +399,7 @@ print(config);
 | `ENABLE_PERFORMANCE_MONITORING` | bool | Environment-aware | Enable performance monitoring (default: true in staging/prod) |
 | `ENABLE_DEBUG_FEATURES` | bool | Environment-aware | Enable debug features (default: true in dev) |
 | `ENABLE_HTTP_LOGGING` | bool | Environment-aware | Enable HTTP request/response logging (default: true in dev) |
-| `APP_VERSION` | String | `1.0.0` | App version |
+| `APP_VERSION` | String | `0.0.1` | App version |
 | `APP_BUILD_NUMBER` | String | `1` | App build number |
 
 #### Environment-Aware Defaults

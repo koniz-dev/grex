@@ -23,13 +23,13 @@ Manages version numbers using semantic versioning.
 
 **Usage:**
 ```bash
-# Bump patch version (1.0.0 -> 1.0.1)
+# Bump patch version (0.0.1 -> 0.0.1)
 ./bump_version.sh patch
 
-# Bump minor version (1.0.0 -> 1.1.0)
+# Bump minor version (0.0.1 -> 0.1.0)
 ./bump_version.sh minor
 
-# Bump major version (1.0.0 -> 2.0.0)
+# Bump major version (0.0.1 -> 1.0.0)
 ./bump_version.sh major
 
 # Bump build number only
@@ -75,7 +75,8 @@ Commit messages must follow this format:
 - ix: Bug fix
 - docs: Documentation
 - style: Code style changes
-- efactor: Code refactoring
+- 
+efactor: Code refactoring
 - 	est: Test changes
 - chore: Maintenance tasks
 - perf: Performance improvements
@@ -84,4 +85,5 @@ Commit messages must follow this format:
 **Examples:**
 - eat(auth): add login functionality
 - ix(network): handle timeout errors
-- docs(readme): update installation guide
+- docs(readme): update installation guide
+

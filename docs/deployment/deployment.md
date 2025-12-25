@@ -317,7 +317,7 @@ All workflows are located in `.github/workflows/` and are **disabled by default*
 
 The app version is defined in `pubspec.yaml`:
 ```yaml
-version: 1.0.0+1
+version: 0.0.1+1
 ```
 Format: `MAJOR.MINOR.PATCH+BUILD_NUMBER`
 

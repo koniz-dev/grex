@@ -196,10 +196,10 @@ class AppConfig {
 
   /// App version (from pubspec.yaml or environment)
   ///
-  /// Can be set via .env: `APP_VERSION=1.0.0`
+  /// Can be set via .env: `APP_VERSION=0.0.1`
   static String get appVersion => EnvConfig.get(
     'APP_VERSION',
-    defaultValue: '1.0.0',
+    defaultValue: '0.0.1',
   );
 
   /// App build number

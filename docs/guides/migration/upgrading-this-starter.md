@@ -143,7 +143,7 @@ result.when(
 dart scripts/migration/migrate_result_pattern.dart
 ```
 
-### Version 1.1.0 (Hypothetical Future Version)
+### Version 0.1.0 (Hypothetical Future Version)
 
 #### Configuration System Update
 
@@ -216,7 +216,7 @@ flutter pub run scripts/migration/migrate_to_v2.0.0.dart
 
 ## Common Upgrade Scenarios
 
-### Scenario 1: Minor Version Update (e.g., 1.0.0 → 1.1.0)
+### Scenario 1: Minor Version Update (e.g., 0.0.1 → 0.1.0)
 
 **Steps:**
 1. Update dependencies: `flutter pub upgrade`
@@ -224,7 +224,7 @@ flutter pub run scripts/migration/migrate_to_v2.0.0.dart
 3. Test your application
 4. No breaking changes expected
 
-### Scenario 2: Major Version Update (e.g., 1.0.0 → 2.0.0)
+### Scenario 2: Major Version Update (e.g., 0.0.1 → 2.0.0)
 
 **Steps:**
 1. Backup your project
@@ -299,11 +299,11 @@ Use this checklist for each upgrade:
 
 ### Upgrading to v2.0.0
 
-See [Migration Guide: v1.0.0 to v2.0.0](v1-to-v2-migration.md) (if available)
+See [Migration Guide: v0.0.1 to v2.0.0](v1-to-v2-migration.md) (if available)
 
-### Upgrading to v1.1.0
+### Upgrading to v0.1.0
 
-See [Migration Guide: v1.0.0 to v1.1.0](v1.0-to-v1.1-migration.md) (if available)
+See [Migration Guide: v0.0.1 to v0.1.0](v1.0-to-v1.1-migration.md) (if available)
 
 ## Troubleshooting Upgrades
 

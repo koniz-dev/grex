@@ -259,7 +259,7 @@ Create `package.json` (if not exists):
 ```json
 {
   "name": "grex",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "scripts": {
     "build": "flutter build web --release"
   }

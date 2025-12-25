@@ -63,8 +63,8 @@ void main() async {
         .read(authNotifierProvider.notifier)
         .getCurrentUser()
         .timeout(const Duration(seconds: 5));
-  } on Exception catch (e) {
-    debugPrint('Failed to restore session: $e');
+  } on Exception {
+    // Session restore failed, continue without session
   }
 
   runApp(

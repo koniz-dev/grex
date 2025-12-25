@@ -4,13 +4,11 @@ import 'package:grex/core/constants/api_endpoints.dart';
 import 'package:grex/core/errors/exceptions.dart';
 import 'package:grex/core/logging/logging_service.dart';
 import 'package:grex/core/network/interceptors/api_logging_interceptor.dart';
-import 'package:grex/core/network/interceptors/auth_interceptor.dart';
 import 'package:grex/core/network/interceptors/cache_interceptor.dart';
 import 'package:grex/core/network/interceptors/error_interceptor.dart';
 import 'package:grex/core/network/interceptors/logging_interceptor.dart';
 import 'package:grex/core/network/interceptors/performance_interceptor.dart';
 import 'package:grex/core/performance/performance_service.dart';
-import 'package:grex/core/storage/secure_storage_service.dart';
 import 'package:grex/core/storage/storage_service.dart';
 
 /// API client for making HTTP requests
@@ -18,8 +16,6 @@ class ApiClient {
   /// Creates an instance of [ApiClient] with configured Dio instance
   ///
   /// [storageService] - Storage service for non-sensitive data
-  /// [secureStorageService] - Secure storage service for authentication
-  /// tokens
   /// [authInterceptor] - Auth interceptor for token management and refresh
   /// [loggingService] - Optional logging service for API logging (if not
   /// provided, uses legacy LoggingInterceptor)
@@ -27,22 +23,33 @@ class ApiClient {
   /// request tracking
   ApiClient({
     required StorageService storageService,
-    required SecureStorageService secureStorageService,
-    required AuthInterceptor authInterceptor,
+    required Interceptor authInterceptor,
     LoggingService? loggingService,
     PerformanceService? performanceService,
   }) : _dio = _createDio(
          storageService,
-         secureStorageService,
          authInterceptor,
+         loggingService,
+         performanceService,
+       );
+
+  /// Creates an instance of [ApiClient] without auth interceptor
+  ///
+  /// Used for authentication operations (login, register, refresh token)
+  /// to avoid circular dependency with AuthInterceptor.
+  ApiClient.withoutAuth({
+    required StorageService storageService,
+    LoggingService? loggingService,
+    PerformanceService? performanceService,
+  }) : _dio = _createDioWithoutAuth(
+         storageService,
          loggingService,
          performanceService,
        );
 
   static Dio _createDio(
     StorageService storageService,
-    SecureStorageService secureStorageService,
-    AuthInterceptor authInterceptor,
+    Interceptor authInterceptor,
     LoggingService? loggingService,
     PerformanceService? performanceService,
   ) {
@@ -64,20 +71,48 @@ class ApiClient {
     // CacheInterceptor should be early to intercept requests before network
     // AuthInterceptor handles token injection
     // ApiLoggingInterceptor should be last to log final request/response
-    // (falls back to legacy LoggingInterceptor if loggingService is not
-    // provided)
     dio.interceptors.addAll([
       ErrorInterceptor(),
       if (performanceService != null)
         PerformanceInterceptor(performanceService: performanceService),
-      CacheInterceptor(
-        storageService: storageService,
-      ),
+      CacheInterceptor(storageService: storageService),
       authInterceptor,
       if (loggingService != null)
         ApiLoggingInterceptor(loggingService: loggingService)
       else if (AppConfig.enableLogging)
-        LoggingInterceptor(), // Legacy interceptor for backward compatibility
+        LoggingInterceptor(),
+    ]);
+
+    return dio;
+  }
+
+  static Dio _createDioWithoutAuth(
+    StorageService storageService,
+    LoggingService? loggingService,
+    PerformanceService? performanceService,
+  ) {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: AppConfig.baseUrl + ApiEndpoints.apiVersion,
+        connectTimeout: Duration(seconds: AppConfig.apiConnectTimeout),
+        receiveTimeout: Duration(seconds: AppConfig.apiReceiveTimeout),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+
+    // Add interceptors without AuthInterceptor
+    dio.interceptors.addAll([
+      ErrorInterceptor(),
+      if (performanceService != null)
+        PerformanceInterceptor(performanceService: performanceService),
+      CacheInterceptor(storageService: storageService),
+      if (loggingService != null)
+        ApiLoggingInterceptor(loggingService: loggingService)
+      else if (AppConfig.enableLogging)
+        LoggingInterceptor(),
     ]);
 
     return dio;

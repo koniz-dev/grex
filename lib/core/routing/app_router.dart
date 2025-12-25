@@ -203,32 +203,39 @@ class AppRouter {
   ];
 
   /// Error builder for GoRouter
-  static Widget errorBuilder(BuildContext context, GoRouterState state) =>
-      Scaffold(
-        appBar: AppBar(title: const Text('Page Not Found')),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error_outline, size: 64, color: Colors.grey),
-              const SizedBox(height: 16),
-              const Text(
-                'Page Not Found',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'The page "${state.uri}" could not be found.',
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () => context.go(AppRoutes.groups),
-                child: const Text('Go to Groups'),
-              ),
-            ],
-          ),
+  static Widget errorBuilder(BuildContext context, GoRouterState state) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Page Not Found')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
+            const Text(
+              'Page Not Found',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'The page "${state.uri}" could not be found.',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Path: ${state.uri.path}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.red, fontSize: 12),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () => context.go(AppRoutes.groups),
+              child: const Text('Go to Groups'),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }
