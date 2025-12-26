@@ -33,20 +33,6 @@ class ApiClient {
          performanceService,
        );
 
-  /// Creates an instance of [ApiClient] without auth interceptor
-  ///
-  /// Used for authentication operations (login, register, refresh token)
-  /// to avoid circular dependency with AuthInterceptor.
-  ApiClient.withoutAuth({
-    required StorageService storageService,
-    LoggingService? loggingService,
-    PerformanceService? performanceService,
-  }) : _dio = _createDioWithoutAuth(
-         storageService,
-         loggingService,
-         performanceService,
-       );
-
   static Dio _createDio(
     StorageService storageService,
     Interceptor authInterceptor,
@@ -77,38 +63,6 @@ class ApiClient {
         PerformanceInterceptor(performanceService: performanceService),
       CacheInterceptor(storageService: storageService),
       authInterceptor,
-      if (loggingService != null)
-        ApiLoggingInterceptor(loggingService: loggingService)
-      else if (AppConfig.enableLogging)
-        LoggingInterceptor(),
-    ]);
-
-    return dio;
-  }
-
-  static Dio _createDioWithoutAuth(
-    StorageService storageService,
-    LoggingService? loggingService,
-    PerformanceService? performanceService,
-  ) {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: AppConfig.baseUrl + ApiEndpoints.apiVersion,
-        connectTimeout: Duration(seconds: AppConfig.apiConnectTimeout),
-        receiveTimeout: Duration(seconds: AppConfig.apiReceiveTimeout),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ),
-    );
-
-    // Add interceptors without AuthInterceptor
-    dio.interceptors.addAll([
-      ErrorInterceptor(),
-      if (performanceService != null)
-        PerformanceInterceptor(performanceService: performanceService),
-      CacheInterceptor(storageService: storageService),
       if (loggingService != null)
         ApiLoggingInterceptor(loggingService: loggingService)
       else if (AppConfig.enableLogging)

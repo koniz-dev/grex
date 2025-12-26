@@ -51,11 +51,19 @@ class SupabaseAuthRepository implements AuthRepository {
   Future<Either<AuthFailure, User>> signUpWithEmail({
     required String email,
     required String password,
+    String? displayName,
+    String? preferredCurrency,
+    String? languageCode,
   }) async {
     try {
       final response = await _supabaseClient.auth.signUp(
         email: email,
         password: password,
+        data: {
+          'display_name': displayName ?? email.split('@').first,
+          'preferred_currency': preferredCurrency ?? 'VND',
+          'preferred_language': languageCode ?? 'vi',
+        },
       );
 
       if (response.user == null) {
@@ -245,23 +253,24 @@ class SupabaseAuthRepository implements AuthRepository {
 
   /// Maps Supabase AuthException to domain AuthFailure.
   AuthFailure _mapAuthExceptionToFailure(supabase.AuthException exception) {
+    final message = exception.message.toLowerCase();
+    
+    // Check message content first (more reliable than status code alone)
+    if (message.contains('user already registered')) {
+      return const EmailAlreadyInUseFailure();
+    }
+    if (message.contains('password') && 
+        (message.contains('weak') || message.contains('at least'))) {
+      return const WeakPasswordFailure();
+    }
+    if (message.contains('invalid login credentials')) {
+      return const InvalidCredentialsFailure();
+    }
+    if (message.contains('email not confirmed')) {
+      return const UnverifiedEmailFailure();
+    }
+    
     switch (exception.statusCode) {
-      case '400':
-        if (exception.message.contains('Invalid login credentials')) {
-          return const InvalidCredentialsFailure();
-        }
-        if (exception.message.contains('Password should be at least')) {
-          return const WeakPasswordFailure();
-        }
-        if (exception.message.contains('User already registered')) {
-          return const EmailAlreadyInUseFailure();
-        }
-        if (exception.message.contains('Email not confirmed')) {
-          return const UnverifiedEmailFailure();
-        }
-        return GenericAuthFailure(exception.message);
-      case '422':
-        return const WeakPasswordFailure();
       case '429':
         return const GenericAuthFailure(
           'Too many requests. Please try again later',

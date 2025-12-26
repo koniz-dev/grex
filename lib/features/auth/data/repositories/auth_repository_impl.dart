@@ -67,13 +67,16 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<AuthFailure, User>> signUpWithEmail({
     required String email,
     required String password,
+    String? displayName,
+    String? preferredCurrency,
+    String? languageCode,
   }) async {
     try {
       // Note: name parameter is not in the interface, using email as fallback
       final authResponse = await remoteDataSource.register(
         email,
         password,
-        email.split('@').first, // Use email prefix as name
+        displayName ?? email.split('@').first,
       );
       final user = authResponse.user.toEntity();
       await localDataSource.cacheUser(authResponse.user);

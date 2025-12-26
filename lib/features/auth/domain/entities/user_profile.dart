@@ -34,7 +34,7 @@ class UserProfile extends Equatable {
       email: json['email'] as String,
       displayName: json['display_name'] as String,
       preferredCurrency: json['preferred_currency'] as String,
-      languageCode: json['language_code'] as String,
+      languageCode: json['preferred_language'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
     );
@@ -90,7 +90,7 @@ class UserProfile extends Equatable {
       'email': email,
       'display_name': displayName,
       'preferred_currency': preferredCurrency,
-      'language_code': languageCode,
+      'preferred_language': languageCode,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
     };

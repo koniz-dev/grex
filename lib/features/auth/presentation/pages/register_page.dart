@@ -29,6 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isFormValid = false;
   String _selectedCurrency = 'VND';
   String _selectedLanguage = 'vi';
+  String _password = '';
 
   final List<Map<String, String>> _currencies = [
     {'code': 'VND', 'name': 'Vietnamese Dong (₫)'},
@@ -50,7 +51,12 @@ class _RegisterPageState extends State<RegisterPage> {
   void initState() {
     super.initState();
     _emailController.addListener(_validateForm);
-    _passwordController.addListener(_validateForm);
+    _passwordController.addListener(() {
+      setState(() {
+        _password = _passwordController.text;
+      });
+      _validateForm();
+    });
     _confirmPasswordController.addListener(_validateForm);
     _displayNameController.addListener(_validateForm);
   }
@@ -201,6 +207,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: InputValidators.validatePassword,
                     onChanged: (_) => _validateForm(),
                   ),
+                  const SizedBox(height: 8),
+                  // Password requirements checklist
+                  _PasswordRequirementsChecklist(password: _password),
                   const SizedBox(height: 16),
 
                   // Confirm Password Field
@@ -368,6 +377,64 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Widget hiển thị checklist yêu cầu mật khẩu real-time
+class _PasswordRequirementsChecklist extends StatelessWidget {
+  const _PasswordRequirementsChecklist({required this.password});
+
+  final String password;
+
+  @override
+  Widget build(BuildContext context) {
+    final requirements = InputValidators.getPasswordRequirements(password);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: requirements
+          .map((req) => _RequirementItem(
+                text: req.label,
+                isMet: req.isMet,
+              ))
+          .toList(),
+    );
+  }
+}
+
+class _RequirementItem extends StatelessWidget {
+  const _RequirementItem({
+    required this.text,
+    required this.isMet,
+  });
+
+  final String text;
+  final bool isMet;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isMet ? Colors.green : Colors.grey;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Icon(
+            isMet ? Icons.check_circle : Icons.circle_outlined,
+            size: 16,
+            color: color,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 12,
+              color: color,
+            ),
+          ),
+        ],
       ),
     );
   }

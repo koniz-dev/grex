@@ -204,3 +204,28 @@ class AuthEmailVerificationRequested extends AuthEvent {
   @override
   String toString() => 'AuthEmailVerificationRequested(email: $email)';
 }
+
+/// Event triggered when user attempts to verify email using OTP code.
+///
+/// Contains the OTP code and email address for verification.
+class AuthOtpVerificationRequested extends AuthEvent {
+  /// Creates an [AuthOtpVerificationRequested] event with OTP data.
+  ///
+  /// The [token] (OTP code) and [email] are required for verification.
+  const AuthOtpVerificationRequested({
+    required this.email,
+    required this.token,
+  });
+
+  /// The OTP code from the email
+  final String token;
+
+  /// The email address being verified
+  final String email;
+
+  @override
+  List<Object?> get props => [token, email];
+
+  @override
+  String toString() => 'AuthOtpVerificationRequested(email: $email)';
+}

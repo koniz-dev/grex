@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
@@ -7,7 +8,7 @@ import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 ///
 /// This page is shown to users who have registered but haven't verified
 /// their email address yet. It provides options to resend verification
-/// email and shows verification status.
+/// email, enter OTP code, and shows verification status.
 class EmailVerificationPage extends StatefulWidget {
   /// Creates an [EmailVerificationPage].
   const EmailVerificationPage({super.key});
@@ -18,7 +19,9 @@ class EmailVerificationPage extends StatefulWidget {
 
 class _EmailVerificationPageState extends State<EmailVerificationPage> {
   bool _isResendingEmail = false;
+  bool _isVerifyingOtp = false;
   DateTime? _lastResendTime;
+  final _otpController = TextEditingController();
 
   static const int _resendCooldownSeconds = 60;
 
@@ -37,6 +40,12 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
         _startVerificationCheck();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _otpController.dispose();
+    super.dispose();
   }
 
   bool get _canResendEmail {
@@ -75,6 +84,36 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     context.goToRegister();
   }
 
+  void _onVerifyOtpPressed() {
+    final otp = _otpController.text.trim();
+    if (otp.length != 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Vui lòng nhập đủ 6 số'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isVerifyingOtp = true;
+    });
+
+    // Get email from current state
+    final state = context.read<AuthBloc>().state;
+    String? email;
+    if (state is AuthEmailVerificationRequired) {
+      email = state.email;
+    }
+
+    if (email != null) {
+      context.read<AuthBloc>().add(
+        AuthOtpVerificationRequested(email: email, token: otp),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +142,9 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
               );
             } else if (state is AuthEmailVerified) {
               // Email verification successful
+              setState(() {
+                _isVerifyingOtp = false;
+              });
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Email đã được xác thực thành công!'),
@@ -113,6 +155,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
               // Handle verification errors
               setState(() {
                 _isResendingEmail = false;
+                _isVerifyingOtp = false;
               });
 
               ScaffoldMessenger.of(context).showSnackBar(
@@ -158,8 +201,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
 
                     return Text(
                       'Chúng tôi đã gửi email xác thực đến $email. '
-                      'Vui lòng kiểm tra email và nhấp vào link xác thực '
-                      'để tiếp tục.',
+                      'Nhập mã 6 số trong email hoặc nhấp vào link xác thực.',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -167,7 +209,70 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     );
                   },
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
+
+                // OTP Input Section
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Nhập mã xác thực',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _otpController,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        maxLength: 6,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          letterSpacing: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: InputDecoration(
+                          hintText: '000000',
+                          counterText: '',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed:
+                              _isVerifyingOtp ? null : _onVerifyOtpPressed,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          child: _isVerifyingOtp
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text('Xác thực'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
 
                 // Verification Status
                 Container(

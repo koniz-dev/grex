@@ -1,4 +1,5 @@
 import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 /// Data model for user, extends User entity.
 ///
@@ -13,6 +14,7 @@ class UserModel extends User {
     required super.createdAt,
     super.emailConfirmed,
     super.lastSignInAt,
+    super.displayName,
   });
 
   /// Creates a [UserModel] from a [User] entity
@@ -23,6 +25,21 @@ class UserModel extends User {
       emailConfirmed: user.emailConfirmed,
       createdAt: user.createdAt,
       lastSignInAt: user.lastSignInAt,
+      displayName: user.displayName,
+    );
+  }
+
+  /// Creates a [UserModel] from Supabase User object
+  factory UserModel.fromSupabaseUser(supabase.User user) {
+    return UserModel(
+      id: user.id,
+      email: user.email ?? '',
+      emailConfirmed: user.emailConfirmedAt != null,
+      createdAt: DateTime.parse(user.createdAt),
+      lastSignInAt: user.lastSignInAt != null
+          ? DateTime.parse(user.lastSignInAt!)
+          : null,
+      displayName: user.userMetadata?['display_name'] as String?,
     );
   }
 
@@ -36,6 +53,7 @@ class UserModel extends User {
       lastSignInAt: json['last_sign_in_at'] != null
           ? DateTime.parse(json['last_sign_in_at'] as String)
           : null,
+      displayName: json['display_name'] as String?,
     );
   }
 
@@ -48,6 +66,7 @@ class UserModel extends User {
       'email_confirmed_at': emailConfirmed ? createdAt.toIso8601String() : null,
       'created_at': createdAt.toIso8601String(),
       'last_sign_in_at': lastSignInAt?.toIso8601String(),
+      'display_name': displayName,
     };
   }
 
@@ -62,6 +81,7 @@ class UserModel extends User {
       emailConfirmed: emailConfirmed,
       createdAt: createdAt,
       lastSignInAt: lastSignInAt,
+      displayName: displayName,
     );
   }
 }

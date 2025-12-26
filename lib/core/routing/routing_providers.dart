@@ -15,9 +15,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
   // Use ref.listen to update the refresh notifier when auth state changes
   ref.listen(authNotifierProvider, (previous, next) {
-    // Only refresh if the user status or loading status actually changes
-    // the logic
-    if (previous?.user != next.user || previous?.isLoading != next.isLoading) {
+    // Only refresh when user actually changes (login/logout/register success)
+    // Don't refresh on loading or error state changes
+    if (previous?.user != next.user) {
       refreshNotifier.value = !refreshNotifier.value;
     }
   });

@@ -1,3 +1,18 @@
+/// Represents a single password requirement with its validation status.
+class PasswordRequirement {
+  /// Creates a [PasswordRequirement].
+  const PasswordRequirement({
+    required this.label,
+    required this.isMet,
+  });
+
+  /// The display label for this requirement.
+  final String label;
+
+  /// Whether this requirement is currently met.
+  final bool isMet;
+}
+
 /// Input validation utilities for authentication forms.
 ///
 /// This class provides static methods for validating user input
@@ -5,6 +20,49 @@
 class InputValidators {
   // Private constructor to prevent instantiation
   InputValidators._();
+
+  // Password validation regex patterns (single source of truth)
+  static final _uppercaseRegex = RegExp('[A-Z]');
+  static final _lowercaseRegex = RegExp('[a-z]');
+  static final _numberRegex = RegExp('[0-9]');
+  static final _specialCharRegex = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+  static const _minPasswordLength = 8;
+  static const _maxPasswordLength = 128;
+
+  /// Returns a list of password requirements with their current
+  /// validation status.
+  ///
+  /// Use this to display real-time feedback to users as they type
+  /// their password.
+  static List<PasswordRequirement> getPasswordRequirements(String password) {
+    return [
+      PasswordRequirement(
+        label: 'Ít nhất $_minPasswordLength ký tự',
+        isMet: password.length >= _minPasswordLength,
+      ),
+      PasswordRequirement(
+        label: 'Có chữ hoa (A-Z)',
+        isMet: _uppercaseRegex.hasMatch(password),
+      ),
+      PasswordRequirement(
+        label: 'Có chữ thường (a-z)',
+        isMet: _lowercaseRegex.hasMatch(password),
+      ),
+      PasswordRequirement(
+        label: 'Có số (0-9)',
+        isMet: _numberRegex.hasMatch(password),
+      ),
+      PasswordRequirement(
+        label: r'Có ký tự đặc biệt (!@#$%^&*)',
+        isMet: _specialCharRegex.hasMatch(password),
+      ),
+    ];
+  }
+
+  /// Checks if all password requirements are met.
+  static bool areAllPasswordRequirementsMet(String password) {
+    return getPasswordRequirements(password).every((req) => req.isMet);
+  }
 
   /// Validates email format according to RFC 5322 specification.
   ///
@@ -53,31 +111,27 @@ class InputValidators {
       return 'Password is required';
     }
 
-    if (password.length < 8) {
-      return 'Password must be at least 8 characters long';
+    if (password.length < _minPasswordLength) {
+      return 'Password must be at least $_minPasswordLength characters long';
     }
 
-    if (password.length > 128) {
-      return 'Password is too long (maximum 128 characters)';
+    if (password.length > _maxPasswordLength) {
+      return 'Password is too long (maximum $_maxPasswordLength characters)';
     }
 
-    // Check for uppercase letter
-    if (!RegExp('[A-Z]').hasMatch(password)) {
+    if (!_uppercaseRegex.hasMatch(password)) {
       return 'Password must contain at least one uppercase letter';
     }
 
-    // Check for lowercase letter
-    if (!RegExp('[a-z]').hasMatch(password)) {
+    if (!_lowercaseRegex.hasMatch(password)) {
       return 'Password must contain at least one lowercase letter';
     }
 
-    // Check for number
-    if (!RegExp('[0-9]').hasMatch(password)) {
+    if (!_numberRegex.hasMatch(password)) {
       return 'Password must contain at least one number';
     }
 
-    // Check for special character
-    if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password)) {
+    if (!_specialCharRegex.hasMatch(password)) {
       return 'Password must contain at least one special character';
     }
 

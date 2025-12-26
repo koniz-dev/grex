@@ -38,6 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthStateChanged>(_onAuthStateChanged);
     on<AuthVerificationEmailRequested>(_onVerificationEmailRequested);
     on<AuthEmailVerificationRequested>(_onEmailVerificationRequested);
+    on<AuthOtpVerificationRequested>(_onOtpVerificationRequested);
 
     // Listen to authentication state changes
     _listenToAuthStateChanges();
@@ -204,10 +205,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
-    // Attempt registration
+    // Attempt registration with metadata for database trigger
     final result = await _authRepository.signUpWithEmail(
       email: event.email.trim(),
       password: event.password,
+      displayName: event.displayName.trim(),
+      preferredCurrency: event.preferredCurrency ?? 'VND',
+      languageCode: event.languageCode ?? 'vi',
     );
 
     await result.fold(
@@ -218,40 +222,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ),
       ),
       (user) async {
-        // Create user profile
-        final profile = UserProfile(
-          id: user.id,
-          email: user.email,
-          displayName: event.displayName.trim(),
-          preferredCurrency: event.preferredCurrency ?? 'VND',
-          languageCode: event.languageCode ?? 'vi',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        );
-
-        final profileResult = await _userRepository.createUserProfile(profile);
-
-        profileResult.fold(
-          (failure) => emit(
-            AuthError(
-              message:
-                  'Account created but profile setup failed: '
-                  '${_getErrorMessage(failure)}',
+        // Profile is automatically created by database trigger
+        // Just emit the appropriate state based on email verification
+        if (user.emailConfirmed) {
+          emit(AuthAuthenticated(user: user));
+        } else {
+          emit(
+            AuthEmailVerificationRequired(
+              user: user,
+              email: user.email,
             ),
-          ),
-          (createdProfile) {
-            if (user.emailConfirmed) {
-              emit(AuthAuthenticated(user: user, profile: createdProfile));
-            } else {
-              emit(
-                AuthEmailVerificationRequired(
-                  user: user,
-                  email: user.email,
-                ),
-              );
-            }
-          },
-        );
+          );
+        }
       },
     );
   }
@@ -457,6 +439,94 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+  }
+
+  /// Handles OTP verification requests.
+  ///
+  /// Verifies the user's email using the OTP code from email.
+  Future<void> _onOtpVerificationRequested(
+    AuthOtpVerificationRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    // Validate email
+    final emailError = InputValidators.validateEmail(event.email);
+    if (emailError != null) {
+      emit(AuthError(message: emailError));
+      return;
+    }
+
+    // Validate OTP format (6 digits)
+    if (event.token.length != 6 || int.tryParse(event.token) == null) {
+      emit(const AuthError(message: 'Mã OTP phải là 6 chữ số'));
+      return;
+    }
+
+    final result = await _authRepository.verifyEmail(
+      token: event.token,
+      email: event.email.trim(),
+    );
+
+    await result.fold(
+      (failure) async => emit(
+        AuthError(
+          message: _getOtpErrorMessage(failure),
+          failure: failure,
+        ),
+      ),
+      (_) async {
+        // Get the updated user after verification
+        final currentUser = _authRepository.currentUser;
+
+        if (currentUser != null) {
+          // Load user profile
+          final profileResult = await _userRepository.getUserProfile(
+            currentUser.id,
+          );
+
+          await profileResult.fold(
+            (failure) async {
+              emit(AuthEmailVerified(user: currentUser));
+            },
+            (profile) async {
+              // Start session management after successful verification
+              final session = _authRepository.currentSession;
+              if (session != null) {
+                final supabaseSession = session as supabase.Session;
+                await _sessionManager.startSession(
+                  accessToken: supabaseSession.accessToken,
+                  refreshToken: supabaseSession.refreshToken ?? '',
+                  user: currentUser,
+                  userProfile: profile,
+                );
+              }
+
+              emit(AuthAuthenticated(user: currentUser, profile: profile));
+            },
+          );
+        } else {
+          emit(
+            const AuthError(
+              message: 'Xác thực thành công nhưng không tìm thấy người dùng',
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  /// Maps OTP verification failures to user-friendly error messages.
+  String _getOtpErrorMessage(dynamic failure) {
+    if (failure is AuthFailure) {
+      final message = failure.message.toLowerCase();
+      if (message.contains('expired') || message.contains('otp_expired')) {
+        return 'Mã OTP đã hết hạn. Vui lòng yêu cầu mã mới.';
+      }
+      if (message.contains('invalid') || message.contains('token')) {
+        return 'Mã OTP không hợp lệ. Vui lòng kiểm tra lại.';
+      }
+      return failure.message;
+    }
+    return failure.toString();
   }
 
   /// Listens to authentication state changes from the repository.

@@ -28,6 +28,9 @@ abstract class AuthRepository {
   /// Returns [Right<User>] on successful registration.
   /// Returns [Left<AuthFailure>] on registration failure.
   ///
+  /// The [displayName], [preferredCurrency], and [languageCode] are stored
+  /// in user metadata and used by database trigger to create user profile.
+  ///
   /// Possible failures:
   /// - [EmailAlreadyInUseFailure] for existing email addresses
   /// - [WeakPasswordFailure] for passwords not meeting requirements
@@ -35,6 +38,9 @@ abstract class AuthRepository {
   Future<Either<AuthFailure, User>> signUpWithEmail({
     required String email,
     required String password,
+    String? displayName,
+    String? preferredCurrency,
+    String? languageCode,
   });
 
   /// Signs out the current user.

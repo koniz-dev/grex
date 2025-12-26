@@ -17,12 +17,14 @@ class User extends Equatable {
   /// Optional parameters:
   /// - [emailConfirmed]: Whether email is verified (default: true)
   /// - [lastSignInAt]: Last sign-in timestamp
+  /// - [displayName]: User's display name from metadata
   const User({
     required this.id,
     required this.email,
     required this.createdAt,
     this.emailConfirmed = true,
     this.lastSignInAt,
+    this.displayName,
   });
 
   /// Create User from Supabase Auth JSON response
@@ -35,6 +37,7 @@ class User extends Equatable {
       lastSignInAt: json['last_sign_in_at'] != null
           ? DateTime.parse(json['last_sign_in_at'] as String)
           : null,
+      displayName: json['display_name'] as String?,
     );
   }
 
@@ -48,6 +51,7 @@ class User extends Equatable {
       lastSignInAt: supabaseUser.lastSignInAt != null
           ? DateTime.parse(supabaseUser.lastSignInAt!)
           : null,
+      displayName: supabaseUser.userMetadata?['display_name'] as String?,
     );
   }
 
@@ -66,6 +70,9 @@ class User extends Equatable {
   /// When the user last signed in (null if never signed in)
   final DateTime? lastSignInAt;
 
+  /// User's display name from metadata
+  final String? displayName;
+
   /// Convert User to JSON for serialization
   Map<String, dynamic> toJson() {
     return {
@@ -74,6 +81,7 @@ class User extends Equatable {
       'email_confirmed_at': emailConfirmed ? createdAt.toIso8601String() : null,
       'created_at': createdAt.toIso8601String(),
       'last_sign_in_at': lastSignInAt?.toIso8601String(),
+      'display_name': displayName,
     };
   }
 
@@ -84,6 +92,7 @@ class User extends Equatable {
     bool? emailConfirmed,
     DateTime? createdAt,
     DateTime? lastSignInAt,
+    String? displayName,
   }) {
     return User(
       id: id ?? this.id,
@@ -91,6 +100,7 @@ class User extends Equatable {
       emailConfirmed: emailConfirmed ?? this.emailConfirmed,
       createdAt: createdAt ?? this.createdAt,
       lastSignInAt: lastSignInAt ?? this.lastSignInAt,
+      displayName: displayName ?? this.displayName,
     );
   }
 
@@ -101,6 +111,7 @@ class User extends Equatable {
     emailConfirmed,
     createdAt,
     lastSignInAt,
+    displayName,
   ];
 
   @override
@@ -110,7 +121,8 @@ class User extends Equatable {
         'email: $email, '
         'emailConfirmed: $emailConfirmed, '
         'createdAt: $createdAt, '
-        'lastSignInAt: $lastSignInAt'
+        'lastSignInAt: $lastSignInAt, '
+        'displayName: $displayName'
         ')';
   }
 }

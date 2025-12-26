@@ -51,10 +51,14 @@ class SupabaseUserRepository implements UserRepository {
         ..remove('created_at')
         ..remove('updated_at');
 
+      // Insert without returning data to avoid RLS SELECT check
+      await _supabaseClient.from(_tableName).insert(profileData);
+
+      // Fetch the created profile separately
       final response = await _supabaseClient
           .from(_tableName)
-          .insert(profileData)
           .select()
+          .eq('id', profile.id)
           .single();
 
       final createdProfile = UserProfile.fromJson(response);
