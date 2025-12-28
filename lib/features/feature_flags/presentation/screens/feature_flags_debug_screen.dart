@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grex/core/feature_flags/feature_flags_manager.dart';
 import 'package:grex/features/feature_flags/domain/entities/feature_flag.dart';
 import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Debug screen for managing feature flags
 ///
@@ -24,7 +25,7 @@ class _FeatureFlagsDebugScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Feature Flags Debug'),
+        title: Text(context.l10n.featureFlagsDebugTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -32,7 +33,7 @@ class _FeatureFlagsDebugScreenState
               ref.invalidate(allFeatureFlagsProvider);
               await ref.read(featureFlagsManagerProvider).refresh();
             },
-            tooltip: 'Refresh flags',
+            tooltip: context.l10n.refresh,
           ),
           IconButton(
             icon: const Icon(Icons.clear_all),
@@ -40,21 +41,20 @@ class _FeatureFlagsDebugScreenState
               if (!mounted) return;
               final navigatorContext = context;
               final messenger = ScaffoldMessenger.of(context);
+              final l10n = context.l10n;
               final confirmed = await showDialog<bool>(
                 context: navigatorContext,
                 builder: (context) => AlertDialog(
-                  title: const Text('Clear All Overrides'),
-                  content: const Text(
-                    'Are you sure you want to clear all local overrides?',
-                  ),
+                  title: Text(l10n.clearAllOverrides),
+                  content: Text(l10n.confirmClearOverrides),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Cancel'),
+                      child: Text(l10n.cancel),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text('Clear'),
+                      child: Text(l10n.clear),
                     ),
                   ],
                 ),
@@ -67,30 +67,30 @@ class _FeatureFlagsDebugScreenState
                 ref.invalidate(allFeatureFlagsProvider);
                 if (!mounted) return;
                 messenger.showSnackBar(
-                  const SnackBar(
-                    content: Text('All local overrides cleared'),
+                  SnackBar(
+                    content: Text(l10n.overridesCleared),
                   ),
                 );
               }
             },
-            tooltip: 'Clear all overrides',
+            tooltip: context.l10n.clearAllOverrides,
           ),
         ],
       ),
       body: allFlagsAsync.when(
-        data: _buildFlagsList,
+        data: (flags) => _buildFlagsList(context, flags),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Error: $error'),
+              Text('${context.l10n.error}: $error'),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   ref.invalidate(allFeatureFlagsProvider);
                 },
-                child: const Text('Retry'),
+                child: Text(context.l10n.retry),
               ),
             ],
           ),
@@ -99,10 +99,13 @@ class _FeatureFlagsDebugScreenState
     );
   }
 
-  Widget _buildFlagsList(Map<String, FeatureFlag?> flags) {
+  Widget _buildFlagsList(
+    BuildContext context,
+    Map<String, FeatureFlag?> flags,
+  ) {
     if (flags.isEmpty) {
-      return const Center(
-        child: Text('No feature flags found'),
+      return Center(
+        child: Text(context.l10n.noFeatureFlags),
       );
     }
 

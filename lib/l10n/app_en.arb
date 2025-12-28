@@ -215,6 +215,368 @@
   "refresh": "Refresh",
   "@refresh": {
     "description": "Refresh button label"
+  },
+  "noItemsFound": "No items found",
+  "@noItemsFound": {
+    "description": "Message displayed when a list has no items"
+  },
+  "loadMore": "Load More",
+  "@loadMore": {
+    "description": "Button label to load more items in a list"
+  },
+  "copyError": "Copy Error",
+  "@copyError": {
+    "description": "Button label to copy error details to clipboard"
+  },
+  "restart": "Restart",
+  "@restart": {
+    "description": "Button label to restart the application"
+  },
+  "errorOccurred": "An unexpected error occurred",
+  "@errorOccurred": {
+    "description": "Title for global error handler screen"
+  },
+  "errorDescription": "The application encountered an error that could not be handled. We have logged this error and will fix it in the next version.",
+  "@errorDescription": {
+    "description": "Description text explaining the error to the user"
+  },
+  "errorDetails": "Error Details:",
+  "@errorDetails": {
+    "description": "Label for error details section"
+  },
+  "copyErrorSuccess": "Error details copied",
+  "@copyErrorSuccess": {
+    "description": "Snackbar message when error details are copied to clipboard"
+  },
+  "contactSupport": "If the error persists, please contact technical support.",
+  "@contactSupport": {
+    "description": "Message suggesting user contact support for persistent errors"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Button label to close a dialog or screen"
+  },
+  "pageNotFound": "Page Not Found",
+  "@pageNotFound": {
+    "description": "Title displayed on the 404 error page when a route is not found"
+  },
+  "goToGroups": "Go to Groups",
+  "@goToGroups": {
+    "description": "Button label to navigate to the groups page from error page"
+  },
+  "addPayment": "Add Payment",
+  "@addPayment": {
+    "description": "Button label to add a new payment"
+  },
+  "createPayment": "Create Payment",
+  "@createPayment": {
+    "description": "Title for the create payment screen"
+  },
+  "paymentCreatedSuccess": "Payment created successfully",
+  "@paymentCreatedSuccess": {
+    "description": "Success message when a payment is created"
+  },
+  "selectPayer": "Please select who made the payment",
+  "@selectPayer": {
+    "description": "Validation message when payer is not selected"
+  },
+  "selectRecipient": "Please select who received the payment",
+  "@selectRecipient": {
+    "description": "Validation message when recipient is not selected"
+  },
+  "payerRecipientSame": "Payer and recipient cannot be the same person",
+  "@payerRecipientSame": {
+    "description": "Validation error when payer and recipient are the same"
+  },
+  "paymentDetails": "Payment Details",
+  "@paymentDetails": {
+    "description": "Title for payment details section or screen"
+  },
+  "deletePayment": "Delete Payment",
+  "@deletePayment": {
+    "description": "Button label to delete a payment"
+  },
+  "confirmDeletePayment": "Are you sure you want to delete this payment?",
+  "@confirmDeletePayment": {
+    "description": "Confirmation message for deleting a payment"
+  },
+  "addFirstPayment": "Add First Payment",
+  "@addFirstPayment": {
+    "description": "Button label shown when no payments exist"
+  },
+  "clearAll": "Clear All",
+  "@clearAll": {
+    "description": "Button label to clear all filters or selections"
+  },
+  "ascendingOrder": "Ascending Order",
+  "@ascendingOrder": {
+    "description": "Label for ascending sort order option"
+  },
+  "apply": "Apply",
+  "@apply": {
+    "description": "Button label to apply filters or changes"
+  },
+  "minAmountNegative": "Minimum amount cannot be negative",
+  "@minAmountNegative": {
+    "description": "Validation error for negative minimum amount"
+  },
+  "maxAmountNegative": "Maximum amount cannot be negative",
+  "@maxAmountNegative": {
+    "description": "Validation error for negative maximum amount"
+  },
+  "minGreaterThanMax": "Min amount cannot be greater than max amount",
+  "@minGreaterThanMax": {
+    "description": "Validation error when minimum exceeds maximum amount"
+  },
+  "startAfterEnd": "Start date cannot be after end date",
+  "@startAfterEnd": {
+    "description": "Validation error when start date is after end date"
+  },
+  "createNewGroup": "Create New Group",
+  "@createNewGroup": {
+    "description": "Button label to create a new group"
+  },
+  "featureFlagsDebugTitle": "Feature Flags Debug",
+  "@featureFlagsDebugTitle": {
+    "description": "Title for the feature flags debug screen"
+  },
+  "clearAllOverrides": "Clear All Overrides",
+  "@clearAllOverrides": {
+    "description": "Button label to clear all feature flag overrides"
+  },
+  "confirmClearOverrides": "Are you sure you want to clear all local overrides?",
+  "@confirmClearOverrides": {
+    "description": "Confirmation message for clearing all feature flag overrides"
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Button label for clear action"
+  },
+  "overridesCleared": "All local overrides cleared",
+  "@overridesCleared": {
+    "description": "Success message when all feature flag overrides are cleared"
+  },
+  "noFeatureFlags": "No feature flags found",
+  "@noFeatureFlags": {
+    "description": "Message displayed when no feature flags are available"
+  },
+  "featureFlagsExamples": "Feature Flags Examples",
+  "@featureFlagsExamples": {
+    "description": "Title for the feature flags examples screen"
+  },
+  "newFeatureEnabled": "New Feature is ENABLED",
+  "@newFeatureEnabled": {
+    "description": "Message indicating a new feature is enabled"
+  },
+  "newFeatureDisabled": "New Feature is DISABLED",
+  "@newFeatureDisabled": {
+    "description": "Message indicating a new feature is disabled"
+  },
+  "noPayments": "No Payments",
+  "@noPayments": {
+    "description": "Title displayed when there are no payments"
+  },
+  "paymentSummary": "Payment Summary",
+  "@paymentSummary": {
+    "description": "Title for the payment summary section"
+  },
+  "totalPayments": "Total Payments",
+  "@totalPayments": {
+    "description": "Label for total number of payments"
+  },
+  "totalAmount": "Total Amount",
+  "@totalAmount": {
+    "description": "Label for total payment amount"
+  },
+  "errorLoadingPayments": "Error loading payments",
+  "@errorLoadingPayments": {
+    "description": "Error message when payments fail to load"
+  },
+  "filterPayments": "Filter payments",
+  "@filterPayments": {
+    "description": "Tooltip for filter payments button"
+  },
+  "clearFilters": "Clear filters",
+  "@clearFilters": {
+    "description": "Tooltip for clear filters button"
+  },
+  "filterAndSortPayments": "Filter & Sort Payments",
+  "@filterAndSortPayments": {
+    "description": "Title for the filter and sort bottom sheet"
+  },
+  "dateRange": "Date Range",
+  "@dateRange": {
+    "description": "Section header for date range filter"
+  },
+  "amountRange": "Amount Range",
+  "@amountRange": {
+    "description": "Section header for amount range filter"
+  },
+  "sortBy": "Sort By",
+  "@sortBy": {
+    "description": "Section header for sort options"
+  },
+  "startDate": "Start Date",
+  "@startDate": {
+    "description": "Label for start date field"
+  },
+  "endDate": "End Date",
+  "@endDate": {
+    "description": "Label for end date field"
+  },
+  "minAmount": "Min Amount",
+  "@minAmount": {
+    "description": "Label for minimum amount field"
+  },
+  "maxAmount": "Max Amount",
+  "@maxAmount": {
+    "description": "Label for maximum amount field"
+  },
+  "selectDate": "Select date",
+  "@selectDate": {
+    "description": "Placeholder text for date selection"
+  },
+  "oldestToNewest": "Oldest to newest",
+  "@oldestToNewest": {
+    "description": "Description for ascending date sort order"
+  },
+  "newestToOldest": "Newest to oldest",
+  "@newestToOldest": {
+    "description": "Description for descending date sort order"
+  },
+  "amountRequired": "Amount is required",
+  "@amountRequired": {
+    "description": "Validation error when amount is empty"
+  },
+  "enterValidPositiveAmount": "Enter a valid positive amount",
+  "@enterValidPositiveAmount": {
+    "description": "Validation error for invalid amount"
+  },
+  "currency": "Currency",
+  "@currency": {
+    "description": "Label for currency field"
+  },
+  "descriptionOptional": "Description (Optional)",
+  "@descriptionOptional": {
+    "description": "Label for optional description field"
+  },
+  "whatWasPaymentFor": "What was this payment for?",
+  "@whatWasPaymentFor": {
+    "description": "Hint text for payment description field"
+  },
+  "paymentDate": "Payment Date",
+  "@paymentDate": {
+    "description": "Label for payment date field"
+  },
+  "paymentParticipants": "Payment Participants",
+  "@paymentParticipants": {
+    "description": "Section title for payment participants"
+  },
+  "whoPaid": "Who paid? *",
+  "@whoPaid": {
+    "description": "Label for payer selection field"
+  },
+  "whoReceivedPayment": "Who received the payment? *",
+  "@whoReceivedPayment": {
+    "description": "Label for recipient selection field"
+  },
+  "cannotPaySelf": "A person cannot pay themselves. Please select different payer and recipient.",
+  "@cannotPaySelf": {
+    "description": "Warning message when payer and recipient are the same"
+  },
+  "from": "From: {name}",
+  "@from": {
+    "description": "Label showing who made the payment",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "to": "To: {name}",
+  "@to": {
+    "description": "Label showing who received the payment",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "amount": "Amount: {value}",
+  "@amount": {
+    "description": "Label showing payment amount",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "Description: {text}",
+  "@description": {
+    "description": "Label showing payment description",
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "date": "Date: {value}",
+  "@date": {
+    "description": "Label showing payment date",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "groupPayments": "{groupName} Payments",
+  "@groupPayments": {
+    "description": "Title for group payments page",
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "enterPaymentAmount": "Enter the payment amount",
+  "@enterPaymentAmount": {
+    "description": "Helper text for payment amount field"
+  },
+  "confirmDeletePaymentFrom": "Are you sure you want to delete this payment from {payer} to {recipient}?",
+  "@confirmDeletePaymentFrom": {
+    "description": "Confirmation message for deleting a specific payment",
+    "placeholders": {
+      "payer": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "noPaymentsMatchCriteria": "No payments match your criteria.",
+  "@noPaymentsMatchCriteria": {
+    "description": "Message when no payments match filter criteria"
+  },
+  "noPaymentsMatchSearch": "No payments match your search criteria. Try adjusting your filters.",
+  "@noPaymentsMatchSearch": {
+    "description": "Message when no payments match search filters"
+  },
+  "noPaymentsYet": "No payments yet. Add your first payment to get started!",
+  "@noPaymentsYet": {
+    "description": "Message when there are no payments in the group"
+  },
+  "amountLabel": "Amount *",
+  "@amountLabel": {
+    "description": "Label for required amount field"
+  },
+  "exampleScreen": "Example Screen",
+  "@exampleScreen": {
+    "description": "Title for example screen in performance examples"
+  },
+  "exampleScreenContent": "Example Screen Content",
+  "@exampleScreenContent": {
+    "description": "Content text for example screen in performance examples"
   }
 }
 

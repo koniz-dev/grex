@@ -10,6 +10,7 @@ import 'package:grex/features/payments/presentation/pages/create_payment_page.da
 import 'package:grex/features/payments/presentation/widgets/empty_payments_widget.dart';
 import 'package:grex/features/payments/presentation/widgets/payment_filter_sheet.dart';
 import 'package:grex/features/payments/presentation/widgets/payment_list_item.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
 
 /// Page displaying list of payments for a group with filtering and sorting
@@ -153,11 +154,12 @@ class _PaymentListPageState extends State<PaymentListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocProvider.value(
       value: _paymentBloc,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('${widget.groupName} Payments'),
+          title: Text(l10n.groupPayments(widget.groupName)),
           actions: [
             IconButton(
               icon: Icon(
@@ -167,13 +169,13 @@ class _PaymentListPageState extends State<PaymentListPage> {
                     : null,
               ),
               onPressed: _showFilterSheet,
-              tooltip: 'Filter payments',
+              tooltip: l10n.filterPayments,
             ),
             if (_hasActiveFilters)
               IconButton(
                 icon: const Icon(Icons.clear),
                 onPressed: _clearFilters,
-                tooltip: 'Clear filters',
+                tooltip: l10n.clearFilters,
               ),
           ],
         ),
@@ -252,7 +254,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'Error loading payments',
+                              l10n.errorLoadingPayments,
                               style: Theme.of(context).textTheme.headlineSmall,
                             ),
                             const SizedBox(height: 8),
@@ -264,7 +266,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
                             const SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: _loadPayments,
-                              child: const Text('Retry'),
+                              child: Text(l10n.retry),
                             ),
                           ],
                         ),
@@ -281,7 +283,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
                         return EmptyPaymentsWidget(
                           message: state is PaymentsLoaded
                               ? _getEmptyStateMessage(state)
-                              : 'No payments match your criteria.',
+                              : l10n.noPaymentsMatchCriteria,
                           onAddPayment: _navigateToCreatePayment,
                         );
                       }
@@ -332,7 +334,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: _navigateToCreatePayment,
-          tooltip: 'Add payment',
+          tooltip: l10n.addPayment,
           child: const Icon(Icons.add),
         ),
       ),
@@ -340,6 +342,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
   }
 
   Widget _buildSummaryCard(List<Payment> payments) {
+    final l10n = context.l10n;
     final totalAmount = payments.fold<double>(0, (sum, p) => sum + p.amount);
     return Card(
       margin: const EdgeInsets.all(16),
@@ -349,7 +352,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Payment Summary',
+              l10n.paymentSummary,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -362,7 +365,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Total Payments',
+                      l10n.totalPayments,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.outline,
                       ),
@@ -379,7 +382,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Total Amount',
+                      l10n.totalAmount,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.outline,
                       ),
@@ -457,11 +460,11 @@ class _PaymentListPageState extends State<PaymentListPage> {
   }
 
   String _getEmptyStateMessage(PaymentsLoaded state) {
+    final l10n = context.l10n;
     if (state.hasActiveFilters) {
-      return 'No payments match your search criteria. '
-          'Try adjusting your filters.';
+      return l10n.noPaymentsMatchSearch;
     } else {
-      return 'No payments yet. Add your first payment to get started!';
+      return l10n.noPaymentsYet;
     }
   }
 
@@ -476,32 +479,33 @@ class _PaymentListPageState extends State<PaymentListPage> {
   }
 
   void _showPaymentDetails(Payment payment) {
+    final l10n = context.l10n;
     unawaited(
       showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Payment Details'),
+          title: Text(l10n.paymentDetails),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('From: ${payment.payerName}'),
-              Text('To: ${payment.recipientName}'),
+              Text(l10n.from(payment.payerName)),
+              Text(l10n.to(payment.recipientName)),
               Text(
-                'Amount: ${CurrencyFormatter.format(
+                l10n.amount(CurrencyFormatter.format(
                   amount: payment.amount,
                   currencyCode: payment.currency,
-                )}',
+                )),
               ),
               if (payment.description != null)
-                Text('Description: ${payment.description}'),
-              Text('Date: ${_formatDate(payment.paymentDate)}'),
+                Text(l10n.description(payment.description!)),
+              Text(l10n.date(_formatDate(payment.paymentDate))),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text(l10n.close),
             ),
           ],
         ),
@@ -510,26 +514,29 @@ class _PaymentListPageState extends State<PaymentListPage> {
   }
 
   void _confirmDeletePayment(Payment payment) {
+    final l10n = context.l10n;
     unawaited(
       showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Delete Payment'),
+          title: Text(l10n.deletePayment),
           content: Text(
-            'Are you sure you want to delete this payment '
-            'from ${payment.payerName} to ${payment.recipientName}?',
+            l10n.confirmDeletePaymentFrom(
+              payment.payerName,
+              payment.recipientName,
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              child: Text(l10n.cancel),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.error,
               ),
-              child: const Text('Delete'),
+              child: Text(l10n.delete),
             ),
           ],
         ),

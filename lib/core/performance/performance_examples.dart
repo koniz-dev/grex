@@ -8,6 +8,7 @@ import 'package:grex/core/performance/performance_screen_mixin.dart';
 import 'package:grex/core/performance/performance_service.dart';
 import 'package:grex/core/performance/performance_utils.dart';
 import 'package:grex/core/utils/result.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Examples of using performance monitoring in different scenarios
 ///
@@ -158,8 +159,8 @@ class _ExampleScreenWithPerformanceState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Example Screen')),
-      body: const Center(child: Text('Example Screen Content')),
+      appBar: AppBar(title: Text(context.l10n.exampleScreen)),
+      body: Center(child: Text(context.l10n.exampleScreenContent)),
     );
   }
 }
@@ -181,8 +182,8 @@ class ExampleScreenWithWrapper extends ConsumerWidget {
       screenRoute: '/example-wrapper',
       performanceService: performanceService,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Example Screen')),
-        body: const Center(child: Text('Example Screen Content')),
+        appBar: AppBar(title: Text(context.l10n.exampleScreen)),
+        body: Center(child: Text(context.l10n.exampleScreenContent)),
       ),
     );
   }

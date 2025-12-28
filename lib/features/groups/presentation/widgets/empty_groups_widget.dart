@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grex/features/groups/presentation/pages/create_group_page.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Widget shown when there are no groups to display
 class EmptyGroupsWidget extends StatelessWidget {
@@ -61,7 +62,7 @@ class EmptyGroupsWidget extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () => _navigateToCreateGroup(context),
               icon: const Icon(Icons.add),
-              label: const Text('Tạo nhóm mới'),
+              label: Text(context.l10n.createNewGroup),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,

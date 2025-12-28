@@ -15,6 +15,7 @@ import 'package:grex/features/groups/presentation/pages/group_list_page.dart';
 import 'package:grex/features/groups/presentation/pages/group_settings_page.dart';
 import 'package:grex/features/payments/presentation/pages/create_payment_page.dart';
 import 'package:grex/features/payments/presentation/pages/payment_list_page.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Main app router configuration using GoRouter
 class AppRouter {
@@ -204,17 +205,21 @@ class AppRouter {
 
   /// Error builder for GoRouter
   static Widget errorBuilder(BuildContext context, GoRouterState state) {
+    final l10n = context.l10nOrNull;
+    final pageNotFoundText = l10n?.pageNotFound ?? 'Page Not Found';
+    final goToGroupsText = l10n?.goToGroups ?? 'Go to Groups';
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Page Not Found')),
+      appBar: AppBar(title: Text(pageNotFoundText)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.error_outline, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
-            const Text(
-              'Page Not Found',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Text(
+              pageNotFoundText,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
@@ -231,7 +236,7 @@ class AppRouter {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => context.go(AppRoutes.groups),
-              child: const Text('Go to Groups'),
+              child: Text(goToGroupsText),
             ),
           ],
         ),

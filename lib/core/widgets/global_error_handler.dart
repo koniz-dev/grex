@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grex/core/services/error_logging_service.dart';
 import 'package:grex/core/widgets/error_display_widget.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Global error handler widget that wraps the app and catches unhandled errors.
 ///
@@ -67,6 +69,8 @@ class _GlobalErrorHandlerState extends State<GlobalErrorHandler> {
     // Show error UI if there's an unhandled error
     if (_lastError != null) {
       return MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: SafeArea(
             child: ErrorRecoveryScreen(
@@ -109,6 +113,10 @@ class ErrorRecoveryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Use l10nOrNull for safe access since this screen may render
+    // before localization is fully ready
+    final l10n = context.l10nOrNull;
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -124,9 +132,9 @@ class ErrorRecoveryScreen extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Error title
-          const Text(
-            'Đã xảy ra lỗi không mong muốn',
-            style: TextStyle(
+          Text(
+            l10n?.errorOccurred ?? 'An unexpected error occurred',
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Colors.red,
@@ -136,11 +144,12 @@ class ErrorRecoveryScreen extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Error description
-          const Text(
-            'Ứng dụng đã gặp phải một lỗi không thể xử lý. '
-            'Chúng tôi đã ghi nhận lỗi này và sẽ khắc phục '
-            'trong phiên bản tiếp theo.',
-            style: TextStyle(
+          Text(
+            l10n?.errorDescription ??
+                'The application encountered an error that could not be '
+                'handled. We have logged this error and will fix it in '
+                'the next version.',
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
             ),
@@ -160,9 +169,9 @@ class ErrorRecoveryScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Chi tiết lỗi:',
-                    style: TextStyle(
+                  Text(
+                    l10n?.errorDetails ?? 'Error Details:',
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
@@ -188,7 +197,7 @@ class ErrorRecoveryScreen extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => _copyErrorToClipboard(context),
                   icon: const Icon(Icons.copy),
-                  label: const Text('Sao chép lỗi'),
+                  label: Text(l10n?.copyError ?? 'Copy Error'),
                 ),
               ),
               const SizedBox(width: 16),
@@ -196,7 +205,7 @@ class ErrorRecoveryScreen extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: onRestart,
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Khởi động lại'),
+                  label: Text(l10n?.restart ?? 'Restart'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
@@ -209,7 +218,8 @@ class ErrorRecoveryScreen extends StatelessWidget {
 
           // Help text
           Text(
-            'Nếu lỗi tiếp tục xảy ra, vui lòng liên hệ hỗ trợ kỹ thuật.',
+            l10n?.contactSupport ??
+                'If the error persists, please contact technical support.',
             style: TextStyle(
               fontSize: 12,
               color: Colors.grey[600],
@@ -223,8 +233,7 @@ class ErrorRecoveryScreen extends StatelessWidget {
 
   /// Copies error details to clipboard
   void _copyErrorToClipboard(BuildContext context) {
-    final errorText =
-        '''
+    final errorText = '''
 Grex Error Report
 ================
 Time: ${DateTime.now().toIso8601String()}
@@ -239,11 +248,12 @@ ${error.stack}
 ''';
 
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10nOrNull;
     unawaited(
       Clipboard.setData(ClipboardData(text: errorText)).then((_) {
         messenger.showSnackBar(
-          const SnackBar(
-            content: Text('Chi tiết lỗi đã được sao chép'),
+          SnackBar(
+            content: Text(l10n?.copyErrorSuccess ?? 'Error details copied'),
             backgroundColor: Colors.green,
           ),
         );
@@ -297,27 +307,32 @@ mixin ErrorHandlingMixin<T extends StatefulWidget> on State<T> {
     unawaited(
       showDialog<void>(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(title ?? 'Đã xảy ra lỗi'),
-          content: ErrorDisplayWidget(
-            error: error,
-            showRetry: false,
-          ),
-          actions: [
-            if (onRetry != null)
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  onRetry();
-                },
-                child: const Text('Thử lại'),
-              ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Đóng'),
+        builder: (dialogContext) {
+          final l10n = dialogContext.l10nOrNull;
+          return AlertDialog(
+            title: Text(
+              title ?? l10n?.errorOccurred ?? 'An error occurred',
             ),
-          ],
-        ),
+            content: ErrorDisplayWidget(
+              error: error,
+              showRetry: false,
+            ),
+            actions: [
+              if (onRetry != null)
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                    onRetry();
+                  },
+                  child: Text(l10n?.retry ?? 'Retry'),
+                ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(l10n?.close ?? 'Close'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

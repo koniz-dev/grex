@@ -4,6 +4,7 @@ import 'package:grex/core/feature_flags/feature_flags_manager.dart';
 import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
 import 'package:grex/features/feature_flags/presentation/screens/feature_flags_debug_screen.dart';
 import 'package:grex/features/feature_flags/presentation/widgets/feature_flag_builder.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Example screen demonstrating feature flags usage
 ///
@@ -16,7 +17,7 @@ class FeatureFlagsExampleScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Feature Flags Examples'),
+        title: Text(context.l10n.featureFlagsExamples),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -28,7 +29,7 @@ class FeatureFlagsExampleScreen extends ConsumerWidget {
                 ),
               );
             },
-            tooltip: 'Open Debug Menu',
+            tooltip: context.l10n.featureFlagsDebug,
           ),
         ],
       ),
@@ -38,7 +39,7 @@ class FeatureFlagsExampleScreen extends ConsumerWidget {
           _buildSection(
             context,
             'Example 1: FeatureFlagBuilder',
-            _buildExample1(),
+            _buildExample1(context),
           ),
           const SizedBox(height: 24),
           _buildSection(
@@ -80,7 +81,7 @@ class FeatureFlagsExampleScreen extends ConsumerWidget {
   }
 
   /// Example 1: Using FeatureFlagBuilder with different builders
-  Widget _buildExample1() {
+  Widget _buildExample1(BuildContext context) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -94,31 +95,31 @@ class FeatureFlagsExampleScreen extends ConsumerWidget {
             const SizedBox(height: 16),
             FeatureFlagBuilder(
               flag: FeatureFlags.newFeature,
-              enabledBuilder: (context) => Container(
+              enabledBuilder: (ctx) => Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.green.shade100,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green),
-                    SizedBox(width: 8),
-                    Text('New Feature is ENABLED'),
+                    const Icon(Icons.check_circle, color: Colors.green),
+                    const SizedBox(width: 8),
+                    Text(context.l10n.newFeatureEnabled),
                   ],
                 ),
               ),
-              disabledBuilder: (context) => Container(
+              disabledBuilder: (ctx) => Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.cancel, color: Colors.grey),
-                    SizedBox(width: 8),
-                    Text('New Feature is DISABLED'),
+                    const Icon(Icons.cancel, color: Colors.grey),
+                    const SizedBox(width: 8),
+                    Text(context.l10n.newFeatureDisabled),
                   ],
                 ),
               ),

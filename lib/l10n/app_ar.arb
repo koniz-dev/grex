@@ -1,19 +1,56 @@
 {
   "@@locale": "ar",
   "appTitle": "Grex",
+  "@appTitle": {
+    "description": "The application title"
+  },
   "welcome": "مرحباً بك في Grex مع Clean Architecture!",
+  "@welcome": {
+    "description": "Welcome message on home screen"
+  },
   "featureFlagsReady": "نظام Feature Flags جاهز!",
+  "@featureFlagsReady": {
+    "description": "Message indicating feature flags are ready"
+  },
   "checkExamples": "تحقق من الأمثلة في feature_flags_example_screen.dart",
+  "@checkExamples": {
+    "description": "Hint to check examples"
+  },
   "login": "تسجيل الدخول",
+  "@login": {
+    "description": "Login button and screen title"
+  },
   "register": "التسجيل",
+  "@register": {
+    "description": "Register button and screen title"
+  },
   "email": "البريد الإلكتروني",
+  "@email": {
+    "description": "Email field label"
+  },
   "password": "كلمة المرور",
+  "@password": {
+    "description": "Password field label"
+  },
   "name": "الاسم",
+  "@name": {
+    "description": "Name field label"
+  },
   "emailRequired": "يرجى إدخال بريدك الإلكتروني",
+  "@emailRequired": {
+    "description": "Email validation error message"
+  },
   "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+  "@emailInvalid": {
+    "description": "Invalid email validation error"
+  },
   "passwordRequired": "يرجى إدخال كلمة المرور",
+  "@passwordRequired": {
+    "description": "Password validation error message"
+  },
   "passwordMinLength": "يجب أن تكون كلمة المرور على الأقل {minLength} أحرف",
   "@passwordMinLength": {
+    "description": "Password minimum length validation error",
     "placeholders": {
       "minLength": {
         "type": "int"
@@ -21,8 +58,12 @@
     }
   },
   "nameRequired": "يرجى إدخال اسمك",
+  "@nameRequired": {
+    "description": "Name validation error message"
+  },
   "nameMinLength": "يجب أن يكون الاسم على الأقل {minLength} أحرف",
   "@nameMinLength": {
+    "description": "Name minimum length validation error",
     "placeholders": {
       "minLength": {
         "type": "int"
@@ -30,33 +71,112 @@
     }
   },
   "dontHaveAccount": "ليس لديك حساب؟ سجل",
+  "@dontHaveAccount": {
+    "description": "Link to registration screen"
+  },
   "alreadyHaveAccount": "هل لديك حساب بالفعل؟ سجل الدخول",
+  "@alreadyHaveAccount": {
+    "description": "Link to login screen"
+  },
   "retry": "إعادة المحاولة",
+  "@retry": {
+    "description": "Retry button label"
+  },
   "error": "خطأ",
+  "@error": {
+    "description": "Error title"
+  },
   "loading": "جاري التحميل...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
   "language": "اللغة",
+  "@language": {
+    "description": "Language selection label"
+  },
   "selectLanguage": "اختر اللغة",
+  "@selectLanguage": {
+    "description": "Language selection dialog title"
+  },
   "english": "الإنجليزية",
+  "@english": {
+    "description": "English language name"
+  },
   "spanish": "الإسبانية",
+  "@spanish": {
+    "description": "Spanish language name"
+  },
   "arabic": "العربية",
+  "@arabic": {
+    "description": "Arabic language name"
+  },
   "vietnamese": "الفيتنامية",
+  "@vietnamese": {
+    "description": "Vietnamese language name"
+  },
   "featureFlagsDebug": "تصحيح Feature Flags",
+  "@featureFlagsDebug": {
+    "description": "Feature flags debug tooltip"
+  },
   "unexpectedError": "حدث خطأ غير متوقع",
+  "@unexpectedError": {
+    "description": "Generic error message"
+  },
   "badRequest": "طلب غير صحيح. يرجى التحقق من المدخلات.",
+  "@badRequest": {
+    "description": "HTTP 400 error message"
+  },
   "unauthorized": "غير مصرح. يرجى تسجيل الدخول مرة أخرى.",
+  "@unauthorized": {
+    "description": "HTTP 401 error message"
+  },
   "forbidden": "ممنوع. ليس لديك إذن.",
+  "@forbidden": {
+    "description": "HTTP 403 error message"
+  },
   "notFound": "المورد غير موجود.",
+  "@notFound": {
+    "description": "HTTP 404 error message"
+  },
   "conflict": "تعارض. المورد موجود بالفعل.",
+  "@conflict": {
+    "description": "HTTP 409 error message"
+  },
   "validationError": "خطأ في التحقق. يرجى التحقق من المدخلات.",
+  "@validationError": {
+    "description": "HTTP 422 error message"
+  },
   "tooManyRequests": "طلبات كثيرة جداً. يرجى المحاولة لاحقاً.",
+  "@tooManyRequests": {
+    "description": "HTTP 429 error message"
+  },
   "internalServerError": "خطأ داخلي في الخادم. يرجى المحاولة لاحقاً.",
+  "@internalServerError": {
+    "description": "HTTP 500 error message"
+  },
   "badGateway": "بوابة غير صحيحة. يرجى المحاولة لاحقاً.",
+  "@badGateway": {
+    "description": "HTTP 502 error message"
+  },
   "serviceUnavailable": "الخدمة غير متاحة. يرجى المحاولة لاحقاً.",
+  "@serviceUnavailable": {
+    "description": "HTTP 503 error message"
+  },
   "gatewayTimeout": "انتهت مهلة البوابة. يرجى المحاولة لاحقاً.",
+  "@gatewayTimeout": {
+    "description": "HTTP 504 error message"
+  },
   "clientError": "حدث خطأ في العميل.",
+  "@clientError": {
+    "description": "Generic 4xx error message"
+  },
   "serverError": "حدث خطأ في الخادم. يرجى المحاولة لاحقاً.",
+  "@serverError": {
+    "description": "Generic 5xx error message"
+  },
   "itemCount": "{count, plural, =0{لا توجد عناصر} =1{عنصر واحد} other{{count} عناصر}}",
   "@itemCount": {
+    "description": "Pluralized item count",
     "placeholders": {
       "count": {
         "type": "int"
@@ -65,6 +185,7 @@
   },
   "minutesAgo": "{count, plural, =0{الآن} =1{منذ دقيقة واحدة} other{منذ {count} دقائق}}",
   "@minutesAgo": {
+    "description": "Pluralized minutes ago",
     "placeholders": {
       "count": {
         "type": "int"
@@ -72,10 +193,389 @@
     }
   },
   "edit": "تعديل",
+  "@edit": {
+    "description": "Edit button label"
+  },
   "delete": "حذف",
+  "@delete": {
+    "description": "Delete button label"
+  },
   "save": "حفظ",
+  "@save": {
+    "description": "Save button label"
+  },
   "cancel": "إلغاء",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
   "add": "إضافة",
-  "refresh": "تحديث"
+  "@add": {
+    "description": "Add button label"
+  },
+  "refresh": "تحديث",
+  "@refresh": {
+    "description": "Refresh button label"
+  },
+  "noItemsFound": "لم يتم العثور على عناصر",
+  "@noItemsFound": {
+    "description": "Message displayed when a list has no items"
+  },
+  "loadMore": "تحميل المزيد",
+  "@loadMore": {
+    "description": "Button label to load more items in a list"
+  },
+  "copyError": "نسخ الخطأ",
+  "@copyError": {
+    "description": "Button label to copy error details to clipboard"
+  },
+  "restart": "إعادة التشغيل",
+  "@restart": {
+    "description": "Button label to restart the application"
+  },
+  "errorOccurred": "حدث خطأ غير متوقع",
+  "@errorOccurred": {
+    "description": "Title for global error handler screen"
+  },
+  "errorDescription": "واجه التطبيق خطأ لا يمكن معالجته. لقد سجلنا هذا الخطأ وسنقوم بإصلاحه في الإصدار القادم.",
+  "@errorDescription": {
+    "description": "Description text explaining the error to the user"
+  },
+  "errorDetails": "تفاصيل الخطأ:",
+  "@errorDetails": {
+    "description": "Label for error details section"
+  },
+  "copyErrorSuccess": "تم نسخ تفاصيل الخطأ",
+  "@copyErrorSuccess": {
+    "description": "Snackbar message when error details are copied to clipboard"
+  },
+  "contactSupport": "إذا استمر الخطأ، يرجى الاتصال بالدعم الفني.",
+  "@contactSupport": {
+    "description": "Message suggesting user contact support for persistent errors"
+  },
+  "close": "إغلاق",
+  "@close": {
+    "description": "Button label to close a dialog or screen"
+  },
+  "pageNotFound": "الصفحة غير موجودة",
+  "@pageNotFound": {
+    "description": "Title displayed on the 404 error page when a route is not found"
+  },
+  "goToGroups": "الذهاب إلى المجموعات",
+  "@goToGroups": {
+    "description": "Button label to navigate to the groups page from error page"
+  },
+  "addPayment": "إضافة دفعة",
+  "@addPayment": {
+    "description": "Button label to add a new payment"
+  },
+  "createPayment": "إنشاء دفعة",
+  "@createPayment": {
+    "description": "Title for the create payment screen"
+  },
+  "paymentCreatedSuccess": "تم إنشاء الدفعة بنجاح",
+  "@paymentCreatedSuccess": {
+    "description": "Success message when a payment is created"
+  },
+  "selectPayer": "يرجى اختيار من قام بالدفع",
+  "@selectPayer": {
+    "description": "Validation message when payer is not selected"
+  },
+  "selectRecipient": "يرجى اختيار من استلم الدفعة",
+  "@selectRecipient": {
+    "description": "Validation message when recipient is not selected"
+  },
+  "payerRecipientSame": "لا يمكن أن يكون الدافع والمستلم نفس الشخص",
+  "@payerRecipientSame": {
+    "description": "Validation error when payer and recipient are the same"
+  },
+  "paymentDetails": "تفاصيل الدفعة",
+  "@paymentDetails": {
+    "description": "Title for payment details section or screen"
+  },
+  "deletePayment": "حذف الدفعة",
+  "@deletePayment": {
+    "description": "Button label to delete a payment"
+  },
+  "confirmDeletePayment": "هل أنت متأكد أنك تريد حذف هذه الدفعة؟",
+  "@confirmDeletePayment": {
+    "description": "Confirmation message for deleting a payment"
+  },
+  "addFirstPayment": "إضافة أول دفعة",
+  "@addFirstPayment": {
+    "description": "Button label shown when no payments exist"
+  },
+  "clearAll": "مسح الكل",
+  "@clearAll": {
+    "description": "Button label to clear all filters or selections"
+  },
+  "ascendingOrder": "ترتيب تصاعدي",
+  "@ascendingOrder": {
+    "description": "Label for ascending sort order option"
+  },
+  "apply": "تطبيق",
+  "@apply": {
+    "description": "Button label to apply filters or changes"
+  },
+  "minAmountNegative": "لا يمكن أن يكون الحد الأدنى للمبلغ سالباً",
+  "@minAmountNegative": {
+    "description": "Validation error for negative minimum amount"
+  },
+  "maxAmountNegative": "لا يمكن أن يكون الحد الأقصى للمبلغ سالباً",
+  "@maxAmountNegative": {
+    "description": "Validation error for negative maximum amount"
+  },
+  "minGreaterThanMax": "لا يمكن أن يكون الحد الأدنى للمبلغ أكبر من الحد الأقصى",
+  "@minGreaterThanMax": {
+    "description": "Validation error when minimum exceeds maximum amount"
+  },
+  "startAfterEnd": "لا يمكن أن يكون تاريخ البدء بعد تاريخ الانتهاء",
+  "@startAfterEnd": {
+    "description": "Validation error when start date is after end date"
+  },
+  "createNewGroup": "إنشاء مجموعة جديدة",
+  "@createNewGroup": {
+    "description": "Button label to create a new group"
+  },
+  "featureFlagsDebugTitle": "تصحيح Feature Flags",
+  "@featureFlagsDebugTitle": {
+    "description": "Title for the feature flags debug screen"
+  },
+  "clearAllOverrides": "مسح جميع التجاوزات",
+  "@clearAllOverrides": {
+    "description": "Button label to clear all feature flag overrides"
+  },
+  "confirmClearOverrides": "هل أنت متأكد أنك تريد مسح جميع التجاوزات المحلية؟",
+  "@confirmClearOverrides": {
+    "description": "Confirmation message for clearing all feature flag overrides"
+  },
+  "clear": "مسح",
+  "@clear": {
+    "description": "Button label for clear action"
+  },
+  "overridesCleared": "تم مسح جميع التجاوزات المحلية",
+  "@overridesCleared": {
+    "description": "Success message when all feature flag overrides are cleared"
+  },
+  "noFeatureFlags": "لم يتم العثور على feature flags",
+  "@noFeatureFlags": {
+    "description": "Message displayed when no feature flags are available"
+  },
+  "featureFlagsExamples": "أمثلة Feature Flags",
+  "@featureFlagsExamples": {
+    "description": "Title for the feature flags examples screen"
+  },
+  "newFeatureEnabled": "الميزة الجديدة مُفعّلة",
+  "@newFeatureEnabled": {
+    "description": "Message indicating a new feature is enabled"
+  },
+  "newFeatureDisabled": "الميزة الجديدة مُعطّلة",
+  "@newFeatureDisabled": {
+    "description": "Message indicating a new feature is disabled"
+  },
+  "noPayments": "لا توجد مدفوعات",
+  "@noPayments": {
+    "description": "Title displayed when there are no payments"
+  },
+  "paymentSummary": "ملخص المدفوعات",
+  "@paymentSummary": {
+    "description": "Title for the payment summary section"
+  },
+  "totalPayments": "إجمالي المدفوعات",
+  "@totalPayments": {
+    "description": "Label for total number of payments"
+  },
+  "totalAmount": "المبلغ الإجمالي",
+  "@totalAmount": {
+    "description": "Label for total payment amount"
+  },
+  "errorLoadingPayments": "خطأ في تحميل المدفوعات",
+  "@errorLoadingPayments": {
+    "description": "Error message when payments fail to load"
+  },
+  "filterPayments": "تصفية المدفوعات",
+  "@filterPayments": {
+    "description": "Tooltip for filter payments button"
+  },
+  "clearFilters": "مسح الفلاتر",
+  "@clearFilters": {
+    "description": "Tooltip for clear filters button"
+  },
+  "filterAndSortPayments": "تصفية وترتيب المدفوعات",
+  "@filterAndSortPayments": {
+    "description": "Title for the filter and sort bottom sheet"
+  },
+  "dateRange": "نطاق التاريخ",
+  "@dateRange": {
+    "description": "Section header for date range filter"
+  },
+  "amountRange": "نطاق المبلغ",
+  "@amountRange": {
+    "description": "Section header for amount range filter"
+  },
+  "sortBy": "ترتيب حسب",
+  "@sortBy": {
+    "description": "Section header for sort options"
+  },
+  "startDate": "تاريخ البدء",
+  "@startDate": {
+    "description": "Label for start date field"
+  },
+  "endDate": "تاريخ الانتهاء",
+  "@endDate": {
+    "description": "Label for end date field"
+  },
+  "minAmount": "الحد الأدنى للمبلغ",
+  "@minAmount": {
+    "description": "Label for minimum amount field"
+  },
+  "maxAmount": "الحد الأقصى للمبلغ",
+  "@maxAmount": {
+    "description": "Label for maximum amount field"
+  },
+  "selectDate": "اختر التاريخ",
+  "@selectDate": {
+    "description": "Placeholder text for date selection"
+  },
+  "oldestToNewest": "من الأقدم إلى الأحدث",
+  "@oldestToNewest": {
+    "description": "Description for ascending date sort order"
+  },
+  "newestToOldest": "من الأحدث إلى الأقدم",
+  "@newestToOldest": {
+    "description": "Description for descending date sort order"
+  },
+  "amountRequired": "المبلغ مطلوب",
+  "@amountRequired": {
+    "description": "Validation error when amount is empty"
+  },
+  "enterValidPositiveAmount": "أدخل مبلغاً موجباً صحيحاً",
+  "@enterValidPositiveAmount": {
+    "description": "Validation error for invalid amount"
+  },
+  "currency": "العملة",
+  "@currency": {
+    "description": "Label for currency field"
+  },
+  "descriptionOptional": "الوصف (اختياري)",
+  "@descriptionOptional": {
+    "description": "Label for optional description field"
+  },
+  "whatWasPaymentFor": "ما الغرض من هذه الدفعة؟",
+  "@whatWasPaymentFor": {
+    "description": "Hint text for payment description field"
+  },
+  "paymentDate": "تاريخ الدفع",
+  "@paymentDate": {
+    "description": "Label for payment date field"
+  },
+  "paymentParticipants": "المشاركون في الدفع",
+  "@paymentParticipants": {
+    "description": "Section title for payment participants"
+  },
+  "whoPaid": "من دفع؟ *",
+  "@whoPaid": {
+    "description": "Label for payer selection field"
+  },
+  "whoReceivedPayment": "من استلم الدفعة؟ *",
+  "@whoReceivedPayment": {
+    "description": "Label for recipient selection field"
+  },
+  "cannotPaySelf": "لا يمكن للشخص أن يدفع لنفسه. يرجى اختيار دافع ومستلم مختلفين.",
+  "@cannotPaySelf": {
+    "description": "Warning message when payer and recipient are the same"
+  },
+  "from": "من: {name}",
+  "@from": {
+    "description": "Label showing who made the payment",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "to": "إلى: {name}",
+  "@to": {
+    "description": "Label showing who received the payment",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "amount": "المبلغ: {value}",
+  "@amount": {
+    "description": "Label showing payment amount",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "الوصف: {text}",
+  "@description": {
+    "description": "Label showing payment description",
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "date": "التاريخ: {value}",
+  "@date": {
+    "description": "Label showing payment date",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "groupPayments": "مدفوعات {groupName}",
+  "@groupPayments": {
+    "description": "Title for group payments page",
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "enterPaymentAmount": "أدخل مبلغ الدفع",
+  "@enterPaymentAmount": {
+    "description": "Helper text for payment amount field"
+  },
+  "confirmDeletePaymentFrom": "هل أنت متأكد أنك تريد حذف هذه الدفعة من {payer} إلى {recipient}؟",
+  "@confirmDeletePaymentFrom": {
+    "description": "Confirmation message for deleting a specific payment",
+    "placeholders": {
+      "payer": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "noPaymentsMatchCriteria": "لا توجد مدفوعات تطابق معاييرك.",
+  "@noPaymentsMatchCriteria": {
+    "description": "Message when no payments match filter criteria"
+  },
+  "noPaymentsMatchSearch": "لا توجد مدفوعات تطابق معايير البحث. حاول تعديل الفلاتر.",
+  "@noPaymentsMatchSearch": {
+    "description": "Message when no payments match search filters"
+  },
+  "noPaymentsYet": "لا توجد مدفوعات بعد. أضف أول دفعة للبدء!",
+  "@noPaymentsYet": {
+    "description": "Message when there are no payments in the group"
+  },
+  "amountLabel": "المبلغ *",
+  "@amountLabel": {
+    "description": "Label for required amount field"
+  },
+  "exampleScreen": "شاشة المثال",
+  "@exampleScreen": {
+    "description": "Title for example screen in performance examples"
+  },
+  "exampleScreenContent": "محتوى شاشة المثال",
+  "@exampleScreenContent": {
+    "description": "Content text for example screen in performance examples"
+  }
 }
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grex/l10n/app_localizations.dart';
 
 /// BuildContext extension methods
 ///
@@ -16,6 +17,27 @@ import 'package:flutter/material.dart';
 /// context.showSnackBar('Operation successful');
 /// ```
 extension ContextExtensions on BuildContext {
+  /// Quick access to AppLocalizations
+  ///
+  /// Usage: context.l10n.someString
+  ///
+  /// Throws assertion error if AppLocalizations is not found in context.
+  /// Use [l10nOrNull] for safe access when localization might not be available.
+  AppLocalizations get l10n {
+    final localizations = AppLocalizations.of(this);
+    assert(localizations != null, 'AppLocalizations not found in context');
+    return localizations!;
+  }
+
+  /// Safe access to AppLocalizations with null fallback
+  ///
+  /// Usage: context.l10nOrNull?.someString ?? 'Fallback'
+  ///
+  /// Returns null if AppLocalizations is not available in context.
+  /// Useful for widgets that might render before localization is ready
+  /// or outside the MaterialApp widget tree.
+  AppLocalizations? get l10nOrNull => AppLocalizations.of(this);
+
   /// Get theme
   ThemeData get theme => Theme.of(this);
 

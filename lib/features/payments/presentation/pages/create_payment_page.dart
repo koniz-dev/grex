@@ -8,6 +8,7 @@ import 'package:grex/features/groups/presentation/bloc/group_state.dart';
 import 'package:grex/features/payments/presentation/bloc/payment_bloc.dart';
 import 'package:grex/features/payments/presentation/bloc/payment_event.dart';
 import 'package:grex/features/payments/presentation/bloc/payment_state.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
 
 /// Page for creating a new payment with form validation
@@ -92,6 +93,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: _paymentBloc),
@@ -99,7 +101,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
       ],
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add Payment'),
+          title: Text(l10n.addPayment),
           actions: [
             TextButton(
               onPressed: _isLoading ? null : _savePayment,
@@ -109,7 +111,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Save'),
+                  : Text(l10n.save),
             ),
           ],
         ),
@@ -129,8 +131,8 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
 
                 if (state is PaymentOperationSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Payment created successfully'),
+                    SnackBar(
+                      content: Text(l10n.paymentCreatedSuccess),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -182,7 +184,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
                     onPressed: _isLoading ? null : _savePayment,
                     child: _isLoading
                         ? const CircularProgressIndicator()
-                        : const Text('Create Payment'),
+                        : Text(l10n.createPayment),
                   ),
                 ),
               ],
@@ -194,6 +196,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
   }
 
   Widget _buildPaymentDetailsSection() {
+    final l10n = context.l10n;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -201,7 +204,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Payment Details',
+              l10n.paymentDetails,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -216,21 +219,21 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
                   child: TextFormField(
                     controller: _amountController,
                     decoration: InputDecoration(
-                      labelText: 'Amount *',
+                      labelText: l10n.amountLabel,
                       prefixText: CurrencyFormatter.getCurrencySymbol(
                         _selectedCurrency,
                       ),
                       border: const OutlineInputBorder(),
-                      helperText: 'Enter the payment amount',
+                      helperText: l10n.enterPaymentAmount,
                     ),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Amount is required';
+                        return l10n.amountRequired;
                       }
                       final amount = double.tryParse(value);
                       if (amount == null || amount <= 0) {
-                        return 'Enter a valid positive amount';
+                        return l10n.enterValidPositiveAmount;
                       }
                       return null;
                     },
@@ -240,9 +243,9 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     initialValue: _selectedCurrency,
-                    decoration: const InputDecoration(
-                      labelText: 'Currency',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.currency,
+                      border: const OutlineInputBorder(),
                     ),
                     items: CurrencyFormatter.getSupportedCurrencies()
                         .map(
@@ -273,10 +276,10 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
             // Description field (optional)
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description (Optional)',
-                hintText: 'What was this payment for?',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.descriptionOptional,
+                hintText: l10n.whatWasPaymentFor,
+                border: const OutlineInputBorder(),
               ),
               textCapitalization: TextCapitalization.sentences,
               maxLines: 2,
@@ -288,10 +291,10 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
             InkWell(
               onTap: _selectPaymentDate,
               child: InputDecorator(
-                decoration: const InputDecoration(
-                  labelText: 'Payment Date',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.calendar_today),
+                decoration: InputDecoration(
+                  labelText: l10n.paymentDate,
+                  border: const OutlineInputBorder(),
+                  suffixIcon: const Icon(Icons.calendar_today),
                 ),
                 child: Text(_formatDate(_paymentDate)),
               ),
@@ -303,6 +306,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
   }
 
   Widget _buildParticipantSelectionSection() {
+    final l10n = context.l10n;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -310,7 +314,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Payment Participants',
+              l10n.paymentParticipants,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -319,7 +323,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
 
             // Payer selection
             _buildMemberSelectionField(
-              label: 'Who paid? *',
+              label: l10n.whoPaid,
               selectedMemberId: _selectedPayerId,
               onChanged: (memberId) {
                 setState(() {
@@ -332,7 +336,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please select who made the payment';
+                  return l10n.selectPayer;
                 }
                 return null;
               },
@@ -342,7 +346,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
 
             // Recipient selection
             _buildMemberSelectionField(
-              label: 'Who received the payment? *',
+              label: l10n.whoReceivedPayment,
               selectedMemberId: _selectedRecipientId,
               onChanged: (memberId) {
                 setState(() {
@@ -351,10 +355,10 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please select who received the payment';
+                  return l10n.selectRecipient;
                 }
                 if (value == _selectedPayerId) {
-                  return 'Payer and recipient cannot be the same person';
+                  return l10n.payerRecipientSame;
                 }
                 return null;
               },
@@ -381,8 +385,7 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'A person cannot pay themselves. '
-                        'Please select different payer and recipient.',
+                        l10n.cannotPaySelf,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onErrorContainer,
                           fontSize: 12,
@@ -480,14 +483,15 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
   }
 
   void _savePayment() {
+    final l10n = context.l10n;
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     if (_selectedPayerId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select who made the payment'),
+        SnackBar(
+          content: Text(l10n.selectPayer),
           backgroundColor: Colors.orange,
         ),
       );
@@ -496,8 +500,8 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
 
     if (_selectedRecipientId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select who received the payment'),
+        SnackBar(
+          content: Text(l10n.selectRecipient),
           backgroundColor: Colors.orange,
         ),
       );
@@ -506,8 +510,8 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
 
     if (_selectedPayerId == _selectedRecipientId) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Payer and recipient cannot be the same person'),
+        SnackBar(
+          content: Text(l10n.payerRecipientSame),
           backgroundColor: Colors.orange,
         ),
       );

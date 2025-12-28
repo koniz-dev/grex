@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grex/features/payments/presentation/bloc/payment_event.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
 
 /// Bottom sheet for filtering and sorting payments
@@ -98,6 +99,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return DraggableScrollableSheet(
       initialChildSize: 0.7,
       maxChildSize: 0.9,
@@ -128,13 +130,13 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                 child: Row(
                   children: [
                     Text(
-                      'Filter & Sort Payments',
+                      l10n.filterAndSortPayments,
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const Spacer(),
                     TextButton(
                       onPressed: _clearAllFilters,
-                      child: const Text('Clear All'),
+                      child: Text(l10n.clearAll),
                     ),
                   ],
                 ),
@@ -149,13 +151,13 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     // Date range section
-                    _buildSectionHeader('Date Range'),
+                    _buildSectionHeader(l10n.dateRange),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: _buildDateField(
-                            label: 'Start Date',
+                            label: l10n.startDate,
                             date: _startDate,
                             onTap: _selectStartDate,
                           ),
@@ -163,7 +165,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: _buildDateField(
-                            label: 'End Date',
+                            label: l10n.endDate,
                             date: _endDate,
                             onTap: _selectEndDate,
                           ),
@@ -174,7 +176,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                     const SizedBox(height: 24),
 
                     // Amount range section
-                    _buildSectionHeader('Amount Range'),
+                    _buildSectionHeader(l10n.amountRange),
                     const SizedBox(height: 8),
                     Row(
                       children: [
@@ -183,7 +185,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                             controller: _minAmountController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              labelText: 'Min Amount',
+                              labelText: l10n.minAmount,
                               prefixText: CurrencyFormatter.getCurrencySymbol(
                                 widget.groupCurrency,
                               ),
@@ -200,7 +202,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                             controller: _maxAmountController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              labelText: 'Max Amount',
+                              labelText: l10n.maxAmount,
                               prefixText: CurrencyFormatter.getCurrencySymbol(
                                 widget.groupCurrency,
                               ),
@@ -217,7 +219,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                     const SizedBox(height: 24),
 
                     // Sort section
-                    _buildSectionHeader('Sort By'),
+                    _buildSectionHeader(l10n.sortBy),
                     const SizedBox(height: 8),
                     RadioGroup<PaymentSortCriteria>(
                       groupValue: _sortBy,
@@ -243,11 +245,11 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
 
                     // Sort order
                     SwitchListTile(
-                      title: const Text('Ascending Order'),
+                      title: Text(l10n.ascendingOrder),
                       subtitle: Text(
                         _sortAscending
-                            ? 'Oldest to newest'
-                            : 'Newest to oldest',
+                            ? l10n.oldestToNewest
+                            : l10n.newestToOldest,
                       ),
                       value: _sortAscending,
                       onChanged: (value) {
@@ -270,14 +272,14 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Cancel'),
+                        child: Text(l10n.cancel),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: _applyFilters,
-                        child: const Text('Apply'),
+                        child: Text(l10n.apply),
                       ),
                     ),
                   ],
@@ -304,6 +306,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
     required DateTime? date,
     required VoidCallback onTap,
   }) {
+    final l10n = context.l10n;
     return InkWell(
       onTap: onTap,
       child: InputDecorator(
@@ -315,7 +318,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
                   icon: const Icon(Icons.clear),
                   onPressed: () {
                     setState(() {
-                      if (label == 'Start Date') {
+                      if (label == l10n.startDate) {
                         _startDate = null;
                       } else {
                         _endDate = null;
@@ -326,7 +329,7 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
               : const Icon(Icons.calendar_today),
         ),
         child: Text(
-          date != null ? _formatDate(date) : 'Select date',
+          date != null ? _formatDate(date) : l10n.selectDate,
           style: TextStyle(
             color: date != null
                 ? Theme.of(context).colorScheme.onSurface
@@ -391,11 +394,12 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
   }
 
   void _applyFilters() {
+    final l10n = context.l10n;
     // Validate amount range
     if (_minAmount != null && _minAmount! < 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Minimum amount cannot be negative'),
+        SnackBar(
+          content: Text(l10n.minAmountNegative),
           backgroundColor: Colors.orange,
         ),
       );
@@ -404,8 +408,8 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
 
     if (_maxAmount != null && _maxAmount! < 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Maximum amount cannot be negative'),
+        SnackBar(
+          content: Text(l10n.maxAmountNegative),
           backgroundColor: Colors.orange,
         ),
       );
@@ -414,8 +418,8 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
 
     if (_minAmount != null && _maxAmount != null && _minAmount! > _maxAmount!) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Min amount cannot be greater than max amount'),
+        SnackBar(
+          content: Text(l10n.minGreaterThanMax),
           backgroundColor: Colors.orange,
         ),
       );
@@ -427,8 +431,8 @@ class _PaymentFilterSheetState extends State<PaymentFilterSheet> {
         _endDate != null &&
         _startDate!.isAfter(_endDate!)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Start date cannot be after end date'),
+        SnackBar(
+          content: Text(l10n.startAfterEnd),
           backgroundColor: Colors.orange,
         ),
       );

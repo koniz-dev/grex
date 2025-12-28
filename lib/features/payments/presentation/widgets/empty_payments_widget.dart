@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Widget displayed when there are no payments to show
 class EmptyPaymentsWidget extends StatelessWidget {
@@ -17,6 +18,7 @@ class EmptyPaymentsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -30,7 +32,7 @@ class EmptyPaymentsWidget extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'No Payments',
+              l10n.noPayments,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: Theme.of(context).colorScheme.outline,
               ),
@@ -48,7 +50,7 @@ class EmptyPaymentsWidget extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onAddPayment,
                 icon: const Icon(Icons.add),
-                label: const Text('Add First Payment'),
+                label: Text(l10n.addFirstPayment),
               ),
             ],
           ],

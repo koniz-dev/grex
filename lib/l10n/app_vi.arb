@@ -215,6 +215,368 @@
   "refresh": "Làm mới",
   "@refresh": {
     "description": "Refresh button label"
+  },
+  "noItemsFound": "Không tìm thấy mục nào",
+  "@noItemsFound": {
+    "description": "Message displayed when a list has no items"
+  },
+  "loadMore": "Tải thêm",
+  "@loadMore": {
+    "description": "Button label to load more items in a list"
+  },
+  "copyError": "Sao chép lỗi",
+  "@copyError": {
+    "description": "Button label to copy error details to clipboard"
+  },
+  "restart": "Khởi động lại",
+  "@restart": {
+    "description": "Button label to restart the application"
+  },
+  "errorOccurred": "Đã xảy ra lỗi không mong muốn",
+  "@errorOccurred": {
+    "description": "Title for global error handler screen"
+  },
+  "errorDescription": "Ứng dụng gặp phải lỗi không thể xử lý. Chúng tôi đã ghi nhận lỗi này và sẽ khắc phục trong phiên bản tiếp theo.",
+  "@errorDescription": {
+    "description": "Description text explaining the error to the user"
+  },
+  "errorDetails": "Chi tiết lỗi:",
+  "@errorDetails": {
+    "description": "Label for error details section"
+  },
+  "copyErrorSuccess": "Đã sao chép chi tiết lỗi",
+  "@copyErrorSuccess": {
+    "description": "Snackbar message when error details are copied to clipboard"
+  },
+  "contactSupport": "Nếu lỗi vẫn tiếp tục, vui lòng liên hệ bộ phận hỗ trợ kỹ thuật.",
+  "@contactSupport": {
+    "description": "Message suggesting user contact support for persistent errors"
+  },
+  "close": "Đóng",
+  "@close": {
+    "description": "Button label to close a dialog or screen"
+  },
+  "pageNotFound": "Không tìm thấy trang",
+  "@pageNotFound": {
+    "description": "Title displayed on the 404 error page when a route is not found"
+  },
+  "goToGroups": "Đi đến Nhóm",
+  "@goToGroups": {
+    "description": "Button label to navigate to the groups page from error page"
+  },
+  "addPayment": "Thêm thanh toán",
+  "@addPayment": {
+    "description": "Button label to add a new payment"
+  },
+  "createPayment": "Tạo thanh toán",
+  "@createPayment": {
+    "description": "Title for the create payment screen"
+  },
+  "paymentCreatedSuccess": "Tạo thanh toán thành công",
+  "@paymentCreatedSuccess": {
+    "description": "Success message when a payment is created"
+  },
+  "selectPayer": "Vui lòng chọn người thanh toán",
+  "@selectPayer": {
+    "description": "Validation message when payer is not selected"
+  },
+  "selectRecipient": "Vui lòng chọn người nhận thanh toán",
+  "@selectRecipient": {
+    "description": "Validation message when recipient is not selected"
+  },
+  "payerRecipientSame": "Người thanh toán và người nhận không thể là cùng một người",
+  "@payerRecipientSame": {
+    "description": "Validation error when payer and recipient are the same"
+  },
+  "paymentDetails": "Chi tiết thanh toán",
+  "@paymentDetails": {
+    "description": "Title for payment details section or screen"
+  },
+  "deletePayment": "Xóa thanh toán",
+  "@deletePayment": {
+    "description": "Button label to delete a payment"
+  },
+  "confirmDeletePayment": "Bạn có chắc chắn muốn xóa thanh toán này không?",
+  "@confirmDeletePayment": {
+    "description": "Confirmation message for deleting a payment"
+  },
+  "addFirstPayment": "Thêm thanh toán đầu tiên",
+  "@addFirstPayment": {
+    "description": "Button label shown when no payments exist"
+  },
+  "clearAll": "Xóa tất cả",
+  "@clearAll": {
+    "description": "Button label to clear all filters or selections"
+  },
+  "ascendingOrder": "Thứ tự tăng dần",
+  "@ascendingOrder": {
+    "description": "Label for ascending sort order option"
+  },
+  "apply": "Áp dụng",
+  "@apply": {
+    "description": "Button label to apply filters or changes"
+  },
+  "minAmountNegative": "Số tiền tối thiểu không thể âm",
+  "@minAmountNegative": {
+    "description": "Validation error for negative minimum amount"
+  },
+  "maxAmountNegative": "Số tiền tối đa không thể âm",
+  "@maxAmountNegative": {
+    "description": "Validation error for negative maximum amount"
+  },
+  "minGreaterThanMax": "Số tiền tối thiểu không thể lớn hơn số tiền tối đa",
+  "@minGreaterThanMax": {
+    "description": "Validation error when minimum exceeds maximum amount"
+  },
+  "startAfterEnd": "Ngày bắt đầu không thể sau ngày kết thúc",
+  "@startAfterEnd": {
+    "description": "Validation error when start date is after end date"
+  },
+  "createNewGroup": "Tạo nhóm mới",
+  "@createNewGroup": {
+    "description": "Button label to create a new group"
+  },
+  "featureFlagsDebugTitle": "Gỡ lỗi Feature Flags",
+  "@featureFlagsDebugTitle": {
+    "description": "Title for the feature flags debug screen"
+  },
+  "clearAllOverrides": "Xóa tất cả ghi đè",
+  "@clearAllOverrides": {
+    "description": "Button label to clear all feature flag overrides"
+  },
+  "confirmClearOverrides": "Bạn có chắc chắn muốn xóa tất cả ghi đè cục bộ không?",
+  "@confirmClearOverrides": {
+    "description": "Confirmation message for clearing all feature flag overrides"
+  },
+  "clear": "Xóa",
+  "@clear": {
+    "description": "Button label for clear action"
+  },
+  "overridesCleared": "Đã xóa tất cả ghi đè cục bộ",
+  "@overridesCleared": {
+    "description": "Success message when all feature flag overrides are cleared"
+  },
+  "noFeatureFlags": "Không tìm thấy feature flags",
+  "@noFeatureFlags": {
+    "description": "Message displayed when no feature flags are available"
+  },
+  "featureFlagsExamples": "Ví dụ Feature Flags",
+  "@featureFlagsExamples": {
+    "description": "Title for the feature flags examples screen"
+  },
+  "newFeatureEnabled": "Tính năng mới đã BẬT",
+  "@newFeatureEnabled": {
+    "description": "Message indicating a new feature is enabled"
+  },
+  "newFeatureDisabled": "Tính năng mới đã TẮT",
+  "@newFeatureDisabled": {
+    "description": "Message indicating a new feature is disabled"
+  },
+  "noPayments": "Không có thanh toán",
+  "@noPayments": {
+    "description": "Title displayed when there are no payments"
+  },
+  "paymentSummary": "Tóm tắt thanh toán",
+  "@paymentSummary": {
+    "description": "Title for the payment summary section"
+  },
+  "totalPayments": "Tổng số thanh toán",
+  "@totalPayments": {
+    "description": "Label for total number of payments"
+  },
+  "totalAmount": "Tổng số tiền",
+  "@totalAmount": {
+    "description": "Label for total payment amount"
+  },
+  "errorLoadingPayments": "Lỗi khi tải thanh toán",
+  "@errorLoadingPayments": {
+    "description": "Error message when payments fail to load"
+  },
+  "filterPayments": "Lọc thanh toán",
+  "@filterPayments": {
+    "description": "Tooltip for filter payments button"
+  },
+  "clearFilters": "Xóa bộ lọc",
+  "@clearFilters": {
+    "description": "Tooltip for clear filters button"
+  },
+  "filterAndSortPayments": "Lọc & Sắp xếp thanh toán",
+  "@filterAndSortPayments": {
+    "description": "Title for the filter and sort bottom sheet"
+  },
+  "dateRange": "Khoảng ngày",
+  "@dateRange": {
+    "description": "Section header for date range filter"
+  },
+  "amountRange": "Khoảng số tiền",
+  "@amountRange": {
+    "description": "Section header for amount range filter"
+  },
+  "sortBy": "Sắp xếp theo",
+  "@sortBy": {
+    "description": "Section header for sort options"
+  },
+  "startDate": "Ngày bắt đầu",
+  "@startDate": {
+    "description": "Label for start date field"
+  },
+  "endDate": "Ngày kết thúc",
+  "@endDate": {
+    "description": "Label for end date field"
+  },
+  "minAmount": "Số tiền tối thiểu",
+  "@minAmount": {
+    "description": "Label for minimum amount field"
+  },
+  "maxAmount": "Số tiền tối đa",
+  "@maxAmount": {
+    "description": "Label for maximum amount field"
+  },
+  "selectDate": "Chọn ngày",
+  "@selectDate": {
+    "description": "Placeholder text for date selection"
+  },
+  "oldestToNewest": "Cũ nhất đến mới nhất",
+  "@oldestToNewest": {
+    "description": "Description for ascending date sort order"
+  },
+  "newestToOldest": "Mới nhất đến cũ nhất",
+  "@newestToOldest": {
+    "description": "Description for descending date sort order"
+  },
+  "amountRequired": "Số tiền là bắt buộc",
+  "@amountRequired": {
+    "description": "Validation error when amount is empty"
+  },
+  "enterValidPositiveAmount": "Nhập số tiền dương hợp lệ",
+  "@enterValidPositiveAmount": {
+    "description": "Validation error for invalid amount"
+  },
+  "currency": "Tiền tệ",
+  "@currency": {
+    "description": "Label for currency field"
+  },
+  "descriptionOptional": "Mô tả (Tùy chọn)",
+  "@descriptionOptional": {
+    "description": "Label for optional description field"
+  },
+  "whatWasPaymentFor": "Thanh toán này dùng cho việc gì?",
+  "@whatWasPaymentFor": {
+    "description": "Hint text for payment description field"
+  },
+  "paymentDate": "Ngày thanh toán",
+  "@paymentDate": {
+    "description": "Label for payment date field"
+  },
+  "paymentParticipants": "Người tham gia thanh toán",
+  "@paymentParticipants": {
+    "description": "Section title for payment participants"
+  },
+  "whoPaid": "Ai đã thanh toán? *",
+  "@whoPaid": {
+    "description": "Label for payer selection field"
+  },
+  "whoReceivedPayment": "Ai nhận thanh toán? *",
+  "@whoReceivedPayment": {
+    "description": "Label for recipient selection field"
+  },
+  "cannotPaySelf": "Một người không thể tự thanh toán cho chính mình. Vui lòng chọn người thanh toán và người nhận khác nhau.",
+  "@cannotPaySelf": {
+    "description": "Warning message when payer and recipient are the same"
+  },
+  "from": "Từ: {name}",
+  "@from": {
+    "description": "Label showing who made the payment",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "to": "Đến: {name}",
+  "@to": {
+    "description": "Label showing who received the payment",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "amount": "Số tiền: {value}",
+  "@amount": {
+    "description": "Label showing payment amount",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "Mô tả: {text}",
+  "@description": {
+    "description": "Label showing payment description",
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "date": "Ngày: {value}",
+  "@date": {
+    "description": "Label showing payment date",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "groupPayments": "Thanh toán {groupName}",
+  "@groupPayments": {
+    "description": "Title for group payments page",
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "enterPaymentAmount": "Nhập số tiền thanh toán",
+  "@enterPaymentAmount": {
+    "description": "Helper text for payment amount field"
+  },
+  "confirmDeletePaymentFrom": "Bạn có chắc chắn muốn xóa thanh toán này từ {payer} đến {recipient}?",
+  "@confirmDeletePaymentFrom": {
+    "description": "Confirmation message for deleting a specific payment",
+    "placeholders": {
+      "payer": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "noPaymentsMatchCriteria": "Không có thanh toán nào phù hợp với tiêu chí của bạn.",
+  "@noPaymentsMatchCriteria": {
+    "description": "Message when no payments match filter criteria"
+  },
+  "noPaymentsMatchSearch": "Không có thanh toán nào phù hợp với tiêu chí tìm kiếm. Hãy thử điều chỉnh bộ lọc.",
+  "@noPaymentsMatchSearch": {
+    "description": "Message when no payments match search filters"
+  },
+  "noPaymentsYet": "Chưa có thanh toán nào. Thêm thanh toán đầu tiên để bắt đầu!",
+  "@noPaymentsYet": {
+    "description": "Message when there are no payments in the group"
+  },
+  "amountLabel": "Số tiền *",
+  "@amountLabel": {
+    "description": "Label for required amount field"
+  },
+  "exampleScreen": "Màn hình ví dụ",
+  "@exampleScreen": {
+    "description": "Title for example screen in performance examples"
+  },
+  "exampleScreenContent": "Nội dung màn hình ví dụ",
+  "@exampleScreenContent": {
+    "description": "Content text for example screen in performance examples"
   }
 }
 

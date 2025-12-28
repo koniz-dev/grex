@@ -1,19 +1,56 @@
 {
   "@@locale": "es",
   "appTitle": "Grex",
+  "@appTitle": {
+    "description": "The application title"
+  },
   "welcome": "¡Bienvenido a Grex con Arquitectura Limpia!",
+  "@welcome": {
+    "description": "Welcome message on home screen"
+  },
   "featureFlagsReady": "¡El Sistema de Feature Flags está listo!",
+  "@featureFlagsReady": {
+    "description": "Message indicating feature flags are ready"
+  },
   "checkExamples": "Consulta los ejemplos en feature_flags_example_screen.dart",
+  "@checkExamples": {
+    "description": "Hint to check examples"
+  },
   "login": "Iniciar sesión",
+  "@login": {
+    "description": "Login button and screen title"
+  },
   "register": "Registrarse",
+  "@register": {
+    "description": "Register button and screen title"
+  },
   "email": "Correo electrónico",
+  "@email": {
+    "description": "Email field label"
+  },
   "password": "Contraseña",
+  "@password": {
+    "description": "Password field label"
+  },
   "name": "Nombre",
+  "@name": {
+    "description": "Name field label"
+  },
   "emailRequired": "Por favor ingresa tu correo electrónico",
+  "@emailRequired": {
+    "description": "Email validation error message"
+  },
   "emailInvalid": "Por favor ingresa un correo electrónico válido",
+  "@emailInvalid": {
+    "description": "Invalid email validation error"
+  },
   "passwordRequired": "Por favor ingresa tu contraseña",
+  "@passwordRequired": {
+    "description": "Password validation error message"
+  },
   "passwordMinLength": "La contraseña debe tener al menos {minLength} caracteres",
   "@passwordMinLength": {
+    "description": "Password minimum length validation error",
     "placeholders": {
       "minLength": {
         "type": "int"
@@ -21,8 +58,12 @@
     }
   },
   "nameRequired": "Por favor ingresa tu nombre",
+  "@nameRequired": {
+    "description": "Name validation error message"
+  },
   "nameMinLength": "El nombre debe tener al menos {minLength} caracteres",
   "@nameMinLength": {
+    "description": "Name minimum length validation error",
     "placeholders": {
       "minLength": {
         "type": "int"
@@ -30,33 +71,112 @@
     }
   },
   "dontHaveAccount": "¿No tienes una cuenta? Regístrate",
+  "@dontHaveAccount": {
+    "description": "Link to registration screen"
+  },
   "alreadyHaveAccount": "¿Ya tienes una cuenta? Inicia sesión",
+  "@alreadyHaveAccount": {
+    "description": "Link to login screen"
+  },
   "retry": "Reintentar",
+  "@retry": {
+    "description": "Retry button label"
+  },
   "error": "Error",
+  "@error": {
+    "description": "Error title"
+  },
   "loading": "Cargando...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
   "language": "Idioma",
+  "@language": {
+    "description": "Language selection label"
+  },
   "selectLanguage": "Seleccionar idioma",
+  "@selectLanguage": {
+    "description": "Language selection dialog title"
+  },
   "english": "Inglés",
+  "@english": {
+    "description": "English language name"
+  },
   "spanish": "Español",
+  "@spanish": {
+    "description": "Spanish language name"
+  },
   "arabic": "Árabe",
+  "@arabic": {
+    "description": "Arabic language name"
+  },
   "vietnamese": "Vietnamita",
+  "@vietnamese": {
+    "description": "Vietnamese language name"
+  },
   "featureFlagsDebug": "Depuración de Feature Flags",
+  "@featureFlagsDebug": {
+    "description": "Feature flags debug tooltip"
+  },
   "unexpectedError": "Ocurrió un error inesperado",
+  "@unexpectedError": {
+    "description": "Generic error message"
+  },
   "badRequest": "Solicitud incorrecta. Por favor verifica tu entrada.",
+  "@badRequest": {
+    "description": "HTTP 400 error message"
+  },
   "unauthorized": "No autorizado. Por favor inicia sesión nuevamente.",
+  "@unauthorized": {
+    "description": "HTTP 401 error message"
+  },
   "forbidden": "Prohibido. No tienes permiso.",
+  "@forbidden": {
+    "description": "HTTP 403 error message"
+  },
   "notFound": "Recurso no encontrado.",
+  "@notFound": {
+    "description": "HTTP 404 error message"
+  },
   "conflict": "Conflicto. El recurso ya existe.",
+  "@conflict": {
+    "description": "HTTP 409 error message"
+  },
   "validationError": "Error de validación. Por favor verifica tu entrada.",
+  "@validationError": {
+    "description": "HTTP 422 error message"
+  },
   "tooManyRequests": "Demasiadas solicitudes. Por favor intenta más tarde.",
+  "@tooManyRequests": {
+    "description": "HTTP 429 error message"
+  },
   "internalServerError": "Error interno del servidor. Por favor intenta más tarde.",
+  "@internalServerError": {
+    "description": "HTTP 500 error message"
+  },
   "badGateway": "Puerta de enlace incorrecta. Por favor intenta más tarde.",
+  "@badGateway": {
+    "description": "HTTP 502 error message"
+  },
   "serviceUnavailable": "Servicio no disponible. Por favor intenta más tarde.",
+  "@serviceUnavailable": {
+    "description": "HTTP 503 error message"
+  },
   "gatewayTimeout": "Tiempo de espera de puerta de enlace agotado. Por favor intenta más tarde.",
+  "@gatewayTimeout": {
+    "description": "HTTP 504 error message"
+  },
   "clientError": "Ocurrió un error del cliente.",
+  "@clientError": {
+    "description": "Generic 4xx error message"
+  },
   "serverError": "Ocurrió un error del servidor. Por favor intenta más tarde.",
+  "@serverError": {
+    "description": "Generic 5xx error message"
+  },
   "itemCount": "{count, plural, =0{Sin elementos} =1{1 elemento} other{{count} elementos}}",
   "@itemCount": {
+    "description": "Pluralized item count",
     "placeholders": {
       "count": {
         "type": "int"
@@ -65,6 +185,7 @@
   },
   "minutesAgo": "{count, plural, =0{Ahora mismo} =1{Hace 1 minuto} other{Hace {count} minutos}}",
   "@minutesAgo": {
+    "description": "Pluralized minutes ago",
     "placeholders": {
       "count": {
         "type": "int"
@@ -72,10 +193,389 @@
     }
   },
   "edit": "Editar",
+  "@edit": {
+    "description": "Edit button label"
+  },
   "delete": "Eliminar",
+  "@delete": {
+    "description": "Delete button label"
+  },
   "save": "Guardar",
+  "@save": {
+    "description": "Save button label"
+  },
   "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
   "add": "Agregar",
-  "refresh": "Actualizar"
+  "@add": {
+    "description": "Add button label"
+  },
+  "refresh": "Actualizar",
+  "@refresh": {
+    "description": "Refresh button label"
+  },
+  "noItemsFound": "No se encontraron elementos",
+  "@noItemsFound": {
+    "description": "Message displayed when a list has no items"
+  },
+  "loadMore": "Cargar más",
+  "@loadMore": {
+    "description": "Button label to load more items in a list"
+  },
+  "copyError": "Copiar error",
+  "@copyError": {
+    "description": "Button label to copy error details to clipboard"
+  },
+  "restart": "Reiniciar",
+  "@restart": {
+    "description": "Button label to restart the application"
+  },
+  "errorOccurred": "Ocurrió un error inesperado",
+  "@errorOccurred": {
+    "description": "Title for global error handler screen"
+  },
+  "errorDescription": "La aplicación encontró un error que no pudo ser manejado. Hemos registrado este error y lo corregiremos en la próxima versión.",
+  "@errorDescription": {
+    "description": "Description text explaining the error to the user"
+  },
+  "errorDetails": "Detalles del error:",
+  "@errorDetails": {
+    "description": "Label for error details section"
+  },
+  "copyErrorSuccess": "Detalles del error copiados",
+  "@copyErrorSuccess": {
+    "description": "Snackbar message when error details are copied to clipboard"
+  },
+  "contactSupport": "Si el error persiste, por favor contacte al soporte técnico.",
+  "@contactSupport": {
+    "description": "Message suggesting user contact support for persistent errors"
+  },
+  "close": "Cerrar",
+  "@close": {
+    "description": "Button label to close a dialog or screen"
+  },
+  "pageNotFound": "Página no encontrada",
+  "@pageNotFound": {
+    "description": "Title displayed on the 404 error page when a route is not found"
+  },
+  "goToGroups": "Ir a Grupos",
+  "@goToGroups": {
+    "description": "Button label to navigate to the groups page from error page"
+  },
+  "addPayment": "Agregar pago",
+  "@addPayment": {
+    "description": "Button label to add a new payment"
+  },
+  "createPayment": "Crear pago",
+  "@createPayment": {
+    "description": "Title for the create payment screen"
+  },
+  "paymentCreatedSuccess": "Pago creado exitosamente",
+  "@paymentCreatedSuccess": {
+    "description": "Success message when a payment is created"
+  },
+  "selectPayer": "Por favor selecciona quién realizó el pago",
+  "@selectPayer": {
+    "description": "Validation message when payer is not selected"
+  },
+  "selectRecipient": "Por favor selecciona quién recibió el pago",
+  "@selectRecipient": {
+    "description": "Validation message when recipient is not selected"
+  },
+  "payerRecipientSame": "El pagador y el receptor no pueden ser la misma persona",
+  "@payerRecipientSame": {
+    "description": "Validation error when payer and recipient are the same"
+  },
+  "paymentDetails": "Detalles del pago",
+  "@paymentDetails": {
+    "description": "Title for payment details section or screen"
+  },
+  "deletePayment": "Eliminar pago",
+  "@deletePayment": {
+    "description": "Button label to delete a payment"
+  },
+  "confirmDeletePayment": "¿Estás seguro de que deseas eliminar este pago?",
+  "@confirmDeletePayment": {
+    "description": "Confirmation message for deleting a payment"
+  },
+  "addFirstPayment": "Agregar primer pago",
+  "@addFirstPayment": {
+    "description": "Button label shown when no payments exist"
+  },
+  "clearAll": "Limpiar todo",
+  "@clearAll": {
+    "description": "Button label to clear all filters or selections"
+  },
+  "ascendingOrder": "Orden ascendente",
+  "@ascendingOrder": {
+    "description": "Label for ascending sort order option"
+  },
+  "apply": "Aplicar",
+  "@apply": {
+    "description": "Button label to apply filters or changes"
+  },
+  "minAmountNegative": "El monto mínimo no puede ser negativo",
+  "@minAmountNegative": {
+    "description": "Validation error for negative minimum amount"
+  },
+  "maxAmountNegative": "El monto máximo no puede ser negativo",
+  "@maxAmountNegative": {
+    "description": "Validation error for negative maximum amount"
+  },
+  "minGreaterThanMax": "El monto mínimo no puede ser mayor que el monto máximo",
+  "@minGreaterThanMax": {
+    "description": "Validation error when minimum exceeds maximum amount"
+  },
+  "startAfterEnd": "La fecha de inicio no puede ser posterior a la fecha de fin",
+  "@startAfterEnd": {
+    "description": "Validation error when start date is after end date"
+  },
+  "createNewGroup": "Crear nuevo grupo",
+  "@createNewGroup": {
+    "description": "Button label to create a new group"
+  },
+  "featureFlagsDebugTitle": "Depuración de Feature Flags",
+  "@featureFlagsDebugTitle": {
+    "description": "Title for the feature flags debug screen"
+  },
+  "clearAllOverrides": "Limpiar todas las anulaciones",
+  "@clearAllOverrides": {
+    "description": "Button label to clear all feature flag overrides"
+  },
+  "confirmClearOverrides": "¿Estás seguro de que deseas limpiar todas las anulaciones locales?",
+  "@confirmClearOverrides": {
+    "description": "Confirmation message for clearing all feature flag overrides"
+  },
+  "clear": "Limpiar",
+  "@clear": {
+    "description": "Button label for clear action"
+  },
+  "overridesCleared": "Todas las anulaciones locales han sido limpiadas",
+  "@overridesCleared": {
+    "description": "Success message when all feature flag overrides are cleared"
+  },
+  "noFeatureFlags": "No se encontraron feature flags",
+  "@noFeatureFlags": {
+    "description": "Message displayed when no feature flags are available"
+  },
+  "featureFlagsExamples": "Ejemplos de Feature Flags",
+  "@featureFlagsExamples": {
+    "description": "Title for the feature flags examples screen"
+  },
+  "newFeatureEnabled": "Nueva función HABILITADA",
+  "@newFeatureEnabled": {
+    "description": "Message indicating a new feature is enabled"
+  },
+  "newFeatureDisabled": "Nueva función DESHABILITADA",
+  "@newFeatureDisabled": {
+    "description": "Message indicating a new feature is disabled"
+  },
+  "noPayments": "Sin pagos",
+  "@noPayments": {
+    "description": "Title displayed when there are no payments"
+  },
+  "paymentSummary": "Resumen de pagos",
+  "@paymentSummary": {
+    "description": "Title for the payment summary section"
+  },
+  "totalPayments": "Total de pagos",
+  "@totalPayments": {
+    "description": "Label for total number of payments"
+  },
+  "totalAmount": "Monto total",
+  "@totalAmount": {
+    "description": "Label for total payment amount"
+  },
+  "errorLoadingPayments": "Error al cargar pagos",
+  "@errorLoadingPayments": {
+    "description": "Error message when payments fail to load"
+  },
+  "filterPayments": "Filtrar pagos",
+  "@filterPayments": {
+    "description": "Tooltip for filter payments button"
+  },
+  "clearFilters": "Limpiar filtros",
+  "@clearFilters": {
+    "description": "Tooltip for clear filters button"
+  },
+  "filterAndSortPayments": "Filtrar y ordenar pagos",
+  "@filterAndSortPayments": {
+    "description": "Title for the filter and sort bottom sheet"
+  },
+  "dateRange": "Rango de fechas",
+  "@dateRange": {
+    "description": "Section header for date range filter"
+  },
+  "amountRange": "Rango de montos",
+  "@amountRange": {
+    "description": "Section header for amount range filter"
+  },
+  "sortBy": "Ordenar por",
+  "@sortBy": {
+    "description": "Section header for sort options"
+  },
+  "startDate": "Fecha de inicio",
+  "@startDate": {
+    "description": "Label for start date field"
+  },
+  "endDate": "Fecha de fin",
+  "@endDate": {
+    "description": "Label for end date field"
+  },
+  "minAmount": "Monto mínimo",
+  "@minAmount": {
+    "description": "Label for minimum amount field"
+  },
+  "maxAmount": "Monto máximo",
+  "@maxAmount": {
+    "description": "Label for maximum amount field"
+  },
+  "selectDate": "Seleccionar fecha",
+  "@selectDate": {
+    "description": "Placeholder text for date selection"
+  },
+  "oldestToNewest": "Más antiguo a más reciente",
+  "@oldestToNewest": {
+    "description": "Description for ascending date sort order"
+  },
+  "newestToOldest": "Más reciente a más antiguo",
+  "@newestToOldest": {
+    "description": "Description for descending date sort order"
+  },
+  "amountRequired": "El monto es requerido",
+  "@amountRequired": {
+    "description": "Validation error when amount is empty"
+  },
+  "enterValidPositiveAmount": "Ingresa un monto positivo válido",
+  "@enterValidPositiveAmount": {
+    "description": "Validation error for invalid amount"
+  },
+  "currency": "Moneda",
+  "@currency": {
+    "description": "Label for currency field"
+  },
+  "descriptionOptional": "Descripción (Opcional)",
+  "@descriptionOptional": {
+    "description": "Label for optional description field"
+  },
+  "whatWasPaymentFor": "¿Para qué fue este pago?",
+  "@whatWasPaymentFor": {
+    "description": "Hint text for payment description field"
+  },
+  "paymentDate": "Fecha de pago",
+  "@paymentDate": {
+    "description": "Label for payment date field"
+  },
+  "paymentParticipants": "Participantes del pago",
+  "@paymentParticipants": {
+    "description": "Section title for payment participants"
+  },
+  "whoPaid": "¿Quién pagó? *",
+  "@whoPaid": {
+    "description": "Label for payer selection field"
+  },
+  "whoReceivedPayment": "¿Quién recibió el pago? *",
+  "@whoReceivedPayment": {
+    "description": "Label for recipient selection field"
+  },
+  "cannotPaySelf": "Una persona no puede pagarse a sí misma. Por favor selecciona diferentes pagador y receptor.",
+  "@cannotPaySelf": {
+    "description": "Warning message when payer and recipient are the same"
+  },
+  "from": "De: {name}",
+  "@from": {
+    "description": "Label showing who made the payment",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "to": "Para: {name}",
+  "@to": {
+    "description": "Label showing who received the payment",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "amount": "Monto: {value}",
+  "@amount": {
+    "description": "Label showing payment amount",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "Descripción: {text}",
+  "@description": {
+    "description": "Label showing payment description",
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "date": "Fecha: {value}",
+  "@date": {
+    "description": "Label showing payment date",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "groupPayments": "Pagos de {groupName}",
+  "@groupPayments": {
+    "description": "Title for group payments page",
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "enterPaymentAmount": "Ingresa el monto del pago",
+  "@enterPaymentAmount": {
+    "description": "Helper text for payment amount field"
+  },
+  "confirmDeletePaymentFrom": "¿Estás seguro de que deseas eliminar este pago de {payer} a {recipient}?",
+  "@confirmDeletePaymentFrom": {
+    "description": "Confirmation message for deleting a specific payment",
+    "placeholders": {
+      "payer": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "noPaymentsMatchCriteria": "Ningún pago coincide con tus criterios.",
+  "@noPaymentsMatchCriteria": {
+    "description": "Message when no payments match filter criteria"
+  },
+  "noPaymentsMatchSearch": "Ningún pago coincide con tus criterios de búsqueda. Intenta ajustar los filtros.",
+  "@noPaymentsMatchSearch": {
+    "description": "Message when no payments match search filters"
+  },
+  "noPaymentsYet": "Aún no hay pagos. ¡Agrega tu primer pago para comenzar!",
+  "@noPaymentsYet": {
+    "description": "Message when there are no payments in the group"
+  },
+  "amountLabel": "Monto *",
+  "@amountLabel": {
+    "description": "Label for required amount field"
+  },
+  "exampleScreen": "Pantalla de ejemplo",
+  "@exampleScreen": {
+    "description": "Title for example screen in performance examples"
+  },
+  "exampleScreenContent": "Contenido de pantalla de ejemplo",
+  "@exampleScreenContent": {
+    "description": "Content text for example screen in performance examples"
+  }
 }
-

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grex/core/utils/pagination_helper.dart'
     show PaginationScrollExtension;
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Optimized ListView with pagination support
 ///
@@ -140,9 +141,11 @@ class _OptimizedListViewState<T> extends State<OptimizedListView<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10nOrNull;
+
     if (widget.items.isEmpty && !widget.isLoading) {
-      return const Center(
-        child: Text('No items found'),
+      return Center(
+        child: Text(l10n?.noItemsFound ?? 'No items found'),
       );
     }
 
@@ -188,7 +191,7 @@ class _OptimizedListViewState<T> extends State<OptimizedListView<T>> {
                     const SizedBox(height: 8),
                     ElevatedButton(
                       onPressed: widget.onRetry,
-                      child: const Text('Retry'),
+                      child: Text(l10n?.retry ?? 'Retry'),
                     ),
                   ],
                 ],
@@ -206,7 +209,7 @@ class _OptimizedListViewState<T> extends State<OptimizedListView<T>> {
               padding: const EdgeInsets.all(16),
               child: ElevatedButton(
                 onPressed: _loadMore,
-                child: const Text('Load More'),
+                child: Text(l10n?.loadMore ?? 'Load More'),
               ),
             ),
           );
