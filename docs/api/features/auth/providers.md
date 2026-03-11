@@ -8,49 +8,6 @@ All authentication-related providers are defined in `lib/core/di/providers.dart`
 
 ---
 
-## Data Source Providers
-
-### authLocalDataSourceProvider
-
-Provider for `AuthLocalDataSource` instance.
-
-```dart
-/// Provider for [AuthLocalDataSource] instance
-/// 
-/// This provider creates a singleton instance of [AuthLocalDataSourceImpl]
-/// that handles local authentication data caching.
-/// 
-/// Uses:
-/// - [SecureStorageService] for tokens (secure)
-/// - [StorageService] for user data (non-sensitive)
-final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
-  final storageService = ref.watch(storageServiceProvider);
-  final secureStorageService = ref.watch(secureStorageServiceProvider);
-  return AuthLocalDataSourceImpl(
-    storageService: storageService,
-    secureStorageService: secureStorageService,
-  );
-});
-```
-
-### authRemoteDataSourceProvider
-
-Provider for `AuthRemoteDataSource` instance.
-
-```dart
-/// Provider for [AuthRemoteDataSource] instance
-/// 
-/// This provider creates a singleton instance of [AuthRemoteDataSourceImpl]
-/// that handles remote authentication operations.
-/// Uses ref.read to break circular dependency with apiClientProvider.
-final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
-  final apiClient = ref.read<ApiClient>(apiClientProvider);
-  return AuthRemoteDataSourceImpl(apiClient);
-});
-```
-
----
-
 ## Repository Provider
 
 ### authRepositoryProvider
@@ -59,18 +16,12 @@ Provider for `AuthRepository` instance.
 
 ```dart
 /// Provider for [AuthRepository] instance
-/// 
-/// This provider creates a singleton instance of [AuthRepositoryImpl]
-/// that coordinates between remote and local data sources.
+///
+/// Uses [SupabaseAuthRepository] which interacts directly with Supabase
+/// Auth SDK. Tokens are synced to [AppConstants.tokenKey] by
+/// [SecureSessionService] so [AuthInterceptor] can attach Bearer token.
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  final remoteDataSource = ref.read<AuthRemoteDataSource>(
-    authRemoteDataSourceProvider,
-  );
-  final localDataSource = ref.watch(authLocalDataSourceProvider);
-  return AuthRepositoryImpl(
-    remoteDataSource: remoteDataSource,
-    localDataSource: localDataSource,
-  );
+  return SupabaseAuthRepository();
 });
 ```
 

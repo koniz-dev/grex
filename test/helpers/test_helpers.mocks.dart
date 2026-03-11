@@ -97,11 +97,17 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
   _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>> signUpWithEmail({
     required String? email,
     required String? password,
+    String? displayName,
+    String? preferredCurrency,
+    String? languageCode,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#signUpWithEmail, [], {
               #email: email,
               #password: password,
+              #displayName: displayName,
+              #preferredCurrency: preferredCurrency,
+              #languageCode: languageCode,
             }),
             returnValue:
                 _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>>.value(
@@ -110,6 +116,9 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
                     Invocation.method(#signUpWithEmail, [], {
                       #email: email,
                       #password: password,
+                      #displayName: displayName,
+                      #preferredCurrency: preferredCurrency,
+                      #languageCode: languageCode,
                     }),
                   ),
                 ),

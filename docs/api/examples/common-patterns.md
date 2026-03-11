@@ -288,7 +288,7 @@ try {
 final useCase = ref.read(loginUseCaseProvider);
 
 // ❌ Bad
-final repository = AuthRepositoryImpl(...);
+final repository = SupabaseAuthRepository();
 final useCase = LoginUseCase(repository);
 ```
 

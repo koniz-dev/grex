@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grex/core/config/app_config.dart';
 import 'package:grex/core/config/env_config.dart';
 import 'package:grex/core/config/supabase_config.dart';
+import 'package:grex/core/constants/app_constants.dart';
 import 'package:grex/core/di/injection.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/localization/localization_providers.dart';
 import 'package:grex/core/localization/localization_service.dart';
 import 'package:grex/core/routing/routing_providers.dart';
 import 'package:grex/core/services/error_logging_service.dart';
+import 'package:grex/core/storage/secure_storage_service.dart';
 import 'package:grex/core/widgets/global_error_handler.dart';
+import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
+import 'package:grex/features/auth/presentation/widgets/app_link_listener.dart';
 import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/theme/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 void main() async {
   // Ensure Flutter binding is initialized first (required for all Flutter APIs)
@@ -39,8 +46,19 @@ void main() async {
     AppConfig.printConfig();
   }
 
-  // Create ProviderContainer for initialization
-  final container = ProviderContainer();
+  // Create ProviderContainer with overrides so secure storage shares the same
+  // FlutterSecureStorage instance as GetIt (used by SecureSessionService for
+  // token keys), ensuring AuthInterceptor and session service see the same
+  // tokens.
+  final container = ProviderContainer(
+    overrides: [
+      secureStorageServiceProvider.overrideWith(
+        (ref) => SecureStorageService(
+          secureStorage: getIt<FlutterSecureStorage>(),
+        ),
+      ),
+    ],
+  );
 
   // Initialize storage service via provider before app starts
   // This is done after env config to ensure storage is ready
@@ -57,12 +75,35 @@ void main() async {
   final savedLocale = await localizationService.getCurrentLocale();
   container.read(localeStateProvider.notifier).locale = savedLocale;
 
-  // Restore user session if existing
+  // Restore user session if existing and sync tokens for AuthInterceptor
   try {
     await container
         .read(authNotifierProvider.notifier)
         .getCurrentUser()
         .timeout(const Duration(seconds: 5));
+
+    // If user is restored from Supabase, write current session tokens to
+    // secure storage so AuthInterceptor can attach Bearer token to API requests
+    final authState = container.read(authNotifierProvider);
+    if (authState.user != null) {
+      final authRepository = container.read(authRepositoryProvider);
+      final session = authRepository.currentSession;
+      if (session != null) {
+        final supabaseSession = session as supabase.Session;
+        final secureStorage = container.read(secureStorageServiceProvider);
+        await secureStorage.setString(
+          AppConstants.tokenKey,
+          supabaseSession.accessToken,
+        );
+        final refreshToken = supabaseSession.refreshToken;
+        if (refreshToken != null && refreshToken.isNotEmpty) {
+          await secureStorage.setString(
+            AppConstants.refreshTokenKey,
+            refreshToken,
+          );
+        }
+      }
+    }
   } on Exception {
     // Session restore failed, continue without session
   }
@@ -83,7 +124,12 @@ void main() async {
       },
       child: UncontrolledProviderScope(
         container: container,
-        child: const MyApp(),
+        child: BlocProvider<AuthBloc>.value(
+          value: getIt<AuthBloc>(),
+          child: const AppLinkListener(
+            child: MyApp(),
+          ),
+        ),
       ),
     ),
   );

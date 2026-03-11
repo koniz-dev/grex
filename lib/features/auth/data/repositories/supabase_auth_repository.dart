@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
+import 'package:grex/core/constants/app_constants.dart';
 import 'package:grex/core/errors/failures.dart' as core;
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
@@ -22,6 +23,7 @@ class SupabaseAuthRepository implements AuthRepository {
   }) : _supabaseClient = supabaseClient ?? supabase.Supabase.instance.client;
   final supabase.SupabaseClient _supabaseClient;
   StreamController<User?>? _authStateController;
+  StreamSubscription<supabase.AuthState>? _supabaseAuthSubscription;
 
   @override
   Future<Either<AuthFailure, User>> signInWithEmail({
@@ -64,6 +66,7 @@ class SupabaseAuthRepository implements AuthRepository {
           'preferred_currency': preferredCurrency ?? 'VND',
           'preferred_language': languageCode ?? 'vi',
         },
+        emailRedirectTo: AppConstants.authEmailConfirmRedirectUrl,
       );
 
       if (response.user == null) {
@@ -109,15 +112,17 @@ class SupabaseAuthRepository implements AuthRepository {
   Stream<User?> get authStateChanges {
     _authStateController ??= StreamController<User?>.broadcast();
 
-    // Listen to Supabase auth state changes and map to domain User
-    _supabaseClient.auth.onAuthStateChange.listen((data) {
-      final supabaseUser = data.session?.user;
-      final domainUser = supabaseUser != null
-          ? _mapSupabaseUserToDomain(supabaseUser)
-          : null;
+    // Only subscribe once to avoid memory leaks
+    _supabaseAuthSubscription ??= _supabaseClient.auth.onAuthStateChange.listen(
+      (data) {
+        final supabaseUser = data.session?.user;
+        final domainUser = supabaseUser != null
+            ? _mapSupabaseUserToDomain(supabaseUser)
+            : null;
 
-      _authStateController?.add(domainUser);
-    });
+        _authStateController?.add(domainUser);
+      },
+    );
 
     return _authStateController!.stream;
   }
@@ -254,12 +259,12 @@ class SupabaseAuthRepository implements AuthRepository {
   /// Maps Supabase AuthException to domain AuthFailure.
   AuthFailure _mapAuthExceptionToFailure(supabase.AuthException exception) {
     final message = exception.message.toLowerCase();
-    
+
     // Check message content first (more reliable than status code alone)
     if (message.contains('user already registered')) {
       return const EmailAlreadyInUseFailure();
     }
-    if (message.contains('password') && 
+    if (message.contains('password') &&
         (message.contains('weak') || message.contains('at least'))) {
       return const WeakPasswordFailure();
     }
@@ -269,12 +274,10 @@ class SupabaseAuthRepository implements AuthRepository {
     if (message.contains('email not confirmed')) {
       return const UnverifiedEmailFailure();
     }
-    
+
     switch (exception.statusCode) {
       case '429':
-        return const GenericAuthFailure(
-          'Too many requests. Please try again later',
-        );
+        return const TooManyAttemptsFailure();
       default:
         return GenericAuthFailure(exception.message);
     }
@@ -282,6 +285,8 @@ class SupabaseAuthRepository implements AuthRepository {
 
   /// Dispose resources when repository is no longer needed.
   void dispose() {
+    unawaited(_supabaseAuthSubscription?.cancel());
+    _supabaseAuthSubscription = null;
     unawaited(_authStateController?.close());
     _authStateController = null;
   }

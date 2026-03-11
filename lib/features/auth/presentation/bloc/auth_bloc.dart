@@ -222,18 +222,61 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ),
       ),
       (user) async {
-        // Profile is automatically created by database trigger
-        // Just emit the appropriate state based on email verification
-        if (user.emailConfirmed) {
-          emit(AuthAuthenticated(user: user));
-        } else {
+        // Align with login flow: get session, load profile,
+        // start session, then emit
+        final session = _authRepository.currentSession;
+        if (session == null) {
           emit(
-            AuthEmailVerificationRequired(
-              user: user,
-              email: user.email,
+            const AuthError(
+              message: 'Registration succeeded but no session. '
+                  'Please try signing in.',
             ),
           );
+          return;
         }
+
+        // Load profile (trigger creates it; retry once if not ready yet)
+        var profileResult = await _userRepository.getUserProfile(user.id);
+        if (profileResult.isLeft()) {
+          await Future<void>.delayed(const Duration(milliseconds: 400));
+          profileResult = await _userRepository.getUserProfile(user.id);
+        }
+
+        await profileResult.fold(
+          (failure) async {
+            // Emit state without profile so flow does not hang
+            if (user.emailConfirmed) {
+              emit(AuthAuthenticated(user: user));
+            } else {
+              emit(
+                AuthEmailVerificationRequired(
+                  user: user,
+                  email: user.email,
+                ),
+              );
+            }
+          },
+          (profile) async {
+            final supabaseSession = session as supabase.Session;
+            await _sessionManager.startSession(
+              accessToken: supabaseSession.accessToken,
+              refreshToken: supabaseSession.refreshToken ?? '',
+              user: user,
+              userProfile: profile,
+            );
+
+            if (user.emailConfirmed) {
+              emit(AuthAuthenticated(user: user, profile: profile));
+            } else {
+              emit(
+                AuthEmailVerificationRequired(
+                  user: user,
+                  email: user.email,
+                ),
+              );
+            }
+          },
+        );
       },
     );
   }
@@ -457,7 +500,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     // Validate OTP format (6 digits)
     if (event.token.length != 6 || int.tryParse(event.token) == null) {
-      emit(const AuthError(message: 'Mã OTP phải là 6 chữ số'));
+      emit(const AuthError(message: 'OTP code must be 6 digits'));
       return;
     }
 
@@ -506,7 +549,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } else {
           emit(
             const AuthError(
-              message: 'Xác thực thành công nhưng không tìm thấy người dùng',
+              message: 'Verification succeeded but user not found',
             ),
           );
         }
@@ -519,10 +562,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (failure is AuthFailure) {
       final message = failure.message.toLowerCase();
       if (message.contains('expired') || message.contains('otp_expired')) {
-        return 'Mã OTP đã hết hạn. Vui lòng yêu cầu mã mới.';
+        return 'OTP code has expired. Please request a new one.';
       }
       if (message.contains('invalid') || message.contains('token')) {
-        return 'Mã OTP không hợp lệ. Vui lòng kiểm tra lại.';
+        return 'Invalid OTP code. Please check and try again.';
       }
       return failure.message;
     }
@@ -553,6 +596,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return 'Please verify your email address before signing in.';
       } else if (failure is NetworkFailure) {
         return 'Network error. Please check your connection and try again.';
+      } else if (failure is TooManyAttemptsFailure) {
+        return 'Too many attempts. Please try again later.';
+      } else if (failure is SessionExpiredFailure) {
+        return 'Your session has expired. Please sign in again.';
       } else {
         return failure.message;
       }
@@ -561,13 +608,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (failure is UserFailure) {
       if (failure is UserNotFoundFailure) {
         return 'User profile not found. Please contact support.';
-      } else if (failure is ValidationFailure) {
-        return 'Invalid user data. Please check your information.';
-      } else if (failure is NetworkFailure) {
-        return 'Network error. Please check your connection and try again.';
-      } else {
-        return failure.message;
       }
+      return failure.message;
     }
 
     return failure.toString();

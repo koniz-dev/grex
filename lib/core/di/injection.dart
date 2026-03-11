@@ -77,8 +77,9 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton<ExportService>(
       ExportService.new,
     )
-    // BLoCs
-    ..registerFactory<AuthBloc>(
+    // BLoCs (AuthBloc as singleton so deep link listener and screen wrappers
+    // share the same instance)
+    ..registerLazySingleton<AuthBloc>(
       () => AuthBloc(
         authRepository: getIt<AuthRepository>(),
         userRepository: getIt<UserRepository>(),

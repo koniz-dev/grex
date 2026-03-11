@@ -12,6 +12,7 @@
 .swiftpm/
 migrate_working_dir/
 .kiro/
+.agent/
 
 # IntelliJ related
 *.iml

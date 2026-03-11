@@ -90,7 +90,7 @@ class MockExportService extends _i1.Mock implements _i2.ExportService {
     required List<_i9.Expense>? expenses,
     required List<_i10.Payment>? payments,
     required List<_i11.Balance>? balances,
-    dynamic Function(double)? onProgress,
+    void Function(double)? onProgress,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#exportToCSV, [], {
@@ -121,7 +121,7 @@ class MockExportService extends _i1.Mock implements _i2.ExportService {
     required List<_i9.Expense>? expenses,
     required List<_i10.Payment>? payments,
     required List<_i11.Balance>? balances,
-    dynamic Function(double)? onProgress,
+    void Function(double)? onProgress,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#exportToPDF, [], {

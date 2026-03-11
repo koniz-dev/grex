@@ -20,6 +20,7 @@ class RegisterUseCase {
     final either = await repository.signUpWithEmail(
       email: email,
       password: password,
+      displayName: name,
     );
 
     return either.fold(

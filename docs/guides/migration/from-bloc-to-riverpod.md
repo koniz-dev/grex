@@ -480,11 +480,9 @@ class LoginScreen extends ConsumerWidget {
 // lib/main.dart
 BlocProvider(
   create: (context) => AuthBloc(
-    AuthRepositoryImpl(
-      AuthRemoteDataSourceImpl(
-        ApiClient(),
-      ),
-    ),
+    authRepository: getIt<AuthRepository>(),
+    userRepository: getIt<UserRepository>(),
+    sessionManager: getIt<SessionManager>(),
   ),
   child: MyApp(),
 )
@@ -498,10 +496,7 @@ final authBloc = context.read<AuthBloc>();
 ```dart
 // lib/core/di/providers.dart
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  final apiClient = ref.read(apiClientProvider);
-  return AuthRepositoryImpl(
-    AuthRemoteDataSourceImpl(apiClient),
-  );
+  return SupabaseAuthRepository();
 });
 
 final loginUseCaseProvider = Provider<LoginUseCase>((ref) {

@@ -155,9 +155,7 @@ Future<Result<String>> refreshToken();
 
 ## Implementation
 
-The repository is implemented by `AuthRepositoryImpl` in the data layer, which coordinates between:
-- `AuthRemoteDataSource` - For API calls
-- `AuthLocalDataSource` - For local caching
+The repository is implemented by [SupabaseAuthRepository](lib/features/auth/data/repositories/supabase_auth_repository.dart) in the data layer, which uses the Supabase Auth SDK directly. Tokens are synced to secure storage (see [AppConstants.tokenKey](lib/core/constants/app_constants.dart)) by [SecureSessionService](lib/features/auth/data/services/secure_session_service.dart) so [AuthInterceptor](lib/core/network/interceptors/auth_interceptor.dart) can attach the Bearer token to API requests.
 
 See [Providers](providers.md) for dependency injection setup.
 

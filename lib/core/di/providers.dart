@@ -6,10 +6,7 @@ import 'package:grex/core/performance/performance_providers.dart';
 import 'package:grex/core/storage/secure_storage_service.dart';
 import 'package:grex/core/storage/storage_migration_service.dart';
 import 'package:grex/core/storage/storage_service.dart';
-import 'package:grex/features/auth/data/datasources/auth_local_datasource.dart';
-import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:grex/features/auth/data/datasources/supabase_auth_datasource.dart';
-import 'package:grex/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:grex/features/auth/data/repositories/supabase_auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 import 'package:grex/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:grex/features/auth/domain/usecases/is_authenticated_usecase.dart';
@@ -74,46 +71,13 @@ final storageInitializationProvider = FutureProvider<void>((ref) async {
   await migrationService.migrateAll();
 });
 
-// ============================================================================
-// Auth Feature Providers
-// ============================================================================
-
-/// Provider for [AuthLocalDataSource] instance
-///
-/// This provider creates a singleton instance of [AuthLocalDataSourceImpl]
-/// that handles local authentication data caching.
-///
-/// Uses:
-/// - [SecureStorageService] for tokens (secure)
-/// - [StorageService] for user data (non-sensitive)
-final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
-  final storageService = ref.watch(storageServiceProvider);
-  final secureStorageService = ref.watch(secureStorageServiceProvider);
-  return AuthLocalDataSourceImpl(
-    storageService: storageService,
-    secureStorageService: secureStorageService,
-  );
-});
-
-/// Provider for [AuthRemoteDataSource] instance
-///
-/// Uses Supabase Auth SDK directly for authentication operations.
-/// This is the recommended approach for Supabase-based authentication.
-final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
-  return SupabaseAuthRemoteDataSource();
-});
-
 /// Provider for [AuthRepository] instance
 ///
-/// This provider creates a singleton instance of [AuthRepositoryImpl]
-/// that coordinates between remote and local data sources.
+/// Uses [SupabaseAuthRepository] which interacts directly with Supabase
+/// Auth SDK. This provides full support for all auth operations including
+/// password reset, email verification, and proper session management.
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  final remoteDataSource = ref.watch(authRemoteDataSourceProvider);
-  final localDataSource = ref.watch(authLocalDataSourceProvider);
-  return AuthRepositoryImpl(
-    remoteDataSource: remoteDataSource,
-    localDataSource: localDataSource,
-  );
+  return SupabaseAuthRepository();
 });
 
 /// Provider for [AuthInterceptor] instance
@@ -134,15 +98,15 @@ final authInterceptorProvider = Provider<AuthInterceptor>((ref) {
 /// This is the main API client used throughout the application for
 /// non-auth API calls (groups, expenses, payments, etc.).
 /// It includes AuthInterceptor for automatic token injection and refresh.
-/// 
+///
 /// Note: Auth operations use Supabase SDK directly via
-/// [authRemoteDataSourceProvider].
+/// [SupabaseAuthRepository].
 final apiClientProvider = Provider<ApiClient>((ref) {
   final storageService = ref.watch(storageServiceProvider);
   final authInterceptor = ref.watch(authInterceptorProvider);
   final loggingService = ref.read(loggingServiceProvider);
   final performanceService = ref.read(performanceServiceProvider);
-  
+
   return ApiClient(
     storageService: storageService,
     authInterceptor: authInterceptor,

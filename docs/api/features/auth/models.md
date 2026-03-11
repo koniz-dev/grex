@@ -91,47 +91,9 @@ final user = userModel.toEntity();
 
 ---
 
-## AuthResponseModel
+## User and session
 
-Data model for authentication response from API.
-
-**Location:** `lib/features/auth/data/models/auth_response_model.dart`
-
-### Properties
-
-```dart
-/// User data
-final UserModel user;
-
-/// Access token
-final String token;
-
-/// Refresh token (optional)
-final String? refreshToken;
-```
-
-### Methods
-
-```dart
-/// Create AuthResponseModel from JSON
-factory AuthResponseModel.fromJson(Map<String, dynamic> json);
-
-/// Convert AuthResponseModel to JSON
-Map<String, dynamic> toJson();
-```
-
-### Usage
-
-```dart
-// From API response
-final response = await apiClient.post('/login', data: {...});
-final authResponse = AuthResponseModel.fromJson(response.data);
-
-// Access data
-final user = authResponse.user;
-final token = authResponse.token;
-final refreshToken = authResponse.refreshToken;
-```
+Auth uses the Supabase Auth SDK; the domain [User](lib/features/auth/domain/entities/user.dart) entity is mapped from `supabase.User`. Session data (tokens, user, profile) is stored by [SecureSessionService](lib/features/auth/data/services/secure_session_service.dart) and synced to [AppConstants.tokenKey](lib/core/constants/app_constants.dart) for [AuthInterceptor](lib/core/network/interceptors/auth_interceptor.dart). User profile is in [UserProfile](lib/features/auth/domain/entities/user_profile.dart) and [UserModel](lib/features/auth/data/models/user_model.dart) for JSON.
 
 ---
 

@@ -57,6 +57,26 @@ class ConcreteAuthFailure extends AuthFailure {
   const ConcreteAuthFailure(super.message);
 }
 
+/// Failure when session has expired or is invalid
+class SessionExpiredFailure extends AuthFailure {
+  /// Creates a [SessionExpiredFailure].
+  const SessionExpiredFailure() : super('Session has expired');
+}
+
+/// Failure when too many authentication attempts are made
+class TooManyAttemptsFailure extends AuthFailure {
+  /// Creates a [TooManyAttemptsFailure].
+  const TooManyAttemptsFailure()
+    : super('Too many attempts. Please try again later');
+}
+
+/// Failure when password reset token is invalid or expired
+class InvalidResetTokenFailure extends AuthFailure {
+  /// Creates an [InvalidResetTokenFailure].
+  const InvalidResetTokenFailure()
+    : super('Password reset link is invalid or expired');
+}
+
 /// Base class for user profile-related failures
 abstract class UserFailure extends Equatable {
   /// Creates a [UserFailure] with the given [message].

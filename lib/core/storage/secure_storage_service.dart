@@ -13,16 +13,21 @@ import 'package:grex/core/storage/storage_service.dart';
 /// - Android: Uses EncryptedSharedPreferences
 /// - iOS: Uses Keychain with first unlock accessibility
 class SecureStorageService implements IStorageService {
-  /// Creates a [SecureStorageService] instance with platform-specific options
-  SecureStorageService()
-    : _storage = const FlutterSecureStorage(
-        aOptions: AndroidOptions(
-          encryptedSharedPreferences: true,
-        ),
-        iOptions: IOSOptions(
-          accessibility: KeychainAccessibility.first_unlock_this_device,
-        ),
-      );
+  /// Creates a [SecureStorageService] instance with platform-specific options.
+  ///
+  /// If [secureStorage] is provided, it is used so that token keys stay in sync
+  /// with SecureSessionService (e.g. same instance from GetIt).
+  SecureStorageService({FlutterSecureStorage? secureStorage})
+      : _storage = secureStorage ?? _defaultStorage;
+
+  static const FlutterSecureStorage _defaultStorage = FlutterSecureStorage(
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+    ),
+    iOptions: IOSOptions(
+      accessibility: KeychainAccessibility.first_unlock_this_device,
+    ),
+  );
 
   final FlutterSecureStorage _storage;
 

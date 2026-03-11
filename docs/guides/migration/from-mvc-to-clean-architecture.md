@@ -227,7 +227,7 @@ class UserModel extends User {
 
 **After (Remote Data Source):**
 ```dart
-// lib/features/auth/data/datasources/auth_remote_datasource.dart
+// lib/features/auth/data/ (auth uses Supabase; see supabase_auth_repository.dart)
 import 'package:grex/core/network/api_client.dart';
 import 'package:grex/features/auth/data/models/user_model.dart';
 
@@ -262,10 +262,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 // lib/features/auth/data/repositories/auth_repository_impl.dart
 import 'package:grex/core/errors/exception_to_failure_mapper.dart';
 import 'package:grex/core/utils/result.dart';
-import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 
+// Project uses SupabaseAuthRepository; example pattern:
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource);
   
@@ -291,7 +291,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
 **Before (MVC Controller with StatefulWidget):**
 ```dart
-// lib/views/login_screen.dart
+// lib/views/ (auth UI: lib/features/auth/presentation/pages/login_page.dart)
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -404,7 +404,7 @@ final authProvider = NotifierProvider<AuthNotifier, AuthState>(
 
 **After (UI with ConsumerWidget):**
 ```dart
-// lib/features/auth/presentation/screens/login_screen.dart
+// lib/features/auth/presentation/pages/login_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
@@ -461,7 +461,7 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
 // Repository
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final remoteDataSource = ref.read(authRemoteDataSourceProvider);
-  return AuthRepositoryImpl(remoteDataSource);
+  return SupabaseAuthRepository(); // or AuthRepositoryImpl(remoteDataSource) for custom API
 });
 
 // Use Cases

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:grex/core/constants/app_constants.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/repositories/user_repository.dart';
 import 'package:grex/features/auth/domain/services/session_service.dart';
@@ -62,6 +63,16 @@ class SecureSessionService implements SessionService {
       await _secureStorage.write(
         key: _lastValidationKey,
         value: now.toIso8601String(),
+      );
+
+      // Sync tokens to keys used by AuthInterceptor
+      await _secureStorage.write(
+        key: AppConstants.tokenKey,
+        value: accessToken,
+      );
+      await _secureStorage.write(
+        key: AppConstants.refreshTokenKey,
+        value: refreshToken,
       );
 
       return const Right(null);
@@ -223,6 +234,8 @@ class SecureSessionService implements SessionService {
       await Future.wait([
         _secureStorage.delete(key: _sessionKey),
         _secureStorage.delete(key: _lastValidationKey),
+        _secureStorage.delete(key: AppConstants.tokenKey),
+        _secureStorage.delete(key: AppConstants.refreshTokenKey),
       ]);
 
       return const Right(null);

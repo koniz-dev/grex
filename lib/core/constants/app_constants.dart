@@ -31,4 +31,11 @@ class AppConstants {
 
   /// Storage key for user's language preference
   static const String languageKey = 'language';
+
+  /// Deep link base URL for email confirmation redirect.
+  /// Used as `emailRedirectTo` in Supabase signUp so confirmation emails
+  /// open the app. Must be added to Supabase Dashboard → Auth → URL
+  /// Configuration → Redirect URLs. Path must contain /auth/confirm for
+  /// SupabaseEmailVerificationService to parse token, email, type.
+  static const String authEmailConfirmRedirectUrl = 'grex://app/auth/confirm';
 }

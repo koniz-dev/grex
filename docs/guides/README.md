@@ -46,6 +46,13 @@ For testing practices and coverage:
 2. **[Test Coverage Guide](testing/test-coverage.md)** - How coverage is measured and enforced
 3. **[Testing Summary](testing/testing-summary.md)** - Quick reference for testing
 
+## Auth
+
+For auth setup and verification:
+
+1. **[Deep Link and Supabase Setup](auth/deep-link-and-supabase-setup.md)** - Configure deep link (grex://app/auth/confirm) and Supabase redirect for email confirmation
+2. **[Auth Verification Checklist](auth/auth-verification-checklist.md)** - Manual checklist to verify session restore, login, redirect, and deep link work end-to-end
+
 ## Features & Technical Guides
 
 For implementing specific features and technical aspects:

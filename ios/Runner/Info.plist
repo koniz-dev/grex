@@ -45,5 +45,19 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Deep link: email verification (grex://auth/confirm?token=...&email=...&type=signup) -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.grex.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>grex</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

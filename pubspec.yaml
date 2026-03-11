@@ -8,6 +8,10 @@ environment:
   sdk: '^3.8.0'
 
 dependencies:
+  # Deep linking - Handle app links (e.g. email verification). Version must be
+  # compatible with supabase_flutter (app_links >=3.5.0 <7.0.0).
+  app_links: ^6.2.0
+  
   # UI Components - iOS style icons
   cupertino_icons: ^1.0.8
 

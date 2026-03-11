@@ -1,12 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grex/core/di/providers.dart';
+import 'package:grex/core/errors/failures.dart';
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
 
 part 'auth_provider.freezed.dart';
 
-/// Authentication state
+/// Authentication state for routing and session management
+///
+/// This state is used by GoRouter's redirect logic and main() session
+/// restore. It is NOT used by auth UI pages (which use AuthBloc instead).
 @freezed
 abstract class AuthState with _$AuthState {
   /// Creates an [AuthState] with the given [user], [isLoading], and [error]
@@ -22,7 +26,21 @@ abstract class AuthState with _$AuthState {
   }) = _AuthState;
 }
 
-/// Authentication provider (Riverpod 3.0 - using Notifier)
+/// Authentication bridge between repository and GoRouter.
+///
+/// **Architecture note:** This notifier acts as a **bridge only** — it
+/// syncs the repository's `authStateChanges` stream into Riverpod state
+/// so that GoRouter's `refreshListenable` triggers route redirects.
+///
+/// **It does NOT contain business logic.** All auth operations (login,
+/// register, logout, email verification, OTP, etc.) are handled by
+/// AuthBloc in the presentation layer. This separation avoids
+/// duplicating business logic across two state management systems.
+///
+/// Responsibilities:
+/// - Listen to `authStateChanges` from the repository (auto-sync)
+/// - Provide `getCurrentUser()` for session restore in `main()`
+/// - Provide `isAuthenticated()` for routing guards
 class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
@@ -42,103 +60,9 @@ class AuthNotifier extends Notifier<AuthState> {
     return const AuthState();
   }
 
-  /// Attempts to login with the given [email] and [password]
-  Future<void> login(String email, String password) async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    final loginUseCase = ref.read(loginUseCaseProvider);
-    final result = await loginUseCase(email, password);
-
-    result.when(
-      success: (user) {
-        state = state.copyWith(
-          user: user,
-          isLoading: false,
-          error: null,
-        );
-      },
-      failureCallback: (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          error: failure.message,
-        );
-      },
-    );
-  }
-
-  /// Attempts to register a new user with [email], [password], and [name]
-  Future<void> register(
-    String email,
-    String password,
-    String name,
-  ) async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    final registerUseCase = ref.read(registerUseCaseProvider);
-    final result = await registerUseCase(email, password, name);
-
-    result.when(
-      success: (user) {
-        state = state.copyWith(
-          user: user,
-          isLoading: false,
-          error: null,
-        );
-      },
-      failureCallback: (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          error: failure.message,
-        );
-      },
-    );
-  }
-
-  /// Logs out the current user
-  Future<void> logout() async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    final logoutUseCase = ref.read(logoutUseCaseProvider);
-    final result = await logoutUseCase();
-
-    result.when(
-      success: (_) {
-        state = const AuthState();
-      },
-      failureCallback: (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          error: failure.message,
-        );
-      },
-    );
-  }
-
-  /// Refreshes the authentication token
+  /// Gets the current authenticated user for session restore.
   ///
-  /// This is typically called automatically by the AuthInterceptor,
-  /// but can be called manually if needed.
-  Future<void> refreshToken() async {
-    final refreshTokenUseCase = ref.read(refreshTokenUseCaseProvider);
-    final result = await refreshTokenUseCase();
-
-    await result.when(
-      success: (_) async {
-        // Token refreshed successfully, no state change needed
-        // The token is stored in secure storage by the repository
-      },
-      failureCallback: (failure) async {
-        // Refresh failed, might need to logout
-        // Check if it's a refresh token expiry error
-        if (failure.code == 'REFRESH_TOKEN_EXPIRED' ||
-            failure.message.toLowerCase().contains('refresh')) {
-          await logout();
-        }
-      },
-    );
-  }
-
-  /// Gets the current authenticated user
+  /// Called from `main()` at app startup to restore the previous session.
   Future<void> getCurrentUser() async {
     state = state.copyWith(isLoading: true, error: null);
 
@@ -146,14 +70,14 @@ class AuthNotifier extends Notifier<AuthState> {
     final result = await getCurrentUserUseCase();
 
     result.when(
-      success: (user) {
+      success: (User? user) {
         state = state.copyWith(
           user: user,
           isLoading: false,
           error: null,
         );
       },
-      failureCallback: (failure) {
+      failureCallback: (Failure failure) {
         state = state.copyWith(
           isLoading: false,
           error: failure.message,
@@ -162,22 +86,27 @@ class AuthNotifier extends Notifier<AuthState> {
     );
   }
 
-  /// Checks if the user is authenticated
+  /// Checks if the user is authenticated.
   ///
-  /// Returns true if user is authenticated, false otherwise.
-  /// This method does not update the state.
+  /// Used by routing guards. Does not update state.
   Future<bool> isAuthenticated() async {
     final isAuthenticatedUseCase = ref.read(isAuthenticatedUseCaseProvider);
     final result = await isAuthenticatedUseCase();
 
     return result.when(
-      success: (isAuth) => isAuth,
-      failureCallback: (_) => false,
+      success: (bool isAuth) => isAuth,
+      failureCallback: (Failure _) => false,
     );
   }
 }
 
 /// Provider for AuthNotifier (Riverpod 3.0 - using NotifierProvider)
+///
+/// Used by:
+/// - GoRouter redirect logic (routing guards)
+/// - `main()` for session restore
+///
+/// NOT used by auth UI pages (which use AuthBloc).
 final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(
   AuthNotifier.new,
 );

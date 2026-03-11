@@ -175,59 +175,42 @@ void main() {
 
 ### Testing Repositories
 
-Test repository implementations with mocked data sources:
+Test repository implementations with mocked dependencies:
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:grex/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:grex/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:grex/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:grex/features/auth/data/repositories/supabase_auth_repository.dart';
+import 'package:grex/features/auth/domain/entities/entities.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
-class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
-class MockAuthLocalDataSource extends Mock implements AuthLocalDataSource {}
+import 'supabase_auth_repository_test.mocks.dart';
 
+@GenerateMocks([supabase.SupabaseClient, supabase.GoTrueClient, supabase.AuthResponse])
 void main() {
-  group('AuthRepositoryImpl', () {
-    late AuthRepositoryImpl repository;
-    late MockAuthRemoteDataSource mockRemoteDataSource;
-    late MockAuthLocalDataSource mockLocalDataSource;
+  group('SupabaseAuthRepository', () {
+    late SupabaseAuthRepository repository;
+    late MockSupabaseClient mockSupabaseClient;
+    late MockGoTrueClient mockGoTrueClient;
 
     setUp(() {
-      mockRemoteDataSource = MockAuthRemoteDataSource();
-      mockLocalDataSource = MockAuthLocalDataSource();
-      repository = AuthRepositoryImpl(
-        remoteDataSource: mockRemoteDataSource,
-        localDataSource: mockLocalDataSource,
-      );
+      mockSupabaseClient = MockSupabaseClient();
+      mockGoTrueClient = MockGoTrueClient();
+      when(mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
+      repository = SupabaseAuthRepository(supabaseClient: mockSupabaseClient);
     });
 
-    test('should return User and cache data when login succeeds', () async {
-      // Arrange
-      const authResponse = AuthResponseModel(
-        user: UserModel(id: '1', email: 'test@example.com', name: 'Test'),
-        token: 'access_token',
-        refreshToken: 'refresh_token',
-      );
-      when(() => mockRemoteDataSource.login(any(), any()))
-          .thenAnswer((_) async => authResponse);
-      when(() => mockLocalDataSource.cacheUser(any()))
-          .thenAnswer((_) async => {});
-      when(() => mockLocalDataSource.cacheToken(any()))
-          .thenAnswer((_) async => {});
-
-      // Act
-      final result = await repository.login('test@example.com', 'password');
-
-      // Assert
-      expect(result.isSuccess, isTrue);
-      verify(() => mockRemoteDataSource.login('test@example.com', 'password')).called(1);
-      verify(() => mockLocalDataSource.cacheUser(any())).called(1);
-      verify(() => mockLocalDataSource.cacheToken('access_token')).called(1);
+    test('should return User when signInWithEmail succeeds', () async {
+      // Arrange: stub signInWithPassword to return a mock user
+      // Act: call repository.signInWithEmail(...)
+      // Assert: expect Right(user), verify mock called
     });
   });
 }
 ```
+
+Auth uses [SupabaseAuthRepository](lib/features/auth/data/repositories/supabase_auth_repository.dart) with the Supabase SDK; token storage is synced via [SecureSessionService](lib/features/auth/data/services/secure_session_service.dart) to [AppConstants.tokenKey](lib/core/constants/app_constants.dart) for [AuthInterceptor](lib/core/network/interceptors/auth_interceptor.dart).
 
 ### Testing Providers (Riverpod)
 
@@ -281,14 +264,14 @@ Test widgets with Riverpod providers:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:grex/features/auth/presentation/screens/login_screen.dart';
+import 'package:grex/features/auth/presentation/pages/login_page.dart';
 import 'package:grex/features/auth/domain/usecases/login_usecase.dart';
 import 'package:grex/test/helpers/pump_app.dart';
 
 class MockLoginUseCase extends Mock implements LoginUseCase {}
 
 void main() {
-  group('LoginScreen', () {
+  group('LoginPage', () {
     late MockLoginUseCase mockLoginUseCase;
 
     setUp(() {
