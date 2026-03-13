@@ -1,14 +1,22 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
+import 'package:grex/features/auth/domain/entities/failures.dart';
+import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/entities/user_profile.dart';
 import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 
 /// Login page for user authentication.
 ///
-/// This page provides a form for users to sign in with their email and
-/// password. It includes form validation, loading states, and navigation to
-/// other auth screens.
+/// Implements the login screen design with:
+/// - App logo and branding
+/// - Email and password fields
+/// - Social login options (Google, Apple)
+/// - Loading, error, and success states
 class LoginPage extends StatefulWidget {
   /// Creates a [LoginPage].
   const LoginPage({super.key});
@@ -22,30 +30,11 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  bool _isPasswordVisible = false;
-  bool _isFormValid = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _emailController.addListener(_validateForm);
-    _passwordController.addListener(_validateForm);
-  }
-
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
-  }
-
-  void _validateForm() {
-    final isValid = _formKey.currentState?.validate() ?? false;
-    if (isValid != _isFormValid) {
-      setState(() {
-        _isFormValid = isValid;
-      });
-    }
   }
 
   void _onLoginPressed() {
@@ -59,198 +48,277 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _onForgotPasswordPressed() {
-    context.goToForgotPassword();
+  void _onSocialLogin(SocialAuthProvider provider) {
+    context.read<AuthBloc>().add(AuthSocialLoginRequested(provider.name));
   }
 
-  void _onSignUpPressed() {
-    context.goToRegister();
+  void showAccountLinkingDialog({
+    required BuildContext context,
+    required String email,
+    required SocialAuthProvider provider,
+    required VoidCallback onLink,
+    required VoidCallback onCreateNew,
+  }) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AccountLinkingDialog(
+          newUser: User(
+            id: '',
+            email: email,
+            createdAt: DateTime.now(),
+          ),
+          existingProfile: UserProfile(
+            id: '',
+            email: email,
+            displayName: '',
+            preferredCurrency: 'VND',
+            languageCode: 'vi',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          provider: provider,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthAuthenticated) {
-              // Navigate to main app
               context.replaceWithHome();
             } else if (state is AuthEmailVerificationRequired) {
-              // Navigate to email verification
               context.goToEmailVerification();
+            } else if (state is AuthProfileSetupRequired) {
+              context.goToProfileSetup(
+                user: state.user,
+                provider: state.provider,
+                displayName: state.displayName,
+                email: state.email,
+              );
+            } else if (state is AuthAccountLinkingRequired) {
+              showAccountLinkingDialog(
+                context: context,
+                email: state.existingProfile.email,
+                provider: state.provider,
+                onLink: () {
+                  context.read<AuthBloc>().add(
+                    AuthAccountLinkingConfirmed(state.existingProfile.id),
+                  );
+                },
+                onCreateNew: () {
+                  context.read<AuthBloc>().add(
+                    const AuthAccountLinkingDeclined(),
+                  );
+                },
+              );
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // App Logo/Title
-                  Center(
-                    child: Image.asset(
-                      'assets/images/app_icon.png',
-                      height: 100,
+                  // Spacer
+                  const SizedBox(height: 60),
+
+                  // Logo section
+                  const AppLogo(),
+                  const SizedBox(height: 32),
+
+                  // Title section
+                  const Text(
+                    'Welcome back',
+                    style: TextStyle(
+                      fontFamily: 'Outfit',
+                      fontSize: 40,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -1,
+                      color: Colors.black,
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Grex',
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Chia sẻ chi phí dễ dàng',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey[600],
+                  const Text(
+                    'Sign in to continue',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: Color(0xFF71717A),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 48),
-
-                  // Email Field
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Nhập email của bạn',
-                      prefixIcon: Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: InputValidators.validateEmail,
-                    onChanged: (_) => _validateForm(),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Password Field
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: !_isPasswordVisible,
-                    textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
-                      labelText: 'Mật khẩu',
-                      hintText: 'Nhập mật khẩu của bạn',
-                      prefixIcon: const Icon(Icons.lock_outlined),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                      ),
-                      border: const OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập mật khẩu';
-                      }
-                      return null;
-                    },
-                    onChanged: (_) => _validateForm(),
-                    onFieldSubmitted: (_) {
-                      if (_isFormValid) {
-                        _onLoginPressed();
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Login Button
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      final isLoading = state is AuthLoading;
-
-                      return ElevatedButton(
-                        onPressed: isLoading || !_isFormValid
-                            ? null
-                            : _onLoginPressed,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
-                                  ),
-                                ),
-                              )
-                            : const Text(
-                                'Đăng nhập',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Forgot Password Link
-                  TextButton(
-                    onPressed: _onForgotPasswordPressed,
-                    child: const Text('Quên mật khẩu?'),
                   ),
                   const SizedBox(height: 32),
 
-                  // Error Display
+                  // Form section
+                  AuthTextField(
+                    label: 'Email',
+                    placeholder: 'your@email.com',
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    validator: InputValidators.validateEmail,
+                  ),
+                  const SizedBox(height: 16),
+
+                  AuthTextField(
+                    label: 'Password',
+                    placeholder: '••••••••',
+                    controller: _passwordController,
+                    obscureText: true,
+                    textInputAction: TextInputAction.done,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                    onFieldSubmitted: (_) => _onLoginPressed(),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Forgot password link
+                  GestureDetector(
+                    onTap: () => context.goToForgotPassword(),
+                    child: const Text(
+                      'Forgot password?',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF71717A),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Login button
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      final isLoading =
+                          state is AuthLoading ||
+                          state is AuthSocialLoginInProgress;
+                      return PrimaryButton(
+                        text: 'Sign In',
+                        isLoading: state is AuthLoading,
+                        onPressed: isLoading ? null : _onLoginPressed,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Or divider
+                  const OrDivider(),
+                  const SizedBox(height: 12),
+
+                  // Social login buttons
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      final isLoading =
+                          state is AuthLoading ||
+                          state is AuthSocialLoginInProgress;
+                      final isGoogleLoading =
+                          state is AuthSocialLoginInProgress &&
+                          state.provider == SocialAuthProvider.google;
+
+                      return SocialLoginButton(
+                        provider: SocialAuthProvider.google,
+                        onPressed: isLoading
+                            ? null
+                            : () => _onSocialLogin(SocialAuthProvider.google),
+                        isLoading: isGoogleLoading,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      final isLoading =
+                          state is AuthLoading ||
+                          state is AuthSocialLoginInProgress;
+                      final isAppleLoading =
+                          state is AuthSocialLoginInProgress &&
+                          state.provider == SocialAuthProvider.apple;
+
+                      return SocialLoginButton(
+                        provider: SocialAuthProvider.apple,
+                        onPressed: isLoading
+                            ? null
+                            : () => _onSocialLogin(SocialAuthProvider.apple),
+                        isLoading: isAppleLoading,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Error display
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthError) {
-                        return Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.red[50],
-                            border: Border.all(color: Colors.red[300]!),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.error_outline, color: Colors.red[700]),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  state.message,
-                                  style: TextStyle(color: Colors.red[700]),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
+                        // Check if it's a social auth error
+                        if (state.failure != null &&
+                            (state.failure is SocialAuthFailure ||
+                                state.failure is SocialAuthCancelledFailure ||
+                                state.failure is SocialAuthNetworkFailure ||
+                                state.failure is SocialAuthTimeoutFailure ||
+                                state.failure is AccountLinkingFailure)) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: SocialAuthErrorWidget(
+                              failure: state.failure!,
+                              onRetry: () {
+                                // Retry the last attempted social login
+                                // This would need to be tracked in the BLoC
+                                // state
+                              },
+                              onFallback: () {
+                                // Focus on email field for fallback
+                                FocusScope.of(context).requestFocus();
+                              },
+                            ),
+                          );
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: ErrorBanner(message: state.message),
+                          );
+                        }
                       }
                       return const SizedBox.shrink();
                     },
                   ),
-                  const SizedBox(height: 24),
 
-                  // Sign Up Link
+                  // Register prompt
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Chưa có tài khoản? '),
-                      TextButton(
-                        onPressed: _onSignUpPressed,
+                      const Text(
+                        "Don't have an account? ",
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFF71717A),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => context.goToRegister(),
                         child: const Text(
-                          'Đăng ký ngay',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          'Register',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ],

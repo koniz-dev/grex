@@ -622,4 +622,55 @@ class MockUserRepository extends _i1.Mock implements _i8.UserRepository {
                 ),
           )
           as _i6.Future<_i4.Either<_i9.UserFailure, _i9.UserProfile>>);
+
+  @override
+  _i6.Future<_i4.Either<_i9.UserFailure, _i9.UserProfile?>>
+  getUserProfileByEmail(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUserProfileByEmail, [email]),
+            returnValue:
+                _i6.Future<_i4.Either<_i9.UserFailure, _i9.UserProfile?>>.value(
+                  _FakeEither_15<_i9.UserFailure, _i9.UserProfile?>(
+                    this,
+                    Invocation.method(#getUserProfileByEmail, [email]),
+                  ),
+                ),
+          )
+          as _i6.Future<_i4.Either<_i9.UserFailure, _i9.UserProfile?>>);
+
+  @override
+  _i6.Future<_i4.Either<_i9.UserFailure, _i9.UserProfile>>
+  createSocialUserProfile({
+    required String? userId,
+    required String? email,
+    required String? displayName,
+    required String? preferredCurrency,
+    required String? languageCode,
+    required String? provider,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#createSocialUserProfile, [], {
+              #userId: userId,
+              #email: email,
+              #displayName: displayName,
+              #preferredCurrency: preferredCurrency,
+              #languageCode: languageCode,
+              #provider: provider,
+            }),
+            returnValue:
+                _i6.Future<_i4.Either<_i9.UserFailure, _i9.UserProfile>>.value(
+                  _FakeEither_15<_i9.UserFailure, _i9.UserProfile>(
+                    this,
+                    Invocation.method(#createSocialUserProfile, [], {
+                      #userId: userId,
+                      #email: email,
+                      #displayName: displayName,
+                      #preferredCurrency: preferredCurrency,
+                      #languageCode: languageCode,
+                      #provider: provider,
+                    }),
+                  ),
+                ),
+          )
+          as _i6.Future<_i4.Either<_i9.UserFailure, _i9.UserProfile>>);
 }

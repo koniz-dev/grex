@@ -1,7 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:grex/core/routing/app_routes.dart';
+import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+
+/// Arguments for profile setup page navigation
+class ProfileSetupArgs {
+  /// Creates [ProfileSetupArgs] with required parameters.
+  const ProfileSetupArgs({
+    required this.user,
+    required this.provider,
+    required this.email,
+    this.displayName,
+  });
+
+  /// The authenticated user from social login
+  final User user;
+
+  /// The social authentication provider used
+  final SocialAuthProvider provider;
+
+  /// Pre-filled display name from OAuth provider (optional)
+  final String? displayName;
+
+  /// Pre-filled email from OAuth provider
+  final String email;
+}
 
 /// Navigation extensions for authentication flows
 extension AuthNavigationExtensions on BuildContext {
@@ -23,6 +47,24 @@ extension AuthNavigationExtensions on BuildContext {
   /// Navigate to email verification page
   void goToEmailVerification() {
     go(AppRoutes.emailVerification);
+  }
+
+  /// Navigate to profile setup page for social login users
+  void goToProfileSetup({
+    required User user,
+    required SocialAuthProvider provider,
+    required String email,
+    String? displayName,
+  }) {
+    go(
+      AppRoutes.profileSetup,
+      extra: ProfileSetupArgs(
+        user: user,
+        provider: provider,
+        displayName: displayName,
+        email: email,
+      ),
+    );
   }
 
   /// Navigate to profile page

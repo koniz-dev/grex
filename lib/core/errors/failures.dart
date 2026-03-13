@@ -26,11 +26,11 @@ import 'package:equatable/equatable.dart';
 ///
 /// // Use pattern matching
 /// result.when(
-///   success: (user) => print('User: $user'),
+///   success: (user) => debugPrint('User: $user'),
 ///   failureCallback: (failure) {
 ///     // failure is the ServerFailure instance
 ///     if (failure is ServerFailure) {
-///       print('Server error: ${failure.message}');
+///       debugPrint('Server error: ${failure.message}');
 ///     }
 ///   },
 /// );

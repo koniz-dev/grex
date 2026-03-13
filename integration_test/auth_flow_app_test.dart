@@ -13,8 +13,9 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Auth flow (real app)', () {
-    testWidgets('app starts and reaches stable auth UI (login or home)',
-        (tester) async {
+    testWidgets('app starts and reaches stable auth UI (login or home)', (
+      tester,
+    ) async {
       app.main();
       // Allow main() to complete (async init) before pumping
       await tester.pump(const Duration(seconds: 2));

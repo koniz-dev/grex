@@ -22,8 +22,9 @@ void main() {
     mockStorage = MockFlutterSecureStorage();
     mockSupabaseClient = MockSupabaseClient();
     mockUserRepository = MockUserRepository();
-    when(mockStorage.write(key: anyNamed('key'), value: anyNamed('value')))
-        .thenAnswer((_) async => {});
+    when(
+      mockStorage.write(key: anyNamed('key'), value: anyNamed('value')),
+    ).thenAnswer((_) async => {});
     when(mockStorage.delete(key: anyNamed('key'))).thenAnswer((_) async => {});
     when(mockStorage.read(key: anyNamed('key'))).thenAnswer((_) async => null);
 
@@ -38,36 +39,41 @@ void main() {
     test(
       'storeSession writes accessToken and refreshToken to token keys',
       () async {
-      const accessToken = 'access_123';
-      const refreshToken = 'refresh_456';
-      final user = generateValidUser();
-      final profile = UserProfile(
-        id: user.id,
-        email: user.email,
-        displayName: 'Test',
-        preferredCurrency: 'VND',
-        languageCode: 'vi',
-        createdAt: user.createdAt,
-        updatedAt: user.createdAt,
-      );
+        const accessToken = 'access_123';
+        const refreshToken = 'refresh_456';
+        final user = generateValidUser();
+        final profile = UserProfile(
+          id: user.id,
+          email: user.email,
+          displayName: 'Test',
+          preferredCurrency: 'VND',
+          languageCode: 'vi',
+          createdAt: user.createdAt,
+          updatedAt: user.createdAt,
+        );
 
-      final result = await service.storeSession(
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        user: user,
-        userProfile: profile,
-      );
+        final result = await service.storeSession(
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          user: user,
+          userProfile: profile,
+        );
 
-      expect(result.isRight(), isTrue);
-      verify(mockStorage.write(
-        key: AppConstants.tokenKey,
-        value: accessToken,
-      )).called(1);
-      verify(mockStorage.write(
-        key: AppConstants.refreshTokenKey,
-        value: refreshToken,
-      )).called(1);
-    });
+        expect(result.isRight(), isTrue);
+        verify(
+          mockStorage.write(
+            key: AppConstants.tokenKey,
+            value: accessToken,
+          ),
+        ).called(1);
+        verify(
+          mockStorage.write(
+            key: AppConstants.refreshTokenKey,
+            value: refreshToken,
+          ),
+        ).called(1);
+      },
+    );
 
     test('clearSession deletes tokenKey and refreshTokenKey', () async {
       final result = await service.clearSession();

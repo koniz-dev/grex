@@ -68,7 +68,7 @@ void main() {
         invalidKeys,
         isEmpty,
         reason:
-            'Found keys that do not follow camelCase convention: $invalidKeys',
+            'Found keys that do not follow camelcase convention _: $invalidKeys',
       );
     });
 
@@ -87,7 +87,7 @@ void main() {
         invalidKeys,
         isEmpty,
         reason:
-            'Found keys that do not follow camelCase convention: $invalidKeys',
+            'Found keys that do not follow camelcase convention _: $invalidKeys',
       );
     });
 
@@ -106,7 +106,7 @@ void main() {
         invalidKeys,
         isEmpty,
         reason:
-            'Found keys that do not follow camelCase convention: $invalidKeys',
+            'Found keys that do not follow camelcase convention _: $invalidKeys',
       );
     });
 
@@ -125,7 +125,7 @@ void main() {
         invalidKeys,
         isEmpty,
         reason:
-            'Found keys that do not follow camelCase convention: $invalidKeys',
+            'Found keys that do not follow camelcase convention _: $invalidKeys',
       );
     });
 

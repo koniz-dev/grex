@@ -258,8 +258,15 @@ Entry Point: Login Screen (0, 0)
 
 ## Missing or Future Enhancements
 
+### Missing or Future Enhancements
+
+### Social Login (✅ Added)
+- **Google Sign In** - Added to Login and Register screens
+- **Apple Sign In** - Added to Login and Register screens
+- **Implementation**: Uses Supabase OAuth with deep linking
+
 ### Not Included in Current Design
-1. **Social Login** (Google, GitHub, etc.) - Can be added to Login/Register screens
+1. **Facebook Login** - Can be added similar to Google/Apple
 2. **Two-Factor Authentication** - Would require additional OTP screen
 3. **Account Deletion** - Profile management feature (not auth flow)
 4. **Change Password** (while logged in) - Profile management feature

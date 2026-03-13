@@ -5,4 +5,5 @@
 library;
 
 export 'auth_repository.dart';
+export 'social_auth_repository.dart';
 export 'user_repository.dart';

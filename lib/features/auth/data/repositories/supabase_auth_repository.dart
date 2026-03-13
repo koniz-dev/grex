@@ -109,6 +109,31 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<Either<AuthFailure, void>> updatePassword({
+    required String newPassword,
+    String? token,
+  }) async {
+    try {
+      if (token != null) {
+        // Update password with reset token (from password reset flow)
+        await _supabaseClient.auth.updateUser(
+          supabase.UserAttributes(password: newPassword),
+        );
+      } else {
+        // Update password for current authenticated user
+        await _supabaseClient.auth.updateUser(
+          supabase.UserAttributes(password: newPassword),
+        );
+      }
+      return const Right(null);
+    } on supabase.AuthException catch (e) {
+      return Left(_mapAuthExceptionToFailure(e));
+    } on Object catch (_) {
+      return const Left(NetworkFailure());
+    }
+  }
+
+  @override
   Stream<User?> get authStateChanges {
     _authStateController ??= StreamController<User?>.broadcast();
 

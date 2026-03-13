@@ -7,9 +7,15 @@ import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:grex/core/utils/result.dart' as _i7;
+import 'package:grex/features/auth/data/handlers/auth_deep_link_handler.dart'
+    as _i14;
 import 'package:grex/features/auth/domain/entities/entities.dart' as _i6;
+import 'package:grex/features/auth/domain/entities/profile_setup_data.dart'
+    as _i13;
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart'
     as _i4;
+import 'package:grex/features/auth/domain/repositories/social_auth_repository.dart'
+    as _i12;
 import 'package:grex/features/auth/domain/repositories/user_repository.dart'
     as _i9;
 import 'package:grex/features/auth/domain/services/email_verification_service.dart'
@@ -17,6 +23,8 @@ import 'package:grex/features/auth/domain/services/email_verification_service.da
 import 'package:grex/features/auth/domain/services/session_manager.dart' as _i3;
 import 'package:grex/features/auth/domain/services/session_service.dart'
     as _i10;
+import 'package:grex/features/auth/domain/services/social_login_analytics.dart'
+    as _i15;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i8;
 
@@ -154,6 +162,28 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
           as _i5.Future<_i2.Either<_i6.AuthFailure, void>>);
 
   @override
+  _i5.Future<_i2.Either<_i6.AuthFailure, void>> updatePassword({
+    required String? newPassword,
+    String? token,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#updatePassword, [], {
+              #newPassword: newPassword,
+              #token: token,
+            }),
+            returnValue: _i5.Future<_i2.Either<_i6.AuthFailure, void>>.value(
+              _FakeEither_0<_i6.AuthFailure, void>(
+                this,
+                Invocation.method(#updatePassword, [], {
+                  #newPassword: newPassword,
+                  #token: token,
+                }),
+              ),
+            ),
+          )
+          as _i5.Future<_i2.Either<_i6.AuthFailure, void>>);
+
+  @override
   _i5.Future<_i7.Result<_i6.User?>> getCurrentUser() =>
       (super.noSuchMethod(
             Invocation.method(#getCurrentUser, []),
@@ -276,6 +306,57 @@ class MockUserRepository extends _i1.Mock implements _i9.UserRepository {
                   _FakeEither_0<_i6.UserFailure, _i6.UserProfile>(
                     this,
                     Invocation.method(#updateUserProfile, [profile]),
+                  ),
+                ),
+          )
+          as _i5.Future<_i2.Either<_i6.UserFailure, _i6.UserProfile>>);
+
+  @override
+  _i5.Future<_i2.Either<_i6.UserFailure, _i6.UserProfile?>>
+  getUserProfileByEmail(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUserProfileByEmail, [email]),
+            returnValue:
+                _i5.Future<_i2.Either<_i6.UserFailure, _i6.UserProfile?>>.value(
+                  _FakeEither_0<_i6.UserFailure, _i6.UserProfile?>(
+                    this,
+                    Invocation.method(#getUserProfileByEmail, [email]),
+                  ),
+                ),
+          )
+          as _i5.Future<_i2.Either<_i6.UserFailure, _i6.UserProfile?>>);
+
+  @override
+  _i5.Future<_i2.Either<_i6.UserFailure, _i6.UserProfile>>
+  createSocialUserProfile({
+    required String? userId,
+    required String? email,
+    required String? displayName,
+    required String? preferredCurrency,
+    required String? languageCode,
+    required String? provider,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#createSocialUserProfile, [], {
+              #userId: userId,
+              #email: email,
+              #displayName: displayName,
+              #preferredCurrency: preferredCurrency,
+              #languageCode: languageCode,
+              #provider: provider,
+            }),
+            returnValue:
+                _i5.Future<_i2.Either<_i6.UserFailure, _i6.UserProfile>>.value(
+                  _FakeEither_0<_i6.UserFailure, _i6.UserProfile>(
+                    this,
+                    Invocation.method(#createSocialUserProfile, [], {
+                      #userId: userId,
+                      #email: email,
+                      #displayName: displayName,
+                      #preferredCurrency: preferredCurrency,
+                      #languageCode: languageCode,
+                      #provider: provider,
+                    }),
                   ),
                 ),
           )
@@ -566,4 +647,212 @@ class MockEmailVerificationService extends _i1.Mock
   @override
   String? extractEmail(String? link) =>
       (super.noSuchMethod(Invocation.method(#extractEmail, [link])) as String?);
+}
+
+/// A class which mocks [SocialAuthRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSocialAuthRepository extends _i1.Mock
+    implements _i12.SocialAuthRepository {
+  MockSocialAuthRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>> signInWithGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithGoogle, []),
+            returnValue:
+                _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>>.value(
+                  _FakeEither_0<_i6.AuthFailure, _i6.User>(
+                    this,
+                    Invocation.method(#signInWithGoogle, []),
+                  ),
+                ),
+          )
+          as _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>>);
+
+  @override
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>> signInWithApple() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithApple, []),
+            returnValue:
+                _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>>.value(
+                  _FakeEither_0<_i6.AuthFailure, _i6.User>(
+                    this,
+                    Invocation.method(#signInWithApple, []),
+                  ),
+                ),
+          )
+          as _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>>);
+
+  @override
+  _i5.Future<bool> hasUserProfile(String? userId) =>
+      (super.noSuchMethod(
+            Invocation.method(#hasUserProfile, [userId]),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<_i2.Either<_i6.AuthFailure, void>> linkSocialProvider({
+    required String? userId,
+    required _i6.SocialAuthProvider? provider,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#linkSocialProvider, [], {
+              #userId: userId,
+              #provider: provider,
+            }),
+            returnValue: _i5.Future<_i2.Either<_i6.AuthFailure, void>>.value(
+              _FakeEither_0<_i6.AuthFailure, void>(
+                this,
+                Invocation.method(#linkSocialProvider, [], {
+                  #userId: userId,
+                  #provider: provider,
+                }),
+              ),
+            ),
+          )
+          as _i5.Future<_i2.Either<_i6.AuthFailure, void>>);
+
+  @override
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i6.UserProfile>> createUserProfile(
+    String? userId,
+    _i13.ProfileSetupData? profileData,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#createUserProfile, [userId, profileData]),
+            returnValue:
+                _i5.Future<_i2.Either<_i6.AuthFailure, _i6.UserProfile>>.value(
+                  _FakeEither_0<_i6.AuthFailure, _i6.UserProfile>(
+                    this,
+                    Invocation.method(#createUserProfile, [
+                      userId,
+                      profileData,
+                    ]),
+                  ),
+                ),
+          )
+          as _i5.Future<_i2.Either<_i6.AuthFailure, _i6.UserProfile>>);
+}
+
+/// A class which mocks [AuthDeepLinkHandler].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthDeepLinkHandler extends _i1.Mock
+    implements _i14.AuthDeepLinkHandler {
+  MockAuthDeepLinkHandler() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  void Function(Uri) get onDeepLink =>
+      (super.noSuchMethod(
+            Invocation.getter(#onDeepLink),
+            returnValue: (Uri __p0) {},
+          )
+          as void Function(Uri));
+
+  @override
+  _i5.Future<void> initialize() =>
+      (super.noSuchMethod(
+            Invocation.method(#initialize, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> handleDeepLink(Uri? uri) =>
+      (super.noSuchMethod(
+            Invocation.method(#handleDeepLink, [uri]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  void dispose() => super.noSuchMethod(
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
+}
+
+/// A class which mocks [SocialLoginAnalytics].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSocialLoginAnalytics extends _i1.Mock
+    implements _i15.SocialLoginAnalytics {
+  MockSocialLoginAnalytics() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  void logSocialLoginInitiated(_i6.SocialAuthProvider? provider) =>
+      super.noSuchMethod(
+        Invocation.method(#logSocialLoginInitiated, [provider]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void logSocialLoginSuccess({
+    required _i6.SocialAuthProvider? provider,
+    required String? userType,
+  }) => super.noSuchMethod(
+    Invocation.method(#logSocialLoginSuccess, [], {
+      #provider: provider,
+      #userType: userType,
+    }),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void logSocialLoginFailure({
+    required _i6.SocialAuthProvider? provider,
+    required String? errorType,
+  }) => super.noSuchMethod(
+    Invocation.method(#logSocialLoginFailure, [], {
+      #provider: provider,
+      #errorType: errorType,
+    }),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void logSocialLoginCancelled(_i6.SocialAuthProvider? provider) =>
+      super.noSuchMethod(
+        Invocation.method(#logSocialLoginCancelled, [provider]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void logProfileSetupCompleted({
+    required _i6.SocialAuthProvider? provider,
+    required String? displayName,
+    required String? currency,
+    required String? language,
+  }) => super.noSuchMethod(
+    Invocation.method(#logProfileSetupCompleted, [], {
+      #provider: provider,
+      #displayName: displayName,
+      #currency: currency,
+      #language: language,
+    }),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void logAccountLinking({
+    required _i6.SocialAuthProvider? provider,
+    required String? action,
+    required String? existingEmail,
+  }) => super.noSuchMethod(
+    Invocation.method(#logAccountLinking, [], {
+      #provider: provider,
+      #action: action,
+      #existingEmail: existingEmail,
+    }),
+    returnValueForMissingStub: null,
+  );
 }

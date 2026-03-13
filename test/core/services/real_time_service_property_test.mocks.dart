@@ -674,6 +674,23 @@ class MockRealtimeChannel extends _i1.Mock implements _i2.RealtimeChannel {
           as _i3.Push);
 
   @override
+  _i4.Future<void> httpSend({
+    required String? event,
+    required Map<String, dynamic>? payload,
+    Duration? timeout,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#httpSend, [], {
+              #event: event,
+              #payload: payload,
+              #timeout: timeout,
+            }),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
   _i4.Future<_i2.ChannelResponse> sendBroadcastMessage({
     required String? event,
     required Map<String, dynamic>? payload,

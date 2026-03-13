@@ -9,7 +9,8 @@ import 'package:grex/l10n/app_localizations.dart';
 /// **Navigation Approach:**
 /// This extension provides basic navigation methods. For advanced routing
 /// features (deep linking, type-safe routes, etc.), use the navigation
-/// extensions from `core/routing/navigation_extensions.dart` which use GoRouter.
+/// extensions from `core/routing/navigation_extensions.dart` which use
+// GoRouter.
 ///
 /// **Usage:**
 /// ```dart

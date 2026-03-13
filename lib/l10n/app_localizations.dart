@@ -228,7 +228,7 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
-  /// Language selection dialog title
+  /// Language selector label
   ///
   /// In en, this message translates to:
   /// **'Select Language'**
@@ -881,6 +881,426 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Example Screen Content'**
   String get exampleScreenContent;
+
+  /// Login screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get welcomeBack;
+
+  /// Login screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to continue'**
+  String get signInToContinue;
+
+  /// Forgot password link
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// Divider text for social login
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get orContinueWith;
+
+  /// Google sign-in button text
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// Apple sign-in button text
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get continueWithApple;
+
+  /// Register screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
+  /// Register screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Join Grex today'**
+  String get joinGrexToday;
+
+  /// Display name field label
+  ///
+  /// In en, this message translates to:
+  /// **'Display Name'**
+  String get displayName;
+
+  /// Display name field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get enterYourName;
+
+  /// Email field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get enterYourEmail;
+
+  /// Password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get enterYourPassword;
+
+  /// Currency selector label
+  ///
+  /// In en, this message translates to:
+  /// **'Select Currency'**
+  String get selectCurrency;
+
+  /// Password requirements hint
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters with uppercase, lowercase, and numbers'**
+  String get passwordRequirements;
+
+  /// Link to login from register
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get alreadyHaveAccountSignIn;
+
+  /// Forgot password screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPasswordQuestion;
+
+  /// Forgot password instructions
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we\'ll send you a link to reset your password'**
+  String get enterEmailForReset;
+
+  /// Send reset link button
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLink;
+
+  /// Success message after sending reset link
+  ///
+  /// In en, this message translates to:
+  /// **'Reset link sent! Check your email.'**
+  String get resetLinkSent;
+
+  /// Link back to login
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Sign in'**
+  String get backToSignIn;
+
+  /// Email verification screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Email'**
+  String get verifyYourEmail;
+
+  /// Email verification instructions
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve sent a verification email to:'**
+  String get verificationEmailSent;
+
+  /// Email verification instructions continued
+  ///
+  /// In en, this message translates to:
+  /// **'Check your inbox and click the verification link to continue.'**
+  String get checkInboxAndClick;
+
+  /// Resend verification email button
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Email'**
+  String get resendEmail;
+
+  /// Open email app button
+  ///
+  /// In en, this message translates to:
+  /// **'Open Email App'**
+  String get openEmailApp;
+
+  /// Help section title
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the email?'**
+  String get didntReceiveEmail;
+
+  /// Help tip 1
+  ///
+  /// In en, this message translates to:
+  /// **'• Check your spam or junk folder'**
+  String get checkSpamFolder;
+
+  /// Help tip 2
+  ///
+  /// In en, this message translates to:
+  /// **'• Make sure the email address is correct'**
+  String get verifyEmailAddress;
+
+  /// Help tip 3
+  ///
+  /// In en, this message translates to:
+  /// **'• Wait a few minutes and try again'**
+  String get waitFewMinutes;
+
+  /// Sign out button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// Success message after resending email
+  ///
+  /// In en, this message translates to:
+  /// **'Email sent! Check your inbox.'**
+  String get emailSentCheckInbox;
+
+  /// Cooldown message for resend button
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait {seconds} seconds'**
+  String pleaseWaitSeconds(int seconds);
+
+  /// Reset password screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPassword;
+
+  /// Reset password instructions
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password below'**
+  String get enterNewPassword;
+
+  /// New password field label
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// Confirm password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// Confirm password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your password'**
+  String get confirmYourPassword;
+
+  /// Password mismatch error
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// Profile setup screen title for new social login users
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Your Profile'**
+  String get completeYourProfile;
+
+  /// Progress indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Step 1 of 2'**
+  String get stepOfTwo;
+
+  /// Avatar upload button
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Photo'**
+  String get uploadPhoto;
+
+  /// Complete setup button
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Setup'**
+  String get completeSetup;
+
+  /// Skip setup button
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get skipForNow;
+
+  /// Success screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Success!'**
+  String get success;
+
+  /// Account creation success message
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been created successfully'**
+  String get accountCreatedSuccessfully;
+
+  /// Password reset success message
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been reset successfully'**
+  String get passwordResetSuccessfully;
+
+  /// Email verification success message
+  ///
+  /// In en, this message translates to:
+  /// **'Your email has been verified successfully'**
+  String get emailVerifiedSuccessfully;
+
+  /// Continue button
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// Get started button
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// Back button
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// Generic social authentication failure message
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication failed. Please try again.'**
+  String get socialAuthFailed;
+
+  /// Network error during social authentication
+  ///
+  /// In en, this message translates to:
+  /// **'Network connection failed. Please check your internet connection and try again.'**
+  String get socialAuthNetworkError;
+
+  /// Timeout error during social authentication
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication timed out. Please try again.'**
+  String get socialAuthTimeout;
+
+  /// Account linking failure message
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to link your account. Please try again or contact support.'**
+  String get accountLinkingError;
+
+  /// Fallback button to use email authentication
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with email'**
+  String get signInWithEmail;
+
+  /// Dismiss button for error dialogs
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get dismiss;
+
+  /// Message shown after repeated network failures
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple network errors detected. Please check your internet connection or try signing in with email.'**
+  String get repeatedNetworkFailureMessage;
+
+  /// Message shown after repeated timeout failures
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication keeps timing out. Please try signing in with email instead.'**
+  String get repeatedTimeoutFailureMessage;
+
+  /// Message shown after repeated authentication failures
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication failed multiple times. Please try signing in with email or contact support.'**
+  String get repeatedAuthFailureMessage;
+
+  /// Divider text between authentication options
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get or;
+
+  /// Description text on profile setup screen
+  ///
+  /// In en, this message translates to:
+  /// **'Please complete your profile to get started with Grex'**
+  String get profileSetupDescription;
+
+  /// Account linking dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Link Your Account'**
+  String get linkYourAccount;
+
+  /// Message explaining existing account with email
+  ///
+  /// In en, this message translates to:
+  /// **'An account with email {email} already exists.'**
+  String accountExistsMessage(String email);
+
+  /// Question asking user to confirm account linking
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to link your {provider} account to your existing account?'**
+  String linkAccountQuestion(String provider);
+
+  /// Explanation of account linking benefits
+  ///
+  /// In en, this message translates to:
+  /// **'This will allow you to sign in with either method.'**
+  String get linkAccountBenefit;
+
+  /// Button to confirm account linking
+  ///
+  /// In en, this message translates to:
+  /// **'Link Accounts'**
+  String get linkAccounts;
+
+  /// Button to decline linking and create new account
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Account'**
+  String get createNewAccount;
+
+  /// Button to cancel profile setup
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Setup'**
+  String get cancelProfileSetup;
+
+  /// Confirmation message when canceling profile setup
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel? You will be signed out and need to sign in again.'**
+  String get cancelProfileSetupMessage;
+
+  /// Button to continue with profile setup
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Setup'**
+  String get continueSetup;
 }
 
 class _AppLocalizationsDelegate

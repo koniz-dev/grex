@@ -120,6 +120,12 @@ class _FakeObject_16 extends _i1.SmartFake implements Object {
     : super(parent, parentInvocation);
 }
 
+class _FakeGetClaimsResponse_17 extends _i1.SmartFake
+    implements _i2.GetClaimsResponse {
+  _FakeGetClaimsResponse_17(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [SupabaseClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -916,6 +922,22 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
             ),
           )
           as Object);
+
+  @override
+  _i3.Future<_i2.GetClaimsResponse> getClaims([
+    String? jwt,
+    _i2.GetClaimsOptions? options,
+  ]) =>
+      (super.noSuchMethod(
+            Invocation.method(#getClaims, [jwt, options]),
+            returnValue: _i3.Future<_i2.GetClaimsResponse>.value(
+              _FakeGetClaimsResponse_17(
+                this,
+                Invocation.method(#getClaims, [jwt, options]),
+              ),
+            ),
+          )
+          as _i3.Future<_i2.GetClaimsResponse>);
 }
 
 /// A class which mocks [AuthResponse].

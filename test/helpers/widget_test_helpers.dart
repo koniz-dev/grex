@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grex/core/routing/app_routes.dart';
 import 'package:grex/features/auth/domain/services/session_manager.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/screens/auth_screen_wrappers.dart';
+import 'package:grex/l10n/app_localizations.dart';
 
 import 'test_helpers.dart';
 import 'test_helpers.mocks.dart';
@@ -113,6 +115,13 @@ Widget createTestApp({
   return MaterialApp.router(
     routerConfig: router,
     title: 'Grex Test',
+    localizationsDelegates: const [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: AppLocalizations.supportedLocales,
   );
 }
 
@@ -158,11 +167,19 @@ extension WidgetTesterExtensions on WidgetTester {
       sessionService: mockSessionService,
     );
 
+    // Create mock dependencies for social login
+    final mockSocialAuthRepository = MockSocialAuthRepository();
+    final mockAuthDeepLinkHandler = MockAuthDeepLinkHandler();
+    final mockSocialLoginAnalytics = MockSocialLoginAnalytics();
+
     // Create AuthBloc with mocked dependencies
     final authBloc = AuthBloc(
       authRepository: mockAuthRepository,
       userRepository: mockUserRepository,
       sessionManager: sessionManager,
+      socialAuthRepository: mockSocialAuthRepository,
+      deepLinkHandler: mockAuthDeepLinkHandler,
+      analytics: mockSocialLoginAnalytics,
     );
 
     // Create ProfileBloc with mocked dependencies
@@ -185,6 +202,13 @@ extension WidgetTesterExtensions on WidgetTester {
           ],
           child: widget,
         ),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
       ),
     );
 

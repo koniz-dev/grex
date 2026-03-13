@@ -1,9 +1,11 @@
 /// Enum representing the different roles a member can have in a group
 enum MemberRole {
-  /// Administrator role - can manage group settings, invite/remove members, change roles
+  /// Administrator role - can manage group settings, invite/remove members,
+  // change roles
   administrator,
 
-  /// Editor role - can add/edit expenses and payments, but cannot manage group settings
+  /// Editor role - can add/edit expenses and payments, but cannot manage group
+  // settings
   editor,
 
   /// Viewer role - can only view expenses and balances, cannot make changes

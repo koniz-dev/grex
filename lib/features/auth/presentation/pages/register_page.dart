@@ -1,14 +1,22 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
+import 'package:grex/features/auth/domain/entities/failures.dart';
+import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/entities/user_profile.dart';
 import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 
 /// Registration page for new user sign up.
 ///
-/// This page provides a form for users to create a new account with
-/// email, password, and display name. It includes comprehensive form
-/// validation and handles registration errors.
+/// Implements the register screen design with:
+/// - Display name, email, password fields
+/// - Currency selector
+/// - Social login options (Google, Apple)
+/// - Password requirements hint
 class RegisterPage extends StatefulWidget {
   /// Creates a [RegisterPage].
   const RegisterPage({super.key});
@@ -19,64 +27,25 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  final _displayNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _displayNameController = TextEditingController();
 
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
-  bool _isFormValid = false;
   String _selectedCurrency = 'VND';
-  String _selectedLanguage = 'vi';
-  String _password = '';
 
   final List<Map<String, String>> _currencies = [
-    {'code': 'VND', 'name': 'Vietnamese Dong (₫)'},
-    {'code': 'USD', 'name': r'US Dollar ($)'},
-    {'code': 'EUR', 'name': 'Euro (€)'},
-    {'code': 'GBP', 'name': 'British Pound (£)'},
-    {'code': 'JPY', 'name': 'Japanese Yen (¥)'},
+    {'code': 'VND', 'name': 'VND - Vietnamese Dong'},
+    {'code': 'USD', 'name': 'USD - US Dollar'},
+    {'code': 'EUR', 'name': 'EUR - Euro'},
+    {'code': 'GBP', 'name': 'GBP - British Pound'},
   ];
-
-  final List<Map<String, String>> _languages = [
-    {'code': 'vi', 'name': 'Tiếng Việt'},
-    {'code': 'en', 'name': 'English'},
-    {'code': 'zh', 'name': '中文'},
-    {'code': 'ja', 'name': '日本語'},
-    {'code': 'ko', 'name': '한국어'},
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _emailController.addListener(_validateForm);
-    _passwordController.addListener(() {
-      setState(() {
-        _password = _passwordController.text;
-      });
-      _validateForm();
-    });
-    _confirmPasswordController.addListener(_validateForm);
-    _displayNameController.addListener(_validateForm);
-  }
 
   @override
   void dispose() {
+    _displayNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _displayNameController.dispose();
     super.dispose();
-  }
-
-  void _validateForm() {
-    final isValid = _formKey.currentState?.validate() ?? false;
-    if (isValid != _isFormValid) {
-      setState(() {
-        _isFormValid = isValid;
-      });
-    }
   }
 
   void _onRegisterPressed() {
@@ -87,287 +56,337 @@ class _RegisterPageState extends State<RegisterPage> {
           password: _passwordController.text,
           displayName: _displayNameController.text.trim(),
           preferredCurrency: _selectedCurrency,
-          languageCode: _selectedLanguage,
+          languageCode: 'en', // Default language
         ),
       );
     }
   }
 
-  void _onSignInPressed() {
-    context.goToLogin();
+  void _onSocialLogin(SocialAuthProvider provider) {
+    context.read<AuthBloc>().add(AuthSocialLoginRequested(provider.name));
+  }
+
+  void showAccountLinkingDialog({
+    required BuildContext context,
+    required String email,
+    required SocialAuthProvider provider,
+    required VoidCallback onLink,
+    required VoidCallback onCreateNew,
+  }) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AccountLinkingDialog(
+          newUser: User(
+            id: '',
+            email: email,
+            createdAt: DateTime.now(),
+          ),
+          existingProfile: UserProfile(
+            id: '',
+            email: email,
+            displayName: '',
+            preferredCurrency: 'VND',
+            languageCode: 'vi',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          provider: provider,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Đăng ký'),
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthEmailVerificationRequired) {
-              // Navigate to email verification
               context.goToEmailVerification();
             } else if (state is AuthAuthenticated) {
-              // Navigate to main app
               context.replaceWithHome();
+            } else if (state is AuthProfileSetupRequired) {
+              context.goToProfileSetup(
+                user: state.user,
+                provider: state.provider,
+                displayName: state.displayName,
+                email: state.email,
+              );
+            } else if (state is AuthAccountLinkingRequired) {
+              showAccountLinkingDialog(
+                context: context,
+                email: state.existingProfile.email,
+                provider: state.provider,
+                onLink: () {
+                  context.read<AuthBloc>().add(
+                    AuthAccountLinkingConfirmed(state.existingProfile.id),
+                  );
+                },
+                onCreateNew: () {
+                  context.read<AuthBloc>().add(
+                    const AuthAccountLinkingDeclined(),
+                  );
+                },
+              );
             }
           },
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // App Logo
-                  Center(
-                    child: Image.asset(
-                      'assets/images/app_icon.png',
-                      height: 80,
+                  // Spacer
+                  const SizedBox(height: 40),
+
+                  // Title section
+                  const Text(
+                    'Create Account',
+                    style: TextStyle(
+                      fontFamily: 'Outfit',
+                      fontSize: 40,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -1,
+                      color: Colors.black,
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  // Welcome Text
-                  Text(
-                    'Tạo tài khoản mới',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Điền thông tin để tạo tài khoản Grex',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey[600],
+                  const Text(
+                    'Join Grex to start splitting expenses',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: Color(0xFF71717A),
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
 
-                  // Display Name Field
-                  TextFormField(
+                  // Form section
+                  AuthTextField(
+                    label: 'Display Name',
+                    placeholder: 'Your name',
                     controller: _displayNameController,
                     textInputAction: TextInputAction.next,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      labelText: 'Tên hiển thị',
-                      hintText: 'Nhập tên hiển thị của bạn',
-                      prefixIcon: Icon(Icons.person_outlined),
-                      border: OutlineInputBorder(),
-                    ),
                     validator: InputValidators.validateDisplayName,
-                    onChanged: (_) => _validateForm(),
                   ),
                   const SizedBox(height: 16),
 
-                  // Email Field
-                  TextFormField(
+                  AuthTextField(
+                    label: 'Email',
+                    placeholder: 'your@email.com',
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Nhập email của bạn',
-                      prefixIcon: Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(),
-                    ),
                     validator: InputValidators.validateEmail,
-                    onChanged: (_) => _validateForm(),
                   ),
                   const SizedBox(height: 16),
 
-                  // Password Field
-                  TextFormField(
+                  AuthTextField(
+                    label: 'Password',
+                    placeholder: 'Min. 8 characters',
                     controller: _passwordController,
-                    obscureText: !_isPasswordVisible,
-                    textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
-                      labelText: 'Mật khẩu',
-                      hintText: 'Nhập mật khẩu của bạn',
-                      prefixIcon: const Icon(Icons.lock_outlined),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                      ),
-                      border: const OutlineInputBorder(),
-                    ),
+                    obscureText: true,
+                    textInputAction: TextInputAction.done,
                     validator: InputValidators.validatePassword,
-                    onChanged: (_) => _validateForm(),
+                    onFieldSubmitted: (_) => _onRegisterPressed(),
                   ),
                   const SizedBox(height: 8),
-                  // Password requirements checklist
-                  _PasswordRequirementsChecklist(password: _password),
+
+                  // Password hint
+                  const Text(
+                    'Must be at least 8 characters with mixed case and numbers',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                      color: Color(0xFFA1A1AA),
+                      height: 1.4,
+                    ),
+                  ),
                   const SizedBox(height: 16),
 
-                  // Confirm Password Field
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    obscureText: !_isConfirmPasswordVisible,
-                    textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
-                      labelText: 'Xác nhận mật khẩu',
-                      hintText: 'Nhập lại mật khẩu của bạn',
-                      prefixIcon: const Icon(Icons.lock_outlined),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isConfirmPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                  // Currency selector
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Preferred Currency',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _isConfirmPasswordVisible =
-                                !_isConfirmPasswordVisible;
-                          });
-                        },
                       ),
-                      border: const OutlineInputBorder(),
-                    ),
-                    validator: (value) =>
-                        InputValidators.validatePasswordConfirmation(
-                          _passwordController.text,
-                          value,
+                      const SizedBox(height: 6),
+                      Container(
+                        height: 48,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF4F4F5),
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                    onChanged: (_) => _validateForm(),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _selectedCurrency,
+                            isExpanded: true,
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xFF71717A),
+                              size: 20,
+                            ),
+                            style: const TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                            items: _currencies.map((currency) {
+                              return DropdownMenuItem<String>(
+                                value: currency['code'],
+                                child: Text(currency['name']!),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              if (value != null) {
+                                setState(() {
+                                  _selectedCurrency = value;
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
 
-                  // Currency Selection
-                  DropdownButtonFormField<String>(
-                    initialValue: _selectedCurrency,
-                    decoration: const InputDecoration(
-                      labelText: 'Tiền tệ ưa thích',
-                      prefixIcon: Icon(Icons.attach_money),
-                      border: OutlineInputBorder(),
-                    ),
-                    items: _currencies.map((currency) {
-                      return DropdownMenuItem<String>(
-                        value: currency['code'],
-                        child: Text(currency['name']!),
+                  // Register button
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      final isLoading =
+                          state is AuthLoading ||
+                          state is AuthSocialLoginInProgress;
+                      return PrimaryButton(
+                        text: 'Create Account',
+                        isLoading: state is AuthLoading,
+                        onPressed: isLoading ? null : _onRegisterPressed,
                       );
-                    }).toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedCurrency = value;
-                        });
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Language Selection
-                  DropdownButtonFormField<String>(
-                    initialValue: _selectedLanguage,
-                    decoration: const InputDecoration(
-                      labelText: 'Ngôn ngữ',
-                      prefixIcon: Icon(Icons.language),
-                      border: OutlineInputBorder(),
-                    ),
-                    items: _languages.map((language) {
-                      return DropdownMenuItem<String>(
-                        value: language['code'],
-                        child: Text(language['name']!),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedLanguage = value;
-                        });
-                      }
                     },
                   ),
                   const SizedBox(height: 32),
 
-                  // Register Button
+                  // Or divider
+                  const OrDivider(),
+                  const SizedBox(height: 12),
+
+                  // Social login buttons
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
-                      final isLoading = state is AuthLoading;
+                      final isLoading =
+                          state is AuthLoading ||
+                          state is AuthSocialLoginInProgress;
+                      final isGoogleLoading =
+                          state is AuthSocialLoginInProgress &&
+                          state.provider == SocialAuthProvider.google;
 
-                      return ElevatedButton(
-                        onPressed: isLoading || !_isFormValid
+                      return SocialLoginButton(
+                        provider: SocialAuthProvider.google,
+                        onPressed: isLoading
                             ? null
-                            : _onRegisterPressed,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
-                                  ),
-                                ),
-                              )
-                            : const Text(
-                                'Đăng ký',
-                                style: TextStyle(fontSize: 16),
-                              ),
+                            : () => _onSocialLogin(SocialAuthProvider.google),
+                        isLoading: isGoogleLoading,
                       );
                     },
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
 
-                  // Error Display
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      final isLoading =
+                          state is AuthLoading ||
+                          state is AuthSocialLoginInProgress;
+                      final isAppleLoading =
+                          state is AuthSocialLoginInProgress &&
+                          state.provider == SocialAuthProvider.apple;
+
+                      return SocialLoginButton(
+                        provider: SocialAuthProvider.apple,
+                        onPressed: isLoading
+                            ? null
+                            : () => _onSocialLogin(SocialAuthProvider.apple),
+                        isLoading: isAppleLoading,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Error display
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthError) {
-                        return Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.red[50],
-                            border: Border.all(color: Colors.red[300]!),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.error_outline, color: Colors.red[700]),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  state.message,
-                                  style: TextStyle(color: Colors.red[700]),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
+                        // Check if it's a social auth error
+                        if (state.failure != null &&
+                            (state.failure is SocialAuthFailure ||
+                                state.failure is SocialAuthCancelledFailure ||
+                                state.failure is SocialAuthNetworkFailure ||
+                                state.failure is SocialAuthTimeoutFailure ||
+                                state.failure is AccountLinkingFailure)) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: SocialAuthErrorWidget(
+                              failure: state.failure!,
+                              onRetry: () {
+                                // Retry the last attempted social login
+                                // This would need to be tracked in the BLoC
+                                // state
+                              },
+                              onFallback: () {
+                                // Focus on email field for fallback
+                                FocusScope.of(context).requestFocus();
+                              },
+                            ),
+                          );
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: ErrorBanner(message: state.message),
+                          );
+                        }
                       }
                       return const SizedBox.shrink();
                     },
                   ),
-                  const SizedBox(height: 24),
 
-                  // Sign In Link
+                  // Login prompt
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Đã có tài khoản? '),
-                      TextButton(
-                        onPressed: _onSignInPressed,
+                      const Text(
+                        'Already have an account? ',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFF71717A),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => context.goToLogin(),
                         child: const Text(
-                          'Đăng nhập ngay',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          'Sign In',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -377,64 +396,6 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// Widget hiển thị checklist yêu cầu mật khẩu real-time
-class _PasswordRequirementsChecklist extends StatelessWidget {
-  const _PasswordRequirementsChecklist({required this.password});
-
-  final String password;
-
-  @override
-  Widget build(BuildContext context) {
-    final requirements = InputValidators.getPasswordRequirements(password);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: requirements
-          .map((req) => _RequirementItem(
-                text: req.label,
-                isMet: req.isMet,
-              ))
-          .toList(),
-    );
-  }
-}
-
-class _RequirementItem extends StatelessWidget {
-  const _RequirementItem({
-    required this.text,
-    required this.isMet,
-  });
-
-  final String text;
-  final bool isMet;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isMet ? Colors.green : Colors.grey;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        children: [
-          Icon(
-            isMet ? Icons.check_circle : Icons.circle_outlined,
-            size: 16,
-            color: color,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 12,
-              color: color,
-            ),
-          ),
-        ],
       ),
     );
   }

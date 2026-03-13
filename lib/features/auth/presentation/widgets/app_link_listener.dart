@@ -53,19 +53,21 @@ class _AppLinkListenerState extends State<AppLinkListener> {
   void _processUri(Uri uri) {
     final link = uri.toString();
     final emailVerificationService = getIt<EmailVerificationService>();
-    emailVerificationService.processVerificationLink(link).fold(
-      (_) {
-        // Not a valid verification link or invalid data; ignore
-      },
-      (data) {
-        getIt<AuthBloc>().add(
-          AuthEmailVerificationRequested(
-            token: data.token,
-            email: data.email,
-          ),
+    emailVerificationService
+        .processVerificationLink(link)
+        .fold(
+          (_) {
+            // Not a valid verification link or invalid data; ignore
+          },
+          (data) {
+            getIt<AuthBloc>().add(
+              AuthEmailVerificationRequested(
+                token: data.token,
+                email: data.email,
+              ),
+            );
+          },
         );
-      },
-    );
   }
 
   @override

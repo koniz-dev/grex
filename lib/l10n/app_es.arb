@@ -577,5 +577,24 @@
   "exampleScreenContent": "Contenido de pantalla de ejemplo",
   "@exampleScreenContent": {
     "description": "Content text for example screen in performance examples"
-  }
+  },
+  "continueWithGoogle": "Continuar con Google",
+  "continueWithApple": "Continuar con Apple",
+  "or": "o",
+  "completeYourProfile": "Completa tu perfil",
+  "profileSetupDescription": "Por favor completa tu perfil para comenzar a usar Grex",
+  "linkYourAccount": "Vincular tu cuenta",
+  "accountExistsMessage": "Ya existe una cuenta con el correo {email}.",
+  "linkAccountQuestion": "¿Te gustaría vincular tu cuenta de {provider} con tu cuenta existente?",
+  "linkAccountBenefit": "Esto te permitirá iniciar sesión con cualquiera de los dos métodos.",
+  "linkAccounts": "Vincular cuentas",
+  "createNewAccount": "Crear nueva cuenta",
+  "socialAuthFailed": "La autenticación falló. Por favor intenta de nuevo.",
+  "socialAuthNetworkError": "Falló la conexión de red. Por favor verifica tu conexión a internet e intenta de nuevo.",
+  "socialAuthTimeout": "La autenticación expiró. Por favor intenta de nuevo.",
+  "accountLinkingError": "No se pudo vincular tu cuenta. Por favor intenta de nuevo o contacta soporte.",
+  "cancelProfileSetup": "Cancelar configuración",
+  "cancelProfileSetupMessage": "¿Estás seguro de que quieres cancelar? Serás desconectado y necesitarás iniciar sesión de nuevo.",
+  "continueSetup": "Continuar configuración",
+  "signInWithEmail": "Iniciar sesión con correo"
 }

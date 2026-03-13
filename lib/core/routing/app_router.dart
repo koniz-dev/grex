@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grex/core/routing/app_routes.dart';
+import 'package:grex/core/routing/auth_navigation_extensions.dart';
+import 'package:grex/features/auth/presentation/pages/profile_setup_page.dart';
 import 'package:grex/features/auth/presentation/screens/auth_screen_wrappers.dart';
 import 'package:grex/features/balances/presentation/pages/balance_page.dart';
 import 'package:grex/features/balances/presentation/pages/settlement_plan_page.dart';
@@ -41,6 +43,19 @@ class AppRouter {
       path: AppRoutes.emailVerification,
       name: AppRoutes.emailVerificationName,
       builder: (context, state) => const EmailVerificationScreenWrapper(),
+    ),
+    GoRoute(
+      path: AppRoutes.profileSetup,
+      name: AppRoutes.profileSetupName,
+      builder: (context, state) {
+        final args = state.extra! as ProfileSetupArgs;
+        return ProfileSetupPage(
+          user: args.user,
+          provider: args.provider,
+          prefilledDisplayName: args.displayName,
+          email: args.email,
+        );
+      },
     ),
 
     // Group Management Routes

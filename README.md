@@ -36,6 +36,14 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 - ✅ **Storage Migration** - Version-based storage migration system
 - ✅ **Error Handling** - Comprehensive error handling with custom exceptions
 
+### 🔐 Authentication & Social Login
+- ✅ **Social Login** - Google OAuth and Apple Sign In integration
+- ✅ **Account Linking** - Link social providers to existing accounts
+- ✅ **Profile Setup** - Guided profile completion for new social users
+- ✅ **Deep Link Handling** - OAuth callback processing with performance optimization
+- ✅ **Session Management** - Persistent sessions across app restarts
+- ✅ **Security Compliance** - HTTPS-only, minimal scopes, secure token storage
+
 ### 🌐 Network Layer
 - ✅ **HTTP Client** - Dio with interceptors support
 - ✅ **Configurable Timeouts** - Environment-based timeout configuration
@@ -135,10 +143,17 @@ lib/
 │   └── utils/              # Utility functions
 │
 ├── features/                # Feature modules (Clean Architecture)
-│   ├── auth/               # Authentication feature example
+│   ├── auth/               # Authentication feature with social login
 │   │   ├── data/          # Data layer (models, data sources, repositories)
+│   │   │   ├── handlers/  # OAuth deep link handlers
+│   │   │   ├── models/    # User, profile, social auth models
+│   │   │   └── repositories/ # Social auth and user repositories
 │   │   ├── domain/        # Domain layer (entities, use cases, repository interfaces)
+│   │   │   ├── entities/  # User, SocialAuthProvider, ProfileSetupData
+│   │   │   └── repositories/ # SocialAuthRepository interface
 │   │   └── presentation/  # Presentation layer (screens, widgets, providers)
+│   │       ├── pages/     # Login, register, profile setup pages
+│   │       └── widgets/   # Social login buttons, dialogs, error widgets
 │   ├── feature_flags/      # Feature flags feature
 │   │   └── presentation/   # Feature flags UI
 │   └── tasks/              # Tasks feature (CRUD example)
@@ -221,6 +236,65 @@ lib/
    ```bash
    flutter run
    ```
+
+### Social Login Setup
+
+The app includes comprehensive social login integration with Google OAuth and Apple Sign In.
+
+#### OAuth Provider Configuration
+
+1. **Google OAuth Setup**:
+   - Create OAuth 2.0 Client ID in [Google Cloud Console](https://console.cloud.google.com/)
+   - Add authorized redirect URIs: `https://[project-id].supabase.co/auth/v1/callback`
+   - Configure in Supabase Dashboard → Authentication → Providers
+
+2. **Apple Sign In Setup**:
+   - Create Services ID in [Apple Developer Portal](https://developer.apple.com/)
+   - Configure Sign In with Apple
+   - Generate private key (.p8 file)
+   - Configure in Supabase Dashboard → Authentication → Providers
+
+#### Deep Link Configuration
+
+**Android** (`android/app/src/main/AndroidManifest.xml`):
+```xml
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="io.supabase.grex"
+          android:host="login-callback" />
+</intent-filter>
+```
+
+**iOS** (`ios/Runner/Info.plist`):
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleURLName</key>
+        <string>io.supabase.grex</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>io.supabase.grex</string>
+        </array>
+    </dict>
+</array>
+```
+
+#### Features
+
+- **OAuth Integration**: Google and Apple OAuth with external browser launch
+- **Account Linking**: Link social providers to existing email accounts
+- **Profile Setup**: Guided profile completion for new social users
+- **Deep Link Handling**: Fast OAuth callback processing (< 1 second)
+- **Session Management**: Persistent sessions with automatic refresh
+- **Error Handling**: User-friendly error messages with retry options
+- **Localization**: Multi-language support for all social login UI
+- **Security**: HTTPS-only, minimal scopes, secure token storage
+- **Performance**: OAuth flow completion < 5 seconds after authorization
+
+For detailed implementation guide, see [Social Login Developer Guide](docs/social-login-developer-guide.md).
 
 ### First Steps
 
@@ -475,7 +549,28 @@ Tests follow the same structure as the source code:
 - Unit tests for use cases and utilities
 - Widget tests for UI components
 - Integration tests for end-to-end flows
+- **Property-based tests** for social login (35 properties with 100+ iterations each)
 - Test helpers and fixtures for reusable test utilities
+
+#### Social Login Testing
+
+The social login feature includes extensive testing:
+
+```bash
+# Run social login tests specifically
+flutter test test/features/auth/data/repositories/social_auth_repository_test.dart
+flutter test test/features/auth/presentation/widgets/social_login_button_test.dart
+
+# Run property-based tests (100+ iterations each)
+flutter test test/features/auth/property_tests/
+```
+
+**Property Tests Include**:
+- OAuth flow completion within performance requirements
+- Profile setup data preservation
+- Account linking detection and handling
+- Session persistence across app restarts
+- Error handling for all failure scenarios
 
 ### Test Coverage
 
@@ -546,6 +641,7 @@ flutter build web --release
 
 ### Features
 
+- **[Social Login](docs/social-login-developer-guide.md)** - Complete social login implementation guide
 - **[Feature Flags](docs/features/feature-flags.md)** - Feature flags system documentation
 - **[Tasks Feature](docs/features/tasks.md)** - CRUD example feature documentation
 - **[Localization](docs/guides/internationalization-guide.md)** - i18n setup and usage

@@ -455,4 +455,236 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get exampleScreenContent => 'Contenido de pantalla de ejemplo';
+
+  @override
+  String get welcomeBack => 'Welcome back';
+
+  @override
+  String get signInToContinue => 'Sign in to continue';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get orContinueWith => 'or';
+
+  @override
+  String get continueWithGoogle => 'Continuar con Google';
+
+  @override
+  String get continueWithApple => 'Continuar con Apple';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get joinGrexToday => 'Join Grex today';
+
+  @override
+  String get displayName => 'Display Name';
+
+  @override
+  String get enterYourName => 'Enter your name';
+
+  @override
+  String get enterYourEmail => 'Enter your email';
+
+  @override
+  String get enterYourPassword => 'Enter your password';
+
+  @override
+  String get selectCurrency => 'Select Currency';
+
+  @override
+  String get passwordRequirements =>
+      'At least 8 characters with uppercase, lowercase, and numbers';
+
+  @override
+  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+
+  @override
+  String get forgotPasswordQuestion => 'Forgot Password?';
+
+  @override
+  String get enterEmailForReset =>
+      'Enter your email address and we\'ll send you a link to reset your password';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get resetLinkSent => 'Reset link sent! Check your email.';
+
+  @override
+  String get backToSignIn => 'Back to Sign in';
+
+  @override
+  String get verifyYourEmail => 'Verify Your Email';
+
+  @override
+  String get verificationEmailSent => 'We\'ve sent a verification email to:';
+
+  @override
+  String get checkInboxAndClick =>
+      'Check your inbox and click the verification link to continue.';
+
+  @override
+  String get resendEmail => 'Resend Email';
+
+  @override
+  String get openEmailApp => 'Open Email App';
+
+  @override
+  String get didntReceiveEmail => 'Didn\'t receive the email?';
+
+  @override
+  String get checkSpamFolder => '• Check your spam or junk folder';
+
+  @override
+  String get verifyEmailAddress => '• Make sure the email address is correct';
+
+  @override
+  String get waitFewMinutes => '• Wait a few minutes and try again';
+
+  @override
+  String get signOut => 'Sign out';
+
+  @override
+  String get emailSentCheckInbox => 'Email sent! Check your inbox.';
+
+  @override
+  String pleaseWaitSeconds(int seconds) {
+    return 'Please wait $seconds seconds';
+  }
+
+  @override
+  String get resetPassword => 'Reset Password';
+
+  @override
+  String get enterNewPassword => 'Enter your new password below';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get confirmYourPassword => 'Confirm your password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get completeYourProfile => 'Completa tu perfil';
+
+  @override
+  String get stepOfTwo => 'Step 1 of 2';
+
+  @override
+  String get uploadPhoto => 'Upload Photo';
+
+  @override
+  String get completeSetup => 'Complete Setup';
+
+  @override
+  String get skipForNow => 'Skip for now';
+
+  @override
+  String get success => 'Success!';
+
+  @override
+  String get accountCreatedSuccessfully =>
+      'Your account has been created successfully';
+
+  @override
+  String get passwordResetSuccessfully =>
+      'Your password has been reset successfully';
+
+  @override
+  String get emailVerifiedSuccessfully =>
+      'Your email has been verified successfully';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get socialAuthFailed =>
+      'La autenticación falló. Por favor intenta de nuevo.';
+
+  @override
+  String get socialAuthNetworkError =>
+      'Falló la conexión de red. Por favor verifica tu conexión a internet e intenta de nuevo.';
+
+  @override
+  String get socialAuthTimeout =>
+      'La autenticación expiró. Por favor intenta de nuevo.';
+
+  @override
+  String get accountLinkingError =>
+      'No se pudo vincular tu cuenta. Por favor intenta de nuevo o contacta soporte.';
+
+  @override
+  String get signInWithEmail => 'Iniciar sesión con correo';
+
+  @override
+  String get dismiss => 'Dismiss';
+
+  @override
+  String get repeatedNetworkFailureMessage =>
+      'Multiple network errors detected. Please check your internet connection or try signing in with email.';
+
+  @override
+  String get repeatedTimeoutFailureMessage =>
+      'Authentication keeps timing out. Please try signing in with email instead.';
+
+  @override
+  String get repeatedAuthFailureMessage =>
+      'Authentication failed multiple times. Please try signing in with email or contact support.';
+
+  @override
+  String get or => 'o';
+
+  @override
+  String get profileSetupDescription =>
+      'Por favor completa tu perfil para comenzar a usar Grex';
+
+  @override
+  String get linkYourAccount => 'Vincular tu cuenta';
+
+  @override
+  String accountExistsMessage(String email) {
+    return 'Ya existe una cuenta con el correo $email.';
+  }
+
+  @override
+  String linkAccountQuestion(String provider) {
+    return '¿Te gustaría vincular tu cuenta de $provider con tu cuenta existente?';
+  }
+
+  @override
+  String get linkAccountBenefit =>
+      'Esto te permitirá iniciar sesión con cualquiera de los dos métodos.';
+
+  @override
+  String get linkAccounts => 'Vincular cuentas';
+
+  @override
+  String get createNewAccount => 'Crear nueva cuenta';
+
+  @override
+  String get cancelProfileSetup => 'Cancelar configuración';
+
+  @override
+  String get cancelProfileSetupMessage =>
+      '¿Estás seguro de que quieres cancelar? Serás desconectado y necesitarás iniciar sesión de nuevo.';
+
+  @override
+  String get continueSetup => 'Continuar configuración';
 }

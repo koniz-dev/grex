@@ -19,6 +19,8 @@ The complete authentication flow design is available in the Pencil editor (curre
 - AppLogo widget (reusable)
 - EmailTextField widget
 - PasswordTextField widget
+- SocialLoginButton widget (Google, Apple)
+- OrDivider widget
 - PrimaryButton widget
 - TextLink widget
 ```
@@ -60,6 +62,7 @@ BlocBuilder<AuthBloc, AuthState>(
 
 **Supabase Integration**:
 ```dart
+// Email/Password Registration
 await supabase.auth.signUp(
   email: email,
   password: password,
@@ -67,6 +70,18 @@ await supabase.auth.signUp(
     'display_name': displayName,
     'preferred_currency': currency,
   },
+);
+
+// Google Sign In
+await supabase.auth.signInWithOAuth(
+  OAuthProvider.google,
+  redirectTo: 'io.supabase.grex://login-callback/',
+);
+
+// Apple Sign In
+await supabase.auth.signInWithOAuth(
+  OAuthProvider.apple,
+  redirectTo: 'io.supabase.grex://login-callback/',
 );
 ```
 
@@ -135,6 +150,70 @@ Timer.periodic(Duration(seconds: 5), (timer) async {
 - Update as user completes fields
 
 ## Reusable Widgets
+
+### SocialLoginButton Widget
+```dart
+class SocialLoginButton extends StatelessWidget {
+  final String provider; // 'google' or 'apple'
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final isApple = provider == 'apple';
+    
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        backgroundColor: isApple ? Colors.black : Colors.white,
+        foregroundColor: isApple ? Colors.white : Colors.black,
+        minimumSize: Size(double.infinity, 48),
+        side: BorderSide(
+          color: isApple ? Colors.black : Color(0xFFE4E4E7),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            isApple ? Icons.apple : Icons.g_mobiledata,
+            size: 20,
+          ),
+          SizedBox(width: 8),
+          Text('Continue with ${isApple ? 'Apple' : 'Google'}'),
+        ],
+      ),
+    );
+  }
+}
+```
+
+### OrDivider Widget
+```dart
+class OrDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(child: Divider(color: Color(0xFFE4E4E7))),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            'or',
+            style: TextStyle(
+              color: Color(0xFFA1A1AA),
+              fontSize: 13,
+            ),
+          ),
+        ),
+        Expanded(child: Divider(color: Color(0xFFE4E4E7))),
+      ],
+    );
+  }
+}
+```
 
 ### AppLogo Widget
 ```dart
@@ -323,6 +402,10 @@ abstract class AuthEvent extends Equatable {}
 class AuthLoginRequested extends AuthEvent {
   final String email;
   final String password;
+}
+
+class AuthSocialLoginRequested extends AuthEvent {
+  final String provider; // 'google' or 'apple'
 }
 
 class AuthRegisterRequested extends AuthEvent {

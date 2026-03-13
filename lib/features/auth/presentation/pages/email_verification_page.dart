@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:grex/features/auth/presentation/widgets/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Email verification page for unverified users.
 ///
-/// This page is shown to users who have registered but haven't verified
-/// their email address yet. It provides options to resend verification
-/// email, enter OTP code, and shows verification status.
+/// Implements the email verification screen design with:
+/// - Mail icon centered at top
+/// - Title and instructions
+/// - Resend email button
+/// - Back to login option
 class EmailVerificationPage extends StatefulWidget {
   /// Creates an [EmailVerificationPage].
   const EmailVerificationPage({super.key});
@@ -19,33 +22,23 @@ class EmailVerificationPage extends StatefulWidget {
 
 class _EmailVerificationPageState extends State<EmailVerificationPage> {
   bool _isResendingEmail = false;
-  bool _isVerifyingOtp = false;
   DateTime? _lastResendTime;
-  final _otpController = TextEditingController();
 
   static const int _resendCooldownSeconds = 60;
 
   @override
   void initState() {
     super.initState();
-    // Check auth state periodically for email verification
     _startVerificationCheck();
   }
 
   void _startVerificationCheck() {
-    // Check every 5 seconds if email has been verified
     Future.delayed(const Duration(seconds: 5), () {
       if (mounted) {
         context.read<AuthBloc>().add(const AuthSessionChecked());
         _startVerificationCheck();
       }
     });
-  }
-
-  @override
-  void dispose() {
-    _otpController.dispose();
-    super.dispose();
   }
 
   bool get _canResendEmail {
@@ -71,93 +64,74 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
       _lastResendTime = DateTime.now();
     });
 
-    // Send verification email through BLoC
     context.read<AuthBloc>().add(const AuthVerificationEmailRequested());
   }
 
-  void _onSignOutPressed() {
+  void _onBackToLoginPressed() {
     context.read<AuthBloc>().add(const AuthLogoutRequested());
   }
 
-  void _onChangeEmailPressed() {
-    // Navigate back to registration to change email
-    context.goToRegister();
-  }
-
-  void _onVerifyOtpPressed() {
-    final otp = _otpController.text.trim();
-    if (otp.length != 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Vui lòng nhập đủ 6 số'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    setState(() {
-      _isVerifyingOtp = true;
-    });
-
-    // Get email from current state
-    final state = context.read<AuthBloc>().state;
-    String? email;
-    if (state is AuthEmailVerificationRequired) {
-      email = state.email;
-    }
-
-    if (email != null) {
-      context.read<AuthBloc>().add(
-        AuthOtpVerificationRequested(email: email, token: otp),
-      );
+  Future<void> _openEmailApp() async {
+    try {
+      // Try to open default email app
+      final emailUri = Uri(scheme: 'mailto');
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(emailUri);
+      } else {
+        // Fallback: show a message if no email app is available
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'No email app found. Please check your email manually.',
+              ),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      }
+    } on Exception {
+      // Handle any errors gracefully
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Unable to open email app. Please check your email manually.',
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthAuthenticated) {
-              // Email has been verified, navigate to main app
               context.replaceWithHome();
             } else if (state is AuthUnauthenticated) {
-              // User signed out, go back to login
               context.replaceWithLogin();
             } else if (state is AuthVerificationEmailSent) {
-              // Verification email sent successfully
               setState(() {
                 _isResendingEmail = false;
               });
-
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    'Email xác thực đã được gửi đến ${state.email}',
+                    'Verification email sent to ${state.email}',
                   ),
                   backgroundColor: Colors.green,
                 ),
               );
-            } else if (state is AuthEmailVerified) {
-              // Email verification successful
-              setState(() {
-                _isVerifyingOtp = false;
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Email đã được xác thực thành công!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
             } else if (state is AuthError) {
-              // Handle verification errors
               setState(() {
                 _isResendingEmail = false;
-                _isVerifyingOtp = false;
               });
-
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
@@ -166,237 +140,191 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
               );
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // App Logo
+                const SizedBox(height: 60),
+
+                // Mail icon
                 Center(
-                  child: Image.asset(
-                    'assets/images/app_icon.png',
+                  child: Container(
+                    width: 80,
                     height: 80,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF4F4F5),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: const Icon(
+                      Icons.mail_outline,
+                      size: 40,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
 
                 // Title
-                Text(
-                  'Xác thực email',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                const Text(
+                  'Verify Your Email',
+                  style: TextStyle(
+                    fontFamily: 'Outfit',
+                    fontSize: 40,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -1,
+                    color: Colors.black,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
 
-                // Description
+                // Instructions
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
-                    var email = 'email của bạn';
+                    var email = 'your email';
                     if (state is AuthEmailVerificationRequired) {
                       email = state.email;
                     }
 
                     return Text(
-                      'Chúng tôi đã gửi email xác thực đến $email. '
-                      'Nhập mã 6 số trong email hoặc nhấp vào link xác thực.',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey[600],
+                      'We sent a verification link to $email. '
+                      'Click the link to verify your account.',
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: Color(0xFF71717A),
+                        height: 1.4,
                       ),
                       textAlign: TextAlign.center,
                     );
                   },
                 ),
-                const SizedBox(height: 24),
-
-                // OTP Input Section
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Nhập mã xác thực',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      TextField(
-                        controller: _otpController,
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        maxLength: 6,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          letterSpacing: 8,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        decoration: InputDecoration(
-                          hintText: '000000',
-                          counterText: '',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed:
-                              _isVerifyingOtp ? null : _onVerifyOtpPressed,
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                          ),
-                          child: _isVerifyingOtp
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text('Xác thực'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Verification Status
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.orange[50],
-                    border: Border.all(color: Colors.orange[300]!),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.pending, color: Colors.orange[700]),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Đang chờ xác thực',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange[700],
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Tài khoản sẽ được kích hoạt sau khi xác thực '
-                              'email',
-                              style: TextStyle(color: Colors.orange[700]),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 const SizedBox(height: 32),
 
-                // Resend Email Button
-                ElevatedButton.icon(
+                // Resend email button
+                PrimaryButton(
+                  text: _isResendingEmail
+                      ? 'Sending...'
+                      : _canResendEmail
+                      ? 'Resend Email'
+                      : 'Resend in ${_remainingCooldownSeconds}s',
+                  isLoading: _isResendingEmail,
                   onPressed: _canResendEmail && !_isResendingEmail
                       ? _onResendEmailPressed
                       : null,
-                  icon: _isResendingEmail
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.refresh),
-                  label: Text(
-                    _isResendingEmail
-                        ? 'Đang gửi...'
-                        : _canResendEmail
-                        ? 'Gửi lại email xác thực'
-                        : 'Gửi lại sau ${_remainingCooldownSeconds}s',
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
                 ),
                 const SizedBox(height: 16),
 
-                // Change Email Button
-                OutlinedButton.icon(
-                  onPressed: _onChangeEmailPressed,
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Thay đổi email'),
+                // Open email app button (optional)
+                OutlinedButton(
+                  onPressed: _openEmailApp,
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
+                    side: const BorderSide(color: Color(0xFFE4E4E7)),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: const Text(
+                    'Open Email App',
+                    style: TextStyle(
+                      fontFamily: 'Outfit',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
                     ),
                   ),
                 ),
                 const SizedBox(height: 32),
 
-                // Help Information
+                // Error display
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthError) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: ErrorBanner(message: state.message),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+
+                // Help text
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    border: Border.all(color: Colors.blue[200]!),
-                    borderRadius: BorderRadius.circular(8),
+                    color: const Color(0xFFF4F4F5),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.help_outline, color: Colors.blue[700]),
-                          const SizedBox(width: 8),
+                          Icon(
+                            Icons.help_outline,
+                            color: Color(0xFF71717A),
+                            size: 20,
+                          ),
+                          SizedBox(width: 8),
                           Text(
-                            'Cần trợ giúp?',
+                            "Didn't receive the email?",
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue[700],
+                              fontFamily: 'Inter',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Text(
-                        '• Kiểm tra thư mục spam/junk\n'
-                        '• Email có thể mất vài phút để đến\n'
-                        '• Đảm bảo email chính xác\n'
-                        '• Link xác thực có hiệu lực trong 24 giờ',
-                        style: TextStyle(color: Colors.blue[700]),
+                        '• Check your spam folder\n'
+                        '• Make sure the email address is correct\n'
+                        '• Wait a few minutes for the email to arrive',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFF71717A),
+                          height: 1.4,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 32),
 
-                // Sign Out Button
-                TextButton(
-                  onPressed: _onSignOutPressed,
-                  child: const Text(
-                    'Đăng xuất',
-                    style: TextStyle(color: Colors.grey),
-                  ),
+                // Back to login
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Wrong email? ',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: Color(0xFF71717A),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: _onBackToLoginPressed,
+                      child: const Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

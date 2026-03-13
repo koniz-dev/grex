@@ -577,5 +577,24 @@
   "exampleScreenContent": "محتوى شاشة المثال",
   "@exampleScreenContent": {
     "description": "Content text for example screen in performance examples"
-  }
+  },
+  "continueWithGoogle": "المتابعة مع Google",
+  "continueWithApple": "المتابعة مع Apple",
+  "or": "أو",
+  "completeYourProfile": "أكمل ملفك الشخصي",
+  "profileSetupDescription": "يرجى إكمال ملفك الشخصي للبدء في استخدام Grex",
+  "linkYourAccount": "ربط حسابك",
+  "accountExistsMessage": "يوجد حساب بالبريد الإلكتروني {email} بالفعل.",
+  "linkAccountQuestion": "هل تريد ربط حساب {provider} الخاص بك بحسابك الحالي؟",
+  "linkAccountBenefit": "سيسمح لك هذا بتسجيل الدخول بأي من الطريقتين.",
+  "linkAccounts": "ربط الحسابات",
+  "createNewAccount": "إنشاء حساب جديد",
+  "socialAuthFailed": "فشل في المصادقة. يرجى المحاولة مرة أخرى.",
+  "socialAuthNetworkError": "فشل في الاتصال بالشبكة. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
+  "socialAuthTimeout": "انتهت مهلة المصادقة. يرجى المحاولة مرة أخرى.",
+  "accountLinkingError": "فشل في ربط حسابك. يرجى المحاولة مرة أخرى أو الاتصال بالدعم.",
+  "cancelProfileSetup": "إلغاء الإعداد",
+  "cancelProfileSetupMessage": "هل أنت متأكد أنك تريد الإلغاء؟ سيتم تسجيل خروجك وستحتاج إلى تسجيل الدخول مرة أخرى.",
+  "continueSetup": "متابعة الإعداد",
+  "signInWithEmail": "تسجيل الدخول بالبريد الإلكتروني"
 }

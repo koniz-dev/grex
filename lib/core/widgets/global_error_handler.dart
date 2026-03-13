@@ -147,8 +147,8 @@ class ErrorRecoveryScreen extends StatelessWidget {
           Text(
             l10n?.errorDescription ??
                 'The application encountered an error that could not be '
-                'handled. We have logged this error and will fix it in '
-                'the next version.',
+                    'handled. We have logged this error and will fix it in '
+                    'the next version.',
             style: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
@@ -233,7 +233,8 @@ class ErrorRecoveryScreen extends StatelessWidget {
 
   /// Copies error details to clipboard
   void _copyErrorToClipboard(BuildContext context) {
-    final errorText = '''
+    final errorText =
+        '''
 Grex Error Report
 ================
 Time: ${DateTime.now().toIso8601String()}

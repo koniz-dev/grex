@@ -229,3 +229,131 @@ class AuthOtpVerificationRequested extends AuthEvent {
   @override
   String toString() => 'AuthOtpVerificationRequested(email: $email)';
 }
+
+/// Event triggered when user updates their password with a reset token.
+///
+/// Contains the new password and reset token from the password reset flow.
+/// This is used to complete the password reset process after the user
+/// receives the reset email and clicks the reset link.
+class AuthPasswordUpdateRequested extends AuthEvent {
+  /// Creates an [AuthPasswordUpdateRequested] event with the new password.
+  ///
+  /// The [newPassword] is required for updating the user's password.
+  /// The [token] is optional and used for password reset flows.
+  const AuthPasswordUpdateRequested({
+    required this.newPassword,
+    this.token,
+  });
+
+  /// The new password to set
+  final String newPassword;
+
+  /// The reset token (optional, for password reset flows)
+  final String? token;
+
+  @override
+  List<Object?> get props => [newPassword, token];
+
+  @override
+  String toString() => 'AuthPasswordUpdateRequested()';
+}
+
+/// Event triggered when user requests social login.
+///
+/// Contains the social provider (Google or Apple) for authentication.
+/// This event will initiate the OAuth flow for the specified provider.
+class AuthSocialLoginRequested extends AuthEvent {
+  /// Creates an [AuthSocialLoginRequested] event with the provider.
+  ///
+  /// The [provider] specifies which OAuth provider to use (google or apple).
+  const AuthSocialLoginRequested(this.provider);
+
+  /// The social authentication provider (google or apple)
+  final String provider;
+
+  @override
+  List<Object?> get props => [provider];
+
+  @override
+  String toString() => 'AuthSocialLoginRequested(provider: $provider)';
+}
+
+/// Event triggered when user completes profile setup after social login.
+///
+/// Contains the profile information provided by the user during
+/// the profile completion flow for new social login users.
+class AuthProfileSetupCompleted extends AuthEvent {
+  /// Creates an [AuthProfileSetupCompleted] event with profile data.
+  ///
+  /// All parameters are required for creating the user profile.
+  const AuthProfileSetupCompleted({
+    required this.displayName,
+    required this.preferredCurrency,
+    required this.languageCode,
+  });
+
+  /// The display name for the user profile
+  final String displayName;
+
+  /// The preferred currency for the user
+  final String preferredCurrency;
+
+  /// The language code for the user
+  final String languageCode;
+
+  @override
+  List<Object?> get props => [displayName, preferredCurrency, languageCode];
+
+  @override
+  String toString() =>
+      'AuthProfileSetupCompleted('
+      'displayName: $displayName, '
+      'preferredCurrency: $preferredCurrency, '
+      'languageCode: $languageCode)';
+}
+
+/// Event triggered when user cancels profile setup after social login.
+///
+/// This event will sign out the user and return them to the login screen
+/// since profile completion is required for new social login users.
+class AuthProfileSetupCancelled extends AuthEvent {
+  /// Creates an [AuthProfileSetupCancelled] event.
+  const AuthProfileSetupCancelled();
+
+  @override
+  String toString() => 'AuthProfileSetupCancelled()';
+}
+
+/// Event triggered when user confirms account linking.
+///
+/// Contains the existing user ID to link the social provider to.
+/// This happens when a social login email matches an existing account.
+class AuthAccountLinkingConfirmed extends AuthEvent {
+  /// Creates an [AuthAccountLinkingConfirmed] event with existing user ID.
+  ///
+  /// The [existingUserId] is the ID of the existing user account
+  /// to link the social provider to.
+  const AuthAccountLinkingConfirmed(this.existingUserId);
+
+  /// The ID of the existing user account to link to
+  final String existingUserId;
+
+  @override
+  List<Object?> get props => [existingUserId];
+
+  @override
+  String toString() =>
+      'AuthAccountLinkingConfirmed(existingUserId: $existingUserId)';
+}
+
+/// Event triggered when user declines account linking.
+///
+/// This event will treat the social login as a new account and
+/// initiate the profile setup flow instead of linking accounts.
+class AuthAccountLinkingDeclined extends AuthEvent {
+  /// Creates an [AuthAccountLinkingDeclined] event.
+  const AuthAccountLinkingDeclined();
+
+  @override
+  String toString() => 'AuthAccountLinkingDeclined()';
+}

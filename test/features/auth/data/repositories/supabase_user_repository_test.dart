@@ -379,5 +379,253 @@ void main() {
         );
       });
     });
+
+    group('getUserProfileByEmail', () {
+      test('should successfully get user profile by email', () async {
+        // Arrange
+        final mockResponse = {
+          'id': testProfile.id,
+          'email': testProfile.email,
+          'display_name': testProfile.displayName,
+          'preferred_currency': testProfile.preferredCurrency,
+          'language_code': testProfile.languageCode,
+          'created_at': testProfile.createdAt.toIso8601String(),
+          'updated_at': testProfile.updatedAt.toIso8601String(),
+        };
+
+        when(mockQueryBuilder.select()).thenReturn(mockSelectFilterBuilder);
+        when(
+          mockSelectFilterBuilder.eq('email', testProfile.email),
+        ).thenReturn(mockSelectFilterBuilder);
+        final fakeMaybeSingleBuilder =
+            _FakePostgrestTransformBuilder<PostgrestMap?>(mockResponse);
+        when(
+          mockSelectFilterBuilder.maybeSingle(),
+        ).thenReturn(fakeMaybeSingleBuilder);
+
+        // Act
+        final result = await repository.getUserProfileByEmail(
+          testProfile.email,
+        );
+
+        // Assert
+        expect(result.isRight(), isTrue);
+        result.fold(
+          (failure) => fail('Should not return failure'),
+          (profile) {
+            expect(profile, isNotNull);
+            expect(profile!.id, equals(testProfile.id));
+            expect(profile.email, equals(testProfile.email));
+            expect(profile.displayName, equals(testProfile.displayName));
+          },
+        );
+      });
+
+      test('should return null when no profile exists with email', () async {
+        // Arrange
+        when(mockQueryBuilder.select()).thenReturn(mockSelectFilterBuilder);
+        when(
+          mockSelectFilterBuilder.eq('email', 'nonexistent@example.com'),
+        ).thenReturn(mockSelectFilterBuilder);
+        final fakeMaybeSingleBuilderNull =
+            _FakePostgrestTransformBuilder<PostgrestMap?>(null);
+        when(
+          mockSelectFilterBuilder.maybeSingle(),
+        ).thenReturn(fakeMaybeSingleBuilderNull);
+
+        // Act
+        final result = await repository.getUserProfileByEmail(
+          'nonexistent@example.com',
+        );
+
+        // Assert
+        expect(result.isRight(), isTrue);
+        result.fold(
+          (failure) => fail('Should not return failure'),
+          (profile) {
+            expect(profile, isNull);
+          },
+        );
+      });
+
+      test(
+        'should handle database errors when getting profile by email',
+        () async {
+          // Arrange
+          when(mockQueryBuilder.select()).thenReturn(mockSelectFilterBuilder);
+          when(
+            mockSelectFilterBuilder.eq('email', testProfile.email),
+          ).thenReturn(mockSelectFilterBuilder);
+          when(mockSelectFilterBuilder.maybeSingle()).thenThrow(
+            const PostgrestException(
+              message: 'Database connection failed',
+              code: '08000',
+            ),
+          );
+
+          // Act
+          final result = await repository.getUserProfileByEmail(
+            testProfile.email,
+          );
+
+          // Assert
+          expect(result.isLeft(), isTrue);
+          result.fold(
+            (failure) {
+              expect(failure, isA<UserFailure>());
+            },
+            (profile) => fail('Should not return profile'),
+          );
+        },
+      );
+    });
+
+    group('createSocialUserProfile', () {
+      test('should successfully create social user profile', () async {
+        // Arrange
+        const userId = 'social-user-123';
+        const email = 'social@example.com';
+        const displayName = 'Social User';
+        const preferredCurrency = 'USD';
+        const languageCode = 'en';
+        const provider = 'google';
+
+        final mockResponse = {
+          'id': userId,
+          'email': email,
+          'display_name': displayName,
+          'preferred_currency': preferredCurrency,
+          'language_code': languageCode,
+          'social_provider': provider,
+          'created_at': DateTime.now().toIso8601String(),
+          'updated_at': DateTime.now().toIso8601String(),
+        };
+
+        when(mockQueryBuilder.insert(any)).thenReturn(mockFilterBuilder);
+        when(mockQueryBuilder.select()).thenReturn(mockSelectFilterBuilder);
+        when(
+          mockSelectFilterBuilder.eq('id', userId),
+        ).thenReturn(mockSelectFilterBuilder);
+        final fakeSingleBuilder = _FakePostgrestTransformBuilder<PostgrestMap>(
+          mockResponse,
+        );
+        when(
+          mockSelectFilterBuilder.single(),
+        ).thenReturn(fakeSingleBuilder);
+
+        // Act
+        final result = await repository.createSocialUserProfile(
+          userId: userId,
+          email: email,
+          displayName: displayName,
+          preferredCurrency: preferredCurrency,
+          languageCode: languageCode,
+          provider: provider,
+        );
+
+        // Assert
+        expect(result.isRight(), isTrue);
+        result.fold(
+          (failure) => fail('Should not return failure'),
+          (profile) {
+            expect(profile.id, equals(userId));
+            expect(profile.email, equals(email));
+            expect(profile.displayName, equals(displayName));
+            expect(profile.preferredCurrency, equals(preferredCurrency));
+            expect(profile.languageCode, equals(languageCode));
+          },
+        );
+
+        // Verify the insert was called with correct data including social provider
+        final capturedData =
+            verify(
+                  mockQueryBuilder.insert(captureAny),
+                ).captured.first
+                as Map<String, dynamic>;
+        expect(capturedData['id'], equals(userId));
+        expect(capturedData['email'], equals(email));
+        expect(capturedData['display_name'], equals(displayName));
+        expect(capturedData['preferred_currency'], equals(preferredCurrency));
+        expect(capturedData['language_code'], equals(languageCode));
+        expect(capturedData['social_provider'], equals(provider));
+      });
+
+      test(
+        'should handle duplicate email errors when creating social profile',
+        () async {
+          // Arrange
+          const userId = 'social-user-123';
+          const email = 'duplicate@example.com';
+          const displayName = 'Social User';
+          const preferredCurrency = 'USD';
+          const languageCode = 'en';
+          const provider = 'google';
+
+          when(mockQueryBuilder.insert(any)).thenThrow(
+            const PostgrestException(
+              message: 'Unique constraint violation on email',
+              code: '23505',
+            ),
+          );
+
+          // Act
+          final result = await repository.createSocialUserProfile(
+            userId: userId,
+            email: email,
+            displayName: displayName,
+            preferredCurrency: preferredCurrency,
+            languageCode: languageCode,
+            provider: provider,
+          );
+
+          // Assert
+          expect(result.isLeft(), isTrue);
+          result.fold(
+            (failure) {
+              expect(failure, isA<UserFailure>());
+              expect(failure.message, contains('already exists'));
+            },
+            (profile) => fail('Should not return profile'),
+          );
+        },
+      );
+
+      test(
+        'should handle network errors when creating social profile',
+        () async {
+          // Arrange
+          const userId = 'social-user-123';
+          const email = 'social@example.com';
+          const displayName = 'Social User';
+          const preferredCurrency = 'USD';
+          const languageCode = 'en';
+          const provider = 'google';
+
+          when(mockQueryBuilder.insert(any)).thenThrow(
+            Exception('Network connection failed'),
+          );
+
+          // Act
+          final result = await repository.createSocialUserProfile(
+            userId: userId,
+            email: email,
+            displayName: displayName,
+            preferredCurrency: preferredCurrency,
+            languageCode: languageCode,
+            provider: provider,
+          );
+
+          // Assert
+          expect(result.isLeft(), isTrue);
+          result.fold(
+            (failure) {
+              expect(failure, isA<UserFailure>());
+              expect(failure.message, contains('Network connection failed'));
+            },
+            (profile) => fail('Should not return profile'),
+          );
+        },
+      );
+    });
   });
 }

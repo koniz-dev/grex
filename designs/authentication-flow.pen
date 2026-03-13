@@ -8,7 +8,7 @@
       "y": 0,
       "name": "Login Screen",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,
@@ -235,6 +235,141 @@
         },
         {
           "type": "frame",
+          "id": "fcbN6",
+          "name": "divider",
+          "width": "fill_container",
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "RYIe4",
+              "name": "line1",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "#E4E4E7"
+            },
+            {
+              "type": "text",
+              "id": "9bfmx",
+              "name": "orText",
+              "fill": "#A1A1AA",
+              "content": "or",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "yKpYV",
+              "name": "line2",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "#E4E4E7"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sBviD",
+          "name": "socialSection",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "191CB",
+              "name": "googleButton",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E4E4E7"
+              },
+              "gap": 12,
+              "padding": [
+                0,
+                16,
+                0,
+                72
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "0Lpjz",
+                  "name": "googleLogo1",
+                  "width": 28,
+                  "height": 28,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1773201403981.png",
+                    "mode": "fill"
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "m8g1C",
+                  "name": "googleText",
+                  "fill": "#000000",
+                  "content": "Continue with Google",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rXVeM",
+              "name": "appleButton",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#000000",
+              "cornerRadius": 16,
+              "gap": 12,
+              "padding": [
+                0,
+                16,
+                0,
+                72
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "we7fo",
+                  "name": "appleLogoLogin",
+                  "width": 28,
+                  "height": 28,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1773201788643.png",
+                    "mode": "fill"
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "SUTtR",
+                  "name": "appleText",
+                  "fill": "#FFFFFF",
+                  "content": "Continue with Apple",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
           "id": "z6C2A",
           "name": "spacer2",
           "width": "fill_container",
@@ -275,11 +410,11 @@
     {
       "type": "frame",
       "id": "bulor",
-      "x": 450,
+      "x": 502,
       "y": 0,
       "name": "Register Screen",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,
@@ -571,6 +706,141 @@
         },
         {
           "type": "frame",
+          "id": "YbQ1M",
+          "name": "divider2",
+          "width": "fill_container",
+          "gap": 12,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "D7T6V",
+              "name": "line3",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "#E4E4E7"
+            },
+            {
+              "type": "text",
+              "id": "o9mVj",
+              "name": "orText2",
+              "fill": "#A1A1AA",
+              "content": "or",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "oxPSz",
+              "name": "line4",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "#E4E4E7"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "YLpjt",
+          "name": "socialSection2",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "jVA2Z",
+              "name": "googleButton2",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E4E4E7"
+              },
+              "gap": 12,
+              "padding": [
+                0,
+                16,
+                0,
+                72
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "DXURy",
+                  "name": "googleLogo2",
+                  "width": 28,
+                  "height": 28,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1773201403981.png",
+                    "mode": "fill"
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "HwqSv",
+                  "name": "googleText2",
+                  "fill": "#000000",
+                  "content": "Continue with Google",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ilDbS",
+              "name": "appleButton2",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#000000",
+              "cornerRadius": 16,
+              "gap": 12,
+              "padding": [
+                0,
+                16,
+                0,
+                72
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "LxVlM",
+                  "name": "appleLogoReg",
+                  "width": 28,
+                  "height": 28,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1773201788643.png",
+                    "mode": "fill"
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "sJzyM",
+                  "name": "appleText2",
+                  "fill": "#FFFFFF",
+                  "content": "Continue with Apple",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
           "id": "yqL7d",
           "name": "spacer2",
           "width": "fill_container",
@@ -611,11 +881,11 @@
     {
       "type": "frame",
       "id": "FYc72",
-      "x": 900,
+      "x": 1004,
       "y": 0,
       "name": "Forgot Password Screen",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,
@@ -811,11 +1081,11 @@
     {
       "type": "frame",
       "id": "XexJd",
-      "x": 1350,
+      "x": 1506,
       "y": 0,
       "name": "Reset Password Screen",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,
@@ -1014,11 +1284,11 @@
     {
       "type": "frame",
       "id": "mdMtu",
-      "x": 1800,
+      "x": 2008,
       "y": 0,
       "name": "Email Verification Screen",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,
@@ -1215,11 +1485,11 @@
     {
       "type": "frame",
       "id": "J3jDD",
-      "x": 2250,
+      "x": 2510,
       "y": 0,
       "name": "Profile Setup Screen",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,
@@ -1575,10 +1845,10 @@
       "type": "frame",
       "id": "ZrHTg",
       "x": 0,
-      "y": 950,
+      "y": 1050,
       "name": "Login - Loading State",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,
@@ -1830,11 +2100,11 @@
     {
       "type": "frame",
       "id": "4BgGS",
-      "x": 450,
-      "y": 950,
+      "x": 502,
+      "y": 1050,
       "name": "Login - Error State",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,
@@ -2117,11 +2387,11 @@
     {
       "type": "frame",
       "id": "vGyfy",
-      "x": 900,
-      "y": 950,
+      "x": 1004,
+      "y": 1050,
       "name": "Success State",
       "width": 402,
-      "height": 874,
+      "height": 950,
       "fill": "#FFFFFF",
       "layout": "vertical",
       "gap": 32,

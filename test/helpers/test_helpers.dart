@@ -1,8 +1,11 @@
+import 'package:grex/features/auth/data/handlers/auth_deep_link_handler.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
+import 'package:grex/features/auth/domain/repositories/social_auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/user_repository.dart';
 import 'package:grex/features/auth/domain/services/email_verification_service.dart';
 import 'package:grex/features/auth/domain/services/session_manager.dart';
 import 'package:grex/features/auth/domain/services/session_service.dart';
+import 'package:grex/features/auth/domain/services/social_login_analytics.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:mockito/annotations.dart';
 
@@ -15,6 +18,9 @@ import 'test_helpers.mocks.dart';
   SessionService,
   SessionManager,
   EmailVerificationService,
+  SocialAuthRepository,
+  AuthDeepLinkHandler,
+  SocialLoginAnalytics,
 ])
 void main() {}
 
@@ -34,6 +40,15 @@ class TestDependencies {
   // Field is assigned in setupTestDependencies() but linter doesn't detect it
   // ignore: unreachable_from_main
   late MockSessionService mockSessionService;
+  // Field is assigned in setupTestDependencies() but linter doesn't detect it
+  // ignore: unreachable_from_main
+  late MockSocialAuthRepository mockSocialAuthRepository;
+  // Field is assigned in setupTestDependencies() but linter doesn't detect it
+  // ignore: unreachable_from_main
+  late MockAuthDeepLinkHandler mockAuthDeepLinkHandler;
+  // Field is assigned in setupTestDependencies() but linter doesn't detect it
+  // ignore: unreachable_from_main
+  late MockSocialLoginAnalytics mockSocialLoginAnalytics;
   // Field is assigned in setupTestDependencies() but linter doesn't detect it
   // ignore: unreachable_from_main
   late SessionManager sessionManager;
@@ -61,7 +76,10 @@ TestDependencies setupTestDependencies() {
     // Create mocks
     ..mockAuthRepository = MockAuthRepository()
     ..mockUserRepository = MockUserRepository()
-    ..mockSessionService = MockSessionService();
+    ..mockSessionService = MockSessionService()
+    ..mockSocialAuthRepository = MockSocialAuthRepository()
+    ..mockAuthDeepLinkHandler = MockAuthDeepLinkHandler()
+    ..mockSocialLoginAnalytics = MockSocialLoginAnalytics();
 
   // Create session manager with mocked dependencies
   deps.sessionManager = SessionManager(
@@ -77,6 +95,9 @@ TestDependencies setupTestDependencies() {
       authRepository: deps.mockAuthRepository,
       userRepository: deps.mockUserRepository,
       sessionManager: mockSessionManager,
+      socialAuthRepository: deps.mockSocialAuthRepository,
+      deepLinkHandler: deps.mockAuthDeepLinkHandler,
+      analytics: deps.mockSocialLoginAnalytics,
     )
     ..profileBloc = ProfileBloc(
       userRepository: deps.mockUserRepository,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Property Test: Module Localization Compliance
@@ -130,13 +131,11 @@ void main() {
       // Report violations for documentation purposes
       if (allViolations.isNotEmpty) {
         // Test output for tracking localization progress during development
-        // ignore: avoid_print
-        print(
+        debugPrint(
           'Found ${allViolations.length} hardcoded strings in lib/features/',
         );
         // Test output for tracking localization progress during development
-        // ignore: avoid_print
-        print('These should be localized in future work.');
+        debugPrint('These should be localized in future work.');
       }
 
       // Currently tracking violations - change to isEmpty when all strings
@@ -160,8 +159,7 @@ void main() {
       // Report violations for documentation purposes
       if (allViolations.isNotEmpty) {
         // Test output for tracking localization progress during development
-        // ignore: avoid_print
-        print(
+        debugPrint(
           'Found ${allViolations.length} hardcoded strings '
           'in lib/core/widgets/',
         );
@@ -188,8 +186,7 @@ void main() {
       // Report violations for documentation purposes
       if (allViolations.isNotEmpty) {
         // Test output for tracking localization progress during development
-        // ignore: avoid_print
-        print(
+        debugPrint(
           'Found ${allViolations.length} hardcoded strings '
           'in lib/core/routing/',
         );
@@ -237,15 +234,13 @@ void main() {
           ? (compliantFiles / totalFiles * 100).toStringAsFixed(1)
           : '0';
       // Test output for tracking localization progress during development
-      // ignore: avoid_print
-      print(
+      debugPrint(
         'Localization compliance: '
         '$compliantFiles/$totalFiles files ($complianceRate%)',
       );
       if (nonCompliantFiles.isNotEmpty) {
         // Test output for tracking localization progress during development
-        // ignore: avoid_print
-        print('Non-compliant files: ${nonCompliantFiles.length}');
+        debugPrint('Non-compliant files: ${nonCompliantFiles.length}');
       }
 
       // Track progress - currently not enforcing 100% compliance
@@ -289,7 +284,8 @@ void main() {
           if (hardcodedTextPattern.hasMatch(content)) {
             filesWithTextWidgets++;
             // Check for localization import or context.l10n usage
-            final hasLocalization = content.contains('context.l10n') ||
+            final hasLocalization =
+                content.contains('context.l10n') ||
                 content.contains('AppLocalizations.of') ||
                 content.contains("import 'package:flutter_gen/gen_l10n");
 
@@ -304,15 +300,14 @@ void main() {
 
       // Report status
       // Test output for tracking localization progress during development
-      // ignore: avoid_print
-      print('Files with Text widgets: $filesWithTextWidgets');
+      debugPrint('Files with Text widgets: $filesWithTextWidgets');
       // Test output for tracking localization progress during development
-      // ignore: avoid_print
-      print('Files with localization: $filesWithLocalization');
+      debugPrint('Files with localization: $filesWithLocalization');
       if (filesNeedingLocalization.isNotEmpty) {
         // Test output for tracking localization progress during development
-        // ignore: avoid_print
-        print('Files needing localization: ${filesNeedingLocalization.length}');
+        debugPrint(
+          'Files needing localization: ${filesNeedingLocalization.length}',
+        );
       }
 
       // Track progress - not enforcing strict compliance yet

@@ -46,6 +46,7 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<!-- Deep link: email verification (grex://auth/confirm?token=...&email=...&type=signup) -->
+	<!-- Deep link: OAuth callback (io.supabase.grex://login-callback/) -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -56,6 +57,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>grex</string>
+				<string>io.supabase.grex</string>
 			</array>
 		</dict>
 	</array>

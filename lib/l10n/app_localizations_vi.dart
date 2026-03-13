@@ -448,4 +448,237 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get exampleScreenContent => 'Nội dung màn hình ví dụ';
+
+  @override
+  String get welcomeBack => 'Chào mừng trở lại';
+
+  @override
+  String get signInToContinue => 'Đăng nhập để tiếp tục';
+
+  @override
+  String get forgotPassword => 'Quên mật khẩu?';
+
+  @override
+  String get orContinueWith => 'hoặc';
+
+  @override
+  String get continueWithGoogle => 'Tiếp tục với Google';
+
+  @override
+  String get continueWithApple => 'Tiếp tục với Apple';
+
+  @override
+  String get createAccount => 'Tạo tài khoản';
+
+  @override
+  String get joinGrexToday => 'Tham gia Grex hôm nay';
+
+  @override
+  String get displayName => 'Tên hiển thị';
+
+  @override
+  String get enterYourName => 'Nhập tên của bạn';
+
+  @override
+  String get enterYourEmail => 'Nhập email của bạn';
+
+  @override
+  String get enterYourPassword => 'Nhập mật khẩu của bạn';
+
+  @override
+  String get selectCurrency => 'Chọn tiền tệ';
+
+  @override
+  String get passwordRequirements =>
+      'Ít nhất 8 ký tự với chữ hoa, chữ thường và số';
+
+  @override
+  String get alreadyHaveAccountSignIn => 'Đã có tài khoản? Đăng nhập';
+
+  @override
+  String get forgotPasswordQuestion => 'Quên mật khẩu?';
+
+  @override
+  String get enterEmailForReset =>
+      'Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn liên kết để đặt lại mật khẩu';
+
+  @override
+  String get sendResetLink => 'Gửi liên kết đặt lại';
+
+  @override
+  String get resetLinkSent =>
+      'Đã gửi liên kết đặt lại! Kiểm tra email của bạn.';
+
+  @override
+  String get backToSignIn => 'Quay lại Đăng nhập';
+
+  @override
+  String get verifyYourEmail => 'Xác thực email của bạn';
+
+  @override
+  String get verificationEmailSent => 'Chúng tôi đã gửi email xác thực đến:';
+
+  @override
+  String get checkInboxAndClick =>
+      'Kiểm tra hộp thư đến và nhấp vào liên kết xác thực để tiếp tục.';
+
+  @override
+  String get resendEmail => 'Gửi lại email';
+
+  @override
+  String get openEmailApp => 'Mở ứng dụng Email';
+
+  @override
+  String get didntReceiveEmail => 'Không nhận được email?';
+
+  @override
+  String get checkSpamFolder => '• Kiểm tra thư mục spam hoặc thư rác';
+
+  @override
+  String get verifyEmailAddress => '• Đảm bảo địa chỉ email chính xác';
+
+  @override
+  String get waitFewMinutes => '• Đợi vài phút và thử lại';
+
+  @override
+  String get signOut => 'Đăng xuất';
+
+  @override
+  String get emailSentCheckInbox =>
+      'Đã gửi email! Kiểm tra hộp thư đến của bạn.';
+
+  @override
+  String pleaseWaitSeconds(int seconds) {
+    return 'Vui lòng đợi $seconds giây';
+  }
+
+  @override
+  String get resetPassword => 'Đặt lại mật khẩu';
+
+  @override
+  String get enterNewPassword => 'Nhập mật khẩu mới của bạn bên dưới';
+
+  @override
+  String get newPassword => 'Mật khẩu mới';
+
+  @override
+  String get confirmPassword => 'Xác nhận mật khẩu';
+
+  @override
+  String get confirmYourPassword => 'Xác nhận mật khẩu của bạn';
+
+  @override
+  String get passwordsDoNotMatch => 'Mật khẩu không khớp';
+
+  @override
+  String get completeYourProfile => 'Hoàn thiện hồ sơ của bạn';
+
+  @override
+  String get stepOfTwo => 'Bước 1 trong 2';
+
+  @override
+  String get uploadPhoto => 'Tải ảnh lên';
+
+  @override
+  String get completeSetup => 'Hoàn tất thiết lập';
+
+  @override
+  String get skipForNow => 'Bỏ qua bây giờ';
+
+  @override
+  String get success => 'Thành công!';
+
+  @override
+  String get accountCreatedSuccessfully =>
+      'Tài khoản của bạn đã được tạo thành công';
+
+  @override
+  String get passwordResetSuccessfully =>
+      'Mật khẩu của bạn đã được đặt lại thành công';
+
+  @override
+  String get emailVerifiedSuccessfully =>
+      'Email của bạn đã được xác thực thành công';
+
+  @override
+  String get continueButton => 'Tiếp tục';
+
+  @override
+  String get getStarted => 'Bắt đầu';
+
+  @override
+  String get back => 'Quay lại';
+
+  @override
+  String get socialAuthFailed => 'Xác thực thất bại. Vui lòng thử lại.';
+
+  @override
+  String get socialAuthNetworkError =>
+      'Kết nối mạng thất bại. Vui lòng kiểm tra kết nối internet và thử lại.';
+
+  @override
+  String get socialAuthTimeout =>
+      'Xác thực hết thời gian chờ. Vui lòng thử lại.';
+
+  @override
+  String get accountLinkingError =>
+      'Không thể liên kết tài khoản của bạn. Vui lòng thử lại hoặc liên hệ hỗ trợ.';
+
+  @override
+  String get signInWithEmail => 'Đăng nhập bằng email';
+
+  @override
+  String get dismiss => 'Dismiss';
+
+  @override
+  String get repeatedNetworkFailureMessage =>
+      'Multiple network errors detected. Please check your internet connection or try signing in with email.';
+
+  @override
+  String get repeatedTimeoutFailureMessage =>
+      'Authentication keeps timing out. Please try signing in with email instead.';
+
+  @override
+  String get repeatedAuthFailureMessage =>
+      'Authentication failed multiple times. Please try signing in with email or contact support.';
+
+  @override
+  String get or => 'hoặc';
+
+  @override
+  String get profileSetupDescription =>
+      'Vui lòng hoàn thiện hồ sơ để bắt đầu sử dụng Grex';
+
+  @override
+  String get linkYourAccount => 'Liên kết tài khoản của bạn';
+
+  @override
+  String accountExistsMessage(String email) {
+    return 'Một tài khoản với email $email đã tồn tại.';
+  }
+
+  @override
+  String linkAccountQuestion(String provider) {
+    return 'Bạn có muốn liên kết tài khoản $provider của mình với tài khoản hiện có không?';
+  }
+
+  @override
+  String get linkAccountBenefit =>
+      'Điều này sẽ cho phép bạn đăng nhập bằng cả hai phương thức.';
+
+  @override
+  String get linkAccounts => 'Liên kết tài khoản';
+
+  @override
+  String get createNewAccount => 'Tạo tài khoản mới';
+
+  @override
+  String get cancelProfileSetup => 'Hủy thiết lập';
+
+  @override
+  String get cancelProfileSetupMessage =>
+      'Bạn có chắc chắn muốn hủy không? Bạn sẽ được đăng xuất và cần đăng nhập lại.';
+
+  @override
+  String get continueSetup => 'Tiếp tục thiết lập';
 }

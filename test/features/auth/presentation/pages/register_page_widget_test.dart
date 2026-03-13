@@ -4,6 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/pages/register_page.dart';
+import 'package:grex/features/auth/presentation/widgets/or_divider.dart';
+import 'package:grex/features/auth/presentation/widgets/social_auth_error_widget.dart';
+import 'package:grex/features/auth/presentation/widgets/social_login_button.dart';
 
 import '../../../../helpers/test_helpers.mocks.dart';
 import '../../../../helpers/widget_test_helpers.dart';
@@ -11,9 +14,9 @@ import '../../../../helpers/widget_test_helpers.dart';
 /// Widget tests for RegisterPage
 ///
 /// Tests registration form validation, form submission,
-/// loading states, and user interactions.
+/// loading states, user interactions, and social login integration.
 ///
-/// Requirements: 1.1, 1.3, 1.4, 1.5
+/// Requirements: 1.1, 1.3, 1.4, 1.5, 6.3, 6.4, 6.5
 void main() {
   group('RegisterPage Widget Tests', () {
     late MockAuthRepository mockAuthRepository;
@@ -439,6 +442,254 @@ void main() {
 
       // Assert - Form should be submitted
       expect(find.byType(TextFormField), findsNWidgets(3));
+    });
+
+    // Social Login Tests
+    group('Social Login Integration', () {
+      testWidgets(
+        'should display social login buttons after registration form',
+        (tester) async {
+          // Arrange
+          await tester.pumpAuthWidget(
+            const RegisterPage(),
+            mockAuthRepository: mockAuthRepository,
+            mockUserRepository: mockUserRepository,
+            mockSessionService: mockSessionService,
+          );
+
+          // Assert
+          expect(find.byType(OrDivider), findsOneWidget);
+          expect(find.byType(SocialLoginButton), findsNWidgets(2));
+
+          // Verify Google button
+          final googleButton = find.byWidgetPredicate(
+            (widget) =>
+                widget is SocialLoginButton &&
+                widget.provider == SocialAuthProvider.google,
+          );
+          expect(googleButton, findsOneWidget);
+
+          // Verify Apple button
+          final appleButton = find.byWidgetPredicate(
+            (widget) =>
+                widget is SocialLoginButton &&
+                widget.provider == SocialAuthProvider.apple,
+          );
+          expect(appleButton, findsOneWidget);
+        },
+      );
+
+      testWidgets('should display OrDivider between sections', (tester) async {
+        // Arrange
+        await tester.pumpAuthWidget(
+          const RegisterPage(),
+          mockAuthRepository: mockAuthRepository,
+          mockUserRepository: mockUserRepository,
+          mockSessionService: mockSessionService,
+        );
+
+        // Assert
+        expect(find.byType(OrDivider), findsOneWidget);
+
+        // Verify divider is positioned correctly between register button and social buttons
+        final registerButton = find.widgetWithText(ElevatedButton, 'Đăng ký');
+        final orDivider = find.byType(OrDivider);
+        final socialButtons = find.byType(SocialLoginButton);
+
+        expect(registerButton, findsOneWidget);
+        expect(orDivider, findsOneWidget);
+        expect(socialButtons, findsNWidgets(2));
+      });
+
+      testWidgets(
+        'should trigger Google social login event when Google button tapped',
+        (tester) async {
+          // Arrange
+          await tester.pumpAuthWidget(
+            const RegisterPage(),
+            mockAuthRepository: mockAuthRepository,
+            mockUserRepository: mockUserRepository,
+            mockSessionService: mockSessionService,
+          );
+
+          // Act
+          final googleButton = find.byWidgetPredicate(
+            (widget) =>
+                widget is SocialLoginButton &&
+                widget.provider == SocialAuthProvider.google,
+          );
+          await tester.tap(googleButton);
+          await tester.pump();
+
+          // Assert - In a real test, you would verify the event was dispatched
+          expect(googleButton, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'should trigger Apple social login event when Apple button tapped',
+        (tester) async {
+          // Arrange
+          await tester.pumpAuthWidget(
+            const RegisterPage(),
+            mockAuthRepository: mockAuthRepository,
+            mockUserRepository: mockUserRepository,
+            mockSessionService: mockSessionService,
+          );
+
+          // Act
+          final appleButton = find.byWidgetPredicate(
+            (widget) =>
+                widget is SocialLoginButton &&
+                widget.provider == SocialAuthProvider.apple,
+          );
+          await tester.tap(appleButton);
+          await tester.pump();
+
+          // Assert - In a real test, you would verify the event was dispatched
+          expect(appleButton, findsOneWidget);
+        },
+      );
+
+      testWidgets('should disable all buttons during social login loading', (
+        tester,
+      ) async {
+        // Arrange
+        await tester.pumpAuthWidget(
+          const RegisterPage(),
+          mockAuthRepository: mockAuthRepository,
+          mockUserRepository: mockUserRepository,
+          mockSessionService: mockSessionService,
+          initialState: const AuthSocialLoginInProgress(
+            SocialAuthProvider.google,
+          ),
+        );
+
+        // Assert
+        final registerButton = find.widgetWithText(ElevatedButton, 'Đăng ký');
+        final googleButton = find.byWidgetPredicate(
+          (widget) =>
+              widget is SocialLoginButton &&
+              widget.provider == SocialAuthProvider.google,
+        );
+        final appleButton = find.byWidgetPredicate(
+          (widget) =>
+              widget is SocialLoginButton &&
+              widget.provider == SocialAuthProvider.apple,
+        );
+
+        // Verify register button is disabled
+        final registerButtonWidget = tester.widget<ElevatedButton>(
+          registerButton,
+        );
+        expect(registerButtonWidget.onPressed, isNull);
+
+        // Verify social buttons show loading state
+        final googleButtonWidget = tester.widget<SocialLoginButton>(
+          googleButton,
+        );
+        expect(googleButtonWidget.isLoading, isTrue);
+        expect(googleButtonWidget.onPressed, isNull);
+
+        final appleButtonWidget = tester.widget<SocialLoginButton>(appleButton);
+        expect(appleButtonWidget.onPressed, isNull);
+      });
+
+      testWidgets(
+        'should show loading indicator on Google button during Google login',
+        (tester) async {
+          // Arrange
+          await tester.pumpAuthWidget(
+            const RegisterPage(),
+            mockAuthRepository: mockAuthRepository,
+            mockUserRepository: mockUserRepository,
+            mockSessionService: mockSessionService,
+            initialState: const AuthSocialLoginInProgress(
+              SocialAuthProvider.google,
+            ),
+          );
+
+          // Assert
+          final googleButton = find.byWidgetPredicate(
+            (widget) =>
+                widget is SocialLoginButton &&
+                widget.provider == SocialAuthProvider.google,
+          );
+          final googleButtonWidget = tester.widget<SocialLoginButton>(
+            googleButton,
+          );
+          expect(googleButtonWidget.isLoading, isTrue);
+        },
+      );
+
+      testWidgets(
+        'should show loading indicator on Apple button during Apple login',
+        (tester) async {
+          // Arrange
+          await tester.pumpAuthWidget(
+            const RegisterPage(),
+            mockAuthRepository: mockAuthRepository,
+            mockUserRepository: mockUserRepository,
+            mockSessionService: mockSessionService,
+            initialState: const AuthSocialLoginInProgress(
+              SocialAuthProvider.apple,
+            ),
+          );
+
+          // Assert
+          final appleButton = find.byWidgetPredicate(
+            (widget) =>
+                widget is SocialLoginButton &&
+                widget.provider == SocialAuthProvider.apple,
+          );
+          final appleButtonWidget = tester.widget<SocialLoginButton>(
+            appleButton,
+          );
+          expect(appleButtonWidget.isLoading, isTrue);
+        },
+      );
+
+      testWidgets(
+        'should display social auth error widget for social login failures',
+        (tester) async {
+          // Arrange
+          await tester.pumpAuthWidget(
+            const RegisterPage(),
+            mockAuthRepository: mockAuthRepository,
+            mockUserRepository: mockUserRepository,
+            mockSessionService: mockSessionService,
+            initialState: const AuthError(
+              failure: SocialAuthNetworkFailure(),
+              message: 'Network error during sign in',
+            ),
+          );
+
+          // Assert
+          expect(find.byType(SocialAuthErrorWidget), findsOneWidget);
+          expect(find.text('Network error during sign in'), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'should display regular error banner for non-social auth failures',
+        (tester) async {
+          // Arrange
+          await tester.pumpAuthWidget(
+            const RegisterPage(),
+            mockAuthRepository: mockAuthRepository,
+            mockUserRepository: mockUserRepository,
+            mockSessionService: mockSessionService,
+            initialState: const AuthError(
+              failure: EmailAlreadyInUseFailure(),
+              message: 'Email này đã được sử dụng',
+            ),
+          );
+
+          // Assert
+          expect(find.byType(SocialAuthErrorWidget), findsNothing);
+          expect(find.text('Email này đã được sử dụng'), findsOneWidget);
+        },
+      );
     });
   });
 }

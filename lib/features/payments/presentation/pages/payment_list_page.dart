@@ -492,10 +492,12 @@ class _PaymentListPageState extends State<PaymentListPage> {
               Text(l10n.from(payment.payerName)),
               Text(l10n.to(payment.recipientName)),
               Text(
-                l10n.amount(CurrencyFormatter.format(
-                  amount: payment.amount,
-                  currencyCode: payment.currency,
-                )),
+                l10n.amount(
+                  CurrencyFormatter.format(
+                    amount: payment.amount,
+                    currencyCode: payment.currency,
+                  ),
+                ),
               ),
               if (payment.description != null)
                 Text(l10n.description(payment.description!)),

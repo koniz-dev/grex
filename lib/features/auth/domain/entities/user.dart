@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 /// User entity representing authenticated user from Supabase Auth
@@ -18,6 +19,8 @@ class User extends Equatable {
   /// - [emailConfirmed]: Whether email is verified (default: true)
   /// - [lastSignInAt]: Last sign-in timestamp
   /// - [displayName]: User's display name from metadata
+  /// - [appMetadata]: Application metadata from Supabase
+  /// - [userMetadata]: User metadata from Supabase
   const User({
     required this.id,
     required this.email,
@@ -25,6 +28,8 @@ class User extends Equatable {
     this.emailConfirmed = true,
     this.lastSignInAt,
     this.displayName,
+    this.appMetadata,
+    this.userMetadata,
   });
 
   /// Create User from Supabase Auth JSON response
@@ -38,6 +43,8 @@ class User extends Equatable {
           ? DateTime.parse(json['last_sign_in_at'] as String)
           : null,
       displayName: json['display_name'] as String?,
+      appMetadata: json['app_metadata'] as Map<String, dynamic>?,
+      userMetadata: json['user_metadata'] as Map<String, dynamic>?,
     );
   }
 
@@ -51,7 +58,12 @@ class User extends Equatable {
       lastSignInAt: supabaseUser.lastSignInAt != null
           ? DateTime.parse(supabaseUser.lastSignInAt!)
           : null,
-      displayName: supabaseUser.userMetadata?['display_name'] as String?,
+      displayName:
+          supabaseUser.userMetadata?['display_name'] as String? ??
+          supabaseUser.userMetadata?['full_name'] as String? ??
+          supabaseUser.userMetadata?['name'] as String?,
+      appMetadata: supabaseUser.appMetadata,
+      userMetadata: supabaseUser.userMetadata,
     );
   }
 
@@ -73,6 +85,34 @@ class User extends Equatable {
   /// User's display name from metadata
   final String? displayName;
 
+  /// Application metadata from Supabase (contains provider info, etc.)
+  final Map<String, dynamic>? appMetadata;
+
+  /// User metadata from Supabase (contains OAuth profile data)
+  final Map<String, dynamic>? userMetadata;
+
+  /// Extract social provider from user app metadata
+  /// Returns the OAuth provider if user signed in with social auth
+  SocialAuthProvider? get socialProvider {
+    final providers = appMetadata?['providers'] as List<dynamic>?;
+    if (providers == null || providers.isEmpty) return null;
+
+    if (providers.contains('google')) {
+      return SocialAuthProvider.google;
+    } else if (providers.contains('apple')) {
+      return SocialAuthProvider.apple;
+    }
+    return null;
+  }
+
+  /// Get display name from OAuth provider metadata
+  /// Attempts to extract name from various OAuth metadata fields
+  String? get oauthDisplayName {
+    return userMetadata?['full_name'] as String? ??
+        userMetadata?['name'] as String? ??
+        userMetadata?['display_name'] as String?;
+  }
+
   /// Convert User to JSON for serialization
   Map<String, dynamic> toJson() {
     return {
@@ -82,6 +122,8 @@ class User extends Equatable {
       'created_at': createdAt.toIso8601String(),
       'last_sign_in_at': lastSignInAt?.toIso8601String(),
       'display_name': displayName,
+      'app_metadata': appMetadata,
+      'user_metadata': userMetadata,
     };
   }
 
@@ -93,6 +135,8 @@ class User extends Equatable {
     DateTime? createdAt,
     DateTime? lastSignInAt,
     String? displayName,
+    Map<String, dynamic>? appMetadata,
+    Map<String, dynamic>? userMetadata,
   }) {
     return User(
       id: id ?? this.id,
@@ -101,6 +145,8 @@ class User extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       lastSignInAt: lastSignInAt ?? this.lastSignInAt,
       displayName: displayName ?? this.displayName,
+      appMetadata: appMetadata ?? this.appMetadata,
+      userMetadata: userMetadata ?? this.userMetadata,
     );
   }
 
@@ -112,6 +158,8 @@ class User extends Equatable {
     createdAt,
     lastSignInAt,
     displayName,
+    appMetadata,
+    userMetadata,
   ];
 
   @override
@@ -122,7 +170,8 @@ class User extends Equatable {
         'emailConfirmed: $emailConfirmed, '
         'createdAt: $createdAt, '
         'lastSignInAt: $lastSignInAt, '
-        'displayName: $displayName'
+        'displayName: $displayName, '
+        'socialProvider: $socialProvider'
         ')';
   }
 }

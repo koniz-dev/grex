@@ -12,10 +12,18 @@ void main() {
   late AuthBloc authBloc;
   late MockAuthRepository mockAuthRepository;
   late MockUserRepository mockUserRepository;
+  late MockSessionManager mockSessionManager;
+  late MockSocialAuthRepository mockSocialAuthRepository;
+  late MockAuthDeepLinkHandler mockDeepLinkHandler;
+  late MockSocialLoginAnalytics mockAnalytics;
 
   setUp(() {
     mockAuthRepository = MockAuthRepository();
     mockUserRepository = MockUserRepository();
+    mockSessionManager = MockSessionManager();
+    mockSocialAuthRepository = MockSocialAuthRepository();
+    mockDeepLinkHandler = MockAuthDeepLinkHandler();
+    mockAnalytics = MockSocialLoginAnalytics();
 
     // Setup default auth state stream
     when(mockAuthRepository.authStateChanges).thenAnswer(
@@ -25,7 +33,10 @@ void main() {
     authBloc = AuthBloc(
       authRepository: mockAuthRepository,
       userRepository: mockUserRepository,
-      sessionManager: MockSessionManager(),
+      sessionManager: mockSessionManager,
+      analytics: mockAnalytics,
+      deepLinkHandler: mockDeepLinkHandler,
+      socialAuthRepository: mockSocialAuthRepository,
     );
   });
 
@@ -99,7 +110,10 @@ void main() {
             final testBloc = AuthBloc(
               authRepository: mockAuthRepository,
               userRepository: mockUserRepository,
-              sessionManager: MockSessionManager(),
+              sessionManager: mockSessionManager,
+              analytics: mockAnalytics,
+              deepLinkHandler: mockDeepLinkHandler,
+              socialAuthRepository: mockSocialAuthRepository,
             );
 
             // Test the property
@@ -198,7 +212,10 @@ void main() {
             final testBloc = AuthBloc(
               authRepository: mockAuthRepository,
               userRepository: mockUserRepository,
-              sessionManager: MockSessionManager(),
+              sessionManager: mockSessionManager,
+              analytics: mockAnalytics,
+              deepLinkHandler: mockDeepLinkHandler,
+              socialAuthRepository: mockSocialAuthRepository,
             );
 
             // First, establish authenticated state

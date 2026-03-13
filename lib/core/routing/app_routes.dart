@@ -13,6 +13,9 @@ class AppRoutes {
   /// Route path for the email verification screen.
   static const String emailVerification = '/email-verification';
 
+  /// Route path for the social login profile setup screen.
+  static const String profileSetup = '/profile-setup';
+
   /// Route path for the user profile screen.
   static const String profile = '/profile';
 
@@ -72,6 +75,9 @@ class AppRoutes {
 
   /// Navigation name for the email verification route.
   static const String emailVerificationName = 'email-verification';
+
+  /// Navigation name for the profile setup route.
+  static const String profileSetupName = 'profile-setup';
 
   /// Navigation name for the profile route.
   static const String profileName = 'profile';

@@ -63,6 +63,19 @@ abstract class AuthRepository {
     required String email,
   });
 
+  /// Updates the user's password using a reset token or current session.
+  ///
+  /// Returns [Right<void>] on successful password update.
+  /// Returns [Left<AuthFailure>] on failure.
+  ///
+  /// Possible failures:
+  /// - [NetworkFailure] for connection issues
+  /// - [AuthFailure] for invalid token or password requirements
+  Future<Either<AuthFailure, void>> updatePassword({
+    required String newPassword,
+    String? token,
+  });
+
   /// Stream of authentication state changes.
   ///
   /// Emits a [User] when user is authenticated.

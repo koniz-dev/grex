@@ -19,6 +19,8 @@ This directory contains the complete UI/UX design for the Grex authentication fl
   - Email input field
   - Password input field
   - "Forgot password?" link
+  - Social login options (Google, Apple)
+  - "or" divider
   - Primary "Sign In" button
   - "Don't have an account? Register" link
 
@@ -29,6 +31,8 @@ This directory contains the complete UI/UX design for the Grex authentication fl
   - Email input
   - Password input with strength requirements hint
   - Preferred currency selector (dropdown)
+  - Social login options (Google, Apple)
+  - "or" divider
   - Primary "Create Account" button
   - "Already have an account? Sign In" link
 

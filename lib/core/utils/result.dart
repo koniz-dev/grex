@@ -13,8 +13,8 @@ import 'package:grex/core/errors/failures.dart';
 /// ```dart
 /// final result = await someOperation();
 /// result.when(
-///   success: (data) => print('Success: $data'),
-///   failureCallback: (failure) => print('Error: ${failure.message}'),
+///   success: (data) => debugPrint('Success: $data'),
+///   failureCallback: (failure) => debugPrint('Error: ${failure.message}'),
 /// );
 /// ```
 sealed class Result<T> {
@@ -143,14 +143,14 @@ extension ResultExtensions<T> on Result<T> {
   /// result.when(
   ///   success: (user) {
   ///     // user is of type User
-  ///     print('Logged in: ${user.email}');
+  ///     debugPrint('Logged in: ${user.email}');
   ///   },
   ///   failureCallback: (failure) {
   ///     // failure is of type Failure (may be AuthFailure, etc.)
-  ///     print('Error: ${failure.message}');
+  ///     debugPrint('Error: ${failure.message}');
   ///     if (failure is AuthFailure) {
   ///       // Can pattern match on Failure subtypes too
-  ///       print('Auth error code: ${failure.code}');
+  ///       debugPrint('Auth error code: ${failure.code}');
   ///     }
   ///   },
   /// );

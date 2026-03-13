@@ -171,3 +171,41 @@ class GenericValidationFailure extends ValidationFailure {
   /// [message].
   const GenericValidationFailure(super.field, super.message);
 }
+
+// Social Authentication Failures
+
+/// Social authentication failed with a specific error
+class SocialAuthFailure extends AuthFailure {
+  /// Creates a [SocialAuthFailure] with the provided [message].
+  const SocialAuthFailure(super.message);
+}
+
+/// User cancelled the social authentication flow
+class SocialAuthCancelledFailure extends AuthFailure {
+  /// Creates a [SocialAuthCancelledFailure].
+  const SocialAuthCancelledFailure() : super('Sign in was cancelled');
+}
+
+/// Social authentication failed due to network issues
+class SocialAuthNetworkFailure extends AuthFailure {
+  /// Creates a [SocialAuthNetworkFailure].
+  const SocialAuthNetworkFailure() : super('Network error during sign in');
+}
+
+/// Social authentication callback timed out
+class SocialAuthTimeoutFailure extends AuthFailure {
+  /// Creates a [SocialAuthTimeoutFailure].
+  const SocialAuthTimeoutFailure() : super('Sign in timed out');
+}
+
+/// Account linking operation failed
+class AccountLinkingFailure extends AuthFailure {
+  /// Creates an [AccountLinkingFailure] with the provided [message].
+  const AccountLinkingFailure(super.message);
+}
+
+/// Profile setup is required for new social login user
+class ProfileSetupRequiredFailure extends AuthFailure {
+  /// Creates a [ProfileSetupRequiredFailure].
+  const ProfileSetupRequiredFailure() : super('Profile setup required');
+}

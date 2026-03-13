@@ -23,9 +23,7 @@ void main() {
 
     /// Gets all non-metadata keys from ARB content
     Set<String> getNonMetadataKeys(Map<String, dynamic> arbContent) {
-      return arbContent.keys
-          .where((key) => !key.startsWith('@'))
-          .toSet();
+      return arbContent.keys.where((key) => !key.startsWith('@')).toSet();
     }
 
     late Map<String, dynamic> enArb;

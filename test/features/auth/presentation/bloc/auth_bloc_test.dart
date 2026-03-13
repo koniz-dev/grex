@@ -26,6 +26,9 @@ void main() {
       authRepository: mockAuthRepository,
       userRepository: mockUserRepository,
       sessionManager: mockSessionManager,
+      analytics: MockSocialLoginAnalytics(),
+      deepLinkHandler: MockAuthDeepLinkHandler(),
+      socialAuthRepository: MockSocialAuthRepository(),
     );
   });
 

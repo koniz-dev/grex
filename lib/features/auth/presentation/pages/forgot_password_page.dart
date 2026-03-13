@@ -1,16 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
 import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 
-/// Forgot password page for password reset requests.
+/// Forgot password page for password reset.
 ///
-/// This page allows users to request a password reset email by entering
-/// their email address. It handles validation and displays appropriate
-/// success or error messages.
+/// Implements the forgot password screen design with:
+/// - Back button
+/// - Email input field
+/// - Send reset link button
 class ForgotPasswordPage extends StatefulWidget {
   /// Creates a [ForgotPasswordPage].
   const ForgotPasswordPage({super.key});
@@ -23,30 +23,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
 
-  bool _isFormValid = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _emailController.addListener(_validateForm);
-  }
-
   @override
   void dispose() {
     _emailController.dispose();
     super.dispose();
   }
 
-  void _validateForm() {
-    final isValid = _formKey.currentState?.validate() ?? false;
-    if (isValid != _isFormValid) {
-      setState(() {
-        _isFormValid = isValid;
-      });
-    }
-  }
-
-  void _onResetPasswordPressed() {
+  void _onSendResetLink() {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<AuthBloc>().add(
         AuthPasswordResetRequested(
@@ -56,217 +39,148 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
   }
 
-  void _onBackToLoginPressed() {
-    context.goBackOrHome();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quên mật khẩu'),
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthPasswordResetSent) {
-              // Show success dialog
-              unawaited(
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) => AlertDialog(
-                    icon: const Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                      size: 48,
-                    ),
-                    title: const Text('Email đã được gửi'),
-                    content: Text(
-                      'Chúng tôi đã gửi link đặt lại mật khẩu đến '
-                      '${state.email}. '
-                      'Vui lòng kiểm tra email và làm theo hướng dẫn.',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Close dialog
-                          context.goToLogin(); // Go back to login
-                        },
-                        child: const Text('Đã hiểu'),
-                      ),
-                    ],
-                  ),
+              // Show success message
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Password reset link sent to your email'),
+                  backgroundColor: Colors.green,
                 ),
               );
+              // Navigate back to login
+              context.goToLogin();
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // App Logo
-                  Center(
-                    child: Image.asset(
-                      'assets/images/app_icon.png',
-                      height: 80,
-                    ),
-                  ),
                   const SizedBox(height: 24),
 
-                  // Title
-                  Text(
-                    'Đặt lại mật khẩu',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                  // Back button
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF4F4F5),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 20,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 40),
+
+                  // Title section
+                  const Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                      fontFamily: 'Outfit',
+                      fontSize: 40,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -1,
+                      color: Colors.black,
+                    ),
                   ),
                   const SizedBox(height: 8),
-
-                  // Description
-                  Text(
-                    'Nhập email của bạn và chúng tôi sẽ gửi link đặt lại '
-                    'mật khẩu',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey[600],
+                  const Text(
+                    'Enter your email to receive a password reset link',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: Color(0xFF71717A),
+                      height: 1.4,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
 
-                  // Email Field
-                  TextFormField(
+                  // Email field
+                  AuthTextField(
+                    label: 'Email',
+                    placeholder: 'your@email.com',
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Nhập email của bạn',
-                      prefixIcon: Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(),
-                    ),
                     validator: InputValidators.validateEmail,
-                    onChanged: (_) => _validateForm(),
-                    onFieldSubmitted: (_) {
-                      if (_isFormValid) {
-                        _onResetPasswordPressed();
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Reset Password Button
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      final isLoading = state is AuthLoading;
-
-                      return ElevatedButton(
-                        onPressed: isLoading || !_isFormValid
-                            ? null
-                            : _onResetPasswordPressed,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
-                                  ),
-                                ),
-                              )
-                            : const Text(
-                                'Gửi email đặt lại mật khẩu',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Back to Login Button
-                  TextButton(
-                    onPressed: _onBackToLoginPressed,
-                    child: const Text('Quay lại đăng nhập'),
+                    onFieldSubmitted: (_) => _onSendResetLink(),
                   ),
                   const SizedBox(height: 32),
 
-                  // Error Display
+                  // Send button
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      return PrimaryButton(
+                        text: 'Send Reset Link',
+                        isLoading: state is AuthLoading,
+                        onPressed: state is AuthLoading
+                            ? null
+                            : _onSendResetLink,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Error display
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthError) {
-                        return Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.red[50],
-                            border: Border.all(color: Colors.red[300]!),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.error_outline, color: Colors.red[700]),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  state.message,
-                                  style: TextStyle(color: Colors.red[700]),
-                                ),
-                              ),
-                            ],
-                          ),
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 24),
+                          child: ErrorBanner(message: state.message),
                         );
                       }
                       return const SizedBox.shrink();
                     },
                   ),
 
-                  const SizedBox(height: 24),
+                  // Spacer
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.3),
 
-                  // Help Text
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      border: Border.all(color: Colors.blue[200]!),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.info_outline, color: Colors.blue[700]),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Lưu ý',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue[700],
-                              ),
-                            ),
-                          ],
+                  // Back to login prompt
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Remember your password? ',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFF71717A),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '• Kiểm tra cả hộp thư spam/junk\n'
-                          '• Link đặt lại mật khẩu có hiệu lực trong 24 giờ\n'
-                          '• Nếu không nhận được email, thử lại sau 5 phút',
-                          style: TextStyle(color: Colors.blue[700]),
+                      ),
+                      GestureDetector(
+                        onTap: () => context.goToLogin(),
+                        child: const Text(
+                          'Sign In',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),

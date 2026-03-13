@@ -97,6 +97,68 @@ class SupabaseUserRepository implements UserRepository {
     }
   }
 
+  @override
+  Future<Either<UserFailure, UserProfile?>> getUserProfileByEmail(
+    String email,
+  ) async {
+    try {
+      final response = await _supabaseClient
+          .from(_tableName)
+          .select()
+          .eq('email', email)
+          .maybeSingle();
+
+      if (response == null) {
+        return const Right(null);
+      }
+
+      final profile = UserProfile.fromJson(response);
+      return Right(profile);
+    } on PostgrestException catch (e) {
+      return Left(_mapPostgrestExceptionToFailure(e));
+    } on Object catch (_) {
+      return const Left(GenericUserFailure('Network connection failed'));
+    }
+  }
+
+  @override
+  Future<Either<UserFailure, UserProfile>> createSocialUserProfile({
+    required String userId,
+    required String email,
+    required String displayName,
+    required String preferredCurrency,
+    required String languageCode,
+    required String provider,
+  }) async {
+    try {
+      final profileData = {
+        'id': userId,
+        'email': email,
+        'display_name': displayName,
+        'preferred_currency': preferredCurrency,
+        'language_code': languageCode,
+        'social_provider': provider,
+      };
+
+      // Insert without returning data to avoid RLS SELECT check
+      await _supabaseClient.from(_tableName).insert(profileData);
+
+      // Fetch the created profile separately
+      final response = await _supabaseClient
+          .from(_tableName)
+          .select()
+          .eq('id', userId)
+          .single();
+
+      final createdProfile = UserProfile.fromJson(response);
+      return Right(createdProfile);
+    } on PostgrestException catch (e) {
+      return Left(_mapPostgrestExceptionToFailure(e));
+    } on Object catch (_) {
+      return const Left(GenericUserFailure('Network connection failed'));
+    }
+  }
+
   /// Maps Supabase PostgrestException to domain UserFailure.
   UserFailure _mapPostgrestExceptionToFailure(PostgrestException exception) {
     switch (exception.code) {

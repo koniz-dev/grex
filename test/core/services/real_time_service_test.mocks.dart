@@ -736,6 +736,23 @@ class MockRealtimeChannel extends _i1.Mock implements _i2.RealtimeChannel {
           as _i3.Push);
 
   @override
+  _i6.Future<void> httpSend({
+    required String? event,
+    required Map<String, dynamic>? payload,
+    Duration? timeout,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#httpSend, [], {
+              #event: event,
+              #payload: payload,
+              #timeout: timeout,
+            }),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
   _i6.Future<_i2.ChannelResponse> sendBroadcastMessage({
     required String? event,
     required Map<String, dynamic>? payload,
@@ -2056,6 +2073,48 @@ class MockPostgrestFilterBuilderRealTime extends _i1.Mock
             returnValue: _FakePostgrestFilterBuilder_7<dynamic>(
               this,
               Invocation.method(#match, [query]),
+            ),
+          )
+          as _i2.PostgrestFilterBuilder<dynamic>);
+
+  @override
+  _i2.PostgrestFilterBuilder<dynamic> matchRegex(
+    String? column,
+    String? pattern,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#matchRegex, [column, pattern]),
+            returnValue: _FakePostgrestFilterBuilder_7<dynamic>(
+              this,
+              Invocation.method(#matchRegex, [column, pattern]),
+            ),
+          )
+          as _i2.PostgrestFilterBuilder<dynamic>);
+
+  @override
+  _i2.PostgrestFilterBuilder<dynamic> imatchRegex(
+    String? column,
+    String? pattern,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#imatchRegex, [column, pattern]),
+            returnValue: _FakePostgrestFilterBuilder_7<dynamic>(
+              this,
+              Invocation.method(#imatchRegex, [column, pattern]),
+            ),
+          )
+          as _i2.PostgrestFilterBuilder<dynamic>);
+
+  @override
+  _i2.PostgrestFilterBuilder<dynamic> isDistinct(
+    String? column,
+    Object? value,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#isDistinct, [column, value]),
+            returnValue: _FakePostgrestFilterBuilder_7<dynamic>(
+              this,
+              Invocation.method(#isDistinct, [column, value]),
             ),
           )
           as _i2.PostgrestFilterBuilder<dynamic>);

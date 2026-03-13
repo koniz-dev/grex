@@ -55,6 +55,9 @@ void main() {
         authRepository: mockAuthRepository,
         userRepository: mockUserRepository,
         sessionManager: sessionManager,
+        socialAuthRepository: MockSocialAuthRepository(),
+        deepLinkHandler: MockAuthDeepLinkHandler(),
+        analytics: MockSocialLoginAnalytics(),
       );
 
       profileBloc = ProfileBloc(

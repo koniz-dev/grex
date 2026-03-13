@@ -49,6 +49,9 @@ dependencies:
   # Storage - Secure key-value storage for sensitive data (tokens, passwords)
   flutter_secure_storage: ^9.2.4
 
+  # SVG - Render SVG images for social provider icons
+  flutter_svg: ^2.0.10+1
+
   # Code Generation - Runtime annotations for Freezed immutable classes
   freezed_annotation: ^3.1.0
 
@@ -80,7 +83,11 @@ dependencies:
   shared_preferences: ^2.5.3
 
   # Backend - Supabase client for PostgreSQL database, auth, and real-time
-  supabase_flutter: ^2.9.0
+  # Updated to latest version for OAuth support (Google and Apple sign-in)
+  supabase_flutter: ^2.12.0
+
+  # URL Launcher - Launch URLs in external applications (email, browser, etc.)
+  url_launcher: ^6.3.1
 
   # REMOVED UNUSED DEPENDENCIES:
   # cached_network_image: ^3.4.1 - Not used, can add back when needed for image loading
@@ -156,6 +163,7 @@ flutter:
     - .env.example
     - .env
     - assets/images/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -182,3 +190,22 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+  
+  # Custom fonts for authentication UI
+  fonts:
+    - family: Outfit
+      fonts:
+        - asset: assets/fonts/Outfit/static/Outfit-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Outfit/static/Outfit-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Outfit/static/Outfit-ExtraBold.ttf
+          weight: 800
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/static/Inter_18pt-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter/static/Inter_18pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter/static/Inter_18pt-SemiBold.ttf
+          weight: 600

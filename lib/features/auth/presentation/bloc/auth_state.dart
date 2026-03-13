@@ -141,6 +141,18 @@ class AuthPasswordResetSent extends AuthState {
   String toString() => 'AuthPasswordResetSent(email: $email)';
 }
 
+/// State indicating that password update was successful.
+///
+/// This state provides feedback to the user that their password
+/// was successfully updated and they can now log in with the new password.
+class AuthPasswordUpdated extends AuthState {
+  /// Creates an [AuthPasswordUpdated] state.
+  const AuthPasswordUpdated();
+
+  @override
+  String toString() => 'AuthPasswordUpdated()';
+}
+
 /// State indicating that user registration was successful but email
 /// verification is required.
 ///
@@ -211,4 +223,99 @@ class AuthEmailVerified extends AuthState {
 
   @override
   String toString() => 'AuthEmailVerified(user: ${user.email})';
+}
+
+/// State indicating that social login is in progress.
+///
+/// Contains the provider being used for authentication to show
+/// provider-specific loading indicators and disable appropriate buttons.
+class AuthSocialLoginInProgress extends AuthState {
+  /// Creates an [AuthSocialLoginInProgress] state with the provider.
+  ///
+  /// The [provider] indicates which social provider is being used.
+  const AuthSocialLoginInProgress(this.provider);
+
+  /// The social authentication provider being used
+  final SocialAuthProvider provider;
+
+  @override
+  List<Object?> get props => [provider];
+
+  @override
+  String toString() => 'AuthSocialLoginInProgress(provider: ${provider.name})';
+}
+
+/// State indicating that profile setup is required for a new social user.
+///
+/// This state is emitted when a user successfully authenticates with
+/// a social provider but doesn't have a profile in the database yet.
+/// Contains pre-filled data from the OAuth provider.
+class AuthProfileSetupRequired extends AuthState {
+  /// Creates an [AuthProfileSetupRequired] state with user and provider data.
+  ///
+  /// The [user], [provider], and [email] are required.
+  /// The [displayName] is optional and may be pre-filled from OAuth.
+  const AuthProfileSetupRequired({
+    required this.user,
+    required this.provider,
+    required this.email,
+    this.displayName,
+  });
+
+  /// The authenticated user from social login
+  final User user;
+
+  /// The social provider used for authentication
+  final SocialAuthProvider provider;
+
+  /// The display name from OAuth provider (optional)
+  final String? displayName;
+
+  /// The email address from OAuth provider
+  final String email;
+
+  @override
+  List<Object?> get props => [user, provider, displayName, email];
+
+  @override
+  String toString() =>
+      'AuthProfileSetupRequired('
+      'user: ${user.email}, '
+      'provider: ${provider.name}, '
+      'displayName: $displayName, '
+      'email: $email)';
+}
+
+/// State indicating that account linking is required.
+///
+/// This state is emitted when a social login email matches an existing
+/// user account, prompting the user to confirm linking the accounts.
+class AuthAccountLinkingRequired extends AuthState {
+  /// Creates an [AuthAccountLinkingRequired] state with linking data.
+  ///
+  /// All parameters are required to display the linking confirmation dialog.
+  const AuthAccountLinkingRequired({
+    required this.newUser,
+    required this.existingProfile,
+    required this.provider,
+  });
+
+  /// The new user from social login
+  final User newUser;
+
+  /// The existing user profile with matching email
+  final UserProfile existingProfile;
+
+  /// The social provider used for authentication
+  final SocialAuthProvider provider;
+
+  @override
+  List<Object?> get props => [newUser, existingProfile, provider];
+
+  @override
+  String toString() =>
+      'AuthAccountLinkingRequired('
+      'newUser: ${newUser.email}, '
+      'existingProfile: ${existingProfile.email}, '
+      'provider: ${provider.name})';
 }
