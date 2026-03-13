@@ -11,9 +11,11 @@ void main() {
           // Test various JWT token patterns
           final jwtTokens = [
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwi'
-                    'bmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4' 'fwpMeJf36POk6yJV_adQssw5c',
+                'bmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4'
+                'fwpMeJf36POk6yJV_adQssw5c',
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYWJj'
-                    'ZGVmZ2hpamtsbW5vcCIsImlhdCI6MTYxNjE2MTYxNiwiZXhwIjoxNjE2MTY1MjE2' 'fQ.test_signature_$i',
+                'ZGVmZ2hpamtsbW5vcCIsImlhdCI6MTYxNjE2MTYxNiwiZXhwIjoxNjE2MTY1MjE2'
+                'fQ.test_signature_$i',
             'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.test_payload_$i.'
                 'test_signature_$i',
           ];

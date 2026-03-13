@@ -151,9 +151,11 @@ void main() {
       test('should return false for messages containing JWT tokens', () {
         final jwtTokens = [
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwi'
-                  'bmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4' 'fwpMeJf36POk6yJV_adQssw5c',
+              'bmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4'
+              'fwpMeJf36POk6yJV_adQssw5c',
           'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYWJj'
-                  'ZGVmZ2hpamtsbW5vcCIsImlhdCI6MTYxNjE2MTYxNiwiZXhwIjoxNjE2MTY1MjE2' 'fQ.test_signature',
+              'ZGVmZ2hpamtsbW5vcCIsImlhdCI6MTYxNjE2MTYxNiwiZXhwIjoxNjE2MTY1MjE2'
+              'fQ.test_signature',
         ];
 
         for (final token in jwtTokens) {

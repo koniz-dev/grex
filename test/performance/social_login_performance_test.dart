@@ -36,13 +36,15 @@ void main() {
       when(mockSupabaseClient.auth).thenReturn(mockAuth);
 
       // Setup performance service mock to execute operations directly
-      when(mockPerformanceService.measureOperation<dynamic>(
-        name: anyNamed('name'),
-        operation: anyNamed('operation'),
-        attributes: anyNamed('attributes'),
-      )).thenAnswer((invocation) async {
-        final operation = invocation.namedArguments[#operation] 
-            as Future<dynamic> Function();
+      when(
+        mockPerformanceService.measureOperation<dynamic>(
+          name: anyNamed('name'),
+          operation: anyNamed('operation'),
+          attributes: anyNamed('attributes'),
+        ),
+      ).thenAnswer((invocation) async {
+        final operation =
+            invocation.namedArguments[#operation] as Future<dynamic> Function();
         return operation();
       });
 
@@ -84,20 +86,23 @@ void main() {
         );
       });
 
-      testWidgets('OAuth timeout simulation should complete within 10 seconds', (
-        tester,
-      ) async {
-        // Act & Assert - Simulate timeout scenario
-        final duration = await _measureAsyncOperation(() async {
-          // Simulate timeout delay
-          await Future<void>.delayed(const Duration(milliseconds: 200));
-        });
+      testWidgets(
+        'OAuth timeout simulation should complete within 10 seconds',
+        (
+          tester,
+        ) async {
+          // Act & Assert - Simulate timeout scenario
+          final duration = await _measureAsyncOperation(() async {
+            // Simulate timeout delay
+            await Future<void>.delayed(const Duration(milliseconds: 200));
+          });
 
-        // Should complete within 10 seconds
-        expect(duration.inMilliseconds, lessThan(10000));
+          // Should complete within 10 seconds
+          expect(duration.inMilliseconds, lessThan(10000));
 
-        debugPrint('OAuth timeout simulation: ${duration.inMilliseconds}ms');
-      });
+          debugPrint('OAuth timeout simulation: ${duration.inMilliseconds}ms');
+        },
+      );
 
       testWidgets('Multiple OAuth attempts should not degrade performance', (
         tester,
@@ -468,8 +473,9 @@ void main() {
 
             // Performance degradation should be less than 50% of initial time
             // Handle case where firstTime is 0
-            final maxDegradation =
-                firstTime == 0 ? 50 : (firstTime * 0.5).round();
+            final maxDegradation = firstTime == 0
+                ? 50
+                : (firstTime * 0.5).round();
             expect(degradation, lessThan(maxDegradation));
 
             debugPrint(
@@ -478,8 +484,9 @@ void main() {
             for (var i = 0; i < times.length; i++) {
               debugPrint('  Iteration ${i + 1}: ${times[i]}ms');
             }
-            final degradationPercent =
-                firstTime == 0 ? 0.0 : (degradation / firstTime * 100);
+            final degradationPercent = firstTime == 0
+                ? 0.0
+                : (degradation / firstTime * 100);
             debugPrint(
               '  Degradation: ${degradation}ms '
               '(${degradationPercent.toStringAsFixed(1)}%)',

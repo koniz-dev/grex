@@ -218,12 +218,15 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
   /// Returns the authenticated [supabase.User] or null if timeout occurs.
   Future<supabase.User?> _waitForAuthUserOptimized() async {
     const pollInterval = Duration(milliseconds: 250);
-    final maxAttempts = (_authUserTimeout.inMilliseconds / pollInterval.inMilliseconds).round();
+    final maxAttempts =
+        (_authUserTimeout.inMilliseconds / pollInterval.inMilliseconds).round();
 
     for (var attempt = 0; attempt < maxAttempts; attempt++) {
       final user = _supabaseClient.auth.currentUser;
       if (user != null) {
-        debugPrint('Auth user received after ${attempt * pollInterval.inMilliseconds}ms');
+        debugPrint(
+          'Auth user received after ${attempt * pollInterval.inMilliseconds}ms',
+        );
         return user;
       }
 
@@ -231,7 +234,9 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
       await Future<void>.delayed(pollInterval);
     }
 
-    throw TimeoutException('Authentication timeout after ${_authUserTimeout.inSeconds} seconds');
+    throw TimeoutException(
+      'Authentication timeout after ${_authUserTimeout.inSeconds} seconds',
+    );
   }
 
   /// Legacy method for backward compatibility

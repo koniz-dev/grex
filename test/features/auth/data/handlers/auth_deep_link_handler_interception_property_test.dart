@@ -24,12 +24,15 @@ void main() {
       mockPerformanceService = MockPerformanceService();
 
       // Setup mock performance service to execute operations directly
-      when(mockPerformanceService.measureOperation<void>(
-        name: anyNamed('name'),
-        operation: anyNamed('operation'),
-        attributes: anyNamed('attributes'),
-      )).thenAnswer((invocation) async {
-        final operation = invocation.namedArguments[#operation] as Future<void> Function();
+      when(
+        mockPerformanceService.measureOperation<void>(
+          name: anyNamed('name'),
+          operation: anyNamed('operation'),
+          attributes: anyNamed('attributes'),
+        ),
+      ).thenAnswer((invocation) async {
+        final operation =
+            invocation.namedArguments[#operation] as Future<void> Function();
         return operation();
       });
 
