@@ -2,6 +2,18 @@
 
 Welcome to the comprehensive documentation for the Grex expense splitting application.
 
+## Project Status
+
+**Current Status**: Advanced development stage (98% feature-complete)
+
+- ✅ Backend Schema: Complete and deployed
+- ✅ Authentication: Fully implemented with email/password
+- ✅ Social Login: 98% complete (Google OAuth, Apple Sign In)
+- ✅ Main App Features: Groups, expenses, payments, balances, export
+- ✅ Localization: 4 languages (EN, VI, ES, AR)
+- ✅ Testing: 87 property-based tests with >90% coverage
+- 🔄 Final Testing: Device testing and accessibility validation
+
 ## Documentation Structure
 
 ```

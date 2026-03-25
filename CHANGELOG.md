@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Completed
+- ✅ Backend schema with PostgreSQL, RLS, audit logging, real-time subscriptions
+- ✅ Complete authentication system with email/password
+- ✅ Social login integration (Google OAuth, Apple Sign In) - 98% complete
+- ✅ Main app features: groups, expenses, payments, balances, data export
+- ✅ Localization standardization across 4 languages (EN, VI, ES, AR)
+- ✅ Real-time synchronization with Supabase
+- ✅ Comprehensive testing with 87 property-based tests
+
+### In Progress
+- 🔄 Social login final device testing (Tasks 22-23)
+- 🔄 Production readiness validation
+
 ## [0.0.1] - 2025-12-26
 
 ### Added

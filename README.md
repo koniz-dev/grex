@@ -13,10 +13,10 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 
 ### 🏗️ Architecture & Code Quality
 - ✅ **Clean Architecture** - Separation of concerns with Domain, Data, and Presentation layers
-- ✅ **State Management** - Riverpod for reactive state management
+- ✅ **State Management** - BLoC pattern for reactive state management
 - ✅ **Code Generation** - Freezed for immutable classes and JSON serialization
 - ✅ **Linting** - Very Good Analysis for comprehensive code quality checks
-- ✅ **Testing** - Mocktail for unit testing with comprehensive test coverage
+- ✅ **Testing** - Comprehensive test coverage with 87 property-based tests (100+ iterations each)
 
 ### ⚙️ Configuration & Environment
 - ✅ **Multi-Environment Support** - Development, Staging, Production
@@ -26,9 +26,10 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 - ✅ **Type-Safe Configuration** - Typed getters with fallback chain
 
 ### 🌐 Internationalization
-- ✅ **Multi-Language Support** - Flutter localization with ARB files
-- ✅ **RTL Support** - Right-to-left language support
+- ✅ **Multi-Language Support** - English, Vietnamese, Spanish, Arabic
+- ✅ **RTL Support** - Right-to-left language support for Arabic
 - ✅ **Locale Persistence** - Save and restore user language preference
+- ✅ **Standardized Localization** - Context extension for easy access (`context.l10n`)
 
 ### 🔐 Security & Storage
 - ✅ **Secure Storage** - Flutter Secure Storage for sensitive data
@@ -37,12 +38,21 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 - ✅ **Error Handling** - Comprehensive error handling with custom exceptions
 
 ### 🔐 Authentication & Social Login
-- ✅ **Social Login** - Google OAuth and Apple Sign In integration
+- ✅ **Email/Password Authentication** - Complete auth system with email verification
+- ✅ **Social Login** - Google OAuth and Apple Sign In integration (98% complete)
 - ✅ **Account Linking** - Link social providers to existing accounts
 - ✅ **Profile Setup** - Guided profile completion for new social users
 - ✅ **Deep Link Handling** - OAuth callback processing with performance optimization
 - ✅ **Session Management** - Persistent sessions across app restarts
 - ✅ **Security Compliance** - HTTPS-only, minimal scopes, secure token storage
+
+### 💰 Expense Sharing Features
+- ✅ **Group Management** - Create and manage expense groups with role-based permissions
+- ✅ **Expense Tracking** - Record expenses with 4 split methods (equal, percentage, exact, shares)
+- ✅ **Payment Recording** - Track payments between group members
+- ✅ **Balance Calculation** - Real-time balance calculations with settlement plan generation
+- ✅ **Data Export** - Export group data in CSV/PDF formats
+- ✅ **Search & Filter** - Advanced search and filtering across expenses
 
 ### 🌐 Network Layer
 - ✅ **HTTP Client** - Dio with interceptors support
@@ -81,7 +91,7 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 - ✅ **Migration Guides** - From MVC, GetX, Bloc, and other architectures
 - ✅ **Best Practices** - Code examples and patterns
 - ✅ **API Documentation** - Complete API reference
-- ✅ **Example Features** - 3 complete example features (Auth, Feature Flags, Tasks)
+- ✅ **Example Features** - Complete features demonstrating Clean Architecture (Auth, Groups, Expenses, Balances, etc.)
 
 ### 🧪 Testing
 - ✅ **66 Test Files** - Comprehensive test coverage
@@ -156,10 +166,11 @@ lib/
 │   │       └── widgets/   # Social login buttons, dialogs, error widgets
 │   ├── feature_flags/      # Feature flags feature
 │   │   └── presentation/   # Feature flags UI
-│   └── tasks/              # Tasks feature (CRUD example)
-│       ├── data/          # Data layer
-│       ├── domain/        # Domain layer
-│       └── presentation/  # Presentation layer
+│   ├── groups/             # Group management
+│   ├── expenses/           # Expense tracking
+│   ├── payments/           # Built-in payments tracking
+│   ├── balances/           # Balance calculation engine
+│   └── export/             # Data export utilities
 │
 ├── shared/                  # Shared resources
 │   ├── accessibility/      # Accessibility utilities
@@ -179,6 +190,51 @@ lib/
 - Dart SDK (>=3.0.0)
 - Android Studio / VS Code with Flutter extensions
 - Xcode (for iOS development on macOS)
+
+### Local Development with Supabase
+
+For fully offline development using a local Supabase instance:
+
+1. **Install Supabase CLI**
+   ```bash
+   npm install -g supabase
+   ```
+
+2. **Start local Supabase**
+   ```bash
+   supabase start
+   ```
+   The CLI will print the API URL and anon key once running.
+
+3. **Configure `.env` for local**
+   ```env
+   ENVIRONMENT=development
+   SUPABASE_URL=http://localhost:54321
+   SUPABASE_ANON_KEY=<anon key from supabase start output>
+   ```
+   > The default anon key is already available in `.env.example` under `SUPABASE_LOCAL_ANON_KEY`.
+
+4. **Apply migrations (if any)**
+   ```bash
+   supabase db reset
+   ```
+
+5. **Run the app**
+   ```bash
+   flutter run
+   ```
+
+6. **Stop local Supabase when done**
+   ```bash
+   supabase stop
+   ```
+
+> **Note**: When using Android Emulator, replace `localhost` with `10.0.2.2`:
+> ```env
+> SUPABASE_URL=http://10.0.2.2:54321
+> ```
+
+---
 
 ### Installation
 
@@ -305,9 +361,9 @@ For detailed implementation guide, see [Social Login Developer Guide](docs/socia
    - Initialize Firebase in your app
 4. **Customize the theme** - Edit `lib/shared/theme/app_theme.dart`
 5. **Explore example features** - Check out `lib/features/` for examples:
-   - **Auth** - Authentication flow example
-   - **Feature Flags** - Feature flags UI example
-   - **Tasks** - Complete CRUD example with local storage
+   - **Auth** - Authentication flow with social login
+   - **Groups & Expenses** - Core expense sharing implementation
+   - **Feature Flags** - Conditional UI rendering based on flags
 6. **Add your first feature** - Follow the pattern in example features
 7. **Read the documentation** - Check out `docs/` folder for detailed guides
 
@@ -643,7 +699,12 @@ flutter build web --release
 
 - **[Social Login](docs/social-login-developer-guide.md)** - Complete social login implementation guide
 - **[Feature Flags](docs/features/feature-flags.md)** - Feature flags system documentation
-- **[Tasks Feature](docs/features/tasks.md)** - CRUD example feature documentation
+- **[Expense Sharing Engine]** - Core sharing models
+  - **[Groups](docs/features/groups.md)** - Group management
+  - **[Expenses](docs/features/expenses.md)** - Expense tracking
+  - **[Balances](docs/features/balances.md)** - Real-time calculation engine
+  - **[Payments](docs/features/payments.md)** - P2P payment tracking
+  - **[Export](docs/features/export.md)** - Data export utilities
 - **[Localization](docs/guides/internationalization-guide.md)** - i18n setup and usage
 - **[Logging](docs/guides/README.md)** - Logging system documentation
 - **[Performance](docs/guides/performance/README.md)** - Performance monitoring guides
