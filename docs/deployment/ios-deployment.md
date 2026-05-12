@@ -24,7 +24,10 @@ Complete guide for deploying Grex to Apple App Store.
 4. Select "App" → Continue
 5. Fill in:
    - **Description**: Your app name
-   - **Bundle ID**: `com.example.grex` (must match your app)
+   - **Bundle ID**: use the real identifier you own, NOT the
+     scaffolding placeholder `com.example.grex` (App Store will reject
+     `com.example.*`). See
+     [pre-deployment-checklist.md](./pre-deployment-checklist.md).
 6. Select capabilities (Push Notifications, In-App Purchase, etc.)
 7. Register
 
@@ -35,7 +38,8 @@ Complete guide for deploying Grex to Apple App Store.
 1. Open `ios/Runner.xcworkspace` in Xcode
 2. Select Runner target
 3. General tab → Bundle Identifier
-4. Set to your App ID: `com.example.grex`
+4. Set to your real App ID (the one created in Step 2 above; not the
+   placeholder `com.example.grex`).
 
 ### Configure Signing
 

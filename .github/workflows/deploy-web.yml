@@ -1,8 +1,47 @@
 name: Deploy Web
 
 # ========================================================================
-# Workflow Triggers Configuration
+# PRODUCTION ACTIVATION CHECKLIST
 # ========================================================================
+# This workflow has THREE jobs (Firebase, Netlify, Vercel), each gated by
+# the `platform` input — only one runs per dispatch. Pick the host you
+# actually use and configure secrets for that job; leave the other two
+# untouched.
+#
+# Shared secrets (any platform):
+#   - BASE_URL_STAGING / BASE_URL_PRODUCTION
+#   - SUPABASE_URL_PROD / SUPABASE_ANON_KEY_PROD
+#
+# Firebase-specific secrets:
+#   - FIREBASE_SERVICE_ACCOUNT_KEY      service account JSON
+#   - FIREBASE_PROJECT_ID
+#   External setup: Firebase project + Hosting site; create hosting
+#   targets named after each environment (staging/production).
+#
+# Netlify-specific secrets:
+#   - NETLIFY_AUTH_TOKEN
+#   - NETLIFY_SITE_ID
+#   External setup: Netlify site created; auth token from User Settings.
+#
+# Vercel-specific secrets:
+#   - VERCEL_TOKEN
+#   - VERCEL_ORG_ID
+#   - VERCEL_PROJECT_ID
+#   External setup: Vercel project linked; values from `vercel link`
+#   output or project settings.
+#
+# Activation order (per chosen platform):
+#   1. Replace "Prepare .env from template" with a secrets-driven step
+#      (see FIXME(deploy) note on that step).
+#   2. Uncomment "Build Web" inside the chosen job.
+#   3. Uncomment the platform-specific deploy step.
+#   4. (Optional) Switch trigger to `push: branches: [main]` or
+#      `push: tags: [v*.*.*]`.
+# ========================================================================
+#
+# ------------------------------------------------------------------------
+# Workflow Triggers Configuration
+# ------------------------------------------------------------------------
 # This is a starter template, so triggers are commented out by default.
 # Uncomment and configure according to your deployment strategy:
 #
@@ -18,7 +57,7 @@ name: Deploy Web
 # Option 3: Manual trigger only (workflow_dispatch)
 #   - Keep push triggers commented
 #   - Use GitHub Actions UI to trigger manually
-# ========================================================================
+# ------------------------------------------------------------------------
 on:
   # push:
   #   branches: [ main ]  # Uncomment to deploy on branch push
@@ -60,6 +99,10 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
+      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
+      # this to prod. Before activating the build/upload steps below, swap
+      # this for a step that writes `.env` from GitHub Secrets
+      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
       - name: Prepare .env from template
         run: cp .env.example .env
 
@@ -77,6 +120,8 @@ jobs:
             echo "environment=production" >> $GITHUB_OUTPUT
           fi
 
+      # Builds the web bundle into build/web. Depends on signed `.env`
+      # (FIXME above). Required secrets: BASE_URL_STAGING, BASE_URL_PRODUCTION.
       # - name: Build Web
       #   env:
       #     BASE_URL: ${{ secrets.BASE_URL_PRODUCTION }}
@@ -87,13 +132,16 @@ jobs:
       #     else
       #       BASE_URL="${{ secrets.BASE_URL_PRODUCTION }}"
       #     fi
-          
+
       #     flutter build web \
       #       --release \
       #       --web-renderer canvaskit \
       #       --dart-define=ENVIRONMENT="$ENV" \
       #       --dart-define=BASE_URL="$BASE_URL"
 
+      # Deploys build/web to Firebase Hosting. Required secrets:
+      # FIREBASE_SERVICE_ACCOUNT_KEY, FIREBASE_PROJECT_ID. Confirm a
+      # hosting target matching `target` exists in firebase.json.
       # - name: Setup Firebase
       #   uses: FirebaseExtended/action-hosting-deploy@v0
       #   with:
@@ -118,6 +166,10 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
+      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
+      # this to prod. Before activating the build/upload steps below, swap
+      # this for a step that writes `.env` from GitHub Secrets
+      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
       - name: Prepare .env from template
         run: cp .env.example .env
 
@@ -129,6 +181,8 @@ jobs:
         run: |
           echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
 
+      # Builds the web bundle into build/web. Depends on signed `.env`
+      # (FIXME above). Required secrets: BASE_URL_STAGING, BASE_URL_PRODUCTION.
       # - name: Build Web
       #   env:
       #     BASE_URL: ${{ secrets.BASE_URL_PRODUCTION }}
@@ -139,13 +193,15 @@ jobs:
       #     else
       #       BASE_URL="${{ secrets.BASE_URL_PRODUCTION }}"
       #     fi
-          
+
       #     flutter build web \
       #       --release \
       #       --web-renderer canvaskit \
       #       --dart-define=ENVIRONMENT="$ENV" \
       #       --dart-define=BASE_URL="$BASE_URL"
 
+      # Deploys build/web to Netlify. Required secrets: NETLIFY_AUTH_TOKEN,
+      # NETLIFY_SITE_ID.
       # - name: Deploy to Netlify
       #   uses: nwtgck/actions-netlify@v2.0
       #   with:
@@ -172,6 +228,10 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
+      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
+      # this to prod. Before activating the build/upload steps below, swap
+      # this for a step that writes `.env` from GitHub Secrets
+      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
       - name: Prepare .env from template
         run: cp .env.example .env
 
@@ -183,6 +243,8 @@ jobs:
         run: |
           echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
 
+      # Builds the web bundle into build/web. Depends on signed `.env`
+      # (FIXME above). Required secrets: BASE_URL_STAGING, BASE_URL_PRODUCTION.
       # - name: Build Web
       #   env:
       #     BASE_URL: ${{ secrets.BASE_URL_PRODUCTION }}
@@ -193,13 +255,15 @@ jobs:
       #     else
       #       BASE_URL="${{ secrets.BASE_URL_PRODUCTION }}"
       #     fi
-          
+
       #     flutter build web \
       #       --release \
       #       --web-renderer canvaskit \
       #       --dart-define=ENVIRONMENT="$ENV" \
       #       --dart-define=BASE_URL="$BASE_URL"
 
+      # Deploys build/web to Vercel. Required secrets: VERCEL_TOKEN,
+      # VERCEL_ORG_ID, VERCEL_PROJECT_ID.
       # - name: Deploy to Vercel
       #   uses: amondnet/vercel-action@v25
       #   with:

@@ -1,9 +1,13 @@
 # API Key Security Review Summary
 
+> ⚠️ **Historical review.** This is a point-in-time audit; key handling
+> and rotation policies may have changed since. Re-run the review before
+> relying on its conclusions for a release.
+
 ## Task: 20.4 Review API key security
 
-**Status**: ✅ COMPLETED  
-**Date**: December 11, 2024  
+**Status**: ✅ COMPLETED (at time of review)
+**Date**: December 11, 2024
 **Reviewer**: Automated Security Review System
 
 ## Executive Summary

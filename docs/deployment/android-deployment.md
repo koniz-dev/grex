@@ -74,6 +74,9 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    // ⚠️ `com.example.grex` is the Flutter scaffolding placeholder;
+    // replace with the real package you own before submitting to Play
+    // Store. See ../deployment/pre-deployment-checklist.md.
     namespace = "com.example.grex"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion

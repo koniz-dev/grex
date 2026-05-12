@@ -1,9 +1,13 @@
 # SQL Injection Prevention Review Summary
 
+> ⚠️ **Historical review.** This is a point-in-time audit; the schema
+> and RLS policies may have changed since. Re-run the review before
+> relying on its conclusions for a release.
+
 ## Task: 20.3 Review SQL injection prevention
 
-**Status**: ✅ COMPLETED  
-**Date**: December 11, 2024  
+**Status**: ✅ COMPLETED (at time of review)
+**Date**: December 11, 2024
 **Reviewer**: Automated Security Review System
 
 ## Executive Summary

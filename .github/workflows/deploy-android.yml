@@ -1,8 +1,42 @@
 name: Deploy Android
 
 # ========================================================================
-# Workflow Triggers Configuration
+# PRODUCTION ACTIVATION CHECKLIST
 # ========================================================================
+# Required GitHub Secrets (Settings > Secrets and variables > Actions):
+#   - ANDROID_KEYSTORE_BASE64           upload-keystore.jks, base64-encoded
+#                                       (`base64 -i upload-keystore.jks`)
+#   - ANDROID_KEYSTORE_PASSWORD
+#   - ANDROID_KEY_ALIAS
+#   - ANDROID_KEY_PASSWORD
+#   - BASE_URL_STAGING                  API base URL for staging
+#   - BASE_URL_PRODUCTION               API base URL for production
+#   - SUPABASE_URL_PROD                 Supabase project URL
+#   - SUPABASE_ANON_KEY_PROD            Supabase anon/public key
+#   - GOOGLE_PLAY_SERVICE_ACCOUNT_JSON  Play Console service account JSON
+#
+# External setup before first run:
+#   1. Generate upload keystore: keytool -genkey -v -keystore
+#      upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000.
+#   2. Create app in Google Play Console; enable API access; create a
+#      service account with "Release manager" role.
+#   3. Verify the `packageName` in the "Setup Google Play" step matches
+#      what's in Play Console (currently `com.example.grex`).
+#
+# Activation order (do these in sequence as each piece becomes ready):
+#   1. Replace the "Prepare .env from template" step with a
+#      secrets-driven step (see FIXME(deploy) note on that step).
+#   2. Uncomment "Setup Android keystore".
+#   3. Uncomment "Build App Bundle".
+#   4. Uncomment "Setup Google Play" — OR leave commented and rely on
+#      "Upload artifacts" + manual upload to Play Console.
+#   5. Switch the trigger below from `workflow_dispatch` only to
+#      `push: tags: [ 'v*.*.*' ]` for tag-based releases.
+# ========================================================================
+#
+# ------------------------------------------------------------------------
+# Workflow Triggers Configuration
+# ------------------------------------------------------------------------
 # This is a starter template, so triggers are commented out by default.
 # Uncomment and configure according to your deployment strategy:
 #
@@ -18,7 +52,7 @@ name: Deploy Android
 # Option 3: Manual trigger only (workflow_dispatch)
 #   - Keep push triggers commented
 #   - Use GitHub Actions UI to trigger manually
-# ========================================================================
+# ------------------------------------------------------------------------
 on:
   # push:
   #   tags:
@@ -51,17 +85,24 @@ jobs:
           channel: 'stable'
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
+      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
+      # this to prod. Before activating the build/upload steps below, swap
+      # this for a step that writes `.env` from GitHub Secrets
+      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
       - name: Prepare .env from template
         run: cp .env.example .env
 
       - name: Get dependencies
         run: flutter pub get
 
+      # Decodes the upload keystore and writes android/key.properties so the
+      # release build can sign the bundle. Required secrets: ANDROID_KEYSTORE_*
+      # (see checklist at top of file).
       # - name: Setup Android keystore
       #   env:
       #     KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -84,6 +125,8 @@ jobs:
             echo "environment=production" >> $GITHUB_OUTPUT
           fi
 
+      # Builds the .aab artifact. Depends on "Setup Android keystore" above.
+      # Required secrets: BASE_URL_STAGING, BASE_URL_PRODUCTION.
       # - name: Build App Bundle
       #   env:
       #     BASE_URL: ${{ secrets.BASE_URL_PRODUCTION }}
@@ -101,6 +144,9 @@ jobs:
       #       --dart-define=ENVIRONMENT="$ENV" \
       #       --dart-define=BASE_URL="$BASE_URL"
 
+      # Uploads the .aab to Play Console (internal/production track by env).
+      # Required secret: GOOGLE_PLAY_SERVICE_ACCOUNT_JSON. Confirm packageName
+      # matches Play Console before activating.
       # - name: Setup Google Play
       #   uses: r0adkll/upload-google-play@v1
       #   with:
@@ -113,7 +159,7 @@ jobs:
       #     whatsNewDirectory: fastlane/metadata/android/en-US/changelogs
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: android-bundle
           path: build/app/outputs/bundle/**/*.aab

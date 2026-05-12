@@ -256,15 +256,21 @@ The project includes automated CI/CD workflows for:
 
 ### GitHub Actions Workflows
 
-All workflows are located in `.github/workflows/` and are **disabled by default** (all triggers commented out) to prevent automatic execution in template repositories.
+All workflows are located in `.github/workflows/`.
 
 **Available Workflows:**
-- `ci.yml` - Continuous Integration (format, analyze, test, build)
-- `test.yml` - Dedicated test workflow with coverage
-- `coverage.yml` - Coverage analysis and reporting
-- `deploy-android.yml` - Android deployment to Play Store
-- `deploy-ios.yml` - iOS deployment to App Store
-- `deploy-web.yml` - Web deployment to hosting platforms
+- `test.yml` - Tests + analyze + coverage. **Auto-runs** on push/PR to
+  `main`. The coverage threshold gate is currently commented out (see the
+  "Re-enable coverage thresholds" item in
+  [pre-deployment-checklist.md](./pre-deployment-checklist.md)).
+- `ci.yml` - Manual builds (APK / iOS / web artifacts). Triggers via
+  `workflow_dispatch` only.
+- `deploy-android.yml` - Android deployment to Play Store (template,
+  build/sign/upload steps commented out — see the activation checklist
+  at the top of the file).
+- `deploy-ios.yml` - iOS deployment to App Store (template).
+- `deploy-web.yml` - Web deployment to Firebase / Netlify / Vercel
+  (template, one platform job at a time).
 
 **Configuration:**
 

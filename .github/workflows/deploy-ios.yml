@@ -1,8 +1,41 @@
 name: Deploy iOS
 
 # ========================================================================
-# Workflow Triggers Configuration
+# PRODUCTION ACTIVATION CHECKLIST
 # ========================================================================
+# Required GitHub Secrets:
+#   - APP_STORE_CONNECT_API_KEY_BASE64  AuthKey_<id>.p8, base64-encoded
+#   - APP_STORE_CONNECT_API_KEY_ID
+#   - APP_STORE_CONNECT_ISSUER_ID
+#   - APPLE_CERTIFICATE_BASE64          distribution .p12, base64-encoded
+#   - APPLE_CERTIFICATE_PASSWORD
+#   - APPLE_TEAM_ID
+#   - BASE_URL_STAGING / BASE_URL_PRODUCTION
+#   - SUPABASE_URL_PROD / SUPABASE_ANON_KEY_PROD
+#
+# External setup before first run:
+#   1. Apple Developer Program membership + distribution certificate
+#      exported from Keychain as .p12.
+#   2. App Store Connect API key (Users and Access > Integrations > Keys).
+#   3. App record in App Store Connect with bundle ID matching the iOS
+#      Runner project, and at least one TestFlight build slot.
+#   4. Fastlane setup in `ios/fastlane/` if you want metadata sync
+#      (optional, current Upload step uses `deliver` directly).
+#
+# Activation order:
+#   1. Replace "Prepare .env from template" with a secrets-driven step
+#      (see FIXME(deploy) note on that step).
+#   2. Uncomment "Setup App Store Connect API Key".
+#   3. Uncomment "Setup certificates and profiles".
+#   4. Uncomment "Build IPA".
+#   5. Uncomment "Upload to App Store Connect" (or leave commented and
+#      rely on "Upload artifacts" + manual Transporter upload).
+#   6. Switch trigger to `push: tags: [ 'v*.*.*' ]`.
+# ========================================================================
+#
+# ------------------------------------------------------------------------
+# Workflow Triggers Configuration
+# ------------------------------------------------------------------------
 # This is a starter template, so triggers are commented out by default.
 # Uncomment and configure according to your deployment strategy:
 #
@@ -18,7 +51,7 @@ name: Deploy iOS
 # Option 3: Manual trigger only (workflow_dispatch)
 #   - Keep push triggers commented
 #   - Use GitHub Actions UI to trigger manually
-# ========================================================================
+# ------------------------------------------------------------------------
 on:
   # push:
   #   tags:
@@ -50,6 +83,10 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
+      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
+      # this to prod. Before activating the build/upload steps below, swap
+      # this for a step that writes `.env` from GitHub Secrets
+      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
       - name: Prepare .env from template
         run: cp .env.example .env
 
@@ -75,6 +112,9 @@ jobs:
             echo "environment=production" >> $GITHUB_OUTPUT
           fi
 
+      # Writes the App Store Connect API key file used by `deliver` later.
+      # Required secrets: APP_STORE_CONNECT_API_KEY_BASE64,
+      # APP_STORE_CONNECT_API_KEY_ID, APP_STORE_CONNECT_ISSUER_ID.
       # - name: Setup App Store Connect API Key
       #   env:
       #     APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
@@ -85,6 +125,9 @@ jobs:
       #     echo "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 -d > ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
       #     chmod 600 ~/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
 
+      # Creates a build keychain and imports the distribution certificate
+      # so codesign can sign the IPA. Required secrets:
+      # APPLE_CERTIFICATE_BASE64, APPLE_CERTIFICATE_PASSWORD, APPLE_TEAM_ID.
       # - name: Setup certificates and profiles
       #   env:
       #     APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
@@ -107,6 +150,8 @@ jobs:
       #     # Install fastlane
       #     sudo gem install fastlane
 
+      # Builds the .ipa. Depends on the two setup steps above + signed `.env`
+      # (FIXME below). Required secrets: BASE_URL_STAGING, BASE_URL_PRODUCTION.
       # - name: Build IPA
       #   env:
       #     BASE_URL: ${{ secrets.BASE_URL_PRODUCTION }}
@@ -126,6 +171,8 @@ jobs:
       #       --dart-define=ENVIRONMENT="$ENV" \
       #       --dart-define=BASE_URL="$BASE_URL"
 
+      # Submits the .ipa to App Store Connect via `fastlane deliver`.
+      # Depends on the API key step + Build IPA above.
       # - name: Upload to App Store Connect
       #   env:
       #     APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
@@ -143,7 +190,7 @@ jobs:
       #       --api_issuer ${APP_STORE_CONNECT_ISSUER_ID}
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
           path: build/ios/ipa/*.ipa

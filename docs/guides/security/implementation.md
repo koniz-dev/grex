@@ -517,6 +517,9 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    // ⚠️ `com.example.grex` is the Flutter scaffolding placeholder;
+    // replace before any prod build (see
+    // docs/deployment/pre-deployment-checklist.md).
     namespace = "com.example.grex"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
@@ -596,7 +599,8 @@ flutter {
     @com.google.gson.annotations.SerializedName <fields>;
 }
 
-# Keep your models (adjust package name)
+# Keep your models (adjust to match your real applicationId; see
+# docs/deployment/pre-deployment-checklist.md)
 -keep class com.example.grex.** { *; }
 ```
 

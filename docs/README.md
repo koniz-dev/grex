@@ -4,15 +4,18 @@ Welcome to the comprehensive documentation for the Grex expense splitting applic
 
 ## Project Status
 
-**Current Status**: Advanced development stage (98% feature-complete)
+**Current Status**: Active development, not yet store-submitted.
 
 - ✅ Backend Schema: Complete and deployed
-- ✅ Authentication: Fully implemented with email/password
-- ✅ Social Login: 98% complete (Google OAuth, Apple Sign In)
+- ✅ Authentication: email/password + Google + native Apple Sign-In
 - ✅ Main App Features: Groups, expenses, payments, balances, export
-- ✅ Localization: 4 languages (EN, VI, ES, AR)
-- ✅ Testing: 87 property-based tests with >90% coverage
-- 🔄 Final Testing: Device testing and accessibility validation
+- ✅ Localization: 4 languages (EN, VI, ES, AR) — auth flow fully
+  translated; some Profile / EditProfile pages still pending i18n wiring
+- ✅ Testing: 1250+ tests pass, ~632 skipped (placeholders for future
+  i18n / mock-rewrite work)
+- ❌ Store readiness: package name, Firebase config, signing material,
+  and CI secrets all still need work — see
+  [deployment/pre-deployment-checklist.md](./deployment/pre-deployment-checklist.md)
 
 ## Documentation Structure
 
