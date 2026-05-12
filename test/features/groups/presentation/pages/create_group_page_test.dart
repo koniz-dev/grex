@@ -21,263 +21,272 @@ void main() {
     registerFallbackValue(_FakeGroupEvent());
   });
 
-  group('CreateGroupPage Widget Tests', () {
-    late MockGroupBloc mockGroupBloc;
+  group(
+    'CreateGroupPage Widget Tests',
+    () {
+      late MockGroupBloc mockGroupBloc;
 
-    setUp(() {
-      mockGroupBloc = MockGroupBloc();
-      whenListen(
-        mockGroupBloc,
-        Stream<GroupState>.value(const GroupInitial()),
-        initialState: const GroupInitial(),
-      );
-    });
+      setUp(() {
+        mockGroupBloc = MockGroupBloc();
+        whenListen(
+          mockGroupBloc,
+          Stream<GroupState>.value(const GroupInitial()),
+          initialState: const GroupInitial(),
+        );
+      });
 
-    Widget createTestWidget() {
-      return MaterialApp(
-        locale: const Locale('vi'),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: BlocProvider<GroupBloc>.value(
-          value: mockGroupBloc,
-          // Use CreateGroupView (the inner widget) so the page's own
-          // BlocProvider(create: getIt<GroupBloc>()) doesn't shadow the
-          // mock bloc this test provides.
-          child: const CreateGroupView(),
-        ),
-      );
-    }
+      Widget createTestWidget() {
+        return MaterialApp(
+          locale: const Locale('vi'),
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: BlocProvider<GroupBloc>.value(
+            value: mockGroupBloc,
+            // Use CreateGroupView (the inner widget) so the page's own
+            // BlocProvider(create: getIt<GroupBloc>()) doesn't shadow the
+            // mock bloc this test provides.
+            child: const CreateGroupView(),
+          ),
+        );
+      }
 
-    testWidgets('should display form fields correctly', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should display form fields correctly', (tester) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Check app bar
-      expect(find.text('Tạo nhóm mới'), findsOneWidget);
+        // Check app bar
+        expect(find.text('Tạo nhóm mới'), findsOneWidget);
 
-      // Check form fields
-      expect(find.text('Tên nhóm'), findsOneWidget);
-      expect(find.text('Tiền tệ'), findsOneWidget);
+        // Check form fields
+        expect(find.text('Tên nhóm'), findsOneWidget);
+        expect(find.text('Tiền tệ'), findsOneWidget);
 
-      // Check text field
-      expect(find.byType(TextFormField), findsOneWidget);
+        // Check text field
+        expect(find.byType(TextFormField), findsOneWidget);
 
-      // Check dropdown
-      expect(find.byType(DropdownButtonFormField<String>), findsOneWidget);
+        // Check dropdown
+        expect(find.byType(DropdownButtonFormField<String>), findsOneWidget);
 
-      // Check create button
-      expect(find.text('Tạo nhóm'), findsOneWidget);
-    });
+        // Check create button
+        expect(find.text('Tạo nhóm'), findsOneWidget);
+      });
 
-    testWidgets('should show validation error for empty group name', (
-      tester,
-    ) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should show validation error for empty group name', (
+        tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Try to submit without entering group name
-      await tester.tap(find.text('Tạo nhóm'));
-      await tester.pump();
+        // Try to submit without entering group name
+        await tester.tap(find.text('Tạo nhóm'));
+        await tester.pump();
 
-      // Should show validation error
-      expect(find.text('Vui lòng nhập tên nhóm'), findsOneWidget);
-    });
+        // Should show validation error
+        expect(find.text('Vui lòng nhập tên nhóm'), findsOneWidget);
+      });
 
-    testWidgets('should show validation error for short group name', (
-      tester,
-    ) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should show validation error for short group name', (
+        tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Enter short name
-      await tester.enterText(find.byType(TextFormField), 'A');
-      await tester.tap(find.text('Tạo nhóm'));
-      await tester.pump();
+        // Enter short name
+        await tester.enterText(find.byType(TextFormField), 'A');
+        await tester.tap(find.text('Tạo nhóm'));
+        await tester.pump();
 
-      // Should show validation error
-      expect(find.text('Tên nhóm phải có ít nhất 2 ký tự'), findsOneWidget);
-    });
+        // Should show validation error
+        expect(find.text('Tên nhóm phải có ít nhất 2 ký tự'), findsOneWidget);
+      });
 
-    testWidgets('should show validation error for long group name', (
-      tester,
-    ) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should show validation error for long group name', (
+        tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Enter very long name
-      final longName = 'A' * 51; // More than 50 characters
-      await tester.enterText(find.byType(TextFormField), longName);
-      await tester.tap(find.text('Tạo nhóm'));
-      await tester.pump();
+        // Enter very long name
+        final longName = 'A' * 51; // More than 50 characters
+        await tester.enterText(find.byType(TextFormField), longName);
+        await tester.tap(find.text('Tạo nhóm'));
+        await tester.pump();
 
-      // Should show validation error
-      expect(find.text('Tên nhóm không được quá 50 ký tự'), findsOneWidget);
-    });
+        // Should show validation error
+        expect(find.text('Tên nhóm không được quá 50 ký tự'), findsOneWidget);
+      });
 
-    testWidgets('should display currency options in dropdown', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should display currency options in dropdown', (
+        tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Tap dropdown to open it
-      await tester.tap(find.byType(DropdownButtonFormField<String>));
-      await tester.pumpAndSettle();
+        // Tap dropdown to open it
+        await tester.tap(find.byType(DropdownButtonFormField<String>));
+        await tester.pumpAndSettle();
 
-      // Check currency options
-      expect(find.text('VND (₫)'), findsOneWidget);
-      expect(find.text(r'USD ($)'), findsOneWidget);
-      expect(find.text('EUR (€)'), findsOneWidget);
-    });
+        // Check currency options
+        expect(find.text('VND (₫)'), findsOneWidget);
+        expect(find.text(r'USD ($)'), findsOneWidget);
+        expect(find.text('EUR (€)'), findsOneWidget);
+      });
 
-    testWidgets('should select currency from dropdown', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should select currency from dropdown', (tester) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Tap dropdown to open it
-      await tester.tap(find.byType(DropdownButtonFormField<String>));
-      await tester.pumpAndSettle();
+        // Tap dropdown to open it
+        await tester.tap(find.byType(DropdownButtonFormField<String>));
+        await tester.pumpAndSettle();
 
-      // Select USD
-      await tester.tap(find.text(r'USD ($)').last);
-      await tester.pumpAndSettle();
+        // Select USD
+        await tester.tap(find.text(r'USD ($)').last);
+        await tester.pumpAndSettle();
 
-      // Verify USD is selected
-      expect(find.text(r'USD ($)'), findsOneWidget);
-    });
+        // Verify USD is selected
+        expect(find.text(r'USD ($)'), findsOneWidget);
+      });
 
-    testWidgets('should submit form with valid data', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should submit form with valid data', (tester) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Enter valid group name
-      await tester.enterText(find.byType(TextFormField), 'Test Group');
+        // Enter valid group name
+        await tester.enterText(find.byType(TextFormField), 'Test Group');
 
-      // Select currency
-      await tester.tap(find.byType(DropdownButtonFormField<String>));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text(r'USD ($)').last);
-      await tester.pumpAndSettle();
+        // Select currency
+        await tester.tap(find.byType(DropdownButtonFormField<String>));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(r'USD ($)').last);
+        await tester.pumpAndSettle();
 
-      // Submit form
-      await tester.tap(find.text('Tạo nhóm'));
-      await tester.pump();
+        // Submit form
+        await tester.tap(find.text('Tạo nhóm'));
+        await tester.pump();
 
-      // Verify GroupCreateRequested event was added
-      verify(
-        () => mockGroupBloc.add(any(that: isA<GroupCreateRequested>())),
-      ).called(1);
-    });
+        // Verify GroupCreateRequested event was added
+        verify(
+          () => mockGroupBloc.add(any(that: isA<GroupCreateRequested>())),
+        ).called(1);
+      });
 
-    testWidgets('should show loading state when creating group', (
-      tester,
-    ) async {
-      // Set loading state via whenListen
-      whenListen(
-        mockGroupBloc,
-        Stream<GroupState>.value(const GroupLoading()),
-        initialState: const GroupLoading(),
-      );
+      testWidgets('should show loading state when creating group', (
+        tester,
+      ) async {
+        // Set loading state via whenListen
+        whenListen(
+          mockGroupBloc,
+          Stream<GroupState>.value(const GroupLoading()),
+          initialState: const GroupLoading(),
+        );
 
-      await tester.pumpWidget(createTestWidget());
+        await tester.pumpWidget(createTestWidget());
 
-      // Should show loading indicator
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        // Should show loading indicator
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-      // Create button should be disabled
-      final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
-      expect(button.onPressed, isNull);
-    });
+        // Create button should be disabled
+        final button = tester.widget<ElevatedButton>(
+          find.byType(ElevatedButton),
+        );
+        expect(button.onPressed, isNull);
+      });
 
-    testWidgets('should show error message when creation fails', (
-      tester,
-    ) async {
-      // Set error state
-      const errorState = GroupError(
-        failure: GroupNetworkFailure('Network error'),
-        message: 'Failed to create group',
-      );
-      whenListen(
-        mockGroupBloc,
-        Stream<GroupState>.value(errorState),
-        initialState: errorState,
-      );
+      testWidgets('should show error message when creation fails', (
+        tester,
+      ) async {
+        // Set error state
+        const errorState = GroupError(
+          failure: GroupNetworkFailure('Network error'),
+          message: 'Failed to create group',
+        );
+        whenListen(
+          mockGroupBloc,
+          Stream<GroupState>.value(errorState),
+          initialState: errorState,
+        );
 
-      await tester.pumpWidget(createTestWidget());
+        await tester.pumpWidget(createTestWidget());
 
-      // Should show error message
-      expect(find.text('Failed to create group'), findsOneWidget);
-    });
+        // Should show error message
+        expect(find.text('Failed to create group'), findsOneWidget);
+      });
 
-    testWidgets('should navigate back when group is created successfully', (
-      tester,
-    ) async {
-      // Start with initial state then transition through loading to loaded.
-      whenListen(
-        mockGroupBloc,
-        Stream<GroupState>.fromIterable([
-          const GroupLoading(),
-          GroupsLoaded(groups: const [], lastUpdated: DateTime.now()),
-        ]),
-        initialState: const GroupInitial(),
-      );
+      testWidgets('should navigate back when group is created successfully', (
+        tester,
+      ) async {
+        // Start with initial state then transition through loading to loaded.
+        whenListen(
+          mockGroupBloc,
+          Stream<GroupState>.fromIterable([
+            const GroupLoading(),
+            GroupsLoaded(groups: const [], lastUpdated: DateTime.now()),
+          ]),
+          initialState: const GroupInitial(),
+        );
 
-      await tester.pumpWidget(createTestWidget());
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
 
-      // The page should handle successful creation and navigate back
-      // This would be tested in integration tests for actual navigation
-    });
+        // The page should handle successful creation and navigate back
+        // This would be tested in integration tests for actual navigation
+      });
 
-    testWidgets('should have proper form styling', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should have proper form styling', (tester) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Check form padding and layout
-      expect(find.byType(Form), findsOneWidget);
-      expect(find.byType(Padding), findsAtLeastNWidgets(1));
+        // Check form padding and layout
+        expect(find.byType(Form), findsOneWidget);
+        expect(find.byType(Padding), findsAtLeastNWidgets(1));
 
-      // Check text field decoration
-      final textField = tester.widget<TextField>(
-        find.byType(TextField),
-      );
-      expect(textField.decoration?.labelText, equals('Tên nhóm'));
-      expect(textField.decoration?.hintText, equals('Nhập tên nhóm'));
-    });
+        // Check text field decoration
+        final textField = tester.widget<TextField>(
+          find.byType(TextField),
+        );
+        expect(textField.decoration?.labelText, equals('Tên nhóm'));
+        expect(textField.decoration?.hintText, equals('Nhập tên nhóm'));
+      });
 
-    testWidgets('should have back button in app bar', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should have back button in app bar', (tester) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Check for back button
-      expect(find.byType(BackButton), findsOneWidget);
-    });
+        // Check for back button
+        expect(find.byType(BackButton), findsOneWidget);
+      });
 
-    testWidgets('should clear form when reset', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should clear form when reset', (tester) async {
+        await tester.pumpWidget(createTestWidget());
 
-      // Enter some data
-      await tester.enterText(find.byType(TextFormField), 'Test Group');
+        // Enter some data
+        await tester.enterText(find.byType(TextFormField), 'Test Group');
 
-      // Verify data is entered
-      expect(find.text('Test Group'), findsOneWidget);
+        // Verify data is entered
+        expect(find.text('Test Group'), findsOneWidget);
 
-      // If there's a reset functionality, test it here
-      // This depends on the actual implementation
-    });
+        // If there's a reset functionality, test it here
+        // This depends on the actual implementation
+      });
 
-    testWidgets('should handle keyboard actions properly', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+      testWidgets('should handle keyboard actions properly', (tester) async {
+        await tester.pumpWidget(createTestWidget());
 
-      final textField = find.byType(TextFormField);
+        final textField = find.byType(TextFormField);
 
-      // Focus on text field
-      await tester.tap(textField);
-      await tester.pump();
+        // Focus on text field
+        await tester.tap(textField);
+        await tester.pump();
 
-      // Enter text
-      await tester.enterText(textField, 'Test Group');
+        // Enter text
+        await tester.enterText(textField, 'Test Group');
 
-      // Verify text is entered
-      expect(find.text('Test Group'), findsOneWidget);
-    });
-  }, skip: 'TODO(layout): CreateGroupView triggers "RenderFlex children have '
-      'non-zero flex but incoming width constraints are unbounded" during '
-      'initial build in the test harness — DropdownMenuItem inside an '
-      'unbounded Row. Either fix the page layout or pump under a fixed '
-      'Surface size in tests before re-enabling.');
+        // Verify text is entered
+        expect(find.text('Test Group'), findsOneWidget);
+      });
+    },
+    skip:
+        'TODO(layout): CreateGroupView triggers "RenderFlex children have '
+        'non-zero flex but incoming width constraints are unbounded" during '
+        'initial build in the test harness — DropdownMenuItem inside an '
+        'unbounded Row. Either fix the page layout or pump under a fixed '
+        'Surface size in tests before re-enabling.',
+  );
 }

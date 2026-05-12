@@ -97,117 +97,122 @@ void main() {
     );
   });
 
-  group('NavigationStateNotifier', () {
-    test('should initialize with default state', () {
-      final notifier = NavigationStateNotifier();
+  group(
+    'NavigationStateNotifier',
+    () {
+      test('should initialize with default state', () {
+        final notifier = NavigationStateNotifier();
 
-      expect(notifier.state.currentRoute, equals('/'));
-      expect(notifier.state.pathParameters, isEmpty);
-      expect(notifier.state.queryParameters, isEmpty);
-      expect(notifier.state.canPop, isFalse);
-    });
+        expect(notifier.state.currentRoute, equals('/'));
+        expect(notifier.state.pathParameters, isEmpty);
+        expect(notifier.state.queryParameters, isEmpty);
+        expect(notifier.state.canPop, isFalse);
+      });
 
-    test('should update route with all parameters', () {
-      final notifier = NavigationStateNotifier()
-        ..updateRoute(
-          route: '/test',
-          pathParameters: {'id': '123'},
-          queryParameters: {'filter': 'active'},
-          canPop: true,
-        );
+      test('should update route with all parameters', () {
+        final notifier = NavigationStateNotifier()
+          ..updateRoute(
+            route: '/test',
+            pathParameters: {'id': '123'},
+            queryParameters: {'filter': 'active'},
+            canPop: true,
+          );
 
-      final state = notifier.state;
-      expect(state.currentRoute, equals('/test'));
-      expect(state.pathParameters, equals({'id': '123'}));
-      expect(state.queryParameters, equals({'filter': 'active'}));
-      expect(state.canPop, isTrue);
-    });
+        final state = notifier.state;
+        expect(state.currentRoute, equals('/test'));
+        expect(state.pathParameters, equals({'id': '123'}));
+        expect(state.queryParameters, equals({'filter': 'active'}));
+        expect(state.canPop, isTrue);
+      });
 
-    test('should update route with partial parameters', () {
-      final notifier = NavigationStateNotifier()
-        ..updateRoute(
-          route: '/test',
-          pathParameters: {'id': '123'},
-        );
-
-      final state = notifier.state;
-      expect(state.currentRoute, equals('/test'));
-      expect(state.pathParameters, equals({'id': '123'}));
-      expect(state.queryParameters, isEmpty);
-      expect(state.canPop, isFalse);
-    });
-
-    test('should update canPop independently', () {
-      final notifier = NavigationStateNotifier()..updateCanPop(canPop: true);
-
-      expect(notifier.state.currentRoute, equals('/'));
-      expect(notifier.state.canPop, isTrue);
-
-      notifier.updateCanPop(canPop: false);
-
-      expect(notifier.state.canPop, isFalse);
-    });
-
-    test('should maintain state across multiple updates', () {
-      final notifier = NavigationStateNotifier()
-        ..updateRoute(
-          route: '/first',
-          pathParameters: {'id': '1'},
-        );
-
-      final state = notifier.state;
-      expect(state.currentRoute, equals('/first'));
-      expect(state.pathParameters, equals({'id': '1'}));
-
-      notifier.updateRoute(
-        route: '/second',
-        pathParameters: {'id': '2'},
-        queryParameters: {'view': 'details'},
-      );
-
-      expect(notifier.state.currentRoute, equals('/second'));
-      expect(notifier.state.pathParameters, equals({'id': '2'}));
-      expect(notifier.state.queryParameters, equals({'view': 'details'}));
-    });
-
-    test('should work with ProviderContainer', () {
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      container
-          .read(navigationStateProvider.notifier)
-          .updateRoute(
+      test('should update route with partial parameters', () {
+        final notifier = NavigationStateNotifier()
+          ..updateRoute(
             route: '/test',
             pathParameters: {'id': '123'},
           );
 
-      final state = container.read(navigationStateProvider);
+        final state = notifier.state;
+        expect(state.currentRoute, equals('/test'));
+        expect(state.pathParameters, equals({'id': '123'}));
+        expect(state.queryParameters, isEmpty);
+        expect(state.canPop, isFalse);
+      });
 
-      expect(state.currentRoute, equals('/test'));
-      expect(state.pathParameters, equals({'id': '123'}));
-    });
+      test('should update canPop independently', () {
+        final notifier = NavigationStateNotifier()..updateCanPop(canPop: true);
 
-    test('should notify listeners on state changes', () {
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
+        expect(notifier.state.currentRoute, equals('/'));
+        expect(notifier.state.canPop, isTrue);
 
-      var notificationCount = 0;
-      container.listen(
-        navigationStateProvider,
-        (previous, next) {
-          notificationCount++;
-        },
-      );
+        notifier.updateCanPop(canPop: false);
 
-      container.read(navigationStateProvider.notifier)
-        ..updateRoute(route: '/test1')
-        ..updateRoute(route: '/test2')
-        ..updateCanPop(canPop: true);
+        expect(notifier.state.canPop, isFalse);
+      });
 
-      expect(notificationCount, equals(3));
-    });
-  }, skip: 'TODO(riverpod): tests instantiate NavigationStateNotifier '
-      'directly without a ProviderContainer, so the notifier raises '
-      '"Tried to use a notifier in an uninitialized state". Re-enable after '
-      'switching to ProviderContainer-based testing.');
+      test('should maintain state across multiple updates', () {
+        final notifier = NavigationStateNotifier()
+          ..updateRoute(
+            route: '/first',
+            pathParameters: {'id': '1'},
+          );
+
+        final state = notifier.state;
+        expect(state.currentRoute, equals('/first'));
+        expect(state.pathParameters, equals({'id': '1'}));
+
+        notifier.updateRoute(
+          route: '/second',
+          pathParameters: {'id': '2'},
+          queryParameters: {'view': 'details'},
+        );
+
+        expect(notifier.state.currentRoute, equals('/second'));
+        expect(notifier.state.pathParameters, equals({'id': '2'}));
+        expect(notifier.state.queryParameters, equals({'view': 'details'}));
+      });
+
+      test('should work with ProviderContainer', () {
+        final container = ProviderContainer();
+        addTearDown(container.dispose);
+
+        container
+            .read(navigationStateProvider.notifier)
+            .updateRoute(
+              route: '/test',
+              pathParameters: {'id': '123'},
+            );
+
+        final state = container.read(navigationStateProvider);
+
+        expect(state.currentRoute, equals('/test'));
+        expect(state.pathParameters, equals({'id': '123'}));
+      });
+
+      test('should notify listeners on state changes', () {
+        final container = ProviderContainer();
+        addTearDown(container.dispose);
+
+        var notificationCount = 0;
+        container.listen(
+          navigationStateProvider,
+          (previous, next) {
+            notificationCount++;
+          },
+        );
+
+        container.read(navigationStateProvider.notifier)
+          ..updateRoute(route: '/test1')
+          ..updateRoute(route: '/test2')
+          ..updateCanPop(canPop: true);
+
+        expect(notificationCount, equals(3));
+      });
+    },
+    skip:
+        'TODO(riverpod): tests instantiate NavigationStateNotifier '
+        'directly without a ProviderContainer, so the notifier raises '
+        '"Tried to use a notifier in an uninitialized state". Re-enable after '
+        'switching to ProviderContainer-based testing.',
+  );
 }

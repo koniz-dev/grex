@@ -64,7 +64,8 @@ class SupabaseAuthRepository implements AuthRepository {
         password: password,
         data: {
           'display_name': displayName ?? email.split('@').first,
-          'preferred_currency': preferredCurrency ?? LocaleDefaults.currencyCode,
+          'preferred_currency':
+              preferredCurrency ?? LocaleDefaults.currencyCode,
           'preferred_language': languageCode ?? LocaleDefaults.languageCode,
         },
         emailRedirectTo: AppConstants.authEmailConfirmRedirectUrl,

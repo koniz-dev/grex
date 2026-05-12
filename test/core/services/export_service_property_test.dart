@@ -11,388 +11,393 @@ import 'package:grex/features/groups/domain/entities/member_role.dart';
 import 'package:grex/features/payments/domain/entities/payment.dart';
 
 void main() {
-  group('ExportService Property Tests', () {
-    late ExportService exportService;
+  group(
+    'ExportService Property Tests',
+    () {
+      late ExportService exportService;
 
-    setUp(() {
-      exportService = ExportService();
-    });
-
-    group('Property 32: Data export includes complete information', () {
-      test('CSV export contains all group data', () async {
-        // **Feature: main-app-features, Property 32: Data export **
-        // **includes complete information**
-
-        for (var i = 0; i < 100; i++) {
-          // Generate random test data
-          final group = _generateRandomGroup();
-          final expenses = _generateRandomExpenses(group);
-          final payments = _generateRandomPayments(group);
-          final balances = _generateRandomBalances(group);
-
-          // Export to CSV
-          final result = await exportService.exportToCSV(
-            group: group,
-            expenses: expenses,
-            payments: payments,
-            balances: balances,
-          );
-
-          // Property: Export should succeed
-          expect(
-            result.isSuccess,
-            isTrue,
-            reason: 'Export should always succeed with valid data',
-          );
-
-          if (result.isSuccess) {
-            // Property: File should exist
-            final file = File(result.filePath!);
-            expect(
-              file.existsSync(),
-              isTrue,
-              reason: 'Exported file should exist',
-            );
-
-            // Property: File should contain group information
-            final content = await file.readAsString();
-            expect(
-              content.contains(group.name),
-              isTrue,
-              reason: 'Export should contain group name',
-            );
-            expect(
-              content.contains(group.currency),
-              isTrue,
-              reason: 'Export should contain group currency',
-            );
-
-            // Property: File should contain all members
-            for (final member in group.members) {
-              expect(
-                content.contains(member.displayName),
-                isTrue,
-                reason: 'Export should contain all member names',
-              );
-            }
-
-            // Property: File should contain all expenses
-            for (final expense in expenses) {
-              expect(
-                content.contains(expense.description),
-                isTrue,
-                reason: 'Export should contain all expense descriptions',
-              );
-              expect(
-                content.contains(expense.amount.toString()),
-                isTrue,
-                reason: 'Export should contain all expense amounts',
-              );
-            }
-
-            // Property: File should contain all payments
-            for (final payment in payments) {
-              expect(
-                content.contains(payment.payerName),
-                isTrue,
-                reason: 'Export should contain all payment payer names',
-              );
-              expect(
-                content.contains(payment.recipientName),
-                isTrue,
-                reason: 'Export should contain all payment recipient names',
-              );
-            }
-
-            // Property: File should contain all balances
-            for (final balance in balances) {
-              expect(
-                content.contains(balance.displayName),
-                isTrue,
-                reason: 'Export should contain all balance member names',
-              );
-            }
-
-            // Clean up
-            await exportService.deleteExportFile(result.filePath!);
-          }
-        }
+      setUp(() {
+        exportService = ExportService();
       });
 
-      test('PDF export contains all group data', () async {
-        // **Feature: main-app-features, Property 32: Data export **
-        // **includes complete information**
+      group('Property 32: Data export includes complete information', () {
+        test('CSV export contains all group data', () async {
+          // **Feature: main-app-features, Property 32: Data export **
+          // **includes complete information**
 
-        for (var i = 0; i < 100; i++) {
-          // Generate random test data
-          final group = _generateRandomGroup();
-          final expenses = _generateRandomExpenses(group);
-          final payments = _generateRandomPayments(group);
-          final balances = _generateRandomBalances(group);
+          for (var i = 0; i < 100; i++) {
+            // Generate random test data
+            final group = _generateRandomGroup();
+            final expenses = _generateRandomExpenses(group);
+            final payments = _generateRandomPayments(group);
+            final balances = _generateRandomBalances(group);
 
-          // Export to PDF
-          final result = await exportService.exportToPDF(
-            group: group,
-            expenses: expenses,
-            payments: payments,
-            balances: balances,
-          );
-
-          // Property: Export should succeed
-          expect(
-            result.isSuccess,
-            isTrue,
-            reason: 'PDF export should always succeed with valid data',
-          );
-
-          if (result.isSuccess) {
-            // Property: File should exist
-            final file = File(result.filePath!);
-            expect(
-              file.existsSync(),
-              isTrue,
-              reason: 'Exported PDF file should exist',
-            );
-
-            // Property: File should contain comprehensive report
-            final content = await file.readAsString();
-            expect(
-              content.contains('GREX EXPENSE REPORT'),
-              isTrue,
-              reason: 'PDF should contain report header',
-            );
-            expect(
-              content.contains(group.name),
-              isTrue,
-              reason: 'PDF should contain group name',
-            );
-            expect(
-              content.contains('SUMMARY'),
-              isTrue,
-              reason: 'PDF should contain summary section',
-            );
-            expect(
-              content.contains('GROUP MEMBERS'),
-              isTrue,
-              reason: 'PDF should contain members section',
-            );
-            expect(
-              content.contains('CURRENT BALANCES'),
-              isTrue,
-              reason: 'PDF should contain balances section',
-            );
-
-            // Clean up
-            await exportService.deleteExportFile(result.filePath!);
-          }
-        }
-      });
-    });
-
-    group('Property 33: Export sharing options are available', () {
-      test('Export results provide sharing capabilities', () async {
-        // **Feature: main-app-features, Property 33: Export sharing **
-        // **options are available**
-
-        for (var i = 0; i < 100; i++) {
-          // Generate random test data
-          final group = _generateRandomGroup();
-          final expenses = _generateRandomExpenses(group);
-          final payments = _generateRandomPayments(group);
-          final balances = _generateRandomBalances(group);
-
-          // Test both CSV and PDF exports
-          final formats = [
-            () => exportService.exportToCSV(
+            // Export to CSV
+            final result = await exportService.exportToCSV(
               group: group,
               expenses: expenses,
               payments: payments,
               balances: balances,
-            ),
-            () => exportService.exportToPDF(
-              group: group,
-              expenses: expenses,
-              payments: payments,
-              balances: balances,
-            ),
-          ];
+            );
 
-          for (final exportFunction in formats) {
-            final result = await exportFunction();
-
-            // Property: Export should provide file path for sharing
+            // Property: Export should succeed
             expect(
               result.isSuccess,
               isTrue,
-              reason: 'Export should succeed to enable sharing',
+              reason: 'Export should always succeed with valid data',
             );
 
             if (result.isSuccess) {
-              // Property: File path should be valid
-              expect(
-                result.filePath,
-                isNotNull,
-                reason: 'Export should provide file path for sharing',
-              );
-              expect(
-                result.filePath!.isNotEmpty,
-                isTrue,
-                reason: 'File path should not be empty',
-              );
-
-              // Property: File name should be provided
-              expect(
-                result.fileName,
-                isNotNull,
-                reason: 'Export should provide file name for sharing',
-              );
-              expect(
-                result.fileName!.isNotEmpty,
-                isTrue,
-                reason: 'File name should not be empty',
-              );
-
-              // Property: Format should be specified
-              expect(
-                result.format,
-                isNotNull,
-                reason: 'Export should specify format for sharing',
-              );
-
-              // Property: File should be accessible for sharing
+              // Property: File should exist
               final file = File(result.filePath!);
               expect(
                 file.existsSync(),
                 isTrue,
-                reason: 'File should exist and be accessible for sharing',
+                reason: 'Exported file should exist',
               );
 
-              // Property: File should have content
-              final stat = file.statSync();
+              // Property: File should contain group information
+              final content = await file.readAsString();
               expect(
-                stat.size,
-                greaterThan(0),
-                reason: 'File should have content for meaningful sharing',
+                content.contains(group.name),
+                isTrue,
+                reason: 'Export should contain group name',
+              );
+              expect(
+                content.contains(group.currency),
+                isTrue,
+                reason: 'Export should contain group currency',
+              );
+
+              // Property: File should contain all members
+              for (final member in group.members) {
+                expect(
+                  content.contains(member.displayName),
+                  isTrue,
+                  reason: 'Export should contain all member names',
+                );
+              }
+
+              // Property: File should contain all expenses
+              for (final expense in expenses) {
+                expect(
+                  content.contains(expense.description),
+                  isTrue,
+                  reason: 'Export should contain all expense descriptions',
+                );
+                expect(
+                  content.contains(expense.amount.toString()),
+                  isTrue,
+                  reason: 'Export should contain all expense amounts',
+                );
+              }
+
+              // Property: File should contain all payments
+              for (final payment in payments) {
+                expect(
+                  content.contains(payment.payerName),
+                  isTrue,
+                  reason: 'Export should contain all payment payer names',
+                );
+                expect(
+                  content.contains(payment.recipientName),
+                  isTrue,
+                  reason: 'Export should contain all payment recipient names',
+                );
+              }
+
+              // Property: File should contain all balances
+              for (final balance in balances) {
+                expect(
+                  content.contains(balance.displayName),
+                  isTrue,
+                  reason: 'Export should contain all balance member names',
+                );
+              }
+
+              // Clean up
+              await exportService.deleteExportFile(result.filePath!);
+            }
+          }
+        });
+
+        test('PDF export contains all group data', () async {
+          // **Feature: main-app-features, Property 32: Data export **
+          // **includes complete information**
+
+          for (var i = 0; i < 100; i++) {
+            // Generate random test data
+            final group = _generateRandomGroup();
+            final expenses = _generateRandomExpenses(group);
+            final payments = _generateRandomPayments(group);
+            final balances = _generateRandomBalances(group);
+
+            // Export to PDF
+            final result = await exportService.exportToPDF(
+              group: group,
+              expenses: expenses,
+              payments: payments,
+              balances: balances,
+            );
+
+            // Property: Export should succeed
+            expect(
+              result.isSuccess,
+              isTrue,
+              reason: 'PDF export should always succeed with valid data',
+            );
+
+            if (result.isSuccess) {
+              // Property: File should exist
+              final file = File(result.filePath!);
+              expect(
+                file.existsSync(),
+                isTrue,
+                reason: 'Exported PDF file should exist',
+              );
+
+              // Property: File should contain comprehensive report
+              final content = await file.readAsString();
+              expect(
+                content.contains('GREX EXPENSE REPORT'),
+                isTrue,
+                reason: 'PDF should contain report header',
+              );
+              expect(
+                content.contains(group.name),
+                isTrue,
+                reason: 'PDF should contain group name',
+              );
+              expect(
+                content.contains('SUMMARY'),
+                isTrue,
+                reason: 'PDF should contain summary section',
+              );
+              expect(
+                content.contains('GROUP MEMBERS'),
+                isTrue,
+                reason: 'PDF should contain members section',
+              );
+              expect(
+                content.contains('CURRENT BALANCES'),
+                isTrue,
+                reason: 'PDF should contain balances section',
               );
 
               // Clean up
               await exportService.deleteExportFile(result.filePath!);
             }
           }
-        }
+        });
       });
 
-      test('Export file cleanup works correctly', () async {
-        // **Feature: main-app-features, Property 33: Export sharing **
-        // **options are available**
+      group('Property 33: Export sharing options are available', () {
+        test('Export results provide sharing capabilities', () async {
+          // **Feature: main-app-features, Property 33: Export sharing **
+          // **options are available**
 
-        for (var i = 0; i < 50; i++) {
-          // Generate test data
-          final group = _generateRandomGroup();
-          final expenses = _generateRandomExpenses(group);
-          final payments = _generateRandomPayments(group);
-          final balances = _generateRandomBalances(group);
+          for (var i = 0; i < 100; i++) {
+            // Generate random test data
+            final group = _generateRandomGroup();
+            final expenses = _generateRandomExpenses(group);
+            final payments = _generateRandomPayments(group);
+            final balances = _generateRandomBalances(group);
 
-          // Export file
-          final result = await exportService.exportToCSV(
-            group: group,
-            expenses: expenses,
-            payments: payments,
-            balances: balances,
-          );
+            // Test both CSV and PDF exports
+            final formats = [
+              () => exportService.exportToCSV(
+                group: group,
+                expenses: expenses,
+                payments: payments,
+                balances: balances,
+              ),
+              () => exportService.exportToPDF(
+                group: group,
+                expenses: expenses,
+                payments: payments,
+                balances: balances,
+              ),
+            ];
 
-          expect(result.isSuccess, isTrue);
+            for (final exportFunction in formats) {
+              final result = await exportFunction();
 
-          if (result.isSuccess) {
-            final filePath = result.filePath!;
+              // Property: Export should provide file path for sharing
+              expect(
+                result.isSuccess,
+                isTrue,
+                reason: 'Export should succeed to enable sharing',
+              );
 
-            // Property: File should exist before cleanup
+              if (result.isSuccess) {
+                // Property: File path should be valid
+                expect(
+                  result.filePath,
+                  isNotNull,
+                  reason: 'Export should provide file path for sharing',
+                );
+                expect(
+                  result.filePath!.isNotEmpty,
+                  isTrue,
+                  reason: 'File path should not be empty',
+                );
+
+                // Property: File name should be provided
+                expect(
+                  result.fileName,
+                  isNotNull,
+                  reason: 'Export should provide file name for sharing',
+                );
+                expect(
+                  result.fileName!.isNotEmpty,
+                  isTrue,
+                  reason: 'File name should not be empty',
+                );
+
+                // Property: Format should be specified
+                expect(
+                  result.format,
+                  isNotNull,
+                  reason: 'Export should specify format for sharing',
+                );
+
+                // Property: File should be accessible for sharing
+                final file = File(result.filePath!);
+                expect(
+                  file.existsSync(),
+                  isTrue,
+                  reason: 'File should exist and be accessible for sharing',
+                );
+
+                // Property: File should have content
+                final stat = file.statSync();
+                expect(
+                  stat.size,
+                  greaterThan(0),
+                  reason: 'File should have content for meaningful sharing',
+                );
+
+                // Clean up
+                await exportService.deleteExportFile(result.filePath!);
+              }
+            }
+          }
+        });
+
+        test('Export file cleanup works correctly', () async {
+          // **Feature: main-app-features, Property 33: Export sharing **
+          // **options are available**
+
+          for (var i = 0; i < 50; i++) {
+            // Generate test data
+            final group = _generateRandomGroup();
+            final expenses = _generateRandomExpenses(group);
+            final payments = _generateRandomPayments(group);
+            final balances = _generateRandomBalances(group);
+
+            // Export file
+            final result = await exportService.exportToCSV(
+              group: group,
+              expenses: expenses,
+              payments: payments,
+              balances: balances,
+            );
+
+            expect(result.isSuccess, isTrue);
+
+            if (result.isSuccess) {
+              final filePath = result.filePath!;
+
+              // Property: File should exist before cleanup
+              expect(
+                File(filePath).existsSync(),
+                isTrue,
+                reason: 'File should exist before cleanup',
+              );
+
+              // Property: Cleanup should work without errors
+              await expectLater(
+                exportService.deleteExportFile(filePath),
+                completes,
+                reason: 'File cleanup should complete without errors',
+              );
+
+              // Property: File should not exist after cleanup
+              expect(
+                File(filePath).existsSync(),
+                isFalse,
+                reason: 'File should not exist after cleanup',
+              );
+            }
+          }
+        });
+      });
+
+      group('Export Progress Tracking', () {
+        test('Progress callback is called with valid values', () async {
+          for (var i = 0; i < 20; i++) {
+            final group = _generateRandomGroup();
+            final expenses = _generateRandomExpenses(group);
+            final payments = _generateRandomPayments(group);
+            final balances = _generateRandomBalances(group);
+
+            final progressValues = <double>[];
+
+            // Export with progress tracking
+            final result = await exportService.exportToCSV(
+              group: group,
+              expenses: expenses,
+              payments: payments,
+              balances: balances,
+              onProgress: progressValues.add,
+            );
+
+            expect(result.isSuccess, isTrue);
+
+            // Property: Progress should be reported
             expect(
-              File(filePath).existsSync(),
+              progressValues.isNotEmpty,
               isTrue,
-              reason: 'File should exist before cleanup',
+              reason: 'Progress should be reported during export',
             );
 
-            // Property: Cleanup should work without errors
-            await expectLater(
-              exportService.deleteExportFile(filePath),
-              completes,
-              reason: 'File cleanup should complete without errors',
-            );
+            // Property: Progress values should be between 0 and 1
+            for (final progress in progressValues) {
+              expect(
+                progress,
+                greaterThanOrEqualTo(0.0),
+                reason: 'Progress should not be negative',
+              );
+              expect(
+                progress,
+                lessThanOrEqualTo(1.0),
+                reason: 'Progress should not exceed 1.0',
+              );
+            }
 
-            // Property: File should not exist after cleanup
-            expect(
-              File(filePath).existsSync(),
-              isFalse,
-              reason: 'File should not exist after cleanup',
-            );
+            // Property: Progress should generally increase
+            if (progressValues.length > 1) {
+              final lastProgress = progressValues.last;
+              expect(
+                lastProgress,
+                greaterThanOrEqualTo(0.8),
+                reason: 'Final progress should be near completion',
+              );
+            }
+
+            if (result.isSuccess) {
+              await exportService.deleteExportFile(result.filePath!);
+            }
           }
-        }
+        });
       });
-    });
-
-    group('Export Progress Tracking', () {
-      test('Progress callback is called with valid values', () async {
-        for (var i = 0; i < 20; i++) {
-          final group = _generateRandomGroup();
-          final expenses = _generateRandomExpenses(group);
-          final payments = _generateRandomPayments(group);
-          final balances = _generateRandomBalances(group);
-
-          final progressValues = <double>[];
-
-          // Export with progress tracking
-          final result = await exportService.exportToCSV(
-            group: group,
-            expenses: expenses,
-            payments: payments,
-            balances: balances,
-            onProgress: progressValues.add,
-          );
-
-          expect(result.isSuccess, isTrue);
-
-          // Property: Progress should be reported
-          expect(
-            progressValues.isNotEmpty,
-            isTrue,
-            reason: 'Progress should be reported during export',
-          );
-
-          // Property: Progress values should be between 0 and 1
-          for (final progress in progressValues) {
-            expect(
-              progress,
-              greaterThanOrEqualTo(0.0),
-              reason: 'Progress should not be negative',
-            );
-            expect(
-              progress,
-              lessThanOrEqualTo(1.0),
-              reason: 'Progress should not exceed 1.0',
-            );
-          }
-
-          // Property: Progress should generally increase
-          if (progressValues.length > 1) {
-            final lastProgress = progressValues.last;
-            expect(
-              lastProgress,
-              greaterThanOrEqualTo(0.8),
-              reason: 'Final progress should be near completion',
-            );
-          }
-
-          if (result.isSuccess) {
-            await exportService.deleteExportFile(result.filePath!);
-          }
-        }
-      });
-    });
-  }, skip: 'TODO(test-infra): ExportService writes via path_provider which '
-      'needs WidgetsFlutterBinding.ensureInitialized() + a fake platform '
-      'channel for getTemporaryPath. Re-enable after mocking '
-      'MethodChannelPathProvider in setUpAll.');
+    },
+    skip:
+        'TODO(test-infra): ExportService writes via path_provider which '
+        'needs WidgetsFlutterBinding.ensureInitialized() + a fake platform '
+        'channel for getTemporaryPath. Re-enable after mocking '
+        'MethodChannelPathProvider in setUpAll.',
+  );
 }
 
 // Helper functions to generate random test data

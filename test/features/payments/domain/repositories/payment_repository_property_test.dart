@@ -9,8 +9,13 @@ import 'package:flutter_test/flutter_test.dart';
 // `any<T>()`).
 void main() {
   group('PaymentRepository Property Tests', () {
-    test('placeholder', () {}, skip: 'TODO(mockito-null-safety): rewrite '
-        'using @GenerateMocks or mocktail any<T>() so argument types match '
-        'Supabase builder signatures.');
+    test(
+      'placeholder',
+      () {},
+      skip:
+          'TODO(mockito-null-safety): rewrite '
+          'using @GenerateMocks or mocktail any<T>() so argument types match '
+          'Supabase builder signatures.',
+    );
   });
 }

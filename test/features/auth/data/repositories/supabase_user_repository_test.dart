@@ -53,8 +53,9 @@ class _MockPostgrestFilterBuilder<T> extends Mock
       );
     }
     if (transformMembers.contains(invocation.memberName)) {
-      final fake =
-          _FakePostgrestTransformBuilder<List<Map<String, dynamic>>>(const []);
+      final fake = _FakePostgrestTransformBuilder<List<Map<String, dynamic>>>(
+        const [],
+      );
       return super.noSuchMethod(
         invocation,
         returnValue: fake,
@@ -99,8 +100,7 @@ class _MockPostgrestTransformBuilder<T> extends Mock
     // PostgrestMap?). Provide a fake so unstubbed calls don't crash. Tests
     // that care about the return value will stub these explicitly.
     if (invocation.memberName == #single) {
-      final fake =
-          _FakePostgrestTransformBuilder<PostgrestMap>(const {});
+      final fake = _FakePostgrestTransformBuilder<PostgrestMap>(const {});
       return super.noSuchMethod(
         invocation,
         returnValue: fake,
@@ -108,8 +108,7 @@ class _MockPostgrestTransformBuilder<T> extends Mock
       );
     }
     if (invocation.memberName == #maybeSingle) {
-      final fake =
-          _FakePostgrestTransformBuilder<PostgrestMap?>(null);
+      final fake = _FakePostgrestTransformBuilder<PostgrestMap?>(null);
       return super.noSuchMethod(
         invocation,
         returnValue: fake,
@@ -379,7 +378,9 @@ void main() {
           'updated_at': testProfile.updatedAt.toIso8601String(),
         };
 
-        when(mockQueryBuilder.select()).thenAnswer((_) => mockSelectFilterBuilder);
+        when(
+          mockQueryBuilder.select(),
+        ).thenAnswer((_) => mockSelectFilterBuilder);
         when(
           mockSelectFilterBuilder.eq('id', testProfile.id),
         ).thenAnswer((_) => mockSelectFilterBuilder);
@@ -406,7 +407,9 @@ void main() {
 
       test('should handle user not found', () async {
         // Arrange
-        when(mockQueryBuilder.select()).thenAnswer((_) => mockSelectFilterBuilder);
+        when(
+          mockQueryBuilder.select(),
+        ).thenAnswer((_) => mockSelectFilterBuilder);
         when(
           mockSelectFilterBuilder.eq('id', 'nonexistent'),
         ).thenAnswer((_) => mockSelectFilterBuilder);
@@ -438,66 +441,74 @@ void main() {
       // the chainable mock-builder pattern below is brittle and obscures the
       // actual behaviour — keep test skipped until rewritten as an
       // integration-level test against a real Supabase fixture.
-      test('should successfully create user profile', () async {
-        // Arrange
-        final newProfile = UserProfile(
-          id: 'new-user-123',
-          email: 'newuser@example.com',
-          displayName: 'New User',
-          preferredCurrency: 'VND',
-          languageCode: 'vi',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        );
+      test(
+        'should successfully create user profile',
+        () async {
+          // Arrange
+          final newProfile = UserProfile(
+            id: 'new-user-123',
+            email: 'newuser@example.com',
+            displayName: 'New User',
+            preferredCurrency: 'VND',
+            languageCode: 'vi',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          );
 
-        final mockResponse = {
-          'id': newProfile.id,
-          'email': newProfile.email,
-          'display_name': newProfile.displayName,
-          'preferred_currency': newProfile.preferredCurrency,
-          'preferred_language': newProfile.languageCode,
-          'created_at': newProfile.createdAt.toIso8601String(),
-          'updated_at': newProfile.updatedAt.toIso8601String(),
-        };
+          final mockResponse = {
+            'id': newProfile.id,
+            'email': newProfile.email,
+            'display_name': newProfile.displayName,
+            'preferred_currency': newProfile.preferredCurrency,
+            'preferred_language': newProfile.languageCode,
+            'created_at': newProfile.createdAt.toIso8601String(),
+            'updated_at': newProfile.updatedAt.toIso8601String(),
+          };
 
-        when(mockQueryBuilder.insert(any)).thenAnswer((_) => mockFilterBuilder);
-        when(
-          mockFilterBuilder.select(),
-        ).thenAnswer((_) => mockTransformBuilderForList);
-        // single() returns PostgrestTransformBuilder<PostgrestMap> which
-        // implements Future
-        // Create a fake that resolves to mockResponse when awaited
-        final fakeSingleBuilder = _FakePostgrestTransformBuilder<PostgrestMap>(
-          mockResponse,
-        );
-        when(
-          mockTransformBuilderForList.single(),
-        ).thenAnswer((_) => fakeSingleBuilder);
+          when(
+            mockQueryBuilder.insert(any),
+          ).thenAnswer((_) => mockFilterBuilder);
+          when(
+            mockFilterBuilder.select(),
+          ).thenAnswer((_) => mockTransformBuilderForList);
+          // single() returns PostgrestTransformBuilder<PostgrestMap> which
+          // implements Future
+          // Create a fake that resolves to mockResponse when awaited
+          final fakeSingleBuilder =
+              _FakePostgrestTransformBuilder<PostgrestMap>(
+                mockResponse,
+              );
+          when(
+            mockTransformBuilderForList.single(),
+          ).thenAnswer((_) => fakeSingleBuilder);
 
-        // Act
-        final result = await repository.createUserProfile(newProfile);
+          // Act
+          final result = await repository.createUserProfile(newProfile);
 
-        // Assert
-        expect(result.isRight(), isTrue);
-        result.fold(
-          (failure) => fail('Should not return failure'),
-          (profile) {
-            expect(profile.id, equals(newProfile.id));
-            expect(profile.email, equals(newProfile.email));
-            expect(profile.displayName, equals(newProfile.displayName));
-          },
-        );
+          // Assert
+          expect(result.isRight(), isTrue);
+          result.fold(
+            (failure) => fail('Should not return failure'),
+            (profile) {
+              expect(profile.id, equals(newProfile.id));
+              expect(profile.email, equals(newProfile.email));
+              expect(profile.displayName, equals(newProfile.displayName));
+            },
+          );
 
-        // Verify timestamps are not included in insert
-        final capturedData =
-            verify(
-                  mockQueryBuilder.insert(captureAny),
-                ).captured.first
-                as Map<String, dynamic>;
-        expect(capturedData.containsKey('created_at'), isFalse);
-        expect(capturedData.containsKey('updated_at'), isFalse);
-      }, skip: 'Repo now uses two-step insert+select; chainable mock pattern '
-          "doesn't represent that. Rewrite as integration test.");
+          // Verify timestamps are not included in insert
+          final capturedData =
+              verify(
+                    mockQueryBuilder.insert(captureAny),
+                  ).captured.first
+                  as Map<String, dynamic>;
+          expect(capturedData.containsKey('created_at'), isFalse);
+          expect(capturedData.containsKey('updated_at'), isFalse);
+        },
+        skip:
+            'Repo now uses two-step insert+select; chainable mock pattern '
+            "doesn't represent that. Rewrite as integration test.",
+      );
 
       test('should handle duplicate profile creation', () async {
         // Arrange
@@ -539,7 +550,9 @@ void main() {
           'updated_at': testProfile.updatedAt.toIso8601String(),
         };
 
-        when(mockQueryBuilder.select()).thenAnswer((_) => mockSelectFilterBuilder);
+        when(
+          mockQueryBuilder.select(),
+        ).thenAnswer((_) => mockSelectFilterBuilder);
         when(
           mockSelectFilterBuilder.eq('email', testProfile.email),
         ).thenAnswer((_) => mockSelectFilterBuilder);
@@ -569,7 +582,9 @@ void main() {
 
       test('should return null when no profile exists with email', () async {
         // Arrange
-        when(mockQueryBuilder.select()).thenAnswer((_) => mockSelectFilterBuilder);
+        when(
+          mockQueryBuilder.select(),
+        ).thenAnswer((_) => mockSelectFilterBuilder);
         when(
           mockSelectFilterBuilder.eq('email', 'nonexistent@example.com'),
         ).thenAnswer((_) => mockSelectFilterBuilder);
@@ -598,7 +613,9 @@ void main() {
         'should handle database errors when getting profile by email',
         () async {
           // Arrange
-          when(mockQueryBuilder.select()).thenAnswer((_) => mockSelectFilterBuilder);
+          when(
+            mockQueryBuilder.select(),
+          ).thenAnswer((_) => mockSelectFilterBuilder);
           when(
             mockSelectFilterBuilder.eq('email', testProfile.email),
           ).thenAnswer((_) => mockSelectFilterBuilder);
@@ -627,75 +644,85 @@ void main() {
     });
 
     group('createSocialUserProfile', () {
-      test('should successfully create social user profile', () async {
-        // Arrange
-        const userId = 'social-user-123';
-        const email = 'social@example.com';
-        const displayName = 'Social User';
-        const preferredCurrency = 'USD';
-        const languageCode = 'en';
-        const provider = 'google';
+      test(
+        'should successfully create social user profile',
+        () async {
+          // Arrange
+          const userId = 'social-user-123';
+          const email = 'social@example.com';
+          const displayName = 'Social User';
+          const preferredCurrency = 'USD';
+          const languageCode = 'en';
+          const provider = 'google';
 
-        final mockResponse = {
-          'id': userId,
-          'email': email,
-          'display_name': displayName,
-          'preferred_currency': preferredCurrency,
-          'preferred_language': languageCode,
-          'social_provider': provider,
-          'created_at': DateTime.now().toIso8601String(),
-          'updated_at': DateTime.now().toIso8601String(),
-        };
+          final mockResponse = {
+            'id': userId,
+            'email': email,
+            'display_name': displayName,
+            'preferred_currency': preferredCurrency,
+            'preferred_language': languageCode,
+            'social_provider': provider,
+            'created_at': DateTime.now().toIso8601String(),
+            'updated_at': DateTime.now().toIso8601String(),
+          };
 
-        when(mockQueryBuilder.insert(any)).thenAnswer((_) => mockFilterBuilder);
-        when(mockQueryBuilder.select()).thenAnswer((_) => mockSelectFilterBuilder);
-        when(
-          mockSelectFilterBuilder.eq('id', userId),
-        ).thenAnswer((_) => mockSelectFilterBuilder);
-        final fakeSingleBuilder = _FakePostgrestTransformBuilder<PostgrestMap>(
-          mockResponse,
-        );
-        when(
-          mockSelectFilterBuilder.single(),
-        ).thenAnswer((_) => fakeSingleBuilder);
+          when(
+            mockQueryBuilder.insert(any),
+          ).thenAnswer((_) => mockFilterBuilder);
+          when(
+            mockQueryBuilder.select(),
+          ).thenAnswer((_) => mockSelectFilterBuilder);
+          when(
+            mockSelectFilterBuilder.eq('id', userId),
+          ).thenAnswer((_) => mockSelectFilterBuilder);
+          final fakeSingleBuilder =
+              _FakePostgrestTransformBuilder<PostgrestMap>(
+                mockResponse,
+              );
+          when(
+            mockSelectFilterBuilder.single(),
+          ).thenAnswer((_) => fakeSingleBuilder);
 
-        // Act
-        final result = await repository.createSocialUserProfile(
-          userId: userId,
-          email: email,
-          displayName: displayName,
-          preferredCurrency: preferredCurrency,
-          languageCode: languageCode,
-          provider: provider,
-        );
+          // Act
+          final result = await repository.createSocialUserProfile(
+            userId: userId,
+            email: email,
+            displayName: displayName,
+            preferredCurrency: preferredCurrency,
+            languageCode: languageCode,
+            provider: provider,
+          );
 
-        // Assert
-        expect(result.isRight(), isTrue);
-        result.fold(
-          (failure) => fail('Should not return failure'),
-          (profile) {
-            expect(profile.id, equals(userId));
-            expect(profile.email, equals(email));
-            expect(profile.displayName, equals(displayName));
-            expect(profile.preferredCurrency, equals(preferredCurrency));
-            expect(profile.languageCode, equals(languageCode));
-          },
-        );
+          // Assert
+          expect(result.isRight(), isTrue);
+          result.fold(
+            (failure) => fail('Should not return failure'),
+            (profile) {
+              expect(profile.id, equals(userId));
+              expect(profile.email, equals(email));
+              expect(profile.displayName, equals(displayName));
+              expect(profile.preferredCurrency, equals(preferredCurrency));
+              expect(profile.languageCode, equals(languageCode));
+            },
+          );
 
-        // Verify the insert was called with correct data including social provider
-        final capturedData =
-            verify(
-                  mockQueryBuilder.insert(captureAny),
-                ).captured.first
-                as Map<String, dynamic>;
-        expect(capturedData['id'], equals(userId));
-        expect(capturedData['email'], equals(email));
-        expect(capturedData['display_name'], equals(displayName));
-        expect(capturedData['preferred_currency'], equals(preferredCurrency));
-        expect(capturedData['preferred_language'], equals(languageCode));
-        expect(capturedData['social_provider'], equals(provider));
-      }, skip: 'Repo now uses two-step insert+select; chainable mock pattern '
-          "doesn't represent that. Rewrite as integration test.");
+          // Verify the insert was called with correct data including social provider
+          final capturedData =
+              verify(
+                    mockQueryBuilder.insert(captureAny),
+                  ).captured.first
+                  as Map<String, dynamic>;
+          expect(capturedData['id'], equals(userId));
+          expect(capturedData['email'], equals(email));
+          expect(capturedData['display_name'], equals(displayName));
+          expect(capturedData['preferred_currency'], equals(preferredCurrency));
+          expect(capturedData['preferred_language'], equals(languageCode));
+          expect(capturedData['social_provider'], equals(provider));
+        },
+        skip:
+            'Repo now uses two-step insert+select; chainable mock pattern '
+            "doesn't represent that. Rewrite as integration test.",
+      );
 
       test(
         'should handle duplicate email errors when creating social profile',

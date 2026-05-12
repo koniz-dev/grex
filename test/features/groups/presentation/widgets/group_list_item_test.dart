@@ -201,8 +201,7 @@ void main() {
     // long under the test surface; the widget itself doesn't enforce
     // truncation. Fix the layout (Expanded/Flexible/Overflow.clip) or pump
     // under a wider surface before re-enabling.
-    testWidgets('should truncate long group names', skip: true,
-        (tester) async {
+    testWidgets('should truncate long group names', skip: true, (tester) async {
       final longNameGroup = testGroup.copyWith(
         name: 'This is a very long group name that should be truncated',
       );

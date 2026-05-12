@@ -655,7 +655,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return 'Password is too weak. Please choose a stronger password.';
     } else if (failure is UnverifiedEmailFailure) {
       return 'Please verify your email address before signing in.';
-    } else if (failure is NetworkFailure || failure is SocialAuthNetworkFailure) {
+    } else if (failure is NetworkFailure ||
+        failure is SocialAuthNetworkFailure) {
       return 'Network error. Please check your connection and try again.';
     } else if (failure is SocialAuthTimeoutFailure) {
       return 'Connection timed out. Please check your network and try again.';

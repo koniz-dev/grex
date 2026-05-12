@@ -169,7 +169,9 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
 
       return const Right(null);
     } on supabase.AuthException catch (e) {
-      return Left(AccountLinkingFailure('Failed to link account: ${e.message}'));
+      return Left(
+        AccountLinkingFailure('Failed to link account: ${e.message}'),
+      );
     } on TimeoutException catch (_) {
       return const Left(SocialAuthTimeoutFailure());
     } on Object catch (e) {
@@ -210,8 +212,8 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
   /// Throws [TimeoutException] if no user appears within [_authUserTimeout].
   Future<supabase.User?> _waitForAuthUser() async {
     const pollInterval = Duration(milliseconds: 250);
-    final maxAttempts = _authUserTimeout.inMilliseconds ~/
-        pollInterval.inMilliseconds;
+    final maxAttempts =
+        _authUserTimeout.inMilliseconds ~/ pollInterval.inMilliseconds;
 
     for (var attempt = 0; attempt < maxAttempts; attempt++) {
       final user = _supabaseClient.auth.currentUser;

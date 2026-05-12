@@ -8,8 +8,13 @@ import 'package:flutter_test/flutter_test.dart';
 // assertions after migrating to `@GenerateMocks` (or mocktail's `any<T>()`).
 void main() {
   group('PaymentBloc Property Tests', () {
-    test('placeholder', () {}, skip: 'TODO(mockito-null-safety): rewrite '
-        'using @GenerateMocks or mocktail any<T>() so argument types match '
-        'repository/bloc signatures.');
+    test(
+      'placeholder',
+      () {},
+      skip:
+          'TODO(mockito-null-safety): rewrite '
+          'using @GenerateMocks or mocktail any<T>() so argument types match '
+          'repository/bloc signatures.',
+    );
   });
 }

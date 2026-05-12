@@ -6,189 +6,198 @@ import 'package:grex/core/routing/app_router.dart';
 import 'package:grex/core/routing/app_routes.dart';
 
 void main() {
-  group('AppRouter', () {
-    late GoRouter router;
+  group(
+    'AppRouter',
+    () {
+      late GoRouter router;
 
-    setUp(() {
-      router = GoRouter(
-        initialLocation: AppRoutes.groups,
-        routes: AppRouter.routes,
-        errorBuilder: AppRouter.errorBuilder,
-      );
-    });
+      setUp(() {
+        router = GoRouter(
+          initialLocation: AppRoutes.groups,
+          routes: AppRouter.routes,
+          errorBuilder: AppRouter.errorBuilder,
+        );
+      });
 
-    testWidgets('should navigate to groups page by default', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should navigate to groups page by default', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Should start at groups page
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        // Should start at groups page
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle group details route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle group details route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to group details
-      router.go(AppRoutes.groupDetailsPath('test-group-id'));
-      await tester.pumpAndSettle();
+        // Navigate to group details
+        router.go(AppRoutes.groupDetailsPath('test-group-id'));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle create group route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle create group route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to create group
-      router.go(AppRoutes.createGroup);
-      await tester.pumpAndSettle();
+        // Navigate to create group
+        router.go(AppRoutes.createGroup);
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle expenses route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle expenses route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to expenses
-      router.go(AppRoutes.expensesPath('test-group-id'));
-      await tester.pumpAndSettle();
+        // Navigate to expenses
+        router.go(AppRoutes.expensesPath('test-group-id'));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle payments route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle payments route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to payments
-      router.go(AppRoutes.paymentsPath('test-group-id'));
-      await tester.pumpAndSettle();
+        // Navigate to payments
+        router.go(AppRoutes.paymentsPath('test-group-id'));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle balances route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle balances route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to balances
-      router.go(AppRoutes.balancesPath('test-group-id'));
-      await tester.pumpAndSettle();
+        // Navigate to balances
+        router.go(AppRoutes.balancesPath('test-group-id'));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle export route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle export route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to export
-      router.go(AppRoutes.exportPath('test-group-id', groupName: 'Test Group'));
-      await tester.pumpAndSettle();
+        // Navigate to export
+        router.go(
+          AppRoutes.exportPath('test-group-id', groupName: 'Test Group'),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should show error page for invalid routes', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should show error page for invalid routes', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to invalid route
-      router.go('/invalid-route');
-      await tester.pumpAndSettle();
+        // Navigate to invalid route
+        router.go('/invalid-route');
+        await tester.pumpAndSettle();
 
-      expect(find.text('Page Not Found'), findsOneWidget);
-      expect(find.text('Go to Groups'), findsOneWidget);
-    });
+        expect(find.text('Page Not Found'), findsOneWidget);
+        expect(find.text('Go to Groups'), findsOneWidget);
+      });
 
-    testWidgets('should handle nested routes correctly', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle nested routes correctly', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to nested expense details route
-      router.go(
-        AppRoutes.expenseDetailsPath('test-group-id', 'test-expense-id'),
-      );
-      await tester.pumpAndSettle();
+        // Navigate to nested expense details route
+        router.go(
+          AppRoutes.expenseDetailsPath('test-group-id', 'test-expense-id'),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle edit expense route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle edit expense route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to edit expense route
-      router.go(AppRoutes.editExpensePath('test-group-id', 'test-expense-id'));
-      await tester.pumpAndSettle();
+        // Navigate to edit expense route
+        router.go(
+          AppRoutes.editExpensePath('test-group-id', 'test-expense-id'),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle settlement plan route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle settlement plan route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to settlement plan
-      router.go(AppRoutes.settlementPlanPath('test-group-id'));
-      await tester.pumpAndSettle();
+        // Navigate to settlement plan
+        router.go(AppRoutes.settlementPlanPath('test-group-id'));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
 
-    testWidgets('should handle group settings route', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-        ),
-      );
+      testWidgets('should handle group settings route', (tester) async {
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+          ),
+        );
 
-      // Navigate to group settings
-      router.go(AppRoutes.groupSettingsPath('test-group-id'));
-      await tester.pumpAndSettle();
+        // Navigate to group settings
+        router.go(AppRoutes.groupSettingsPath('test-group-id'));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(Scaffold), findsOneWidget);
-    });
-  }, skip: 'TODO(di): exercises real routes that resolve blocs via '
-      'getIt<XBloc>(), so every route mount throws "GetIt: Object/factory '
-      'with type XBloc is not registered". Re-enable after either setting up '
-      'mock DI in this test or refactoring page-level BlocProvider to use '
-      'context-supplied blocs.');
+        expect(find.byType(Scaffold), findsOneWidget);
+      });
+    },
+    skip:
+        'TODO(di): exercises real routes that resolve blocs via '
+        'getIt<XBloc>(), so every route mount throws "GetIt: Object/factory '
+        'with type XBloc is not registered". Re-enable after either setting up '
+        'mock DI in this test or refactoring page-level BlocProvider to use '
+        'context-supplied blocs.',
+  );
 
   group('AppRoutes', () {
     test('should generate correct paths', () {

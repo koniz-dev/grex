@@ -54,336 +54,344 @@ class _FakeNativeAppleSignInService implements NativeAppleSignInService {
 ///
 /// Requirements: All
 void main() {
-  group('Device Performance Tests', () {
-    late MockSupabaseClient mockSupabaseClient;
-    late MockUserRepository mockUserRepository;
-    late PerformanceService performanceService;
-    late SupabaseSocialAuthRepository repository;
-    late AuthDeepLinkHandler deepLinkHandler;
-    late OptimizedSessionService sessionService;
+  group(
+    'Device Performance Tests',
+    () {
+      late MockSupabaseClient mockSupabaseClient;
+      late MockUserRepository mockUserRepository;
+      late PerformanceService performanceService;
+      late SupabaseSocialAuthRepository repository;
+      late AuthDeepLinkHandler deepLinkHandler;
+      late OptimizedSessionService sessionService;
 
-    setUp(() {
-      mockSupabaseClient = MockSupabaseClient();
-      mockUserRepository = MockUserRepository();
-      performanceService = PerformanceService();
+      setUp(() {
+        mockSupabaseClient = MockSupabaseClient();
+        mockUserRepository = MockUserRepository();
+        performanceService = PerformanceService();
 
-      repository = SupabaseSocialAuthRepository(
-        supabaseClient: mockSupabaseClient,
-        userRepository: mockUserRepository,
-        performanceService: performanceService,
-        nonceGenerator: _FakeNonceGenerator(),
-        nativeAppleSignInService: _FakeNativeAppleSignInService(),
-      );
+        repository = SupabaseSocialAuthRepository(
+          supabaseClient: mockSupabaseClient,
+          userRepository: mockUserRepository,
+          performanceService: performanceService,
+          nonceGenerator: _FakeNonceGenerator(),
+          nativeAppleSignInService: _FakeNativeAppleSignInService(),
+        );
 
-      deepLinkHandler = AuthDeepLinkHandler(
-        onDeepLink: (uri) {},
-        performanceService: performanceService,
-      );
+        deepLinkHandler = AuthDeepLinkHandler(
+          onDeepLink: (uri) {},
+          performanceService: performanceService,
+        );
 
-      sessionService = OptimizedSessionService(
-        secureStorage: MockFlutterSecureStorage(),
-        supabaseClient: mockSupabaseClient,
-        userRepository: mockUserRepository,
-        performanceService: performanceService,
-      );
-    });
+        sessionService = OptimizedSessionService(
+          secureStorage: MockFlutterSecureStorage(),
+          supabaseClient: mockSupabaseClient,
+          userRepository: mockUserRepository,
+          performanceService: performanceService,
+        );
+      });
 
-    group('Low-end Android Device Performance', () {
-      setUp(_simulateLowEndDevice);
+      group('Low-end Android Device Performance', () {
+        setUp(_simulateLowEndDevice);
 
-      testWidgets(
-        'OAuth flow completion time should be acceptable on low-end devices',
-        (tester) async {
+        testWidgets(
+          'OAuth flow completion time should be acceptable on low-end devices',
+          (tester) async {
+            // Arrange
+            _setupMockOAuthSuccess();
+
+            final stopwatch = Stopwatch()..start();
+
+            // Act
+            final result = await repository.signInWithGoogle();
+
+            stopwatch.stop();
+
+            // Assert
+            expect(result.isRight(), isTrue);
+
+            // OAuth flow should complete within 8 seconds on low-end devices
+            // (allowing extra time for slower processing)
+            expect(stopwatch.elapsedMilliseconds, lessThan(8000));
+
+            print(
+              'Low-end Android OAuth completion: ${stopwatch.elapsedMilliseconds}ms',
+            );
+          },
+        );
+
+        testWidgets('Deep link processing should be fast on low-end devices', (
+          tester,
+        ) async {
           // Arrange
-          _setupMockOAuthSuccess();
-
+          final testUri = Uri.parse(
+            'io.supabase.grex://login-callback/?access_token=test',
+          );
           final stopwatch = Stopwatch()..start();
 
           // Act
-          final result = await repository.signInWithGoogle();
+          await deepLinkHandler.handleDeepLink(testUri);
+
+          stopwatch.stop();
+
+          // Assert
+          // Deep link processing should complete within 2 seconds on low-end devices
+          expect(stopwatch.elapsedMilliseconds, lessThan(2000));
+
+          print(
+            'Low-end Android deep link processing: ${stopwatch.elapsedMilliseconds}ms',
+          );
+        });
+
+        testWidgets('Session restoration should be acceptable on low-end devices', (
+          tester,
+        ) async {
+          // Arrange
+          await _setupStoredSession();
+          final stopwatch = Stopwatch()..start();
+
+          // Act
+          final result = await sessionService.getStoredSession();
 
           stopwatch.stop();
 
           // Assert
           expect(result.isRight(), isTrue);
 
-          // OAuth flow should complete within 8 seconds on low-end devices
-          // (allowing extra time for slower processing)
-          expect(stopwatch.elapsedMilliseconds, lessThan(8000));
+          // Session restoration should complete within 3 seconds on low-end devices
+          expect(stopwatch.elapsedMilliseconds, lessThan(3000));
 
           print(
-            'Low-end Android OAuth completion: ${stopwatch.elapsedMilliseconds}ms',
+            'Low-end Android session restoration: ${stopwatch.elapsedMilliseconds}ms',
           );
-        },
-      );
-
-      testWidgets('Deep link processing should be fast on low-end devices', (
-        tester,
-      ) async {
-        // Arrange
-        final testUri = Uri.parse(
-          'io.supabase.grex://login-callback/?access_token=test',
-        );
-        final stopwatch = Stopwatch()..start();
-
-        // Act
-        await deepLinkHandler.handleDeepLink(testUri);
-
-        stopwatch.stop();
-
-        // Assert
-        // Deep link processing should complete within 2 seconds on low-end devices
-        expect(stopwatch.elapsedMilliseconds, lessThan(2000));
-
-        print(
-          'Low-end Android deep link processing: ${stopwatch.elapsedMilliseconds}ms',
-        );
+        });
       });
 
-      testWidgets('Session restoration should be acceptable on low-end devices', (
-        tester,
-      ) async {
-        // Arrange
-        await _setupStoredSession();
-        final stopwatch = Stopwatch()..start();
+      group('High-end Android Device Performance', () {
+        setUp(_simulateHighEndDevice);
 
-        // Act
-        final result = await sessionService.getStoredSession();
+        testWidgets(
+          'OAuth flow completion time should be fast on high-end devices',
+          (tester) async {
+            // Arrange
+            _setupMockOAuthSuccess();
 
-        stopwatch.stop();
+            final stopwatch = Stopwatch()..start();
 
-        // Assert
-        expect(result.isRight(), isTrue);
+            // Act
+            final result = await repository.signInWithGoogle();
 
-        // Session restoration should complete within 3 seconds on low-end devices
-        expect(stopwatch.elapsedMilliseconds, lessThan(3000));
+            stopwatch.stop();
 
-        print(
-          'Low-end Android session restoration: ${stopwatch.elapsedMilliseconds}ms',
+            // Assert
+            expect(result.isRight(), isTrue);
+
+            // OAuth flow should complete within 5 seconds on high-end devices
+            expect(stopwatch.elapsedMilliseconds, lessThan(5000));
+
+            print(
+              'High-end Android OAuth completion: ${stopwatch.elapsedMilliseconds}ms',
+            );
+          },
         );
-      });
-    });
 
-    group('High-end Android Device Performance', () {
-      setUp(_simulateHighEndDevice);
+        testWidgets(
+          'Deep link processing should be very fast on high-end devices',
+          (
+            tester,
+          ) async {
+            // Arrange
+            final testUri = Uri.parse(
+              'io.supabase.grex://login-callback/?access_token=test',
+            );
+            final stopwatch = Stopwatch()..start();
 
-      testWidgets(
-        'OAuth flow completion time should be fast on high-end devices',
-        (tester) async {
+            // Act
+            await deepLinkHandler.handleDeepLink(testUri);
+
+            stopwatch.stop();
+
+            // Assert
+            // Deep link processing should complete within 1 second on high-end devices
+            expect(stopwatch.elapsedMilliseconds, lessThan(1000));
+
+            print(
+              'High-end Android deep link processing: ${stopwatch.elapsedMilliseconds}ms',
+            );
+          },
+        );
+
+        testWidgets('Session restoration should be very fast on high-end devices', (
+          tester,
+        ) async {
           // Arrange
-          _setupMockOAuthSuccess();
-
+          await _setupStoredSession();
           final stopwatch = Stopwatch()..start();
 
           // Act
-          final result = await repository.signInWithGoogle();
+          final result = await sessionService.getStoredSession();
 
           stopwatch.stop();
 
           // Assert
           expect(result.isRight(), isTrue);
 
-          // OAuth flow should complete within 5 seconds on high-end devices
-          expect(stopwatch.elapsedMilliseconds, lessThan(5000));
+          // Session restoration should complete within 1 second on high-end devices
+          expect(stopwatch.elapsedMilliseconds, lessThan(1000));
 
           print(
-            'High-end Android OAuth completion: ${stopwatch.elapsedMilliseconds}ms',
+            'High-end Android session restoration: ${stopwatch.elapsedMilliseconds}ms',
           );
-        },
-      );
-
-      testWidgets('Deep link processing should be very fast on high-end devices', (
-        tester,
-      ) async {
-        // Arrange
-        final testUri = Uri.parse(
-          'io.supabase.grex://login-callback/?access_token=test',
-        );
-        final stopwatch = Stopwatch()..start();
-
-        // Act
-        await deepLinkHandler.handleDeepLink(testUri);
-
-        stopwatch.stop();
-
-        // Assert
-        // Deep link processing should complete within 1 second on high-end devices
-        expect(stopwatch.elapsedMilliseconds, lessThan(1000));
-
-        print(
-          'High-end Android deep link processing: ${stopwatch.elapsedMilliseconds}ms',
-        );
+        });
       });
 
-      testWidgets('Session restoration should be very fast on high-end devices', (
-        tester,
-      ) async {
-        // Arrange
-        await _setupStoredSession();
-        final stopwatch = Stopwatch()..start();
+      group('iOS Device Performance', () {
+        setUp(_simulateIOSDevice);
 
-        // Act
-        final result = await sessionService.getStoredSession();
-
-        stopwatch.stop();
-
-        // Assert
-        expect(result.isRight(), isTrue);
-
-        // Session restoration should complete within 1 second on high-end devices
-        expect(stopwatch.elapsedMilliseconds, lessThan(1000));
-
-        print(
-          'High-end Android session restoration: ${stopwatch.elapsedMilliseconds}ms',
-        );
-      });
-    });
-
-    group('iOS Device Performance', () {
-      setUp(_simulateIOSDevice);
-
-      testWidgets('OAuth flow completion time should be optimal on iOS', (
-        tester,
-      ) async {
-        // Arrange
-        _setupMockOAuthSuccess();
-
-        final stopwatch = Stopwatch()..start();
-
-        // Act
-        final result = await repository.signInWithApple();
-
-        stopwatch.stop();
-
-        // Assert
-        expect(result.isRight(), isTrue);
-
-        // OAuth flow should complete within 4 seconds on iOS (optimized for Apple OAuth)
-        expect(stopwatch.elapsedMilliseconds, lessThan(4000));
-
-        print('iOS OAuth completion: ${stopwatch.elapsedMilliseconds}ms');
-      });
-
-      testWidgets('Deep link processing should be optimal on iOS', (
-        tester,
-      ) async {
-        // Arrange
-        final testUri = Uri.parse(
-          'io.supabase.grex://login-callback/?access_token=test',
-        );
-        final stopwatch = Stopwatch()..start();
-
-        // Act
-        await deepLinkHandler.handleDeepLink(testUri);
-
-        stopwatch.stop();
-
-        // Assert
-        // Deep link processing should complete within 800ms on iOS
-        expect(stopwatch.elapsedMilliseconds, lessThan(800));
-
-        print('iOS deep link processing: ${stopwatch.elapsedMilliseconds}ms');
-      });
-
-      testWidgets('Session restoration should be optimal on iOS', (
-        tester,
-      ) async {
-        // Arrange
-        await _setupStoredSession();
-        final stopwatch = Stopwatch()..start();
-
-        // Act
-        final result = await sessionService.getStoredSession();
-
-        stopwatch.stop();
-
-        // Assert
-        expect(result.isRight(), isTrue);
-
-        // Session restoration should complete within 800ms on iOS
-        expect(stopwatch.elapsedMilliseconds, lessThan(800));
-
-        print('iOS session restoration: ${stopwatch.elapsedMilliseconds}ms');
-      });
-    });
-
-    group('Cross-Device Performance Comparison', () {
-      testWidgets(
-        'Performance should scale appropriately across device types',
-        (tester) async {
-          final results = <String, int>{};
-
-          // Test on simulated low-end device
-          _simulateLowEndDevice();
+        testWidgets('OAuth flow completion time should be optimal on iOS', (
+          tester,
+        ) async {
+          // Arrange
           _setupMockOAuthSuccess();
 
-          var stopwatch = Stopwatch()..start();
-          await repository.signInWithGoogle();
+          final stopwatch = Stopwatch()..start();
+
+          // Act
+          final result = await repository.signInWithApple();
+
           stopwatch.stop();
-          results['low_end'] = stopwatch.elapsedMilliseconds;
 
-          // Test on simulated high-end device
-          _simulateHighEndDevice();
-          _setupMockOAuthSuccess();
+          // Assert
+          expect(result.isRight(), isTrue);
 
-          stopwatch = Stopwatch()..start();
-          await repository.signInWithGoogle();
+          // OAuth flow should complete within 4 seconds on iOS (optimized for Apple OAuth)
+          expect(stopwatch.elapsedMilliseconds, lessThan(4000));
+
+          print('iOS OAuth completion: ${stopwatch.elapsedMilliseconds}ms');
+        });
+
+        testWidgets('Deep link processing should be optimal on iOS', (
+          tester,
+        ) async {
+          // Arrange
+          final testUri = Uri.parse(
+            'io.supabase.grex://login-callback/?access_token=test',
+          );
+          final stopwatch = Stopwatch()..start();
+
+          // Act
+          await deepLinkHandler.handleDeepLink(testUri);
+
           stopwatch.stop();
-          results['high_end'] = stopwatch.elapsedMilliseconds;
 
-          // Test on simulated iOS device
-          _simulateIOSDevice();
-          _setupMockOAuthSuccess();
+          // Assert
+          // Deep link processing should complete within 800ms on iOS
+          expect(stopwatch.elapsedMilliseconds, lessThan(800));
 
-          stopwatch = Stopwatch()..start();
-          await repository.signInWithApple();
+          print('iOS deep link processing: ${stopwatch.elapsedMilliseconds}ms');
+        });
+
+        testWidgets('Session restoration should be optimal on iOS', (
+          tester,
+        ) async {
+          // Arrange
+          await _setupStoredSession();
+          final stopwatch = Stopwatch()..start();
+
+          // Act
+          final result = await sessionService.getStoredSession();
+
           stopwatch.stop();
-          results['ios'] = stopwatch.elapsedMilliseconds;
 
-          // Assert performance scaling
-          expect(results['high_end'], lessThan(results['low_end']!));
-          expect(results['ios'], lessThanOrEqualTo(results['high_end']!));
+          // Assert
+          expect(result.isRight(), isTrue);
 
-          print('Performance comparison:');
-          print('  Low-end Android: ${results['low_end']}ms');
-          print('  High-end Android: ${results['high_end']}ms');
-          print('  iOS: ${results['ios']}ms');
-        },
-      );
-    });
+          // Session restoration should complete within 800ms on iOS
+          expect(stopwatch.elapsedMilliseconds, lessThan(800));
 
-    group('Memory Usage Tests', () {
-      testWidgets('OAuth flow should not cause memory leaks', (tester) async {
-        // This test would require integration with actual memory profiling tools
-        // For now, we simulate the test structure
-
-        final initialMemory = _getSimulatedMemoryUsage();
-
-        // Perform multiple OAuth flows
-        for (var i = 0; i < 10; i++) {
-          _setupMockOAuthSuccess();
-          await repository.signInWithGoogle();
-
-          // Simulate some delay between operations
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-        }
-
-        // Force garbage collection simulation
-        await Future<void>.delayed(const Duration(milliseconds: 500));
-
-        final finalMemory = _getSimulatedMemoryUsage();
-        final memoryIncrease = finalMemory - initialMemory;
-
-        // Memory increase should be minimal (less than 5MB simulated)
-        expect(memoryIncrease, lessThan(5 * 1024 * 1024));
-
-        print('Memory usage increase: ${memoryIncrease ~/ 1024}KB');
+          print('iOS session restoration: ${stopwatch.elapsedMilliseconds}ms');
+        });
       });
-    });
-  }, skip: 'TODO(perf): device-class performance probes (Galaxy S24, Pixel 5, '
-      'low-end Android, iPhone 12) take ~10 minutes total and rely on flaky '
-      'wall-clock budgets. Run these out of band when validating device '
-      'performance, not on every CI run.');
+
+      group('Cross-Device Performance Comparison', () {
+        testWidgets(
+          'Performance should scale appropriately across device types',
+          (tester) async {
+            final results = <String, int>{};
+
+            // Test on simulated low-end device
+            _simulateLowEndDevice();
+            _setupMockOAuthSuccess();
+
+            var stopwatch = Stopwatch()..start();
+            await repository.signInWithGoogle();
+            stopwatch.stop();
+            results['low_end'] = stopwatch.elapsedMilliseconds;
+
+            // Test on simulated high-end device
+            _simulateHighEndDevice();
+            _setupMockOAuthSuccess();
+
+            stopwatch = Stopwatch()..start();
+            await repository.signInWithGoogle();
+            stopwatch.stop();
+            results['high_end'] = stopwatch.elapsedMilliseconds;
+
+            // Test on simulated iOS device
+            _simulateIOSDevice();
+            _setupMockOAuthSuccess();
+
+            stopwatch = Stopwatch()..start();
+            await repository.signInWithApple();
+            stopwatch.stop();
+            results['ios'] = stopwatch.elapsedMilliseconds;
+
+            // Assert performance scaling
+            expect(results['high_end'], lessThan(results['low_end']!));
+            expect(results['ios'], lessThanOrEqualTo(results['high_end']!));
+
+            print('Performance comparison:');
+            print('  Low-end Android: ${results['low_end']}ms');
+            print('  High-end Android: ${results['high_end']}ms');
+            print('  iOS: ${results['ios']}ms');
+          },
+        );
+      });
+
+      group('Memory Usage Tests', () {
+        testWidgets('OAuth flow should not cause memory leaks', (tester) async {
+          // This test would require integration with actual memory profiling tools
+          // For now, we simulate the test structure
+
+          final initialMemory = _getSimulatedMemoryUsage();
+
+          // Perform multiple OAuth flows
+          for (var i = 0; i < 10; i++) {
+            _setupMockOAuthSuccess();
+            await repository.signInWithGoogle();
+
+            // Simulate some delay between operations
+            await Future<void>.delayed(const Duration(milliseconds: 100));
+          }
+
+          // Force garbage collection simulation
+          await Future<void>.delayed(const Duration(milliseconds: 500));
+
+          final finalMemory = _getSimulatedMemoryUsage();
+          final memoryIncrease = finalMemory - initialMemory;
+
+          // Memory increase should be minimal (less than 5MB simulated)
+          expect(memoryIncrease, lessThan(5 * 1024 * 1024));
+
+          print('Memory usage increase: ${memoryIncrease ~/ 1024}KB');
+        });
+      });
+    },
+    skip:
+        'TODO(perf): device-class performance probes (Galaxy S24, Pixel 5, '
+        'low-end Android, iPhone 12) take ~10 minutes total and rely on flaky '
+        'wall-clock budgets. Run these out of band when validating device '
+        'performance, not on every CI run.',
+  );
 }
 
 /// Simulate low-end device constraints

@@ -9,8 +9,13 @@ import 'package:flutter_test/flutter_test.dart';
 // `@GenerateMocks` (or mocktail's `any<T>()`).
 void main() {
   group('GroupBloc Property Tests', () {
-    test('placeholder', () {}, skip: 'TODO(mockito-null-safety): rewrite '
-        'this file using @GenerateMocks or mocktail any<T>() so argument '
-        'types match repository/bloc signatures.');
+    test(
+      'placeholder',
+      () {},
+      skip:
+          'TODO(mockito-null-safety): rewrite '
+          'this file using @GenerateMocks or mocktail any<T>() so argument '
+          'types match repository/bloc signatures.',
+    );
   });
 }

@@ -9,8 +9,13 @@ import 'package:flutter_test/flutter_test.dart';
 // `@GenerateMocks([SupabaseClient, ...])` (or mocktail's `any<T>()`).
 void main() {
   group('GroupRepository Property Tests', () {
-    test('placeholder', () {}, skip: 'TODO(mockito-null-safety): rewrite '
-        'this file using @GenerateMocks or mocktail any<T>() so argument '
-        'types match Supabase builder signatures.');
+    test(
+      'placeholder',
+      () {},
+      skip:
+          'TODO(mockito-null-safety): rewrite '
+          'this file using @GenerateMocks or mocktail any<T>() so argument '
+          'types match Supabase builder signatures.',
+    );
   });
 }

@@ -13,304 +13,312 @@ import '../../../../helpers/widget_test_helpers.dart';
 /// Tests route transitions, route guards, and deep link handling
 /// for the authentication system.
 void main() {
-  group('Authentication Navigation Widget Tests', () {
-    late TestDependencies deps;
-    late GoRouter router;
+  group(
+    'Authentication Navigation Widget Tests',
+    () {
+      late TestDependencies deps;
+      late GoRouter router;
 
-    setUp(() {
-      deps = setupTestDependencies();
-      router = createTestRouter(deps);
-    });
+      setUp(() {
+        deps = setupTestDependencies();
+        router = createTestRouter(deps);
+      });
 
-    tearDown(() async {
-      await deps.dispose();
-    });
+      tearDown(() async {
+        await deps.dispose();
+      });
 
-    testWidgets('should navigate from login to register', (tester) async {
-      // Arrange
-      when(deps.mockAuthRepository.currentUser).thenReturn(null);
+      testWidgets('should navigate from login to register', (tester) async {
+        // Arrange
+        when(deps.mockAuthRepository.currentUser).thenReturn(null);
 
-      // Build app with login page
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/login',
-        ),
-      );
-      await tester.pumpAndSettle();
+        // Build app with login page
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/login',
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Verify we're on login page
-      expect(find.text('Đăng nhập'), findsOneWidget);
-      expect(find.text('Chưa có tài khoản?'), findsOneWidget);
+        // Verify we're on login page
+        expect(find.text('Đăng nhập'), findsOneWidget);
+        expect(find.text('Chưa có tài khoản?'), findsOneWidget);
 
-      // Act - tap register link
-      await tester.tap(find.text('Đăng ký ngay'));
-      await tester.pumpAndSettle();
+        // Act - tap register link
+        await tester.tap(find.text('Đăng ký ngay'));
+        await tester.pumpAndSettle();
 
-      // Assert - should navigate to register page
-      expect(find.text('Tạo tài khoản'), findsOneWidget);
-      expect(find.text('Đã có tài khoản?'), findsOneWidget);
-    });
+        // Assert - should navigate to register page
+        expect(find.text('Tạo tài khoản'), findsOneWidget);
+        expect(find.text('Đã có tài khoản?'), findsOneWidget);
+      });
 
-    testWidgets('should navigate from register to login', (tester) async {
-      // Arrange
-      when(deps.mockAuthRepository.currentUser).thenReturn(null);
+      testWidgets('should navigate from register to login', (tester) async {
+        // Arrange
+        when(deps.mockAuthRepository.currentUser).thenReturn(null);
 
-      // Build app with register page
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/register',
-        ),
-      );
-      await tester.pumpAndSettle();
+        // Build app with register page
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/register',
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Verify we're on register page
-      expect(find.text('Tạo tài khoản'), findsOneWidget);
-      expect(find.text('Đã có tài khoản?'), findsOneWidget);
+        // Verify we're on register page
+        expect(find.text('Tạo tài khoản'), findsOneWidget);
+        expect(find.text('Đã có tài khoản?'), findsOneWidget);
 
-      // Act - tap login link
-      await tester.tap(find.text('Đăng nhập ngay'));
-      await tester.pumpAndSettle();
+        // Act - tap login link
+        await tester.tap(find.text('Đăng nhập ngay'));
+        await tester.pumpAndSettle();
 
-      // Assert - should navigate to login page
-      expect(find.text('Đăng nhập'), findsOneWidget);
-      expect(find.text('Chưa có tài khoản?'), findsOneWidget);
-    });
+        // Assert - should navigate to login page
+        expect(find.text('Đăng nhập'), findsOneWidget);
+        expect(find.text('Chưa có tài khoản?'), findsOneWidget);
+      });
 
-    testWidgets('should navigate from login to forgot password', (
-      tester,
-    ) async {
-      // Arrange
-      when(deps.mockAuthRepository.currentUser).thenReturn(null);
+      testWidgets('should navigate from login to forgot password', (
+        tester,
+      ) async {
+        // Arrange
+        when(deps.mockAuthRepository.currentUser).thenReturn(null);
 
-      // Build app with login page
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/login',
-        ),
-      );
-      await tester.pumpAndSettle();
+        // Build app with login page
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/login',
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Verify we're on login page
-      expect(find.text('Đăng nhập'), findsOneWidget);
+        // Verify we're on login page
+        expect(find.text('Đăng nhập'), findsOneWidget);
 
-      // Act - tap forgot password link
-      await tester.tap(find.text('Quên mật khẩu?'));
-      await tester.pumpAndSettle();
+        // Act - tap forgot password link
+        await tester.tap(find.text('Quên mật khẩu?'));
+        await tester.pumpAndSettle();
 
-      // Assert - should navigate to forgot password page
-      expect(find.text('Đặt lại mật khẩu'), findsOneWidget);
-      expect(
-        find.text('Nhập email để nhận liên kết đặt lại mật khẩu'),
-        findsOneWidget,
-      );
-    });
+        // Assert - should navigate to forgot password page
+        expect(find.text('Đặt lại mật khẩu'), findsOneWidget);
+        expect(
+          find.text('Nhập email để nhận liên kết đặt lại mật khẩu'),
+          findsOneWidget,
+        );
+      });
 
-    testWidgets('should redirect unauthenticated user to login', (
-      tester,
-    ) async {
-      // Arrange - user is not authenticated
-      when(deps.mockAuthRepository.currentUser).thenReturn(null);
+      testWidgets('should redirect unauthenticated user to login', (
+        tester,
+      ) async {
+        // Arrange - user is not authenticated
+        when(deps.mockAuthRepository.currentUser).thenReturn(null);
 
-      // Act - try to access protected route (profile)
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/profile',
-        ),
-      );
-      await tester.pumpAndSettle();
+        // Act - try to access protected route (profile)
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/profile',
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Assert - should be redirected to login
-      expect(find.text('Đăng nhập'), findsOneWidget);
-      expect(find.text('Email'), findsOneWidget);
-      expect(find.text('Mật khẩu'), findsOneWidget);
-    });
+        // Assert - should be redirected to login
+        expect(find.text('Đăng nhập'), findsOneWidget);
+        expect(find.text('Email'), findsOneWidget);
+        expect(find.text('Mật khẩu'), findsOneWidget);
+      });
 
-    testWidgets('should redirect authenticated user from auth pages to home', (
-      tester,
-    ) async {
-      // Arrange - user is authenticated
-      final user = generateValidUser();
-      final userProfile = generateValidUserProfile();
+      testWidgets(
+        'should redirect authenticated user from auth pages to home',
+        (
+          tester,
+        ) async {
+          // Arrange - user is authenticated
+          final user = generateValidUser();
+          final userProfile = generateValidUserProfile();
 
-      when(deps.mockAuthRepository.currentUser).thenReturn(user);
-      when(
-        deps.mockUserRepository.getUserProfile(user.id),
-      ).thenAnswer((_) async => Right(userProfile));
+          when(deps.mockAuthRepository.currentUser).thenReturn(user);
+          when(
+            deps.mockUserRepository.getUserProfile(user.id),
+          ).thenAnswer((_) async => Right(userProfile));
 
-      // Act - try to access login page while authenticated
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/login',
-        ),
-      );
-      await tester.pumpAndSettle();
+          // Act - try to access login page while authenticated
+          await tester.pumpWidget(
+            createTestApp(
+              router: router,
+              initialLocation: '/login',
+            ),
+          );
+          await tester.pumpAndSettle();
 
-      // Assert - should be redirected to home
-      // Note: This depends on your home page implementation
-      expect(find.text('Đăng nhập'), findsNothing);
-    });
-
-    testWidgets('should navigate to email verification after registration', (
-      tester,
-    ) async {
-      // Arrange
-      when(deps.mockAuthRepository.currentUser).thenReturn(null);
-
-      final user = generateValidUser();
-      when(
-        deps.mockAuthRepository.signUpWithEmail(
-          email: anyNamed('email'),
-          password: anyNamed('password'),
-        ),
-      ).thenAnswer((_) async => Right(user));
-
-      // Build app with register page
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/register',
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Fill registration form
-      await tester.enterText(
-        find.byKey(const Key('email_field')),
-        'test@example.com',
-      );
-      await tester.enterText(
-        find.byKey(const Key('password_field')),
-        'SecurePass123!',
-      );
-      await tester.enterText(
-        find.byKey(const Key('confirm_password_field')),
-        'SecurePass123!',
-      );
-      await tester.enterText(
-        find.byKey(const Key('display_name_field')),
-        'Test User',
+          // Assert - should be redirected to home
+          // Note: This depends on your home page implementation
+          expect(find.text('Đăng nhập'), findsNothing);
+        },
       );
 
-      // Submit form
-      await tester.tap(find.byKey(const Key('register_button')));
-      await tester.pumpAndSettle();
+      testWidgets('should navigate to email verification after registration', (
+        tester,
+      ) async {
+        // Arrange
+        when(deps.mockAuthRepository.currentUser).thenReturn(null);
 
-      // Should navigate to email verification
-      expect(find.text('Xác thực email'), findsOneWidget);
-      expect(find.text('Chúng tôi đã gửi email xác thực'), findsOneWidget);
-    });
+        final user = generateValidUser();
+        when(
+          deps.mockAuthRepository.signUpWithEmail(
+            email: anyNamed('email'),
+            password: anyNamed('password'),
+          ),
+        ).thenAnswer((_) async => Right(user));
 
-    testWidgets('should navigate to profile edit page', (tester) async {
-      // Arrange - user is authenticated
-      final user = generateValidUser();
-      final userProfile = generateValidUserProfile();
+        // Build app with register page
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/register',
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      when(deps.mockAuthRepository.currentUser).thenReturn(user);
-      when(
-        deps.mockUserRepository.getUserProfile(user.id),
-      ).thenAnswer((_) async => Right(userProfile));
+        // Fill registration form
+        await tester.enterText(
+          find.byKey(const Key('email_field')),
+          'test@example.com',
+        );
+        await tester.enterText(
+          find.byKey(const Key('password_field')),
+          'SecurePass123!',
+        );
+        await tester.enterText(
+          find.byKey(const Key('confirm_password_field')),
+          'SecurePass123!',
+        );
+        await tester.enterText(
+          find.byKey(const Key('display_name_field')),
+          'Test User',
+        );
 
-      // Build app with profile page
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/profile',
-        ),
-      );
-      await tester.pumpAndSettle();
+        // Submit form
+        await tester.tap(find.byKey(const Key('register_button')));
+        await tester.pumpAndSettle();
 
-      // Verify we're on profile page
-      expect(find.text('Hồ sơ cá nhân'), findsOneWidget);
+        // Should navigate to email verification
+        expect(find.text('Xác thực email'), findsOneWidget);
+        expect(find.text('Chúng tôi đã gửi email xác thực'), findsOneWidget);
+      });
 
-      // Act - tap edit profile button
-      await tester.tap(find.byKey(const Key('edit_profile_button')));
-      await tester.pumpAndSettle();
+      testWidgets('should navigate to profile edit page', (tester) async {
+        // Arrange - user is authenticated
+        final user = generateValidUser();
+        final userProfile = generateValidUserProfile();
 
-      // Assert - should navigate to edit profile page
-      expect(find.text('Chỉnh sửa hồ sơ'), findsOneWidget);
-      expect(find.text('Tên hiển thị'), findsOneWidget);
-    });
+        when(deps.mockAuthRepository.currentUser).thenReturn(user);
+        when(
+          deps.mockUserRepository.getUserProfile(user.id),
+        ).thenAnswer((_) async => Right(userProfile));
 
-    testWidgets('should handle deep link to password reset', (tester) async {
-      // Arrange
-      when(deps.mockAuthRepository.currentUser).thenReturn(null);
+        // Build app with profile page
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/profile',
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Act - navigate directly to forgot password page (simulating deep link)
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/forgot-password',
-        ),
-      );
-      await tester.pumpAndSettle();
+        // Verify we're on profile page
+        expect(find.text('Hồ sơ cá nhân'), findsOneWidget);
 
-      // Assert - should show forgot password page
-      expect(find.text('Đặt lại mật khẩu'), findsOneWidget);
-      expect(
-        find.text('Nhập email để nhận liên kết đặt lại mật khẩu'),
-        findsOneWidget,
-      );
-    });
+        // Act - tap edit profile button
+        await tester.tap(find.byKey(const Key('edit_profile_button')));
+        await tester.pumpAndSettle();
 
-    testWidgets('should handle deep link to email verification', (
-      tester,
-    ) async {
-      // Arrange
-      when(deps.mockAuthRepository.currentUser).thenReturn(null);
+        // Assert - should navigate to edit profile page
+        expect(find.text('Chỉnh sửa hồ sơ'), findsOneWidget);
+        expect(find.text('Tên hiển thị'), findsOneWidget);
+      });
 
-      // Act - navigate directly to email verification page
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/email-verification',
-        ),
-      );
-      await tester.pumpAndSettle();
+      testWidgets('should handle deep link to password reset', (tester) async {
+        // Arrange
+        when(deps.mockAuthRepository.currentUser).thenReturn(null);
 
-      // Assert - should show email verification page
-      expect(find.text('Xác thực email'), findsOneWidget);
-      expect(find.text('Gửi lại email xác thực'), findsOneWidget);
-    });
+        // Act - navigate directly to forgot password page (simulating deep link)
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/forgot-password',
+          ),
+        );
+        await tester.pumpAndSettle();
 
-    testWidgets('should navigate back from forgot password to login', (
-      tester,
-    ) async {
-      // Arrange
-      when(deps.mockAuthRepository.currentUser).thenReturn(null);
+        // Assert - should show forgot password page
+        expect(find.text('Đặt lại mật khẩu'), findsOneWidget);
+        expect(
+          find.text('Nhập email để nhận liên kết đặt lại mật khẩu'),
+          findsOneWidget,
+        );
+      });
 
-      // Start at forgot password page
-      await tester.pumpWidget(
-        createTestApp(
-          router: router,
-          initialLocation: '/forgot-password',
-        ),
-      );
-      await tester.pumpAndSettle();
+      testWidgets('should handle deep link to email verification', (
+        tester,
+      ) async {
+        // Arrange
+        when(deps.mockAuthRepository.currentUser).thenReturn(null);
 
-      // Verify we're on forgot password page
-      expect(find.text('Đặt lại mật khẩu'), findsOneWidget);
+        // Act - navigate directly to email verification page
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/email-verification',
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Act - tap back to login
-      await tester.tap(find.byKey(const Key('back_to_login_button')));
-      await tester.pumpAndSettle();
+        // Assert - should show email verification page
+        expect(find.text('Xác thực email'), findsOneWidget);
+        expect(find.text('Gửi lại email xác thực'), findsOneWidget);
+      });
 
-      // Assert - should navigate back to login
-      expect(find.text('Đăng nhập'), findsOneWidget);
-      expect(find.text('Email'), findsOneWidget);
-    });
-  }, skip: 'TODO(navigation): tests assert behaviors the product doesn\'t yet '
-      'expose — Key("register_button"), Key("confirm_password_field"), '
-      'Key("edit_profile_button"), Key("back_to_login_button"); inline-tap '
-      'targets like "Đăng ký ngay"/"Đăng nhập ngay" that current pages render '
-      'as a single "Chưa có tài khoản? Đăng ký" Text; and titles "Tạo tài '
-      'khoản"/"Đặt lại mật khẩu"/"Hồ sơ cá nhân"/"Xác thực email" that the '
-      'pages currently render as the matching l10n strings ("Đăng ký tài '
-      'khoản", "Quên mật khẩu", "Hồ sơ", "Xác thực email của bạn"). Re-enable '
-      'after either adding the missing Keys + splitting link copy in the '
-      'product, or rewriting these assertions against the current renderings.');
+      testWidgets('should navigate back from forgot password to login', (
+        tester,
+      ) async {
+        // Arrange
+        when(deps.mockAuthRepository.currentUser).thenReturn(null);
+
+        // Start at forgot password page
+        await tester.pumpWidget(
+          createTestApp(
+            router: router,
+            initialLocation: '/forgot-password',
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Verify we're on forgot password page
+        expect(find.text('Đặt lại mật khẩu'), findsOneWidget);
+
+        // Act - tap back to login
+        await tester.tap(find.byKey(const Key('back_to_login_button')));
+        await tester.pumpAndSettle();
+
+        // Assert - should navigate back to login
+        expect(find.text('Đăng nhập'), findsOneWidget);
+        expect(find.text('Email'), findsOneWidget);
+      });
+    },
+    skip:
+        'TODO(navigation): tests assert behaviors the product doesn\'t yet '
+        'expose — Key("register_button"), Key("confirm_password_field"), '
+        'Key("edit_profile_button"), Key("back_to_login_button"); inline-tap '
+        'targets like "Đăng ký ngay"/"Đăng nhập ngay" that current pages render '
+        'as a single "Chưa có tài khoản? Đăng ký" Text; and titles "Tạo tài '
+        'khoản"/"Đặt lại mật khẩu"/"Hồ sơ cá nhân"/"Xác thực email" that the '
+        'pages currently render as the matching l10n strings ("Đăng ký tài '
+        'khoản", "Quên mật khẩu", "Hồ sơ", "Xác thực email của bạn"). Re-enable '
+        'after either adding the missing Keys + splitting link copy in the '
+        'product, or rewriting these assertions against the current renderings.',
+  );
 }

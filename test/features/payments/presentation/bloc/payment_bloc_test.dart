@@ -8,7 +8,12 @@ import 'package:flutter_test/flutter_test.dart';
 // the template).
 void main() {
   group('PaymentBloc', () {
-    test('placeholder', () {}, skip: 'TODO(mockito-null-safety): rewrite '
-        'using @GenerateMocks so argument types match repository signatures.');
+    test(
+      'placeholder',
+      () {},
+      skip:
+          'TODO(mockito-null-safety): rewrite '
+          'using @GenerateMocks so argument types match repository signatures.',
+    );
   });
 }

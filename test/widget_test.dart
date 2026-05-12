@@ -14,8 +14,9 @@ void main() {
   // DI / locale-detection, so neither the welcome page nor the login page
   // actually finishes mounting. Re-enable after a full-boot test harness is
   // wired.
-  testWidgets('App displays welcome message', skip: true,
-      (WidgetTester tester) async {
+  testWidgets('App displays welcome message', skip: true, (
+    WidgetTester tester,
+  ) async {
     // Build our app and trigger a frame.
     // Note: MyApp requires ProviderScope, so we need to wrap it
     await tester.pumpWidget(
