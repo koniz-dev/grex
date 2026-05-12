@@ -50,6 +50,9 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
+      - name: Prepare .env from template
+        run: cp .env.example .env
+
       - name: Get dependencies
         run: flutter pub get
 

@@ -60,6 +60,9 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
+      - name: Prepare .env from template
+        run: cp .env.example .env
+
       - name: Get dependencies
         run: flutter pub get
 
@@ -115,6 +118,9 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
+      - name: Prepare .env from template
+        run: cp .env.example .env
+
       - name: Get dependencies
         run: flutter pub get
 
@@ -165,6 +171,9 @@ jobs:
         with:
           flutter-version: 'stable'
           channel: 'stable'
+
+      - name: Prepare .env from template
+        run: cp .env.example .env
 
       - name: Get dependencies
         run: flutter pub get
