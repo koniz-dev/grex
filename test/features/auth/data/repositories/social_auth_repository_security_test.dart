@@ -374,7 +374,8 @@ void main() {
 
           // Assert
           expect(result.isRight(), isTrue);
-          // Note: External browser launch mode validation is performed internally
+          // Note: External browser launch mode validation is performed
+          // internally
         },
       );
 

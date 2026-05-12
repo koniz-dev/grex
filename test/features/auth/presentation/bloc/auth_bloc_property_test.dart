@@ -120,7 +120,8 @@ void main() {
               socialAuthRepository: mockSocialAuthRepository,
             );
 
-            // Set up expectation, then trigger event (add must come BEFORE await)
+            // Set up expectation, then trigger event (add must come BEFORE
+            // await)
             final expectation = expectLater(
               testBloc.stream,
               emitsInOrder([
@@ -227,7 +228,8 @@ void main() {
             // Verify we start in authenticated state
             expect(testBloc.state, isA<AuthAuthenticated>());
 
-            // Set up expectation, then trigger event (add must come BEFORE await)
+            // Set up expectation, then trigger event (add must come BEFORE
+            // await)
             final signOutExpectation = expectLater(
               stream,
               emitsInOrder([

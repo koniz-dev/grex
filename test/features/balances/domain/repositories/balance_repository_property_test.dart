@@ -476,7 +476,8 @@ void main() {
                     balance.balance.abs(),
                     lessThan(1000.0),
                     reason:
-                        'Individual balances should be reasonable (iteration $i)',
+                        'Individual balances should be reasonable (iteration '
+                        '$i)',
                   );
                 }
               },
@@ -489,7 +490,8 @@ void main() {
         test(
           'should include all expenses and payments in balance calculation',
           () async {
-            // Property: Balance calculations should account for all expenses and
+            // Property: Balance calculations should account for all expenses
+            // and
             // payments in the group, not missing any transactions
 
             const iterations = 50;
@@ -551,7 +553,8 @@ void main() {
                         '(iteration $i)',
                   );
 
-                  // Property: Total balances should sum to zero (all transactions
+                  // Property: Total balances should sum to zero (all
+                  // transactions
                   // included)
                   final totalBalance = calculatedBalances.fold<double>(
                     0,
@@ -688,7 +691,8 @@ void main() {
                           balances1[j].userId,
                           equals(balances2[j].userId),
                           reason:
-                              'User IDs should match (iteration $i, balance $j)',
+                              'User IDs should match '
+                              '(iteration $i, balance $j)',
                         );
                         expect(
                           balances1[j].balance,
@@ -709,7 +713,8 @@ void main() {
 
       group('Property 20: Settlement plan minimizes transactions', () {
         test(
-          'should generate settlement plan that minimizes number of transactions',
+          'should generate settlement plan that minimizes number of '
+          'transactions',
           () async {
             // Property: For any group with non-zero balances, the settlement
             // plan should minimize the number of transactions needed to settle
@@ -803,7 +808,8 @@ void main() {
                       settlement.amount,
                       greaterThan(0),
                       reason:
-                          'Settlement amounts should be positive (iteration $i)',
+                          'Settlement amounts should be positive '
+                          '(iteration $i)',
                     );
                     expect(
                       settlement.payerId,
@@ -872,7 +878,8 @@ void main() {
             // Act
             final result = await repository.getSettlementPlan(groupId);
 
-            // Assert - Property: Balanced group should have empty settlement plan
+            // Assert - Property: Balanced group should have empty settlement
+            // plan
             expect(result.isRight(), isTrue);
             result.fold(
               (failure) => fail('Should not fail for balanced group: $failure'),
@@ -925,7 +932,8 @@ void main() {
             // Act
             final result = await repository.getSettlementPlan(groupId);
 
-            // Assert - Property: Simple case should have exactly one transaction
+            // Assert - Property: Simple case should have exactly one
+            // transaction
             expect(result.isRight(), isTrue);
             result.fold(
               (failure) => fail('Should not fail for simple case: $failure'),
@@ -943,7 +951,8 @@ void main() {
                   settlement.amount,
                   closeTo(amount, 0.01),
                   reason:
-                      'Settlement amount should match debt amount (iteration $i)',
+                      'Settlement amount should match debt amount (iteration '
+                      '$i)',
                 );
                 expect(
                   settlement.payerId,
@@ -1000,7 +1009,8 @@ void main() {
             // Act
             final result = await repository.getSettlementPlan(groupId);
 
-            // Assert - Property: Total settlement amounts should match total debt/credit
+            // Assert - Property: Total settlement amounts should match total
+            // debt/credit
             expect(result.isRight(), isTrue);
             result.fold(
               (failure) => fail('Should not fail: $failure'),
@@ -1105,7 +1115,8 @@ void main() {
                     settlement.payerId,
                     isNot(equals(settlement.recipientId)),
                     reason:
-                        'Payer and recipient should be different (iteration $i)',
+                        'Payer and recipient should be different '
+                        '(iteration $i)',
                   );
                 }
 
@@ -1128,7 +1139,7 @@ void main() {
     },
     skip:
         'TODO(supabase-mock): MockSupabaseClient.auth getter is null '
-        '(type \'Null\' is not a subtype of \'GoTrueClient\'). The shared mock '
+        "(type 'Null' is not a subtype of 'GoTrueClient'). The shared mock "
         'in test/helpers/supabase_mocks.dart needs an explicit auth stub before '
         'these property tests can construct the repository.',
   );

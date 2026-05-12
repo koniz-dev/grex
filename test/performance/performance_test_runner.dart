@@ -5,7 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 /// Performance test runner for social login functionality
 ///
 /// This script runs all performance tests and generates a performance report.
-/// It can be used in CI/CD pipelines to ensure performance requirements are met.
+/// It can be used in CI/CD pipelines to ensure performance requirements are
+/// met.
 ///
 /// Usage:
 /// ```bash
@@ -20,7 +21,7 @@ void main() {
     });
 
     testWidgets('Run complete performance test suite', (tester) async {
-      print('Starting Social Login Performance Test Suite...\n');
+      stdout.writeln('Starting Social Login Performance Test Suite...\n');
 
       final results = await runner.runAllTests();
 
@@ -28,7 +29,7 @@ void main() {
       final report = runner.generateReport(results);
 
       // Print results to console
-      print(report);
+      stdout.writeln(report);
 
       // Save results to file for CI/CD
       await runner.saveResults(results);
@@ -36,10 +37,11 @@ void main() {
       // Assert all tests passed performance requirements
       final failedTests = results.where((r) => !r.passed).toList();
       if (failedTests.isNotEmpty) {
-        print('\nFAILED PERFORMANCE TESTS:');
+        stdout.writeln('\nFAILED PERFORMANCE TESTS:');
         for (final test in failedTests) {
-          print(
-            '  - ${test.name}: ${test.actualTime}ms (expected < ${test.expectedTime}ms)',
+          stdout.writeln(
+            '  - ${test.name}: ${test.actualTime}ms (expected < '
+            '${test.expectedTime}ms)',
           );
         }
       }
@@ -57,26 +59,21 @@ void main() {
 class PerformanceTestRunner {
   /// Run all performance tests and collect results
   Future<List<PerformanceTestResult>> runAllTests() async {
-    final results = <PerformanceTestResult>[];
-
-    // OAuth Flow Performance Tests
-    results.addAll(await _runOAuthFlowTests());
-
-    // Deep Link Processing Tests
-    results.addAll(await _runDeepLinkTests());
-
-    // Session Management Tests
-    results.addAll(await _runSessionTests());
-
-    // Profile Setup Tests
-    results.addAll(await _runProfileSetupTests());
-
-    return results;
+    return <PerformanceTestResult>[
+      // OAuth Flow Performance Tests
+      ...await _runOAuthFlowTests(),
+      // Deep Link Processing Tests
+      ...await _runDeepLinkTests(),
+      // Session Management Tests
+      ...await _runSessionTests(),
+      // Profile Setup Tests
+      ...await _runProfileSetupTests(),
+    ];
   }
 
   /// Run OAuth flow performance tests
   Future<List<PerformanceTestResult>> _runOAuthFlowTests() async {
-    print('Running OAuth Flow Performance Tests...');
+    stdout.writeln('Running OAuth Flow Performance Tests...');
 
     final results = <PerformanceTestResult>[];
 
@@ -118,7 +115,7 @@ class PerformanceTestRunner {
 
   /// Run deep link processing performance tests
   Future<List<PerformanceTestResult>> _runDeepLinkTests() async {
-    print('Running Deep Link Processing Performance Tests...');
+    stdout.writeln('Running Deep Link Processing Performance Tests...');
 
     final results = <PerformanceTestResult>[];
 
@@ -160,7 +157,7 @@ class PerformanceTestRunner {
 
   /// Run session management performance tests
   Future<List<PerformanceTestResult>> _runSessionTests() async {
-    print('Running Session Management Performance Tests...');
+    stdout.writeln('Running Session Management Performance Tests...');
 
     final results = <PerformanceTestResult>[];
 
@@ -213,7 +210,7 @@ class PerformanceTestRunner {
 
   /// Run profile setup performance tests
   Future<List<PerformanceTestResult>> _runProfileSetupTests() async {
-    print('Running Profile Setup Performance Tests...');
+    stdout.writeln('Running Profile Setup Performance Tests...');
 
     final results = <PerformanceTestResult>[];
 
@@ -258,7 +255,9 @@ class PerformanceTestRunner {
       final passed = actualTime <= expectedTime;
 
       final status = passed ? '✅ PASS' : '❌ FAIL';
-      print('  $status $name: ${actualTime}ms (expected < ${expectedTime}ms)');
+      stdout.writeln(
+        '  $status $name: ${actualTime}ms (expected < ${expectedTime}ms)',
+      );
 
       return PerformanceTestResult(
         name: name,
@@ -266,9 +265,9 @@ class PerformanceTestRunner {
         expectedTime: expectedTime,
         passed: passed,
       );
-    } catch (e) {
+    } on Object catch (e) {
       stopwatch.stop();
-      print('  ❌ ERROR $name: $e');
+      stdout.writeln('  ❌ ERROR $name: $e');
 
       return PerformanceTestResult(
         name: name,
@@ -282,21 +281,21 @@ class PerformanceTestRunner {
 
   /// Generate a performance report
   String generateReport(List<PerformanceTestResult> results) {
-    final buffer = StringBuffer();
-
-    buffer.writeln('\n${'=' * 60}');
-    buffer.writeln('SOCIAL LOGIN PERFORMANCE TEST REPORT');
-    buffer.writeln('=' * 60);
+    final buffer = StringBuffer()
+      ..writeln('\n${'=' * 60}')
+      ..writeln('SOCIAL LOGIN PERFORMANCE TEST REPORT')
+      ..writeln('=' * 60);
 
     final passedTests = results.where((r) => r.passed).length;
     final totalTests = results.length;
     final passRate = (passedTests / totalTests * 100).toStringAsFixed(1);
 
-    buffer.writeln('Total Tests: $totalTests');
-    buffer.writeln('Passed: $passedTests');
-    buffer.writeln('Failed: ${totalTests - passedTests}');
-    buffer.writeln('Pass Rate: $passRate%');
-    buffer.writeln();
+    buffer
+      ..writeln('Total Tests: $totalTests')
+      ..writeln('Passed: $passedTests')
+      ..writeln('Failed: ${totalTests - passedTests}')
+      ..writeln('Pass Rate: $passRate%')
+      ..writeln();
 
     // Group results by category
     final categories = <String, List<PerformanceTestResult>>{};
@@ -340,11 +339,11 @@ class PerformanceTestRunner {
     final fastestTest = results.reduce(
       (a, b) => a.actualTime < b.actualTime ? a : b,
     );
-    buffer.writeln(
-      'Fastest test: ${fastestTest.name} (${fastestTest.actualTime}ms)',
-    );
-
-    buffer.writeln('=' * 60);
+    buffer
+      ..writeln(
+        'Fastest test: ${fastestTest.name} (${fastestTest.actualTime}ms)',
+      )
+      ..writeln('=' * 60);
 
     return buffer.toString();
   }
@@ -367,9 +366,9 @@ class PerformanceTestRunner {
 }''';
 
       await file.writeAsString(jsonString);
-      print('\nPerformance results saved to: ${file.path}');
-    } catch (e) {
-      print('Warning: Could not save performance results: $e');
+      stdout.writeln('\nPerformance results saved to: ${file.path}');
+    } on Object catch (e) {
+      stdout.writeln('Warning: Could not save performance results: $e');
     }
   }
 

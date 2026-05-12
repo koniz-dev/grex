@@ -29,18 +29,21 @@ MaterialApp _wrap(Widget home) {
 
 /// Property 20: Loading State Disables Authentication Buttons
 ///
-/// This property validates that when social login buttons are in loading state,
-/// they are properly disabled and show loading indicators instead of normal content.
+/// This property validates that when social login buttons are in loading
+/// state, they are properly disabled and show loading indicators instead of
+/// normal content.
 ///
 /// Validates Requirements:
 /// - 6.5: Loading states disable all authentication buttons
 void main() {
   group('Property 20: Loading State Disables Authentication Buttons', () {
     testWidgets(
-      'should disable all auth buttons during loading and show loading indicator',
+      'should disable all auth buttons during loading and show '
+      'loading indicator',
       (tester) async {
         // Property: For any combination of loading states and providers,
-        // buttons should be disabled when loading and show appropriate indicators
+        // buttons should be disabled when loading and show appropriate
+        // indicators
 
         final random = Random();
 
@@ -73,12 +76,14 @@ void main() {
           final button = tester.widget<OutlinedButton>(buttonFinder);
 
           if (isLoading) {
-            // Property: Loading state should disable button regardless of onPressed
+            // Property: Loading state should disable button regardless of
+            // onPressed
             expect(
               button.onPressed,
               isNull,
               reason:
-                  'Iteration $iteration: Button should be disabled when loading',
+                  'Iteration $iteration: Button should be disabled when '
+                  'loading',
             );
 
             // Property: Loading state should show CircularProgressIndicator
@@ -86,7 +91,8 @@ void main() {
               find.byType(CircularProgressIndicator),
               findsOneWidget,
               reason:
-                  'Iteration $iteration: Should show loading indicator when loading',
+                  'Iteration $iteration: Should show loading indicator '
+                  'when loading',
             );
 
             // Property: Loading state should not show SVG icon
@@ -102,29 +108,35 @@ void main() {
                 button.onPressed,
                 isNotNull,
                 reason:
-                    'Iteration $iteration: Button should be enabled when not loading and has onPressed',
+                    'Iteration $iteration: Button should be enabled when '
+                    'not loading and has onPressed',
               );
             } else {
               expect(
                 button.onPressed,
                 isNull,
                 reason:
-                    'Iteration $iteration: Button should be disabled when onPressed is null',
+                    'Iteration $iteration: Button should be disabled when '
+                    'onPressed is null',
               );
             }
 
-            // Property: Non-loading state should not show CircularProgressIndicator
+            // Property: Non-loading state should not show
+            // CircularProgressIndicator
             expect(
               find.byType(CircularProgressIndicator),
               findsNothing,
               reason:
-                  'Iteration $iteration: Should not show loading indicator when not loading',
+                  'Iteration $iteration: Should not show loading indicator '
+                  'when not loading',
             );
           }
 
-          // Property: Button should always show text regardless of loading state
+          // Property: Button should always show text regardless of loading
+          // state
           final expectedText = testProvider == SocialAuthProvider.google
-              ? 'Continue with Google' // Using hardcoded text since we can't access context.l10n in tests easily
+              // Hardcoded text since context.l10n isn't easy to access here.
+              ? 'Continue with Google'
               : 'Continue with Apple';
 
           expect(
@@ -144,7 +156,8 @@ void main() {
     testWidgets(
       'should show correct loading indicator colors for different providers',
       (tester) async {
-        // Property: Loading indicators should use appropriate colors for each provider
+        // Property: Loading indicators should use appropriate colors for
+        // each provider
 
         final providers = [SocialAuthProvider.google, SocialAuthProvider.apple];
 
@@ -172,7 +185,8 @@ void main() {
             final valueColor =
                 indicator.valueColor! as AlwaysStoppedAnimation<Color>;
 
-            // Property: Google should use dark color, Apple should use white color
+            // Property: Google should use dark color, Apple should use
+            // white color
             if (provider == SocialAuthProvider.google) {
               expect(
                 valueColor.value,
@@ -197,7 +211,8 @@ void main() {
     testWidgets('should maintain button dimensions during loading state', (
       tester,
     ) async {
-      // Property: Button dimensions should remain consistent between loading and non-loading states
+      // Property: Button dimensions should remain consistent between
+      // loading and non-loading states
 
       final random = Random();
 
@@ -241,7 +256,8 @@ void main() {
           loadingSize,
           equals(nonLoadingSize),
           reason:
-              'Iteration $iteration: Button size should not change during loading',
+              'Iteration $iteration: Button size should not change during '
+              'loading',
         );
 
         // Property: Button should maintain required dimensions
@@ -262,7 +278,8 @@ void main() {
     });
 
     testWidgets('should handle rapid loading state changes', (tester) async {
-      // Property: Button should handle rapid loading state changes without errors
+      // Property: Button should handle rapid loading state changes
+      // without errors
 
       final random = Random();
 
@@ -312,7 +329,8 @@ void main() {
             buttonFinder,
             findsOneWidget,
             reason:
-                'Iteration $iteration, Toggle $toggle: Button should always exist',
+                'Iteration $iteration, Toggle $toggle: Button should '
+                'always exist',
           );
 
           // Property: Should show either loading indicator or icon, never both
@@ -326,13 +344,15 @@ void main() {
             hasLoadingIndicator && hasIcon,
             isFalse,
             reason:
-                'Iteration $iteration, Toggle $toggle: Should not show both loading and icon',
+                'Iteration $iteration, Toggle $toggle: Should not show '
+                'both loading and icon',
           );
           expect(
             hasLoadingIndicator || hasIcon,
             isTrue,
             reason:
-                'Iteration $iteration, Toggle $toggle: Should show either loading or icon',
+                'Iteration $iteration, Toggle $toggle: Should show either '
+                'loading or icon',
           );
         }
 

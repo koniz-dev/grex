@@ -92,7 +92,8 @@ void main() {
             const AuthSocialLoginInProgress(SocialAuthProvider.google),
             const AuthError(
               message:
-                  'Connection timed out. Please check your network and try again.',
+                  'Connection timed out. Please check your network and try '
+                  'again.',
               failure: SocialAuthTimeoutFailure(),
             ),
           ]);
@@ -137,7 +138,8 @@ void main() {
             const AuthSocialLoginInProgress(SocialAuthProvider.apple),
             const AuthError(
               message:
-                  'Connection timed out. Please check your network and try again.',
+                  'Connection timed out. Please check your network and try '
+                  'again.',
               failure: SocialAuthTimeoutFailure(),
             ),
           ]);
@@ -160,7 +162,8 @@ void main() {
     );
 
     test('should display timeout error message with 100+ iterations', () {
-      // Property: All timeout failures should display appropriate error messages
+      // Property: All timeout failures should display appropriate error
+      // messages
 
       for (var i = 0; i < 100; i++) {
         final timeoutFailures = _generateTimeoutFailures(i);
@@ -173,7 +176,8 @@ void main() {
                 failure.message.toLowerCase().contains('timed out'),
             isTrue,
             reason:
-                'Timeout failure should contain timeout-related message: ${failure.message}',
+                'Timeout failure should contain timeout-related message: '
+                '${failure.message}',
           );
 
           // Verify message is user-friendly
@@ -182,41 +186,46 @@ void main() {
       }
     });
 
-    test('should return to login screen after timeout with 100+ iterations', () {
-      // Property: Timeout errors should not leave user in loading or inconsistent state
+    test(
+      'should return to login screen after timeout with 100+ iterations',
+      () {
+        // Property: Timeout errors should not leave user in loading or
+        // inconsistent state
 
-      for (var i = 0; i < 100; i++) {
-        // Simulate timeout scenario
-        final timeoutState = AuthError(
-          message: _generateTimeoutMessage(i),
-          failure: const SocialAuthTimeoutFailure(),
-        );
+        for (var i = 0; i < 100; i++) {
+          // Simulate timeout scenario
+          final timeoutState = AuthError(
+            message: _generateTimeoutMessage(i),
+            failure: const SocialAuthTimeoutFailure(),
+          );
 
-        // Verify timeout state properties
-        expect(timeoutState.failure, isA<SocialAuthTimeoutFailure>());
-        expect(
-          timeoutState.message.toLowerCase(),
-          anyOf(contains('timeout'), contains('timed out')),
-        );
+          // Verify timeout state properties
+          expect(timeoutState.failure, isA<SocialAuthTimeoutFailure>());
+          expect(
+            timeoutState.message.toLowerCase(),
+            anyOf(contains('timeout'), contains('timed out')),
+          );
 
-        // Provider context is shown in AuthSocialLoginInProgress; the
-        // error message itself stays generic for clean UX.
+          // Provider context is shown in AuthSocialLoginInProgress; the
+          // error message itself stays generic for clean UX.
 
-        // Verify state indicates return to login
-        expect(timeoutState, isA<AuthError>());
-        expect(timeoutState.message, isNotEmpty);
+          // Verify state indicates return to login
+          expect(timeoutState, isA<AuthError>());
+          expect(timeoutState.message, isNotEmpty);
 
-        // Verify state is not loading or in-progress
-        expect(timeoutState, isNot(isA<AuthLoading>()));
-        expect(timeoutState, isNot(isA<AuthSocialLoginInProgress>()));
+          // Verify state is not loading or in-progress
+          expect(timeoutState, isNot(isA<AuthLoading>()));
+          expect(timeoutState, isNot(isA<AuthSocialLoginInProgress>()));
 
-        // Verify error message suggests retry or alternative
-        _verifyTimeoutRecoveryOptions(timeoutState.message);
-      }
-    });
+          // Verify error message suggests retry or alternative
+          _verifyTimeoutRecoveryOptions(timeoutState.message);
+        }
+      },
+    );
 
     test('should handle various timeout scenarios with 100+ iterations', () {
-      // Property: Different types of timeout errors should all be handled consistently
+      // Property: Different types of timeout errors should all be handled
+      // consistently
 
       for (var i = 0; i < 100; i++) {
         final timeoutScenarios = _generateTimeoutScenarios(i);
@@ -236,25 +245,29 @@ void main() {
       }
     });
 
-    test('should not expose technical timeout details with 100+ iterations', () {
-      // Property: Timeout error messages should not expose technical implementation details
+    test(
+      'should not expose technical timeout details with 100+ iterations',
+      () {
+        // Property: Timeout error messages should not expose technical
+        // implementation details
 
-      for (var i = 0; i < 100; i++) {
-        const timeoutFailure = SocialAuthTimeoutFailure();
+        for (var i = 0; i < 100; i++) {
+          const timeoutFailure = SocialAuthTimeoutFailure();
 
-        // Verify no technical details exposed
-        expect(timeoutFailure.message, isNot(contains('milliseconds')));
-        expect(timeoutFailure.message, isNot(contains('ms')));
-        expect(timeoutFailure.message, isNot(contains('seconds')));
-        expect(timeoutFailure.message, isNot(contains('thread')));
-        expect(timeoutFailure.message, isNot(contains('callback')));
-        expect(timeoutFailure.message, isNot(contains('async')));
-        expect(timeoutFailure.message, isNot(contains('future')));
+          // Verify no technical details exposed
+          expect(timeoutFailure.message, isNot(contains('milliseconds')));
+          expect(timeoutFailure.message, isNot(contains('ms')));
+          expect(timeoutFailure.message, isNot(contains('seconds')));
+          expect(timeoutFailure.message, isNot(contains('thread')));
+          expect(timeoutFailure.message, isNot(contains('callback')));
+          expect(timeoutFailure.message, isNot(contains('async')));
+          expect(timeoutFailure.message, isNot(contains('future')));
 
-        // Verify message is user-appropriate
-        _verifyUserAppropriateMessage(timeoutFailure.message);
-      }
-    });
+          // Verify message is user-appropriate
+          _verifyUserAppropriateMessage(timeoutFailure.message);
+        }
+      },
+    );
   });
 }
 

@@ -246,7 +246,8 @@ void main() {
             googleDomainUser.emailConfirmed.runtimeType,
             equals(appleDomainUser.emailConfirmed.runtimeType),
             reason:
-                'Iteration $i: Both users should have same email confirmed type',
+                'Iteration $i: Both users should have same email '
+                'confirmed type',
           );
         }
       },

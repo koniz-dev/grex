@@ -90,7 +90,8 @@ void main() {
             RegExp(r'^[A-Za-z0-9\-._]+$').hasMatch(result.plainNonce),
             true,
             reason:
-                'Plain nonce should be alphanumeric with allowed special chars (iteration $i)',
+                'Plain nonce should be alphanumeric with allowed special chars '
+                '(iteration $i)',
           );
 
           // Reset mock for next iteration
@@ -135,7 +136,8 @@ void main() {
             result.hashedNonce,
             matches(RegExp(r'^[a-f0-9]{64}$')),
             reason:
-                'Hashed nonce must be 64 lowercase hex characters (iteration $i)',
+                'Hashed nonce must be 64 lowercase hex characters (iteration '
+                '$i)',
           );
 
           // Reset mock for next iteration
@@ -183,7 +185,8 @@ void main() {
           hashedNonces.length,
           equals(iterations),
           reason:
-              'All hashed nonces should be unique across $iterations iterations',
+              'All hashed nonces should be unique across $iterations '
+              'iterations',
         );
 
         // Property: All plain nonces should be unique
@@ -225,7 +228,8 @@ void main() {
             result.hashedNonce.contains(RegExp('[^a-f0-9]')),
             false,
             reason:
-                'Hashed nonce should be URL-safe (only hex chars) (iteration $i)',
+                'Hashed nonce should be URL-safe (only hex chars) (iteration '
+                '$i)',
           );
 
           // Property: Hashed nonce has no whitespace
@@ -355,7 +359,8 @@ void main() {
             result.hashedNonce,
             isNot(equals(differentHash)),
             reason:
-                'Different plain nonces should produce different hashes (iteration $i)',
+                'Different plain nonces should produce different hashes '
+                '(iteration $i)',
           );
 
           // Property: Hashed nonce cannot be reversed to plain nonce

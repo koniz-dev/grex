@@ -437,7 +437,8 @@ void main() {
         // Assert
         expect(find.byType(OrDivider), findsOneWidget);
 
-        // Verify divider is positioned correctly between login button and social buttons
+        // Verify divider is positioned correctly between login button and
+        // social buttons
         final loginButton = find.widgetWithText(ElevatedButton, 'Đăng nhập');
         final orDivider = find.byType(OrDivider);
         final socialButtons = find.byType(SocialLoginButton);

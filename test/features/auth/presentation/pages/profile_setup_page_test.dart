@@ -39,7 +39,7 @@ void main() {
       // hard-coded English UI strings ("Continue", "Cancel Profile Setup",
       // etc.) — these defaults flow through LocaleDefaults, not the widget
       // tree locale.
-      LocaleDefaults.setAppLocale(const Locale('vi'));
+      LocaleDefaults.appLocale = const Locale('vi');
     });
 
     tearDown(LocaleDefaults.resetAppLocale);

@@ -32,7 +32,7 @@ class LocaleNotifier extends Notifier<Locale> {
         state = locale;
         // Keep LocaleDefaults in sync so signup / profile-setup / new-group
         // defaults follow the user's selected language, not the device.
-        LocaleDefaults.setAppLocale(locale);
+        LocaleDefaults.appLocale = locale;
       });
     });
     return LocalizationService.defaultLocale;
@@ -48,7 +48,7 @@ class LocaleNotifier extends Notifier<Locale> {
     state = locale;
     // Keep LocaleDefaults in sync so signup / profile-setup / new-group
     // defaults follow the user's selected language, not the device.
-    LocaleDefaults.setAppLocale(locale);
+    LocaleDefaults.appLocale = locale;
   }
 }
 

@@ -14,6 +14,11 @@ analyzer:
     # Exclude generated mock files from analysis
     - "**/*.mocks.dart"
     - "**/*.g.dart"
+  errors:
+    # TODO(scope): comments track intentional follow-up work (i18n wiring,
+    # mockito null-safety rewrites, realtime hookup, etc.). Keep the markers
+    # searchable but silence the analyzer info noise.
+    todo: ignore
 
 linter:
   # The lint rules applied to this project can be customized in the

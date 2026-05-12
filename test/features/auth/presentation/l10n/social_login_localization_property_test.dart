@@ -51,71 +51,77 @@ void main() {
       'linkAccountQuestion': ['provider'],
     };
 
-    test('should have all social login strings in all supported locales', () async {
-      for (var iteration = 0; iteration < 100; iteration++) {
-        for (final locale in supportedLocales) {
-          // Create localization for this locale
-          final localizations = await AppLocalizations.delegate.load(locale);
+    test(
+      'should have all social login strings in all supported locales',
+      () async {
+        for (var iteration = 0; iteration < 100; iteration++) {
+          for (final locale in supportedLocales) {
+            // Create localization for this locale
+            final localizations = await AppLocalizations.delegate.load(locale);
 
-          // Test all basic social login strings
-          for (final stringKey in socialLoginStrings) {
-            final value = _getStringValue(localizations, stringKey);
+            // Test all basic social login strings
+            for (final stringKey in socialLoginStrings) {
+              final value = _getStringValue(localizations, stringKey);
 
-            expect(
-              value,
-              isNotNull,
-              reason:
-                  'String "$stringKey" should exist in locale '
-                  '${locale.languageCode}',
-            );
-
-            expect(
-              value!.trim(),
-              isNotEmpty,
-              reason:
-                  'String "$stringKey" should not be empty in locale '
-                  '${locale.languageCode}',
-            );
-          }
-
-          // Test parameterized strings
-          for (final entry in parameterizedStrings.entries) {
-            final stringKey = entry.key;
-            final parameters = entry.value;
-
-            final value = _getParameterizedStringValue(
-              localizations,
-              stringKey,
-              parameters,
-            );
-
-            expect(
-              value,
-              isNotNull,
-              reason:
-                  'Parameterized string "$stringKey" should exist in locale ${locale.languageCode}',
-            );
-
-            expect(
-              value!.trim(),
-              isNotEmpty,
-              reason:
-                  'Parameterized string "$stringKey" should not be empty in locale ${locale.languageCode}',
-            );
-
-            // Verify placeholder replacement worked
-            for (final param in parameters) {
               expect(
-                value.contains('{$param}'),
-                isFalse,
+                value,
+                isNotNull,
                 reason:
-                    'Placeholder {$param} should be replaced in "$stringKey" for locale ${locale.languageCode}',
+                    'String "$stringKey" should exist in locale '
+                    '${locale.languageCode}',
               );
+
+              expect(
+                value!.trim(),
+                isNotEmpty,
+                reason:
+                    'String "$stringKey" should not be empty in locale '
+                    '${locale.languageCode}',
+              );
+            }
+
+            // Test parameterized strings
+            for (final entry in parameterizedStrings.entries) {
+              final stringKey = entry.key;
+              final parameters = entry.value;
+
+              final value = _getParameterizedStringValue(
+                localizations,
+                stringKey,
+                parameters,
+              );
+
+              expect(
+                value,
+                isNotNull,
+                reason:
+                    'Parameterized string "$stringKey" should exist in locale '
+                    '${locale.languageCode}',
+              );
+
+              expect(
+                value!.trim(),
+                isNotEmpty,
+                reason:
+                    'Parameterized string "$stringKey" should not be empty in '
+                    'locale ${locale.languageCode}',
+              );
+
+              // Verify placeholder replacement worked
+              for (final param in parameters) {
+                expect(
+                  value.contains('{$param}'),
+                  isFalse,
+                  reason:
+                      'Placeholder {$param} should be replaced in "$stringKey" '
+                      'for locale ${locale.languageCode}',
+                );
+              }
             }
           }
         }
-      }
-    });
+      },
+    );
 
     test('should have culturally appropriate translations', () async {
       for (var iteration = 0; iteration < 100; iteration++) {
@@ -143,7 +149,8 @@ void main() {
                 stringKey,
               );
 
-              // For non-English locales, the translation should be different from English
+              // For non-English locales, the translation should be different
+              // from English
               // (except for proper nouns like "Google" and "Apple")
               if (!stringKey.contains('Google') &&
                   !stringKey.contains('Apple')) {
@@ -151,7 +158,8 @@ void main() {
                   localizedValue,
                   isNot(equals(englishValue)),
                   reason:
-                      'String "$stringKey" should be translated in locale ${locale.languageCode}',
+                      'String "$stringKey" should be translated in locale '
+                      '${locale.languageCode}',
                 );
               }
             }
@@ -221,12 +229,14 @@ void main() {
 
             if (minLength < 3) continue;
 
-            // Allow up to 3x length difference (reasonable for different languages)
+            // Allow up to 3x length difference (reasonable for different
+            // languages)
             expect(
               maxLength <= minLength * 3,
               isTrue,
               reason:
-                  'String "${entry.key}" has excessive length variation across locales: min=$minLength, max=$maxLength',
+                  'String "${entry.key}" has excessive length variation across '
+                  'locales: min=$minLength, max=$maxLength',
             );
           }
         }

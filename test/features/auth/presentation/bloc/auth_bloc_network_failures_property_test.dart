@@ -53,7 +53,8 @@ void main() {
     test(
       'Property 4: Network Failures Display Retry Option',
       () async {
-        // Feature: social-login, Property 4: Network Failures Display Retry Option
+        // Feature: social-login, Property 4: Network Failures Display Retry
+        // Option
         // Validates: Requirements 1.4, 2.4, 8.2
         // Test with 100+ iterations for both providers
         // Verify error message displayed
@@ -177,6 +178,7 @@ void main() {
             ).thenAnswer((_) async => Left(failure));
           }
 
+          // Trigger social login and wait for completion
           final testBloc = AuthBloc(
             authRepository: mockAuthRepository,
             userRepository: mockUserRepository,
@@ -184,10 +186,7 @@ void main() {
             sessionManager: mockSessionManager,
             deepLinkHandler: mockDeepLinkHandler,
             analytics: mockAnalytics,
-          );
-
-          // Trigger social login and wait for completion
-          testBloc.add(AuthSocialLoginRequested(provider));
+          )..add(AuthSocialLoginRequested(provider));
           await Future<void>.delayed(const Duration(milliseconds: 100));
 
           // Verify error message provides actionable guidance
@@ -215,7 +214,8 @@ void main() {
             errorState.message,
             isNot(contains('Exception')),
             reason:
-                'Iteration $i: Error message should not contain technical terms',
+                'Iteration $i: Error message should not contain '
+                'technical terms',
           );
 
           await testBloc.close();
@@ -282,6 +282,7 @@ void main() {
             mockUserRepository.getUserProfileByEmail(any),
           ).thenAnswer((_) async => const Right(null));
 
+          // First attempt - should fail
           final testBloc = AuthBloc(
             authRepository: mockAuthRepository,
             userRepository: mockUserRepository,
@@ -289,10 +290,7 @@ void main() {
             sessionManager: mockSessionManager,
             deepLinkHandler: mockDeepLinkHandler,
             analytics: mockAnalytics,
-          );
-
-          // First attempt - should fail
-          testBloc.add(AuthSocialLoginRequested(provider));
+          )..add(AuthSocialLoginRequested(provider));
           await Future<void>.delayed(const Duration(milliseconds: 100));
 
           expect(
@@ -347,6 +345,7 @@ void main() {
             ).thenAnswer((_) async => const Left(SocialAuthNetworkFailure()));
           }
 
+          // Trigger network failure
           final testBloc = AuthBloc(
             authRepository: mockAuthRepository,
             userRepository: mockUserRepository,
@@ -354,10 +353,7 @@ void main() {
             sessionManager: mockSessionManager,
             deepLinkHandler: mockDeepLinkHandler,
             analytics: mockAnalytics,
-          );
-
-          // Trigger network failure
-          testBloc.add(AuthSocialLoginRequested(provider));
+          )..add(AuthSocialLoginRequested(provider));
           await Future<void>.delayed(const Duration(milliseconds: 100));
 
           // Property: State should be consistent after network failure
@@ -377,7 +373,8 @@ void main() {
             testBloc.isClosed,
             false,
             reason:
-                'Iteration $i: Bloc should remain functional after network failure',
+                'Iteration $i: Bloc should remain functional after network '
+                'failure',
           );
 
           await testBloc.close();

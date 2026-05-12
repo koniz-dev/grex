@@ -153,7 +153,8 @@ void main() {
                 contains('required'),
               ]),
               reason:
-                  'Documentation should mention minimal scopes for ${provider.name}',
+                  'Documentation should mention minimal scopes for '
+                  '${provider.name}',
             );
 
             // Verify all required scopes are documented
@@ -162,7 +163,8 @@ void main() {
                 documentation.toLowerCase(),
                 contains(scope.toLowerCase()),
                 reason:
-                    'Documentation should mention scope "$scope" for ${provider.name}',
+                    'Documentation should mention scope "$scope" for '
+                    '${provider.name}',
               );
             }
 
@@ -210,7 +212,8 @@ void main() {
               OAuthScopeValidator.validateScopes(provider, uppercaseScopes),
               isFalse,
               reason:
-                  'Uppercase scopes should fail validation for ${provider.name}',
+                  'Uppercase scopes should fail validation for '
+                  '${provider.name}',
             );
 
             // Test duplicate scopes
@@ -219,7 +222,8 @@ void main() {
               OAuthScopeValidator.validateScopes(provider, duplicateScopes),
               isTrue,
               reason:
-                  'Duplicate valid scopes should still pass for ${provider.name}',
+                  'Duplicate valid scopes should still pass for '
+                  '${provider.name}',
             );
           }
         }

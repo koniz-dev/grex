@@ -7,7 +7,8 @@ import '../helpers/mock_helpers.dart';
 
 /// Comprehensive performance tests for social login functionality
 ///
-/// These tests verify that all social login operations meet performance requirements:
+/// These tests verify that all social login operations meet performance
+/// requirements:
 /// - OAuth flow completion time (< 5 seconds after user authorization)
 /// - Deep link processing time (< 1 second)
 /// - Profile setup form rendering time
@@ -160,32 +161,35 @@ void main() {
           );
         });
 
-        testWidgets('Complex deep link with parameters should process quickly', (
-          tester,
-        ) async {
-          // Arrange
-          final complexUri = Uri.parse(
-            'io.supabase.grex://login-callback/?'
-            'access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9&'
-            'refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9&'
-            'expires_in=3600&'
-            'token_type=bearer&'
-            'provider_token=ya29.a0ARrdaM&'
-            'provider_refresh_token=1//04_refresh',
-          );
+        testWidgets(
+          'Complex deep link with parameters should process quickly',
+          (tester) async {
+            // Arrange
+            final complexUri = Uri.parse(
+              'io.supabase.grex://login-callback/?'
+              'access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9&'
+              'refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9&'
+              'expires_in=3600&'
+              'token_type=bearer&'
+              'provider_token=ya29.a0ARrdaM&'
+              'provider_refresh_token=1//04_refresh',
+            );
 
-          // Act & Assert
-          final duration = await _measureAsyncOperation(() async {
-            await deepLinkHandler.handleDeepLink(complexUri);
-          });
+            // Act & Assert
+            final duration = await _measureAsyncOperation(() async {
+              await deepLinkHandler.handleDeepLink(complexUri);
+            });
 
-          // Should still complete within 1 second even with complex parameters
-          expect(duration.inMilliseconds, lessThan(1000));
+            // Should still complete within 1 second even with complex
+            // parameters
+            expect(duration.inMilliseconds, lessThan(1000));
 
-          debugPrint(
-            'Complex deep link processing time: ${duration.inMilliseconds}ms',
-          );
-        });
+            debugPrint(
+              'Complex deep link processing time: '
+              '${duration.inMilliseconds}ms',
+            );
+          },
+        );
 
         testWidgets('Batch deep link processing should scale linearly', (
           tester,
@@ -210,7 +214,8 @@ void main() {
             }
           });
 
-          // Assert - Batch processing should scale reasonably (< 15x single time)
+          // Assert - Batch processing should scale reasonably (< 15x single
+          // time)
           // Handle case where single duration is 0
           final expectedMaxTime = singleDuration.inMilliseconds == 0
               ? 100 // Allow up to 100ms for batch processing
@@ -237,7 +242,8 @@ void main() {
               // Simulate form rendering time
               await Future<void>.delayed(const Duration(milliseconds: 100));
 
-              // Create a simple test widget instead of the complex ProfileSetupPage
+              // Create a simple test widget instead of the complex
+              // ProfileSetupPage
               await tester.pumpWidget(
                 const MaterialApp(
                   home: Scaffold(
@@ -392,10 +398,10 @@ void main() {
               'Cached profile access simulation: '
               '${secondAccessDuration.inMilliseconds}ms',
             );
-            debugPrint(
-              'Cache improvement: '
-              '${firstAccessDuration.inMilliseconds - secondAccessDuration.inMilliseconds}ms',
-            );
+            final improvementMs =
+                firstAccessDuration.inMilliseconds -
+                secondAccessDuration.inMilliseconds;
+            debugPrint('Cache improvement: ${improvementMs}ms');
           },
         );
 

@@ -453,8 +453,8 @@ void main() {
       });
     },
     skip:
-        'TODO(widget-asserts): 2 tests in this file assert specific text/'
-        'widget arrangements that do not match the current ExpenseFilterSheet. '
-        'Fix each assertion before re-enabling.',
+        'TODO(widget-asserts): 2 tests in this file assert specific '
+        'text/widget arrangements that do not match the current '
+        'ExpenseFilterSheet. Fix each assertion before re-enabling.',
   );
 }

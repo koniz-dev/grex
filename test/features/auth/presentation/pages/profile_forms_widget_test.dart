@@ -8,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grex/core/routing/app_routes.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
-import 'package:grex/features/auth/domain/entities/failures.dart';
 import 'package:grex/features/auth/domain/services/session_manager.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/pages/edit_profile_page.dart';
@@ -25,7 +24,7 @@ import '../../../../helpers/test_helpers.mocks.dart';
 ///
 /// Requirements: 3.1, 3.2, 3.3, 3.4, 3.5
 ///
-/// TODO(i18n): The Profile/EditProfile pages and InputValidators still use
+// TODO(i18n): The Profile/EditProfile pages and InputValidators still use
 /// hard-coded English/Vietnamese strings inconsistent with these test
 /// assertions (e.g., page renders "Hồ sơ" but test asserts "Hồ sơ cá nhân";
 /// validators return "Display name is required" but test asserts the
@@ -103,7 +102,7 @@ void main() {
       tearDown(() async {
         for (final c in pendingCompleters) {
           if (!c.isCompleted) {
-            c.complete(const Left(NetworkFailure()));
+            c.complete(const Left<AuthFailure, Object?>(NetworkFailure()));
           }
         }
         unawaited(authBloc.close());
@@ -640,7 +639,7 @@ void main() {
       });
     },
     skip:
-        'TODO(i18n): see file-level comment — group disabled until Profile/'
-        'EditProfile pages + InputValidators are i18n-wired.',
+        'TODO(i18n): see file-level comment — group disabled until '
+        'Profile/EditProfile pages + InputValidators are i18n-wired.',
   );
 }

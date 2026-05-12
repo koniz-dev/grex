@@ -268,6 +268,7 @@ void main() {
             ),
           ).thenAnswer((_) async => const Right(null));
 
+          // Trigger social login and wait for completion
           final testBloc = AuthBloc(
             authRepository: mockAuthRepository,
             userRepository: mockUserRepository,
@@ -275,10 +276,7 @@ void main() {
             sessionManager: mockSessionManager,
             deepLinkHandler: mockDeepLinkHandler,
             analytics: mockAnalytics,
-          );
-
-          // Trigger social login and wait for completion
-          testBloc.add(AuthSocialLoginRequested(provider));
+          )..add(AuthSocialLoginRequested(provider));
           await Future<void>.delayed(const Duration(milliseconds: 100));
 
           // Verify profile data integrity
@@ -386,6 +384,7 @@ void main() {
             ),
           ).thenAnswer((_) async => const Right(null));
 
+          // Trigger social login and wait for completion
           final testBloc = AuthBloc(
             authRepository: mockAuthRepository,
             userRepository: mockUserRepository,
@@ -393,10 +392,7 @@ void main() {
             sessionManager: mockSessionManager,
             deepLinkHandler: mockDeepLinkHandler,
             analytics: mockAnalytics,
-          );
-
-          // Trigger social login and wait for completion
-          testBloc.add(AuthSocialLoginRequested(provider));
+          )..add(AuthSocialLoginRequested(provider));
           await Future<void>.delayed(const Duration(milliseconds: 100));
 
           // Property: Session should be started with correct parameters

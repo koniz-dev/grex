@@ -532,7 +532,8 @@ void main() {
       });
 
       test(
-        'should return true for high attempt count with fallback-eligible failure',
+        'should return true for high attempt count with fallback-eligible '
+        'failure',
         () {
           // Arrange
           const failure = SocialAuthFailure('Generic error');

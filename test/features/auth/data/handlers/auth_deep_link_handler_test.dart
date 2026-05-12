@@ -124,13 +124,11 @@ void main() {
 
       test('should handle dispose before initialize', () {
         // Arrange - create new handler without initializing
-        final newHandler = AuthDeepLinkHandler(
+        // Act & Assert - should not throw
+        AuthDeepLinkHandler(
           onDeepLink: (_) {},
           performanceService: MockPerformanceService(),
-        );
-
-        // Act & Assert - should not throw
-        newHandler.dispose();
+        ).dispose();
       });
     });
 

@@ -63,7 +63,8 @@ void main() {
         when(mockAuth.currentSession).thenReturn(mockSession);
         when(mockAuth.currentUser).thenReturn(mockSupabaseUser);
 
-        // For invalid sessions, hasValidSession should still work based on expiry
+        // For invalid sessions, hasValidSession should still work based on
+        // expiry
         // but other operations might fail
         final hasValidSession = await sessionService.hasValidSession();
 

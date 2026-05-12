@@ -23,7 +23,8 @@ void main() {
         // Check description
         expect(
           find.text(
-            'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia đình',
+            'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia '
+            'đình',
           ),
           findsOneWidget,
         );
@@ -107,7 +108,8 @@ void main() {
         // Check description text style
         final descriptionText = tester.widget<Text>(
           find.text(
-            'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia đình',
+            'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia '
+            'đình',
           ),
         );
         expect(descriptionText.textAlign, equals(TextAlign.center));
@@ -217,7 +219,7 @@ void main() {
     },
     skip:
         'TODO(l10n): EmptyGroupsWidget calls context.l10n.createNewGroup '
-        'but each test\'s MaterialApp is constructed without localizations '
+        "but each test's MaterialApp is constructed without localizations "
         'delegates, so the widget fails to build. Add '
         'AppLocalizations.delegate + locale: Locale("vi") to each test\'s '
         'MaterialApp before re-enabling.',

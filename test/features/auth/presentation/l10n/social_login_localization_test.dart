@@ -43,7 +43,8 @@ void main() {
         expect(
           englishL10n.socialAuthNetworkError,
           equals(
-            'Network connection failed. Please check your internet connection and try again.',
+            'Network connection failed. Please check your internet '
+            'connection and try again.',
           ),
         );
         expect(
@@ -60,7 +61,8 @@ void main() {
         expect(
           englishL10n.cancelProfileSetupMessage,
           equals(
-            'Are you sure you want to cancel? You will be signed out and need to sign in again.',
+            'Are you sure you want to cancel? You will be signed out and '
+            'need to sign in again.',
           ),
         );
         expect(englishL10n.continueSetup, equals('Continue Setup'));
@@ -79,13 +81,15 @@ void main() {
         expect(
           englishL10n.linkAccountQuestion('Google'),
           equals(
-            'Would you like to link your Google account to your existing account?',
+            'Would you like to link your Google account to your existing '
+            'account?',
           ),
         );
         expect(
           englishL10n.linkAccountQuestion('Apple'),
           equals(
-            'Would you like to link your Apple account to your existing account?',
+            'Would you like to link your Apple account to your existing '
+            'account?',
           ),
         );
       });
@@ -120,7 +124,8 @@ void main() {
         expect(
           vietnameseL10n.socialAuthNetworkError,
           equals(
-            'Kết nối mạng thất bại. Vui lòng kiểm tra kết nối internet và thử lại.',
+            'Kết nối mạng thất bại. Vui lòng kiểm tra kết nối internet và '
+            'thử lại.',
           ),
         );
         expect(
@@ -130,14 +135,16 @@ void main() {
         expect(
           vietnameseL10n.accountLinkingError,
           equals(
-            'Không thể liên kết tài khoản của bạn. Vui lòng thử lại hoặc liên hệ hỗ trợ.',
+            'Không thể liên kết tài khoản của bạn. Vui lòng thử lại hoặc '
+            'liên hệ hỗ trợ.',
           ),
         );
         expect(vietnameseL10n.cancelProfileSetup, equals('Hủy thiết lập'));
         expect(
           vietnameseL10n.cancelProfileSetupMessage,
           equals(
-            'Bạn có chắc chắn muốn hủy không? Bạn sẽ được đăng xuất và cần đăng nhập lại.',
+            'Bạn có chắc chắn muốn hủy không? Bạn sẽ được đăng xuất và cần '
+            'đăng nhập lại.',
           ),
         );
         expect(vietnameseL10n.continueSetup, equals('Tiếp tục thiết lập'));
@@ -156,13 +163,15 @@ void main() {
         expect(
           vietnameseL10n.linkAccountQuestion('Google'),
           equals(
-            'Bạn có muốn liên kết tài khoản Google của mình với tài khoản hiện có không?',
+            'Bạn có muốn liên kết tài khoản Google của mình với tài khoản '
+            'hiện có không?',
           ),
         );
         expect(
           vietnameseL10n.linkAccountQuestion('Apple'),
           equals(
-            'Bạn có muốn liên kết tài khoản Apple của mình với tài khoản hiện có không?',
+            'Bạn có muốn liên kết tài khoản Apple của mình với tài khoản '
+            'hiện có không?',
           ),
         );
       });
@@ -188,7 +197,8 @@ void main() {
         expect(
           spanishL10n.socialAuthNetworkError,
           equals(
-            'Falló la conexión de red. Por favor verifica tu conexión a internet e intenta de nuevo.',
+            'Falló la conexión de red. Por favor verifica tu conexión a '
+            'internet e intenta de nuevo.',
           ),
         );
         expect(
@@ -198,7 +208,8 @@ void main() {
         expect(
           spanishL10n.accountLinkingError,
           equals(
-            'No se pudo vincular tu cuenta. Por favor intenta de nuevo o contacta soporte.',
+            'No se pudo vincular tu cuenta. Por favor intenta de nuevo o '
+            'contacta soporte.',
           ),
         );
         expect(
@@ -208,7 +219,8 @@ void main() {
         expect(
           spanishL10n.cancelProfileSetupMessage,
           equals(
-            '¿Estás seguro de que quieres cancelar? Serás desconectado y necesitarás iniciar sesión de nuevo.',
+            '¿Estás seguro de que quieres cancelar? Serás desconectado y '
+            'necesitarás iniciar sesión de nuevo.',
           ),
         );
         expect(spanishL10n.continueSetup, equals('Continuar configuración'));
@@ -219,7 +231,8 @@ void main() {
         expect(
           spanishL10n.linkAccountBenefit,
           equals(
-            'Esto te permitirá iniciar sesión con cualquiera de los dos métodos.',
+            'Esto te permitirá iniciar sesión con cualquiera de los dos '
+            'métodos.',
           ),
         );
       });
@@ -232,7 +245,8 @@ void main() {
         expect(
           spanishL10n.linkAccountQuestion('Google'),
           equals(
-            '¿Te gustaría vincular tu cuenta de Google con tu cuenta existente?',
+            '¿Te gustaría vincular tu cuenta de Google con tu cuenta '
+            'existente?',
           ),
         );
         expect(
@@ -264,7 +278,8 @@ void main() {
         expect(
           arabicL10n.socialAuthNetworkError,
           equals(
-            'فشل في الاتصال بالشبكة. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.',
+            'فشل في الاتصال بالشبكة. يرجى التحقق من اتصالك بالإنترنت '
+            'والمحاولة مرة أخرى.',
           ),
         );
         expect(
@@ -279,7 +294,8 @@ void main() {
         expect(
           arabicL10n.cancelProfileSetupMessage,
           equals(
-            'هل أنت متأكد أنك تريد الإلغاء؟ سيتم تسجيل خروجك وستحتاج إلى تسجيل الدخول مرة أخرى.',
+            'هل أنت متأكد أنك تريد الإلغاء؟ سيتم تسجيل خروجك وستحتاج إلى '
+            'تسجيل الدخول مرة أخرى.',
           ),
         );
         expect(arabicL10n.continueSetup, equals('متابعة الإعداد'));
@@ -336,7 +352,8 @@ void main() {
             accountMessage.contains('{email}'),
             isFalse,
             reason:
-                '$languageName should not contain placeholder in accountExistsMessage',
+                '$languageName should not contain placeholder in '
+                'accountExistsMessage',
           );
 
           expect(
@@ -349,7 +366,8 @@ void main() {
             linkMessage.contains('{provider}'),
             isFalse,
             reason:
-                '$languageName should not contain placeholder in linkAccountQuestion',
+                '$languageName should not contain placeholder in '
+                'linkAccountQuestion',
           );
         }
       });
@@ -422,7 +440,8 @@ void main() {
               translatedValue,
               isNot(equals(englishValue)),
               reason:
-                  '$languageName string at index $i should be different from English',
+                  '$languageName string at index $i should be different '
+                  'from English',
             );
           }
         }

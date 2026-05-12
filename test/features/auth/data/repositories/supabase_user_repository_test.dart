@@ -706,7 +706,8 @@ void main() {
             },
           );
 
-          // Verify the insert was called with correct data including social provider
+          // Verify the insert was called with correct data including social
+          // provider
           final capturedData =
               verify(
                     mockQueryBuilder.insert(captureAny),

@@ -636,7 +636,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       _authStateSubscription = _authRepository.authStateChanges.listen(
         (user) => add(AuthStateChanged(user: user)),
       );
-    } catch (_) {
+    } on Object catch (_) {
       // Repository didn't provide a stream — skip subscription. Either the
       // repository was constructed without one (test fixture) or it isn't
       // initialized yet; callers depending on stream-driven updates should

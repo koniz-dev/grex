@@ -24,107 +24,112 @@ void main() {
       sessionService = SimpleSessionService(mockSupabaseClient);
     });
 
-    test('should revoke session and clear data for Google OAuth users', () async {
-      // Property test with 100+ iterations
-      for (var i = 0; i < 100; i++) {
-        // Generate test data
-        final userId = 'google-user-$i';
-        final email = 'user$i@gmail.com';
-        final displayName = 'Google User $i';
+    test(
+      'should revoke session and clear data for Google OAuth users',
+      () async {
+        // Property test with 100+ iterations
+        for (var i = 0; i < 100; i++) {
+          // Generate test data
+          final userId = 'google-user-$i';
+          final email = 'user$i@gmail.com';
+          final displayName = 'Google User $i';
 
-        // Create mock Supabase user with Google OAuth metadata
-        final mockSupabaseUser = _createMockSupabaseUser(
-          id: userId,
-          email: email,
-          displayName: displayName,
-          providers: ['google'],
-        );
+          // Create mock Supabase user with Google OAuth metadata
+          final mockSupabaseUser = _createMockSupabaseUser(
+            id: userId,
+            email: email,
+            displayName: displayName,
+            providers: ['google'],
+          );
 
-        // Create valid session
-        final mockSession = _createMockSession(
-          user: mockSupabaseUser,
-          expiresAt:
-              DateTime.now()
-                  .add(const Duration(hours: 1))
-                  .millisecondsSinceEpoch ~/
-              1000,
-        );
+          // Create valid session
+          final mockSession = _createMockSession(
+            user: mockSupabaseUser,
+            expiresAt:
+                DateTime.now()
+                    .add(const Duration(hours: 1))
+                    .millisecondsSinceEpoch ~/
+                1000,
+          );
 
-        // Setup initial authenticated state
-        when(mockAuth.currentSession).thenReturn(mockSession);
-        when(mockAuth.currentUser).thenReturn(mockSupabaseUser);
+          // Setup initial authenticated state
+          when(mockAuth.currentSession).thenReturn(mockSession);
+          when(mockAuth.currentUser).thenReturn(mockSupabaseUser);
 
-        // Verify user is initially authenticated
-        final initialUser = sessionService.getCurrentUser();
-        expect(
-          initialUser,
-          isNotNull,
-          reason: 'User should be authenticated initially for iteration $i',
-        );
-        expect(
-          initialUser!.socialProvider,
-          equals(SocialAuthProvider.google),
-          reason: 'Should be Google user for iteration $i',
-        );
+          // Verify user is initially authenticated
+          final initialUser = sessionService.getCurrentUser();
+          expect(
+            initialUser,
+            isNotNull,
+            reason: 'User should be authenticated initially for iteration $i',
+          );
+          expect(
+            initialUser!.socialProvider,
+            equals(SocialAuthProvider.google),
+            reason: 'Should be Google user for iteration $i',
+          );
 
-        final initialSession = await sessionService.hasValidSession();
-        expect(
-          initialSession,
-          isTrue,
-          reason: 'Session should be valid initially for iteration $i',
-        );
+          final initialSession = await sessionService.hasValidSession();
+          expect(
+            initialSession,
+            isTrue,
+            reason: 'Session should be valid initially for iteration $i',
+          );
 
-        // Mock successful sign out
-        when(mockAuth.signOut()).thenAnswer((_) async {
-          // Simulate session clearing after sign out
-          when(mockAuth.currentSession).thenReturn(null);
-          when(mockAuth.currentUser).thenReturn(null);
-        });
+          // Mock successful sign out
+          when(mockAuth.signOut()).thenAnswer((_) async {
+            // Simulate session clearing after sign out
+            when(mockAuth.currentSession).thenReturn(null);
+            when(mockAuth.currentUser).thenReturn(null);
+          });
 
-        // Perform sign out
-        await sessionService.signOut();
+          // Perform sign out
+          await sessionService.signOut();
 
-        // Verify sign out was called
-        verify(mockAuth.signOut()).called(1);
+          // Verify sign out was called
+          verify(mockAuth.signOut()).called(1);
 
-        // Verify session is cleared
-        final postSignOutUser = sessionService.getCurrentUser();
-        expect(
-          postSignOutUser,
-          isNull,
-          reason: 'User should be null after sign out for iteration $i',
-        );
+          // Verify session is cleared
+          final postSignOutUser = sessionService.getCurrentUser();
+          expect(
+            postSignOutUser,
+            isNull,
+            reason: 'User should be null after sign out for iteration $i',
+          );
 
-        final postSignOutSession = await sessionService.hasValidSession();
-        expect(
-          postSignOutSession,
-          isFalse,
-          reason: 'Session should be invalid after sign out for iteration $i',
-        );
+          final postSignOutSession = await sessionService.hasValidSession();
+          expect(
+            postSignOutSession,
+            isFalse,
+            reason: 'Session should be invalid after sign out for iteration $i',
+          );
 
-        // Verify authentication method is null
-        final authMethod = sessionService.getAuthenticationMethod();
-        expect(
-          authMethod,
-          isNull,
-          reason:
-              'Authentication method should be null after sign out for iteration $i',
-        );
+          // Verify authentication method is null
+          final authMethod = sessionService.getAuthenticationMethod();
+          expect(
+            authMethod,
+            isNull,
+            reason:
+                'Authentication method should be null after sign out for '
+                'iteration $i',
+          );
 
-        // Verify not recognized as social login user
-        final isSocialUser = sessionService.isSocialLoginUser();
-        expect(
-          isSocialUser,
-          isFalse,
-          reason:
-              'Should not be social login user after sign out for iteration $i',
-        );
+          // Verify not recognized as social login user
+          final isSocialUser = sessionService.isSocialLoginUser();
+          expect(
+            isSocialUser,
+            isFalse,
+            reason:
+                'Should not be social login user after sign out for '
+                'iteration $i',
+          );
 
-        // Reset mocks for next iteration
-        reset(mockAuth);
-        when(mockSupabaseClient.auth).thenReturn(mockAuth);
-      }
-    });
+          // Reset mocks for next iteration
+          reset(mockAuth);
+          when(mockSupabaseClient.auth).thenReturn(mockAuth);
+        }
+      },
+    );
 
     test(
       'should revoke session and clear data for Apple OAuth users',
@@ -338,7 +343,8 @@ void main() {
           postSignOutUser,
           isNotNull,
           reason:
-              'User might still be present after failed sign out for iteration $i',
+              'User might still be present after failed sign out for iteration '
+              '$i',
         );
 
         // Reset mocks for next iteration

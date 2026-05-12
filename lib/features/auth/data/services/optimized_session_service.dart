@@ -12,7 +12,8 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 /// Optimized session service with lazy loading and caching
 ///
-/// This implementation provides performance optimizations for session management:
+/// This implementation provides performance optimizations for session
+/// management:
 /// - Lazy loading for user profile data
 /// - In-memory caching of profile data after first load
 /// - Optimized session refresh timing
@@ -77,7 +78,7 @@ class OptimizedSessionService implements SessionService {
     required UserProfile userProfile,
   }) async {
     try {
-      // Calculate token expiry times (Supabase tokens typically expire in 1 hour)
+      // Calculate token expiry times (Supabase tokens typically last 1 hour)
       final now = DateTime.now();
       final expiresAt = now.add(const Duration(hours: 1));
       final refreshExpiresAt = now.add(const Duration(days: 30));
@@ -415,7 +416,8 @@ class OptimizedSessionService implements SessionService {
 
   /// Get cached user profile (lazy loading)
   ///
-  /// Returns cached profile if available and valid, otherwise loads from storage
+  /// Returns cached profile if available and valid, otherwise loads from
+  /// storage
   Future<UserProfile?> getCachedProfile(String userId) async {
     return _performanceService.measureOperation(
       name: 'profile_get_cached',
@@ -478,7 +480,8 @@ class OptimizedSessionService implements SessionService {
             _cachedProfile = profile;
             _profileCacheTime = cacheTimestamp;
             debugPrint(
-              'Loaded cached profile from storage (age: ${cacheAge.inMinutes}m)',
+              'Loaded cached profile from storage '
+              '(age: ${cacheAge.inMinutes}m)',
             );
             return;
           }

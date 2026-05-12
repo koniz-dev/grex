@@ -52,7 +52,8 @@ void main() {
 
     group('createSocialUserProfile', () {
       test('should successfully create social user profile', () async {
-        // This test verifies the repository can handle successful profile creation
+        // This test verifies the repository can handle successful profile
+        // creation
         // In a real implementation, this would test the actual creation logic
 
         // Act & Assert

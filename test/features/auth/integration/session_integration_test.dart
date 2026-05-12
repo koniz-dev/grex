@@ -434,7 +434,8 @@ void main() {
         await tester.pumpWidget(const app.MyApp());
         await tester.pumpAndSettle();
 
-        // Simulate rapid navigation that might trigger concurrent session checks
+        // Simulate rapid navigation that might trigger concurrent session
+        // checks
         for (var i = 0; i < 5; i++) {
           await tester.tap(find.byIcon(Icons.person));
           await tester.pump(const Duration(milliseconds: 100));

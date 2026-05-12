@@ -294,7 +294,8 @@ void main() {
               result.isRight(),
               isTrue,
               reason:
-                  'Expense creation should succeed for valid data (iteration $i)',
+                  'Expense creation should succeed for valid data (iteration '
+                  '$i)',
             );
 
             result.fold(
@@ -308,7 +309,8 @@ void main() {
                       'Payer should be set to specified user (iteration $i)',
                 );
 
-                // Additional property: Expense should maintain all original data
+                // Additional property: Expense should maintain all original
+                // data
                 expect(
                   createdExpense.amount,
                   equals(testExpense.amount),
@@ -384,8 +386,8 @@ void main() {
                     createdExpense.payerId,
                     equals(payerId),
                     reason:
-                        'Payer should be consistent regardless of configuration '
-                        '(iteration $i)',
+                        'Payer should be consistent regardless of '
+                        'configuration (iteration $i)',
                   );
                 },
               );
@@ -398,7 +400,8 @@ void main() {
         test(
           'should trigger balance recalculation when expense is created',
           () async {
-            // Property: When an expense is created, it should affect the balances
+            // Property: When an expense is created, it should affect the
+            // balances
             // of all participants in the group
 
             const iterations = 50;
@@ -438,7 +441,8 @@ void main() {
                     createdExpense.participants.isNotEmpty,
                     isTrue,
                     reason:
-                        'Created expense should have participants (iteration $i)',
+                        'Created expense should have participants (iteration '
+                        '$i)',
                   );
 
                   // Property: Participant shares should sum to expense amount
@@ -844,7 +848,8 @@ void main() {
                   totalShares,
                   closeTo(createdExpense.amount, 0.001),
                   reason:
-                      'Rounded split should preserve total amount (iteration $i)',
+                      'Rounded split should preserve total amount (iteration '
+                      '$i)',
                 );
 
                 // Property: No participant should have zero or negative share
@@ -947,7 +952,8 @@ void main() {
                         '(iteration $i)',
                   );
 
-                  // Property: Each participant should have their specified share
+                  // Property: Each participant should have their specified
+                  // share
                   for (var j = 0; j < createdExpense.participants.length; j++) {
                     expect(
                       createdExpense.participants[j].shareAmount,
@@ -1028,7 +1034,8 @@ void main() {
         });
 
         test('should validate percentage splits sum to 100%', () async {
-          // Property: When using percentage-based splits, the percentages should
+          // Property: When using percentage-based splits, the percentages
+          // should
           // sum to exactly 100% (within tolerance)
 
           const iterations = 50;
@@ -1247,7 +1254,8 @@ void main() {
             // Act
             final result = await repository.updateExpense(updatedExpense);
 
-            // Assert - Property: Participant changes should be handled correctly
+            // Assert - Property: Participant changes should be handled
+            // correctly
             expect(result.isRight(), isTrue);
             result.fold(
               (failure) =>
@@ -1324,7 +1332,7 @@ void main() {
     },
     skip:
         'TODO(supabase-mock): MockSupabaseClient.auth getter is null '
-        '(type \'Null\' is not a subtype of \'GoTrueClient\'). The shared mock '
+        "(type 'Null' is not a subtype of 'GoTrueClient'). The shared mock "
         'in test/helpers/supabase_mocks.dart needs an explicit auth stub before '
         'these property tests can construct the repository.',
   );

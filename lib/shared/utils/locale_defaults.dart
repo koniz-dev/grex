@@ -4,7 +4,7 @@ import 'dart:ui';
 /// registration forms.
 ///
 /// Resolution order:
-/// 1. The app-locale override set via [setAppLocale] — this is what
+/// 1. The app-locale override set via [appLocale] — this is what
 ///    `main.dart` writes after reading the user's persisted locale from
 ///    `LocalizationService` (and what `LocaleNotifier` updates when the user
 ///    picks a language via the language switcher). Falls through if null.
@@ -41,24 +41,18 @@ class LocaleDefaults {
   };
 
   /// App-locale override set by the locale layer once the persisted
-  /// preference is known. When null, defaults fall back to the device
+  /// preference is known. When `null`, defaults fall back to the device
   /// locale via `PlatformDispatcher.instance.locale`.
-  static Locale? _appLocale;
-
-  /// Set the current app locale used to derive defaults. Pass `null` to
-  /// clear the override and fall back to the device locale.
-  static void setAppLocale(Locale? locale) {
-    _appLocale = locale;
-  }
+  static Locale? appLocale;
 
   /// Clear the override (intended for tests).
   static void resetAppLocale() {
-    _appLocale = null;
+    appLocale = null;
   }
 
   /// Raw language code from the override (if set) or the device locale.
   static String get _rawLanguageCode {
-    final override = _appLocale;
+    final override = appLocale;
     if (override != null) return override.languageCode;
     return PlatformDispatcher.instance.locale.languageCode;
   }

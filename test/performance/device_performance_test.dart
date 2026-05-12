@@ -113,8 +113,9 @@ void main() {
             // (allowing extra time for slower processing)
             expect(stopwatch.elapsedMilliseconds, lessThan(8000));
 
-            print(
-              'Low-end Android OAuth completion: ${stopwatch.elapsedMilliseconds}ms',
+            debugPrint(
+              'Low-end Android OAuth completion: '
+              '${stopwatch.elapsedMilliseconds}ms',
             );
           },
         );
@@ -134,36 +135,43 @@ void main() {
           stopwatch.stop();
 
           // Assert
-          // Deep link processing should complete within 2 seconds on low-end devices
+          // Deep link processing should complete within 2 seconds on low-end
+          // devices
           expect(stopwatch.elapsedMilliseconds, lessThan(2000));
 
-          print(
-            'Low-end Android deep link processing: ${stopwatch.elapsedMilliseconds}ms',
+          debugPrint(
+            'Low-end Android deep link processing: '
+            '${stopwatch.elapsedMilliseconds}ms',
           );
         });
 
-        testWidgets('Session restoration should be acceptable on low-end devices', (
-          tester,
-        ) async {
-          // Arrange
-          await _setupStoredSession();
-          final stopwatch = Stopwatch()..start();
+        testWidgets(
+          'Session restoration should be acceptable on low-end devices',
+          (
+            tester,
+          ) async {
+            // Arrange
+            await _setupStoredSession();
+            final stopwatch = Stopwatch()..start();
 
-          // Act
-          final result = await sessionService.getStoredSession();
+            // Act
+            final result = await sessionService.getStoredSession();
 
-          stopwatch.stop();
+            stopwatch.stop();
 
-          // Assert
-          expect(result.isRight(), isTrue);
+            // Assert
+            expect(result.isRight(), isTrue);
 
-          // Session restoration should complete within 3 seconds on low-end devices
-          expect(stopwatch.elapsedMilliseconds, lessThan(3000));
+            // Session restoration should complete within 3 seconds on low-end
+            // devices
+            expect(stopwatch.elapsedMilliseconds, lessThan(3000));
 
-          print(
-            'Low-end Android session restoration: ${stopwatch.elapsedMilliseconds}ms',
-          );
-        });
+            debugPrint(
+              'Low-end Android session restoration: '
+              '${stopwatch.elapsedMilliseconds}ms',
+            );
+          },
+        );
       });
 
       group('High-end Android Device Performance', () {
@@ -188,8 +196,9 @@ void main() {
             // OAuth flow should complete within 5 seconds on high-end devices
             expect(stopwatch.elapsedMilliseconds, lessThan(5000));
 
-            print(
-              'High-end Android OAuth completion: ${stopwatch.elapsedMilliseconds}ms',
+            debugPrint(
+              'High-end Android OAuth completion: '
+              '${stopwatch.elapsedMilliseconds}ms',
             );
           },
         );
@@ -211,37 +220,44 @@ void main() {
             stopwatch.stop();
 
             // Assert
-            // Deep link processing should complete within 1 second on high-end devices
+            // Deep link processing should complete within 1 second on high-end
+            // devices
             expect(stopwatch.elapsedMilliseconds, lessThan(1000));
 
-            print(
-              'High-end Android deep link processing: ${stopwatch.elapsedMilliseconds}ms',
+            debugPrint(
+              'High-end Android deep link processing: '
+              '${stopwatch.elapsedMilliseconds}ms',
             );
           },
         );
 
-        testWidgets('Session restoration should be very fast on high-end devices', (
-          tester,
-        ) async {
-          // Arrange
-          await _setupStoredSession();
-          final stopwatch = Stopwatch()..start();
+        testWidgets(
+          'Session restoration should be very fast on high-end devices',
+          (
+            tester,
+          ) async {
+            // Arrange
+            await _setupStoredSession();
+            final stopwatch = Stopwatch()..start();
 
-          // Act
-          final result = await sessionService.getStoredSession();
+            // Act
+            final result = await sessionService.getStoredSession();
 
-          stopwatch.stop();
+            stopwatch.stop();
 
-          // Assert
-          expect(result.isRight(), isTrue);
+            // Assert
+            expect(result.isRight(), isTrue);
 
-          // Session restoration should complete within 1 second on high-end devices
-          expect(stopwatch.elapsedMilliseconds, lessThan(1000));
+            // Session restoration should complete within 1 second on high-end
+            // devices
+            expect(stopwatch.elapsedMilliseconds, lessThan(1000));
 
-          print(
-            'High-end Android session restoration: ${stopwatch.elapsedMilliseconds}ms',
-          );
-        });
+            debugPrint(
+              'High-end Android session restoration: '
+              '${stopwatch.elapsedMilliseconds}ms',
+            );
+          },
+        );
       });
 
       group('iOS Device Performance', () {
@@ -263,10 +279,13 @@ void main() {
           // Assert
           expect(result.isRight(), isTrue);
 
-          // OAuth flow should complete within 4 seconds on iOS (optimized for Apple OAuth)
+          // OAuth flow should complete within 4 seconds on iOS (optimized for
+          // Apple OAuth)
           expect(stopwatch.elapsedMilliseconds, lessThan(4000));
 
-          print('iOS OAuth completion: ${stopwatch.elapsedMilliseconds}ms');
+          debugPrint(
+            'iOS OAuth completion: ${stopwatch.elapsedMilliseconds}ms',
+          );
         });
 
         testWidgets('Deep link processing should be optimal on iOS', (
@@ -287,7 +306,9 @@ void main() {
           // Deep link processing should complete within 800ms on iOS
           expect(stopwatch.elapsedMilliseconds, lessThan(800));
 
-          print('iOS deep link processing: ${stopwatch.elapsedMilliseconds}ms');
+          debugPrint(
+            'iOS deep link processing: ${stopwatch.elapsedMilliseconds}ms',
+          );
         });
 
         testWidgets('Session restoration should be optimal on iOS', (
@@ -308,7 +329,9 @@ void main() {
           // Session restoration should complete within 800ms on iOS
           expect(stopwatch.elapsedMilliseconds, lessThan(800));
 
-          print('iOS session restoration: ${stopwatch.elapsedMilliseconds}ms');
+          debugPrint(
+            'iOS session restoration: ${stopwatch.elapsedMilliseconds}ms',
+          );
         });
       });
 
@@ -349,17 +372,18 @@ void main() {
             expect(results['high_end'], lessThan(results['low_end']!));
             expect(results['ios'], lessThanOrEqualTo(results['high_end']!));
 
-            print('Performance comparison:');
-            print('  Low-end Android: ${results['low_end']}ms');
-            print('  High-end Android: ${results['high_end']}ms');
-            print('  iOS: ${results['ios']}ms');
+            debugPrint('Performance comparison:');
+            debugPrint('  Low-end Android: ${results['low_end']}ms');
+            debugPrint('  High-end Android: ${results['high_end']}ms');
+            debugPrint('  iOS: ${results['ios']}ms');
           },
         );
       });
 
       group('Memory Usage Tests', () {
         testWidgets('OAuth flow should not cause memory leaks', (tester) async {
-          // This test would require integration with actual memory profiling tools
+          // This test would require integration with actual memory profiling
+          // tools
           // For now, we simulate the test structure
 
           final initialMemory = _getSimulatedMemoryUsage();
@@ -382,7 +406,7 @@ void main() {
           // Memory increase should be minimal (less than 5MB simulated)
           expect(memoryIncrease, lessThan(5 * 1024 * 1024));
 
-          print('Memory usage increase: ${memoryIncrease ~/ 1024}KB');
+          debugPrint('Memory usage increase: ${memoryIncrease ~/ 1024}KB');
         });
       });
     },
@@ -430,65 +454,4 @@ int _getSimulatedMemoryUsage() {
   // In a real implementation, this would use actual memory profiling
   // For testing, we return a simulated value
   return 50 * 1024 * 1024; // 50MB baseline
-}
-
-/// Performance benchmark utility
-class PerformanceBenchmark {
-  static Future<Duration> measureOperation(
-    Future<void> Function() operation,
-  ) async {
-    final stopwatch = Stopwatch()..start();
-    await operation();
-    stopwatch.stop();
-    return Duration(milliseconds: stopwatch.elapsedMilliseconds);
-  }
-
-  static Duration measureSyncOperation(void Function() operation) {
-    final stopwatch = Stopwatch()..start();
-    operation();
-    stopwatch.stop();
-    return Duration(milliseconds: stopwatch.elapsedMilliseconds);
-  }
-
-  static void logPerformanceResult(String operation, Duration duration) {
-    print('$operation completed in ${duration.inMilliseconds}ms');
-  }
-}
-
-/// Device capability simulator
-class DeviceSimulator {
-  static void simulateDeviceConstraints({
-    required int cpuCores,
-    required int ramMB,
-    required String platform,
-  }) {
-    debugPrint('Simulating device: $platform, $cpuCores cores, ${ramMB}MB RAM');
-
-    // In a real implementation, this would adjust performance parameters
-    // based on device capabilities
-  }
-
-  static void simulateLowEndAndroid() {
-    simulateDeviceConstraints(
-      cpuCores: 4,
-      ramMB: 2048,
-      platform: 'Android',
-    );
-  }
-
-  static void simulateHighEndAndroid() {
-    simulateDeviceConstraints(
-      cpuCores: 8,
-      ramMB: 8192,
-      platform: 'Android',
-    );
-  }
-
-  static void simulateIOS() {
-    simulateDeviceConstraints(
-      cpuCores: 6,
-      ramMB: 4096,
-      platform: 'iOS',
-    );
-  }
 }

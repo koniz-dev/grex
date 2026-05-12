@@ -373,7 +373,8 @@ void main() {
           currentUser,
           isNotNull,
           reason:
-              'User should still be accessible after failed refresh for iteration $i',
+              'User should still be accessible after failed refresh for '
+              'iteration $i',
         );
 
         // Reset mocks for next iteration
@@ -422,7 +423,8 @@ void main() {
           refreshSuccess,
           isFalse,
           reason:
-              'Session refresh should fail when response session is null for iteration $i',
+              'Session refresh should fail when response session is null for '
+              'iteration $i',
         );
 
         // Verify refresh was attempted

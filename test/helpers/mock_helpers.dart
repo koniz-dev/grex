@@ -74,7 +74,8 @@ class TestDataFactory {
     Map<String, dynamic>? appMetadata,
     Map<String, dynamic>? userMetadata,
   }) {
-    // This would need to be implemented based on the actual Supabase User constructor
+    // This would need to be implemented based on the actual Supabase User
+    // constructor
     // For now, we provide a mock structure
     final mockUser = MockSupabaseUser();
     when(mockUser.id).thenReturn(id);

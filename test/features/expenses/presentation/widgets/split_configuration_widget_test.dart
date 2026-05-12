@@ -158,7 +158,8 @@ void main() {
             ),
           );
 
-          // Assert - should show calculated amounts based on default percentages
+          // Assert - should show calculated amounts based on default
+          // percentages
           expect(find.byType(TextField), findsNWidgets(3));
         });
 
@@ -546,6 +547,7 @@ void main() {
     skip:
         'TODO(widget-asserts): 9 tests in this file assert specific '
         'percentage-split text/widget arrangements that do not match the '
-        'current SplitConfigurationWidget. Fix each assertion before re-enabling.',
+        'current SplitConfigurationWidget. Fix each assertion before '
+        're-enabling.',
   );
 }

@@ -65,7 +65,8 @@ void main() {
     test(
       'Property 9: Profile Existence Check After OAuth',
       () async {
-        // Feature: social-login, Property 9: Profile Existence Check After OAuth
+        // Feature: social-login, Property 9: Profile Existence Check After
+        // OAuth
         // Validates: Requirements 4.1
         // Test with 100+ iterations
         // Verify profile check performed after successful OAuth
@@ -200,7 +201,8 @@ void main() {
     test(
       'Property 9 Extended: Profile Check Handles Repository Failures',
       () async {
-        // Extended property test to verify profile check handles repository failures gracefully
+        // Extended property test to verify profile check handles repository
+        // failures gracefully
         const iterations = 50;
 
         for (var i = 0; i < iterations; i++) {

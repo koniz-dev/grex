@@ -136,7 +136,8 @@ void main() {
           authMethod,
           equals('apple'),
           reason:
-              'Authentication method should still be detectable for iteration $i',
+              'Authentication method should still be detectable for iteration '
+              '$i',
         );
       }
     });
@@ -237,7 +238,8 @@ void main() {
           isSocialUser,
           isFalse,
           reason:
-              'Should not be social login user when no session for iteration $i',
+              'Should not be social login user when no session for '
+              'iteration $i',
         );
       }
     });

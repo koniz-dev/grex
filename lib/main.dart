@@ -78,7 +78,7 @@ void main() async {
   final localizationService = container.read(localizationServiceProvider);
   final savedLocale = await localizationService.getCurrentLocale();
   container.read(localeStateProvider.notifier).locale = savedLocale;
-  LocaleDefaults.setAppLocale(savedLocale);
+  LocaleDefaults.appLocale = savedLocale;
 
   // Restore user session if existing and sync tokens for AuthInterceptor
   try {

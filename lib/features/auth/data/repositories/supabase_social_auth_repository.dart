@@ -17,6 +17,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 /// iOS/macOS the Apple flow can use native Apple Authentication Services
 /// (Face ID / Touch ID) instead of the web OAuth fallback.
 class SupabaseSocialAuthRepository implements SocialAuthRepository {
+  /// Creates a [SupabaseSocialAuthRepository] with the required collaborators.
   SupabaseSocialAuthRepository({
     required supabase.SupabaseClient supabaseClient,
     required UserRepository userRepository,

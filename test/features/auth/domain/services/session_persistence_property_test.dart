@@ -209,7 +209,8 @@ void main() {
         final email = 'user$i@example.com';
         final displayName = 'Email User $i';
 
-        // Create mock Supabase user with email authentication (no OAuth providers)
+        // Create mock Supabase user with email authentication (no OAuth
+        // providers)
         final mockSupabaseUser = _createMockSupabaseUser(
           id: userId,
           email: email,

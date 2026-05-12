@@ -215,7 +215,8 @@ void main() {
               contains('required'),
             ]),
             reason:
-                'Documentation should mention minimal scopes for ${provider.name}',
+                'Documentation should mention minimal scopes for '
+                '${provider.name}',
           );
         }
       });

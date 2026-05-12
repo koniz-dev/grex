@@ -268,7 +268,8 @@ void main() {
         await tester.pump();
 
         // Assert
-        // Instead of counting all events, just ensure a refresh-triggering event
+        // Instead of counting all events, just ensure a refresh-triggering
+        // event
         // was dispatched
         verify(
           mockBalanceBloc.add(const BalancesLoadRequested(groupId: 'group-1')),

@@ -36,11 +36,13 @@ void main() {
     });
 
     testWidgets(
-      'should suggest alternatives after repeated network failures with 100+ iterations',
+      'should suggest alternatives after repeated network failures with 100+ '
+      'iterations',
       (tester) async {
         await tester.pumpWidget(testApp);
 
-        // Property: After 3+ network failures, alternative methods should be suggested
+        // Property: After 3+ network failures, alternative methods should be
+        // suggested
         for (var i = 0; i < 100; i++) {
           const failure = SocialAuthNetworkFailure();
           final attemptCount = 3 + (i % 5); // 3-7 attempts
@@ -84,11 +86,13 @@ void main() {
     );
 
     testWidgets(
-      'should suggest alternatives after repeated timeout failures with 100+ iterations',
+      'should suggest alternatives after repeated timeout failures with 100+ '
+      'iterations',
       (tester) async {
         await tester.pumpWidget(testApp);
 
-        // Property: After 3+ timeout failures, alternative methods should be suggested
+        // Property: After 3+ timeout failures, alternative methods should be
+        // suggested
         for (var i = 0; i < 100; i++) {
           const failure = SocialAuthTimeoutFailure();
           final attemptCount = 3 + (i % 5); // 3-7 attempts
@@ -120,11 +124,13 @@ void main() {
     );
 
     testWidgets(
-      'should suggest alternatives after repeated auth failures with 100+ iterations',
+      'should suggest alternatives after repeated auth failures with 100+ '
+      'iterations',
       (tester) async {
         await tester.pumpWidget(testApp);
 
-        // Property: After 3+ generic auth failures, alternatives should be suggested
+        // Property: After 3+ generic auth failures, alternatives should be
+        // suggested
         for (var i = 0; i < 100; i++) {
           const failure = SocialAuthFailure('Authentication failed');
           final attemptCount = 3 + (i % 5); // 3-7 attempts
@@ -164,7 +170,8 @@ void main() {
     );
 
     testWidgets(
-      'should not suggest alternatives for low attempt counts with 100+ iterations',
+      'should not suggest alternatives for low attempt counts with 100+ '
+      'iterations',
       (tester) async {
         await tester.pumpWidget(testApp);
 
@@ -202,7 +209,8 @@ void main() {
     );
 
     testWidgets(
-      'should provide escalating help with increasing attempts with 100+ iterations',
+      'should provide escalating help with increasing attempts with 100+ '
+      'iterations',
       (tester) async {
         await tester.pumpWidget(testApp);
 
@@ -236,7 +244,8 @@ void main() {
       (tester) async {
         await tester.pumpWidget(testApp);
 
-        // Property: Cancellation failures should not suggest alternatives regardless of count
+        // Property: Cancellation failures should not suggest alternatives
+        // regardless of count
         for (var i = 0; i < 100; i++) {
           const failure = SocialAuthCancelledFailure();
           final attemptCount = 3 + (i % 5); // 3-7 attempts
@@ -252,7 +261,8 @@ void main() {
             failure,
           );
 
-          // Assert: Cancellation should not suggest alternatives or display errors
+          // Assert: Cancellation should not suggest alternatives or display
+          // errors
           expect(shouldSuggestAlternatives, isFalse);
           expect(shouldDisplayError, isFalse);
         }
@@ -264,7 +274,8 @@ void main() {
       (tester) async {
         await tester.pumpWidget(testApp);
 
-        // Property: Recovery actions should be contextual to failure type and attempt count
+        // Property: Recovery actions should be contextual to failure type and
+        // attempt count
         for (var i = 0; i < 100; i++) {
           final failureTypes = _generateFailureTypes(i);
           final attemptCount = 3 + (i % 3); // 3-5 attempts

@@ -40,6 +40,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 ///
 /// **Requirements:** 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8
 class NativeAppleSignInServiceImpl implements NativeAppleSignInService {
+  /// Creates a [NativeAppleSignInServiceImpl] backed by [supabaseClient].
   const NativeAppleSignInServiceImpl({
     required supabase.SupabaseClient supabaseClient,
   }) : _supabaseClient = supabaseClient;
