@@ -634,19 +634,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get signInWithEmail => 'Iniciar sesión con correo';
 
   @override
-  String get dismiss => 'Dismiss';
+  String get dismiss => 'Descartar';
 
   @override
   String get repeatedNetworkFailureMessage =>
-      'Multiple network errors detected. Please check your internet connection or try signing in with email.';
+      'Se detectaron múltiples errores de red. Verifica tu conexión o intenta iniciar sesión con correo electrónico.';
 
   @override
   String get repeatedTimeoutFailureMessage =>
-      'Authentication keeps timing out. Please try signing in with email instead.';
+      'La autenticación sigue agotando el tiempo. Intenta iniciar sesión con correo electrónico.';
 
   @override
   String get repeatedAuthFailureMessage =>
-      'Authentication failed multiple times. Please try signing in with email or contact support.';
+      'La autenticación falló varias veces. Intenta iniciar sesión con correo electrónico o contacta a soporte.';
 
   @override
   String get or => 'o';

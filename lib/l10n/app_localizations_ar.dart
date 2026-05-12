@@ -618,19 +618,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signInWithEmail => 'تسجيل الدخول بالبريد الإلكتروني';
 
   @override
-  String get dismiss => 'Dismiss';
+  String get dismiss => 'إغلاق';
 
   @override
   String get repeatedNetworkFailureMessage =>
-      'Multiple network errors detected. Please check your internet connection or try signing in with email.';
+      'تم اكتشاف أخطاء شبكة متعددة. يرجى التحقق من اتصال الإنترنت أو المحاولة باستخدام البريد الإلكتروني.';
 
   @override
   String get repeatedTimeoutFailureMessage =>
-      'Authentication keeps timing out. Please try signing in with email instead.';
+      'تستمر المصادقة في انتهاء المهلة. يرجى المحاولة باستخدام البريد الإلكتروني.';
 
   @override
   String get repeatedAuthFailureMessage =>
-      'Authentication failed multiple times. Please try signing in with email or contact support.';
+      'فشلت المصادقة عدة مرات. يرجى المحاولة باستخدام البريد الإلكتروني أو الاتصال بالدعم.';
 
   @override
   String get or => 'أو';

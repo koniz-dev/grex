@@ -628,19 +628,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signInWithEmail => 'Đăng nhập bằng email';
 
   @override
-  String get dismiss => 'Dismiss';
+  String get dismiss => 'Đóng';
 
   @override
   String get repeatedNetworkFailureMessage =>
-      'Multiple network errors detected. Please check your internet connection or try signing in with email.';
+      'Phát hiện nhiều lỗi mạng. Vui lòng kiểm tra kết nối internet hoặc thử đăng nhập bằng email.';
 
   @override
   String get repeatedTimeoutFailureMessage =>
-      'Authentication keeps timing out. Please try signing in with email instead.';
+      'Xác thực liên tục hết thời gian chờ. Vui lòng thử đăng nhập bằng email.';
 
   @override
   String get repeatedAuthFailureMessage =>
-      'Authentication failed multiple times. Please try signing in with email or contact support.';
+      'Xác thực thất bại nhiều lần. Vui lòng thử đăng nhập bằng email hoặc liên hệ hỗ trợ.';
 
   @override
   String get or => 'hoặc';
