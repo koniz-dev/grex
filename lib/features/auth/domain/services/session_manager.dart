@@ -43,6 +43,9 @@ class SessionManager {
           (failure) async => Left(failure),
           (valid) async {
             if (!valid) {
+              // Clear the invalid/expired session from storage so the user
+              // isn't stuck with stale tokens.
+              await _sessionService.clearSession();
               return const Right(null);
             }
 
@@ -101,7 +104,16 @@ class SessionManager {
 
   /// Manually refresh session
   Future<Either<AuthFailure, SessionData>> refreshSession() async {
-    return _sessionService.refreshSession();
+    final result = await _sessionService.refreshSession();
+    // If refresh fails, clear stale session so caller isn't left with an
+    // unrecoverable token.
+    return result.fold(
+      (failure) async {
+        await _sessionService.clearSession();
+        return Left(failure);
+      },
+      (data) async => Right(data),
+    );
   }
 
   /// Start automatic session management

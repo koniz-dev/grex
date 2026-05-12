@@ -4,8 +4,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:mockito/mockito.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../../../helpers/test_helpers.mocks.dart';
+
+class _FakeSession extends Fake implements supabase.Session {
+  @override
+  String get accessToken => 'test-access-token';
+
+  @override
+  String get refreshToken => 'test-refresh-token';
+}
 
 void main() {
   late AuthBloc authBloc;
@@ -20,8 +29,21 @@ void main() {
     when(mockAuthRepository.authStateChanges).thenAnswer(
       (_) => const Stream<User?>.empty(),
     );
+    when(mockAuthRepository.currentSession).thenReturn(null);
+    when(mockAuthRepository.currentUser).thenReturn(null);
 
     final mockSessionManager = MockSessionManager();
+    when(
+      mockSessionManager.endSession(),
+    ).thenAnswer((_) async => const Right(null));
+    when(
+      mockSessionManager.startSession(
+        accessToken: anyNamed('accessToken'),
+        refreshToken: anyNamed('refreshToken'),
+        user: anyNamed('user'),
+        userProfile: anyNamed('userProfile'),
+      ),
+    ).thenAnswer((_) async => const Right(null));
     authBloc = AuthBloc(
       authRepository: mockAuthRepository,
       userRepository: mockUserRepository,
@@ -105,13 +127,14 @@ void main() {
         act: (bloc) => bloc.add(
           const AuthLoginRequested(
             email: 'test@example.com',
-            password: 'wrongpassword',
+            password: 'WrongPassword1!',
           ),
         ),
         expect: () => [
           const AuthLoading(),
           const AuthError(
             message: 'Invalid email or password. Please try again.',
+            failure: InvalidCredentialsFailure(),
           ),
         ],
       );
@@ -157,8 +180,18 @@ void main() {
             mockAuthRepository.signUpWithEmail(
               email: anyNamed('email'),
               password: anyNamed('password'),
+              displayName: anyNamed('displayName'),
+              preferredCurrency: anyNamed('preferredCurrency'),
+              languageCode: anyNamed('languageCode'),
             ),
           ).thenAnswer((_) async => Right(testUser));
+
+          // Registration handler requires a session to emit AuthAuthenticated.
+          when(mockAuthRepository.currentSession).thenReturn(_FakeSession());
+
+          when(
+            mockUserRepository.getUserProfile(testUser.id),
+          ).thenAnswer((_) async => Right(testProfile));
 
           when(
             mockUserRepository.createUserProfile(any),
@@ -186,6 +219,9 @@ void main() {
             mockAuthRepository.signUpWithEmail(
               email: anyNamed('email'),
               password: anyNamed('password'),
+              displayName: anyNamed('displayName'),
+              preferredCurrency: anyNamed('preferredCurrency'),
+              languageCode: anyNamed('languageCode'),
             ),
           ).thenAnswer(
             (_) async => const Left(
@@ -208,6 +244,7 @@ void main() {
             message:
                 'This email is already registered. Please use a '
                 'different email or try logging in.',
+            failure: EmailAlreadyInUseFailure(),
           ),
         ],
       );
@@ -310,6 +347,7 @@ void main() {
           const AuthError(
             message:
                 'Network error. Please check your connection and try again.',
+            failure: NetworkFailure(),
           ),
         ],
       );

@@ -204,9 +204,9 @@ void main() {
       });
 
       test('should calculate percentage split with participants', () {
-        final participantData = [
-          {'userId': 'user1', 'displayName': 'User 1', 'percentage': 60},
-          {'userId': 'user2', 'displayName': 'User 2', 'percentage': 40},
+        final participantData = <Map<String, dynamic>>[
+          {'userId': 'user1', 'displayName': 'User 1', 'percentage': 60.0},
+          {'userId': 'user2', 'displayName': 'User 2', 'percentage': 40.0},
         ];
 
         final result = ExpenseCalculator.calculateSplit(
@@ -241,8 +241,16 @@ void main() {
 
       test('should reject invalid percentage configuration', () {
         final participantData = [
-          {'userId': 'user1', 'displayName': 'User 1', 'percentage': 60},
-          {'userId': 'user2', 'displayName': 'User 2', 'percentage': 30},
+          <String, dynamic>{
+            'userId': 'user1',
+            'displayName': 'User 1',
+            'percentage': 60.0,
+          },
+          <String, dynamic>{
+            'userId': 'user2',
+            'displayName': 'User 2',
+            'percentage': 30.0,
+          },
         ];
 
         final error = ExpenseCalculator.validateSplitConfiguration(

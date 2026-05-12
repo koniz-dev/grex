@@ -457,9 +457,12 @@ class TestSocialLoginAnalyticsImpl extends SocialLoginAnalyticsImpl {
     required String action,
     required String existingEmail,
   }) {
-    final emailDomain = existingEmail.contains('@')
-        ? existingEmail.split('@').last
-        : 'unknown';
+    // Mirror the production logic: extract everything after the FIRST '@'.
+    final atIndex = existingEmail.indexOf('@');
+    final emailDomain =
+        atIndex >= 0 && atIndex < existingEmail.length - 1
+            ? existingEmail.substring(atIndex + 1)
+            : 'unknown';
 
     _logEvent('account_linking', {
       'provider': provider.name,

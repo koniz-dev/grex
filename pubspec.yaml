@@ -11,6 +11,9 @@ dependencies:
   # Deep linking - Handle app links (e.g. email verification). Version must be
   # compatible with supabase_flutter (app_links >=3.5.0 <7.0.0).
   app_links: ^6.2.0
+
+  # Cryptography - SHA-256 hashing for OAuth nonce generation
+  crypto: ^3.0.6
   
   # UI Components - iOS style icons
   cupertino_icons: ^1.0.8
@@ -51,6 +54,9 @@ dependencies:
 
   # SVG - Render SVG images for social provider icons
   flutter_svg: ^2.0.10+1
+
+  # Native Apple Sign In - Apple Authentication Services for iOS/macOS
+  sign_in_with_apple: ^6.1.3
 
   # Code Generation - Runtime annotations for Freezed immutable classes
   freezed_annotation: ^3.1.0

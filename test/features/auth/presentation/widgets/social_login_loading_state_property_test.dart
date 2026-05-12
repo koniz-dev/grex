@@ -1,9 +1,31 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
 import 'package:grex/features/auth/presentation/widgets/social_login_button.dart';
+import 'package:grex/l10n/app_localizations.dart';
+
+/// Wraps a widget in a MaterialApp with localizations so SocialLoginButton's
+/// `context.l10n` calls resolve in this property-test environment.
+MaterialApp _wrap(Widget home) {
+  return MaterialApp(
+    // English — assertions in this property test use the English strings
+    // ("Continue with Google", "Continue with Apple") rendered by
+    // SocialLoginButton via context.l10n.
+    locale: const Locale('en'),
+    localizationsDelegates: const [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: AppLocalizations.supportedLocales,
+    home: home,
+  );
+}
 
 /// Property 20: Loading State Disables Authentication Buttons
 ///
@@ -33,8 +55,8 @@ void main() {
           final hasOnPressed = random.nextBool();
 
           await tester.pumpWidget(
-            MaterialApp(
-              home: Scaffold(
+            _wrap(
+              Scaffold(
                 body: SocialLoginButton(
                   provider: testProvider,
                   isLoading: isLoading,
@@ -69,7 +91,7 @@ void main() {
 
             // Property: Loading state should not show SVG icon
             expect(
-              find.byType(Image),
+              find.byType(SvgPicture),
               findsNothing,
               reason: 'Iteration $iteration: Should not show icon when loading',
             );
@@ -111,7 +133,10 @@ void main() {
             reason: 'Iteration $iteration: Should always show button text',
           );
 
-          await tester.pumpAndSettle();
+          // Single pump rather than pumpAndSettle: when isLoading is true,
+          // CircularProgressIndicator animates forever and pumpAndSettle
+          // never resolves.
+          await tester.pump();
         }
       },
     );
@@ -126,8 +151,8 @@ void main() {
         for (var iteration = 0; iteration < 50; iteration++) {
           for (final provider in providers) {
             await tester.pumpWidget(
-              MaterialApp(
-                home: Scaffold(
+              _wrap(
+                Scaffold(
                   body: SocialLoginButton(
                     provider: provider,
                     isLoading: true,
@@ -162,7 +187,8 @@ void main() {
               );
             }
 
-            await tester.pumpAndSettle();
+            // Single pump: spinner animates forever, pumpAndSettle would hang.
+            await tester.pump();
           }
         }
       },
@@ -183,8 +209,8 @@ void main() {
 
         // Test non-loading state first
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
+          _wrap(
+            Scaffold(
               body: SocialLoginButton(
                 provider: provider,
                 onPressed: () {},
@@ -197,8 +223,8 @@ void main() {
 
         // Test loading state
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
+          _wrap(
+            Scaffold(
               body: SocialLoginButton(
                 provider: provider,
                 isLoading: true,
@@ -230,7 +256,8 @@ void main() {
           reason: 'Iteration $iteration: Button should have reasonable width',
         );
 
-        await tester.pumpAndSettle();
+        // Single pump: spinner animates forever, pumpAndSettle would hang.
+        await tester.pump();
       }
     });
 
@@ -247,8 +274,8 @@ void main() {
         var isLoading = false;
 
         await tester.pumpWidget(
-          MaterialApp(
-            home: StatefulBuilder(
+          _wrap(
+            StatefulBuilder(
               builder: (context, setState) {
                 return Scaffold(
                   body: Column(
@@ -293,7 +320,7 @@ void main() {
               .byType(CircularProgressIndicator)
               .evaluate()
               .isNotEmpty;
-          final hasIcon = find.byType(Image).evaluate().isNotEmpty;
+          final hasIcon = find.byType(SvgPicture).evaluate().isNotEmpty;
 
           expect(
             hasLoadingIndicator && hasIcon,
@@ -309,7 +336,8 @@ void main() {
           );
         }
 
-        await tester.pumpAndSettle();
+        // Single pump: spinner animates forever, pumpAndSettle would hang.
+        await tester.pump();
       }
     });
   });

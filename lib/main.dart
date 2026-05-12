@@ -21,6 +21,7 @@ import 'package:grex/features/auth/presentation/widgets/app_link_listener.dart';
 import 'package:grex/features/feature_flags/presentation/providers/feature_flags_providers.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/theme/app_theme.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 void main() async {
@@ -70,10 +71,14 @@ void main() async {
   // available
   await container.read(featureFlagsInitializationProvider.future);
 
-  // Initialize locale from storage
+  // Initialize locale from storage. Also propagate the persisted locale to
+  // LocaleDefaults so that downstream consumers (signup, profile setup, new
+  // groups, etc.) derive `preferred_language` / `preferred_currency` from
+  // the user's selected app locale instead of the raw device locale.
   final localizationService = container.read(localizationServiceProvider);
   final savedLocale = await localizationService.getCurrentLocale();
   container.read(localeStateProvider.notifier).locale = savedLocale;
+  LocaleDefaults.setAppLocale(savedLocale);
 
   // Restore user session if existing and sync tokens for AuthInterceptor
   try {

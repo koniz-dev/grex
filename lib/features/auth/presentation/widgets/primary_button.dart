@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 /// Primary button widget
 ///
 /// Black button with white text, 56px height, 16px border radius.
+/// When [isLoading] is true a spinner is shown alongside [loadingText]
+/// (if provided), so screens can announce in-flight states like
+/// "Signing in...".
 class PrimaryButton extends StatelessWidget {
   /// Creates a [PrimaryButton].
   ///
@@ -12,6 +15,7 @@ class PrimaryButton extends StatelessWidget {
     super.key,
     this.onPressed,
     this.isLoading = false,
+    this.loadingText,
   });
 
   /// The text to display on the button.
@@ -22,6 +26,10 @@ class PrimaryButton extends StatelessWidget {
 
   /// Whether the button is in a loading state.
   final bool isLoading;
+
+  /// Optional text shown next to the spinner when loading. When null only
+  /// the spinner is rendered (preserving the original behavior).
+  final String? loadingText;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +48,29 @@ class PrimaryButton extends StatelessWidget {
           elevation: 0,
         ),
         child: isLoading
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  ),
+                  if (loadingText != null) ...[
+                    const SizedBox(width: 12),
+                    Text(
+                      loadingText!,
+                      style: const TextStyle(
+                        fontFamily: 'Outfit',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ],
               )
             : Text(
                 text,

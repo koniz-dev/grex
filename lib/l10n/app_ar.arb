@@ -596,5 +596,47 @@
   "cancelProfileSetup": "إلغاء الإعداد",
   "cancelProfileSetupMessage": "هل أنت متأكد أنك تريد الإلغاء؟ سيتم تسجيل خروجك وستحتاج إلى تسجيل الدخول مرة أخرى.",
   "continueSetup": "متابعة الإعداد",
-  "signInWithEmail": "تسجيل الدخول بالبريد الإلكتروني"
+  "signInWithEmail": "تسجيل الدخول بالبريد الإلكتروني",
+  "signingIn": "جاري تسجيل الدخول...",
+  "registerAccount": "إنشاء حساب",
+  "joinGrexExpenseShare": "انضم إلى Grex لبدء مشاركة المصاريف",
+  "registering": "جاري إنشاء الحساب...",
+  "displayNameRequired": "الرجاء إدخال الاسم المعروض",
+  "displayNameEmpty": "لا يمكن أن يكون الاسم فارغًا",
+  "displayNameTooLong": "يجب أن يكون الاسم 50 حرفًا أو أقل",
+  "preferredCurrencyLabel": "العملة المفضلة",
+  "passwordHintShort": "8 أحرف على الأقل",
+  "yourNameHint": "اسمك",
+  "passwordHint": "يجب أن تحتوي على 8 أحرف على الأقل مع أحرف كبيرة وصغيرة وأرقام",
+  "alreadyHaveAccountPrefix": "هل لديك حساب بالفعل؟ ",
+  "signIn": "تسجيل الدخول",
+  "forgotPasswordTitle": "هل نسيت كلمة المرور",
+  "enterEmailForResetShort": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+  "sendResetLinkShort": "إرسال الرابط",
+  "sending": "جارٍ الإرسال...",
+  "resetEmailSent": "تم إرسال بريد إعادة التعيين",
+  "pleaseCheckEmailAt": "يرجى التحقق من بريدك الإلكتروني {email}",
+  "@pleaseCheckEmailAt": {
+    "placeholders": {"email": {"type": "String"}}
+  },
+  "resend": "إعادة الإرسال",
+  "emailNotInSystem": "البريد الإلكتروني غير موجود في النظام",
+  "weWillSendLink": "سنرسل إليك رابطًا لإعادة تعيين كلمة المرور",
+  "rememberPassword": "هل تتذكر كلمة المرور؟ ",
+  "dismiss": "إغلاق",
+  "@dismiss": {
+    "description": "Dismiss button for error dialogs"
+  },
+  "repeatedNetworkFailureMessage": "تم اكتشاف أخطاء شبكة متعددة. يرجى التحقق من اتصال الإنترنت أو المحاولة باستخدام البريد الإلكتروني.",
+  "@repeatedNetworkFailureMessage": {
+    "description": "Message shown after repeated network failures"
+  },
+  "repeatedTimeoutFailureMessage": "تستمر المصادقة في انتهاء المهلة. يرجى المحاولة باستخدام البريد الإلكتروني.",
+  "@repeatedTimeoutFailureMessage": {
+    "description": "Message shown after repeated timeout failures"
+  },
+  "repeatedAuthFailureMessage": "فشلت المصادقة عدة مرات. يرجى المحاولة باستخدام البريد الإلكتروني أو الاتصال بالدعم.",
+  "@repeatedAuthFailureMessage": {
+    "description": "Message shown after repeated authentication failures"
+  }
 }

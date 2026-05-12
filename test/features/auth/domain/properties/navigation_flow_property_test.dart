@@ -32,10 +32,10 @@ void main() {
       // should establish a session that enables navigation to protected routes
 
       for (var i = 0; i < 100; i++) {
-        // Generate random valid credentials
+        // Generate aligned scenario data so assertions on email/id hold.
         final credentials = generateValidCredentials();
-        final user = generateValidUser();
-        final profile = generateValidUserProfile();
+        final user = generateValidUser(email: credentials.email);
+        final profile = generateValidUserProfile(user: user);
 
         // Mock successful authentication
         when(
@@ -102,7 +102,7 @@ void main() {
 
       for (var i = 0; i < 50; i++) {
         final user = generateValidUser();
-        final profile = generateValidUserProfile();
+        final profile = generateValidUserProfile(user: user);
 
         // Test unauthenticated state
         when(deps.mockAuthRepository.currentUser).thenReturn(null);
@@ -149,7 +149,7 @@ void main() {
 
       for (var i = 0; i < 30; i++) {
         final user = generateValidUser();
-        final profile = generateValidUserProfile();
+        final profile = generateValidUserProfile(user: user);
 
         // Simulate app startup with existing session
         when(deps.mockAuthRepository.currentUser).thenReturn(user);

@@ -6,6 +6,7 @@ import 'package:grex/core/errors/failures.dart' as core;
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/repositories/repositories.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 /// Supabase implementation of [AuthRepository].
@@ -63,8 +64,8 @@ class SupabaseAuthRepository implements AuthRepository {
         password: password,
         data: {
           'display_name': displayName ?? email.split('@').first,
-          'preferred_currency': preferredCurrency ?? 'VND',
-          'preferred_language': languageCode ?? 'vi',
+          'preferred_currency': preferredCurrency ?? LocaleDefaults.currencyCode,
+          'preferred_language': languageCode ?? LocaleDefaults.languageCode,
         },
         emailRedirectTo: AppConstants.authEmailConfirmRedirectUrl,
       );

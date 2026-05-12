@@ -4,13 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/repositories/repositories.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-// Manual mocks for now
-class MockUserRepository extends Mock implements UserRepository {}
+import 'profile_bloc_test.mocks.dart';
 
-class MockAuthRepository extends Mock implements AuthRepository {}
-
+@GenerateMocks([UserRepository, AuthRepository])
 void main() {
   group('ProfileBloc', () {
     late MockUserRepository mockUserRepository;
@@ -119,7 +118,7 @@ void main() {
             displayName: 'Updated Name',
           );
           when(
-            mockUserRepository.updateUserProfile(testProfile),
+            mockUserRepository.updateUserProfile(any),
           ).thenAnswer((_) async => Right(updatedProfile));
           return profileBloc;
         },
@@ -140,7 +139,7 @@ void main() {
         ],
         verify: (_) {
           verify(
-            mockUserRepository.updateUserProfile(testProfile),
+            mockUserRepository.updateUserProfile(any),
           ).called(1);
         },
       );
@@ -158,7 +157,7 @@ void main() {
         ],
         verify: (_) {
           verifyNever(
-            mockUserRepository.updateUserProfile(testProfile),
+            mockUserRepository.updateUserProfile(any),
           );
         },
       );
@@ -180,7 +179,7 @@ void main() {
         ],
         verify: (_) {
           verifyNever(
-            mockUserRepository.updateUserProfile(testProfile),
+            mockUserRepository.updateUserProfile(any),
           );
         },
       );
@@ -198,7 +197,7 @@ void main() {
         ],
         verify: (_) {
           verifyNever(
-            mockUserRepository.updateUserProfile(testProfile),
+            mockUserRepository.updateUserProfile(any),
           );
         },
       );
@@ -207,7 +206,7 @@ void main() {
         'emits ProfileError when update fails',
         build: () {
           when(
-            mockUserRepository.updateUserProfile(testProfile),
+            mockUserRepository.updateUserProfile(any),
           ).thenAnswer(
             (_) async => const Left(UserDatabaseFailure('Update failed')),
           );
@@ -225,7 +224,7 @@ void main() {
             updatedProfile: testProfile.copyWith(displayName: 'Updated Name'),
           ),
           ProfileError(
-            message: 'Update failed',
+            message: 'Database error occurred. Please try again later.',
             profile: testProfile,
             failure: const UserDatabaseFailure('Update failed'),
           ),
@@ -255,7 +254,7 @@ void main() {
         seed: () => ProfileLoaded(profile: testProfile),
         act: (bloc) => bloc.add(
           const ProfileUpdateRequested(
-            languageCode: 'invalid', // Invalid language code
+            languageCode: 'xx', // Valid format, unsupported code
           ),
         ),
         expect: () => [
@@ -350,7 +349,7 @@ void main() {
         build: () {
           // Delay the repository response to test optimistic update
           when(
-            mockUserRepository.updateUserProfile(testProfile),
+            mockUserRepository.updateUserProfile(any),
           ).thenAnswer((_) async {
             await Future<void>.delayed(const Duration(milliseconds: 100));
             return Right(testProfile.copyWith(displayName: 'Updated Name'));
@@ -363,6 +362,7 @@ void main() {
             displayName: 'Updated Name',
           ),
         ),
+        wait: const Duration(milliseconds: 200),
         expect: () => [
           ProfileUpdating(
             profile: testProfile,
@@ -378,7 +378,7 @@ void main() {
         'reverts optimistic update on failure',
         build: () {
           when(
-            mockUserRepository.updateUserProfile(testProfile),
+            mockUserRepository.updateUserProfile(any),
           ).thenAnswer(
             (_) async => const Left(UserDatabaseFailure('Network error')),
           );

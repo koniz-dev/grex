@@ -224,7 +224,9 @@ void main() {
             final exportData = profile.toJson();
             expect(exportData, isA<Map<String, dynamic>>());
             expect(exportData['email'], equals('test@example.com'));
-            expect(exportData['displayName'], equals('Test User'));
+            // UserProfile.toJson() serializes display_name in snake_case to
+            // match the Supabase column names.
+            expect(exportData['display_name'], equals('Test User'));
           },
         );
       });

@@ -34,7 +34,7 @@ void main() {
 
       for (var i = 0; i < 100; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
 
         // Generate session data that will be expired
         final expiredSessionData = generateExpiredSessionData(
@@ -100,7 +100,7 @@ void main() {
 
       for (var i = 0; i < 50; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
 
         // Generate session with expired access token but valid refresh token
         final sessionWithExpiredAccess = generateSessionWithExpiredAccessToken(
@@ -155,7 +155,7 @@ void main() {
 
       for (var i = 0; i < 30; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
 
         // Generate completely expired session
         final expiredSession = generateExpiredSessionData(user, userProfile);
@@ -198,7 +198,7 @@ void main() {
 
       for (var i = 0; i < 50; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
 
         // Generate sessions with different expiry states
         final validSession = generateValidSessionData(user, userProfile);
@@ -317,7 +317,7 @@ void main() {
 
       for (var i = 0; i < 20; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
         final sessionData = generateValidSessionData(user, userProfile);
 
         // Mock consistent session state

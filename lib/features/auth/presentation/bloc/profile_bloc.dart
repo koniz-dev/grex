@@ -232,7 +232,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       } else if (failure is InvalidUserDataFailure) {
         return failure.message;
       } else if (failure is UserDatabaseFailure) {
-        return failure.message;
+        return 'Database error occurred. Please try again later.';
       } else {
         return failure.message;
       }

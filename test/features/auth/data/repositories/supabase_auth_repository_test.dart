@@ -7,17 +7,24 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import 'supabase_auth_repository_test.mocks.dart';
 
-class _MockSupabaseUser extends Mock implements supabase.User {}
-
 @GenerateMocks([
   supabase.SupabaseClient,
   supabase.GoTrueClient,
   supabase.AuthResponse,
+  supabase.User,
 ])
 void main() {
   late SupabaseAuthRepository repository;
   late MockSupabaseClient mockSupabaseClient;
   late MockGoTrueClient mockGoTrueClient;
+
+  setUpAll(() {
+    // GoTrueClient is the return type of SupabaseClient.auth (a non-nullable
+    // getter). Without a dummy, mockito's `when(client.auth)` evaluates the
+    // getter, gets null, and crashes on the non-nullable return type before
+    // we can record the stub.
+    provideDummy<supabase.GoTrueClient>(MockGoTrueClient());
+  });
 
   setUp(() {
     mockSupabaseClient = MockSupabaseClient();
@@ -34,7 +41,7 @@ void main() {
           // Arrange
           const email = 'test@example.com';
           const password = 'StrongPassword123!';
-          final mockUser = _MockSupabaseUser();
+          final mockUser = MockUser();
           when(mockUser.id).thenReturn('user-123');
           when(mockUser.email).thenReturn(email);
           when(
@@ -47,8 +54,10 @@ void main() {
           when(mockResponse.user).thenReturn(mockUser);
           when(
             mockGoTrueClient.signUp(
-              email: email,
-              password: password,
+              email: anyNamed('email'),
+              password: anyNamed('password'),
+              data: anyNamed('data'),
+              emailRedirectTo: anyNamed('emailRedirectTo'),
             ),
           ).thenAnswer((_) async => mockResponse);
 
@@ -71,8 +80,10 @@ void main() {
 
           verify(
             mockGoTrueClient.signUp(
-              email: email,
-              password: password,
+              email: anyNamed('email'),
+              password: anyNamed('password'),
+              data: anyNamed('data'),
+              emailRedirectTo: anyNamed('emailRedirectTo'),
             ),
           ).called(1);
         },
@@ -85,8 +96,10 @@ void main() {
 
         when(
           mockGoTrueClient.signUp(
-            email: email,
-            password: password,
+            email: anyNamed('email'),
+            password: anyNamed('password'),
+            data: anyNamed('data'),
+            emailRedirectTo: anyNamed('emailRedirectTo'),
           ),
         ).thenThrow(const supabase.AuthException('User already registered'));
 
@@ -113,8 +126,10 @@ void main() {
 
         when(
           mockGoTrueClient.signUp(
-            email: email,
-            password: password,
+            email: anyNamed('email'),
+            password: anyNamed('password'),
+            data: anyNamed('data'),
+            emailRedirectTo: anyNamed('emailRedirectTo'),
           ),
         ).thenThrow(
           const supabase.AuthException(
@@ -144,7 +159,7 @@ void main() {
         // Arrange
         const email = 'test@example.com';
         const password = 'password123';
-        final mockUser = _MockSupabaseUser();
+        final mockUser = MockUser();
         when(mockUser.id).thenReturn('user-123');
         when(mockUser.email).thenReturn(email);
         when(
@@ -261,7 +276,7 @@ void main() {
     group('currentUser', () {
       test('should return current user when authenticated', () {
         // Arrange
-        final mockUser = _MockSupabaseUser();
+        final mockUser = MockUser();
         when(mockUser.id).thenReturn('user-123');
         when(mockUser.email).thenReturn('test@example.com');
         when(mockUser.emailConfirmedAt).thenReturn(null);

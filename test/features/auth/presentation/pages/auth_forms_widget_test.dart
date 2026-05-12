@@ -1,11 +1,21 @@
+import 'dart:async';
+
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grex/core/routing/app_routes.dart';
+import 'package:grex/features/auth/domain/entities/failures.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:grex/features/auth/domain/services/session_manager.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:grex/features/auth/presentation/pages/login_page.dart';
 import 'package:grex/features/auth/presentation/pages/register_page.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../../helpers/test_helpers.mocks.dart';
 
@@ -23,22 +33,68 @@ void main() {
     late SessionManager sessionManager;
     late AuthBloc authBloc;
     late ProfileBloc profileBloc;
+    late List<Completer<Either<AuthFailure, User>>> userCompleters;
+    late List<Completer<Either<AuthFailure, void>>> voidCompleters;
 
     setUp(() {
       mockAuthRepository = MockAuthRepository();
       mockUserRepository = MockUserRepository();
       mockSessionService = MockSessionService();
+      userCompleters = <Completer<Either<AuthFailure, User>>>[];
+      voidCompleters = <Completer<Either<AuthFailure, void>>>[];
+
+      // Default stubs so AuthBloc construction doesn't throw on unstubbed
+      // getters/methods.
+      when(mockAuthRepository.authStateChanges).thenAnswer(
+        (_) => const Stream<User?>.empty(),
+      );
+      when(mockAuthRepository.currentUser).thenReturn(null);
+      when(mockAuthRepository.currentSession).thenReturn(null);
+
+      Future<Either<AuthFailure, User>> pendingUserResult() {
+        final c = Completer<Either<AuthFailure, User>>();
+        userCompleters.add(c);
+        return c.future;
+      }
+
+      Future<Either<AuthFailure, void>> pendingVoidResult() {
+        final c = Completer<Either<AuthFailure, void>>();
+        voidCompleters.add(c);
+        return c.future;
+      }
+
+      when(
+        mockAuthRepository.signInWithEmail(
+          email: anyNamed('email'),
+          password: anyNamed('password'),
+        ),
+      ).thenAnswer((_) => pendingUserResult());
+      when(
+        mockAuthRepository.signUpWithEmail(
+          email: anyNamed('email'),
+          password: anyNamed('password'),
+          displayName: anyNamed('displayName'),
+          preferredCurrency: anyNamed('preferredCurrency'),
+          languageCode: anyNamed('languageCode'),
+        ),
+      ).thenAnswer((_) => pendingUserResult());
+      when(
+        mockAuthRepository.resetPassword(email: anyNamed('email')),
+      ).thenAnswer((_) => pendingVoidResult());
 
       sessionManager = SessionManager(
         sessionService: mockSessionService,
       );
+
+      final mockDeepLink = MockAuthDeepLinkHandler();
+      when(mockDeepLink.initialize()).thenAnswer((_) async {});
 
       authBloc = AuthBloc(
         authRepository: mockAuthRepository,
         userRepository: mockUserRepository,
         sessionManager: sessionManager,
         socialAuthRepository: MockSocialAuthRepository(),
-        deepLinkHandler: MockAuthDeepLinkHandler(),
+        deepLinkHandler: mockDeepLink,
         analytics: MockSocialLoginAnalytics(),
       );
 
@@ -49,20 +105,56 @@ void main() {
     });
 
     tearDown(() async {
-      await authBloc.close();
-      await profileBloc.close();
+      // Complete pending futures with a benign Left so any in-flight bloc
+      // handler can fold normally instead of throwing into the test zone.
+      for (final c in userCompleters) {
+        if (!c.isCompleted) {
+          c.complete(const Left(NetworkFailure()));
+        }
+      }
+      for (final c in voidCompleters) {
+        if (!c.isCompleted) {
+          c.complete(const Left(NetworkFailure()));
+        }
+      }
+      unawaited(authBloc.close());
+      unawaited(profileBloc.close());
       sessionManager.dispose();
     });
 
     Widget createTestWidget(Widget child) {
-      return MaterialApp(
-        home: MultiBlocProvider(
+      Widget rootBuilder(BuildContext context, GoRouterState state) {
+        return MultiBlocProvider(
           providers: [
             BlocProvider<AuthBloc>.value(value: authBloc),
             BlocProvider<ProfileBloc>.value(value: profileBloc),
           ],
           child: child,
-        ),
+        );
+      }
+
+      final router = GoRouter(
+        initialLocation: '/',
+        routes: [
+          GoRoute(path: '/', builder: rootBuilder),
+          GoRoute(path: AppRoutes.login, builder: rootBuilder),
+          GoRoute(path: AppRoutes.register, builder: rootBuilder),
+          GoRoute(path: AppRoutes.forgotPassword, builder: rootBuilder),
+          GoRoute(path: AppRoutes.emailVerification, builder: rootBuilder),
+          GoRoute(path: AppRoutes.home, builder: rootBuilder),
+        ],
+      );
+
+      return MaterialApp.router(
+        locale: const Locale('vi'),
+        routerConfig: router,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
       );
     }
 
@@ -390,10 +482,9 @@ void main() {
         // Assert - Check for semantic elements
         expect(find.byType(TextFormField), findsNWidgets(2));
         expect(find.byType(ElevatedButton), findsOneWidget);
-        expect(
-          find.byType(TextButton),
-          findsAtLeastNWidgets(1),
-        ); // Navigation links
+        // Navigation links are GestureDetector-based, not TextButton
+        expect(find.text('Quên mật khẩu?'), findsOneWidget);
+        expect(find.text('Chưa có tài khoản? Đăng ký'), findsOneWidget);
       });
 
       testWidgets('should support screen readers', (tester) async {

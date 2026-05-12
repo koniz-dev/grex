@@ -209,3 +209,19 @@ class ProfileSetupRequiredFailure extends AuthFailure {
   /// Creates a [ProfileSetupRequiredFailure].
   const ProfileSetupRequiredFailure() : super('Profile setup required');
 }
+
+/// Nonce validation failed during OAuth flow
+class NonceMismatchFailure extends AuthFailure {
+  /// Creates a [NonceMismatchFailure].
+  const NonceMismatchFailure()
+    : super('Nonce validation failed. Please try signing in again.');
+}
+
+/// Native Apple Sign In failed
+class NativeSignInFailure extends AuthFailure {
+  /// Creates a [NativeSignInFailure] with platform details.
+  const NativeSignInFailure(super.message, this.platformDetails);
+
+  /// Platform-specific error details
+  final String platformDetails;
+}

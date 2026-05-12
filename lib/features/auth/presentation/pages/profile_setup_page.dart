@@ -8,6 +8,7 @@ import 'package:grex/features/auth/presentation/bloc/auth_event.dart';
 import 'package:grex/features/auth/presentation/bloc/auth_state.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// Profile setup page for new social login users
 ///
@@ -45,8 +46,8 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   late final TextEditingController _displayNameController;
   late final TextEditingController _emailController;
 
-  String _selectedCurrency = 'VND';
-  String _selectedLanguage = 'vi';
+  String _selectedCurrency = LocaleDefaults.currencyCode;
+  String _selectedLanguage = LocaleDefaults.languageCode;
   bool _isLoading = false;
 
   // Available currencies

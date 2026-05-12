@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:grex/features/auth/data/handlers/auth_deep_link_handler.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/social_auth_repository.dart';
@@ -8,6 +9,7 @@ import 'package:grex/features/auth/domain/services/session_service.dart';
 import 'package:grex/features/auth/domain/services/social_login_analytics.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
 import 'test_helpers.mocks.dart';
 
@@ -81,6 +83,24 @@ TestDependencies setupTestDependencies() {
     ..mockAuthDeepLinkHandler = MockAuthDeepLinkHandler()
     ..mockSocialLoginAnalytics = MockSocialLoginAnalytics();
 
+  // Default stubs so unstubbed calls during bloc construction don't throw
+  // MissingStubError. Tests override these as needed.
+  when(deps.mockAuthRepository.authStateChanges).thenAnswer(
+    (_) => const Stream.empty(),
+  );
+  when(deps.mockAuthRepository.currentUser).thenReturn(null);
+  when(deps.mockAuthRepository.currentSession).thenReturn(null);
+  when(
+    deps.mockAuthRepository.signOut(),
+  ).thenAnswer((_) async => const Right(null));
+  when(deps.mockAuthDeepLinkHandler.initialize()).thenAnswer((_) async {});
+  when(
+    deps.mockSessionService.clearSession(),
+  ).thenAnswer((_) async => const Right(null));
+  when(
+    deps.mockSessionService.validateSession(),
+  ).thenAnswer((_) async => const Right(true));
+
   // Create session manager with mocked dependencies
   deps.sessionManager = SessionManager(
     sessionService: deps.mockSessionService,
@@ -88,6 +108,20 @@ TestDependencies setupTestDependencies() {
 
   // Create mock session manager
   final mockSessionManager = MockSessionManager();
+
+  // Default stubs for mock session manager so AuthBloc handlers that call
+  // sessionManager.endSession / startSession don't throw MissingStubError.
+  when(
+    mockSessionManager.endSession(),
+  ).thenAnswer((_) async => const Right(null));
+  when(
+    mockSessionManager.startSession(
+      accessToken: anyNamed('accessToken'),
+      refreshToken: anyNamed('refreshToken'),
+      user: anyNamed('user'),
+      userProfile: anyNamed('userProfile'),
+    ),
+  ).thenAnswer((_) async => const Right(null));
 
   // Create BLoCs with mocked dependencies
   deps

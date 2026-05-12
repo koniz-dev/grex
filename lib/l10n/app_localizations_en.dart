@@ -675,4 +675,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get continueSetup => 'Continue Setup';
+
+  @override
+  String get signingIn => 'Signing in...';
+
+  @override
+  String get registerAccount => 'Create Account';
+
+  @override
+  String get joinGrexExpenseShare => 'Join Grex to start splitting expenses';
+
+  @override
+  String get registering => 'Creating account...';
+
+  @override
+  String get displayNameRequired => 'Please enter your display name';
+
+  @override
+  String get displayNameEmpty => 'Display name cannot be empty';
+
+  @override
+  String get displayNameTooLong => 'Display name must be 50 characters or less';
+
+  @override
+  String get preferredCurrencyLabel => 'Preferred Currency';
+
+  @override
+  String get passwordHintShort => 'Min. 8 characters';
+
+  @override
+  String get yourNameHint => 'Your name';
+
+  @override
+  String get passwordHint =>
+      'Must be at least 8 characters with mixed case and numbers';
+
+  @override
+  String get alreadyHaveAccountPrefix => 'Already have an account? ';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get forgotPasswordTitle => 'Forgot Password';
+
+  @override
+  String get enterEmailForResetShort =>
+      'Enter your email to reset your password';
+
+  @override
+  String get sendResetLinkShort => 'Send Reset Link';
+
+  @override
+  String get sending => 'Sending...';
+
+  @override
+  String get resetEmailSent => 'Password reset email sent';
+
+  @override
+  String pleaseCheckEmailAt(String email) {
+    return 'Please check your email at $email';
+  }
+
+  @override
+  String get resend => 'Resend';
+
+  @override
+  String get emailNotInSystem => 'Email not found in our system';
+
+  @override
+  String get weWillSendLink =>
+      'We\'ll send a link to reset your password to your email';
+
+  @override
+  String get rememberPassword => 'Remember your password? ';
 }

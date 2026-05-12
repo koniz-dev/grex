@@ -54,9 +54,10 @@ void main() {
       );
       var callCount = 0;
 
-      // Act & Assert
-      expect(
-        () => retryService.execute(() async {
+      // Act — await with expectLater so callCount reflects all retry
+      // attempts before the assertion runs.
+      await expectLater(
+        retryService.execute(() async {
           callCount++;
           throw Exception('Persistent failure');
         }),

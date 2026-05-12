@@ -247,9 +247,11 @@ class ExpenseSearchFilter {
       return ExpenseStatistics.empty();
     }
 
-    final totalAmount = expenses.fold(
+    // Use the full double amount, not `.toInt()`, so fractional cents are
+    // preserved when summing.
+    final totalAmount = expenses.fold<double>(
       0,
-      (sum, expense) => sum + expense.amount.toInt(),
+      (sum, expense) => sum + expense.amount,
     );
     final averageAmount = totalAmount / expenses.length;
 
@@ -276,7 +278,7 @@ class ExpenseSearchFilter {
 
     return ExpenseStatistics(
       totalExpenses: expenses.length,
-      totalAmount: totalAmount.toDouble(),
+      totalAmount: totalAmount,
       averageAmount: averageAmount,
       minAmount: minAmount,
       maxAmount: maxAmount,

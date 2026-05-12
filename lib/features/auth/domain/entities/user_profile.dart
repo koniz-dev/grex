@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// User profile entity representing user information stored in the users table
 ///
@@ -47,16 +48,18 @@ class UserProfile extends Equatable {
     required String id,
     required String email,
     required String displayName,
-    String preferredCurrency = 'VND',
-    String languageCode = 'vi',
+    String? preferredCurrency,
+    String? languageCode,
   }) {
+    final currency = preferredCurrency ?? LocaleDefaults.currencyCode;
+    final language = languageCode ?? LocaleDefaults.languageCode;
     final now = DateTime.now();
     return UserProfile(
       id: id,
       email: email,
       displayName: displayName,
-      preferredCurrency: preferredCurrency,
-      languageCode: languageCode,
+      preferredCurrency: currency,
+      languageCode: language,
       createdAt: now,
       updatedAt: now,
     );
@@ -96,9 +99,11 @@ class UserProfile extends Equatable {
     };
   }
 
-  /// Create a copy of this UserProfile with updated fields
+  /// Create a copy of this UserProfile with updated fields.
   ///
-  /// Automatically updates the [updatedAt] timestamp when any field changes.
+  /// Pure data copy — does NOT auto-update [updatedAt]. The caller (or the
+  /// backend on a real write) is responsible for setting [updatedAt] when
+  /// the change should bump the modification time.
   UserProfile copyWith({
     String? id,
     String? email,
@@ -115,7 +120,7 @@ class UserProfile extends Equatable {
       preferredCurrency: preferredCurrency ?? this.preferredCurrency,
       languageCode: languageCode ?? this.languageCode,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? DateTime.now(),
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 

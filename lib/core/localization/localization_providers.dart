@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/localization/localization_service.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// Provider for [LocalizationService] instance
 ///
@@ -29,6 +30,9 @@ class LocaleNotifier extends Notifier<Locale> {
     ref.listen<AsyncValue<Locale>>(currentLocaleProvider, (previous, next) {
       next.whenData((Locale locale) {
         state = locale;
+        // Keep LocaleDefaults in sync so signup / profile-setup / new-group
+        // defaults follow the user's selected language, not the device.
+        LocaleDefaults.setAppLocale(locale);
       });
     });
     return LocalizationService.defaultLocale;
@@ -42,6 +46,9 @@ class LocaleNotifier extends Notifier<Locale> {
   /// Updates the app's locale state and persists the preference to storage.
   set locale(Locale locale) {
     state = locale;
+    // Keep LocaleDefaults in sync so signup / profile-setup / new-group
+    // defaults follow the user's selected language, not the device.
+    LocaleDefaults.setAppLocale(locale);
   }
 }
 

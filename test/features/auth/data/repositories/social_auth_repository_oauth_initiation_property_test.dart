@@ -28,13 +28,13 @@ void main() {
           if (shouldTestGoogle) {
             expect(provider.name, equals('google'));
             expect(provider.displayName, equals('Google'));
-            expect(provider.iconAsset, equals('assets/icons/google.svg'));
+            expect(provider.iconAsset, equals('assets/icons/google_logo.svg'));
           }
 
           if (shouldTestApple) {
             expect(provider.name, equals('apple'));
             expect(provider.displayName, equals('Apple'));
-            expect(provider.iconAsset, equals('assets/icons/apple.svg'));
+            expect(provider.iconAsset, equals('assets/icons/apple_logo.svg'));
           }
 
           // Test property: Provider enum can be parsed from string
@@ -203,13 +203,13 @@ void main() {
           expect(SocialAuthProvider.google.displayName, equals('Google'));
           expect(
             SocialAuthProvider.google.iconAsset,
-            equals('assets/icons/google.svg'),
+            equals('assets/icons/google_logo.svg'),
           );
           expect(SocialAuthProvider.apple.name, equals('apple'));
           expect(SocialAuthProvider.apple.displayName, equals('Apple'));
           expect(
             SocialAuthProvider.apple.iconAsset,
-            equals('assets/icons/apple.svg'),
+            equals('assets/icons/apple_logo.svg'),
           );
         }
       },

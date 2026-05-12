@@ -53,7 +53,7 @@ void main() {
           when(
             mockAuthRepository.signInWithEmail(
               email: email,
-              password: any,
+              password: anyNamed('password'),
             ),
           ).thenAnswer(
             (_) async => const Left(
@@ -320,8 +320,8 @@ void main() {
         // Mock sign-in restriction with clear message
         when(
           mockAuthRepository.signInWithEmail(
-            email: any,
-            password: any,
+            email: anyNamed('email'),
+            password: anyNamed('password'),
           ),
         ).thenAnswer(
           (_) async => const Left(
@@ -406,8 +406,8 @@ void main() {
         // Mock all authentication methods to require verification
         when(
           mockAuthRepository.signInWithEmail(
-            email: any,
-            password: any,
+            email: anyNamed('email'),
+            password: anyNamed('password'),
           ),
         ).thenAnswer(
           (_) async => const Left(UnverifiedEmailFailure()),

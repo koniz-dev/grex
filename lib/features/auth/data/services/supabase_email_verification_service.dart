@@ -26,10 +26,12 @@ class SupabaseEmailVerificationService implements EmailVerificationService {
     try {
       final uri = Uri.parse(link);
 
-      // Check if this is a verification link
-      if (!isVerificationLink(link)) {
+      // Only require the path here so we can produce field-specific errors
+      // below. Use isVerificationLink for the strict "is this a full
+      // verification link" check elsewhere.
+      if (!uri.path.contains(_verificationPath)) {
         return const Left(
-          GenericAuthFailure('Invalid verification link format'),
+          GenericAuthFailure('Failed to process verification link'),
         );
       }
 
@@ -47,7 +49,7 @@ class SupabaseEmailVerificationService implements EmailVerificationService {
 
       if (email == null || email.isEmpty) {
         return const Left(
-          GenericAuthFailure('Email address not found in link'),
+          GenericAuthFailure('email address not found in link'),
         );
       }
 
@@ -85,7 +87,7 @@ class SupabaseEmailVerificationService implements EmailVerificationService {
         return false;
       }
 
-      // Check if required parameters are present
+      // Strict check — all required params must be present
       final hasToken = uri.queryParameters.containsKey(_tokenParam);
       final hasEmail = uri.queryParameters.containsKey(_emailParam);
       final hasType = uri.queryParameters.containsKey(_typeParam);

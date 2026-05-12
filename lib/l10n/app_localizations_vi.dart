@@ -37,10 +37,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get name => 'Tên';
 
   @override
-  String get emailRequired => 'Vui lòng nhập email của bạn';
+  String get emailRequired => 'Vui lòng nhập email';
 
   @override
-  String get emailInvalid => 'Vui lòng nhập địa chỉ email hợp lệ';
+  String get emailInvalid => 'Email không hợp lệ';
 
   @override
   String get passwordRequired => 'Vui lòng nhập mật khẩu';
@@ -510,7 +510,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Đã gửi liên kết đặt lại! Kiểm tra email của bạn.';
 
   @override
-  String get backToSignIn => 'Quay lại Đăng nhập';
+  String get backToSignIn => 'Quay lại đăng nhập';
 
   @override
   String get verifyYourEmail => 'Xác thực email của bạn';
@@ -681,4 +681,77 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get continueSetup => 'Tiếp tục thiết lập';
+
+  @override
+  String get signingIn => 'Đang đăng nhập...';
+
+  @override
+  String get registerAccount => 'Đăng ký tài khoản';
+
+  @override
+  String get joinGrexExpenseShare => 'Tham gia Grex để bắt đầu chia sẻ chi phí';
+
+  @override
+  String get registering => 'Đang đăng ký...';
+
+  @override
+  String get displayNameRequired => 'Vui lòng nhập tên hiển thị';
+
+  @override
+  String get displayNameEmpty => 'Tên hiển thị không được để trống';
+
+  @override
+  String get displayNameTooLong => 'Tên hiển thị quá dài';
+
+  @override
+  String get preferredCurrencyLabel => 'Tiền tệ ưa thích';
+
+  @override
+  String get passwordHintShort => 'Tối thiểu 8 ký tự';
+
+  @override
+  String get yourNameHint => 'Tên của bạn';
+
+  @override
+  String get passwordHint =>
+      'Phải có ít nhất 8 ký tự với chữ hoa, chữ thường và số';
+
+  @override
+  String get alreadyHaveAccountPrefix => 'Đã có tài khoản? ';
+
+  @override
+  String get signIn => 'Đăng nhập';
+
+  @override
+  String get forgotPasswordTitle => 'Quên mật khẩu';
+
+  @override
+  String get enterEmailForResetShort => 'Nhập email để đặt lại mật khẩu';
+
+  @override
+  String get sendResetLinkShort => 'Gửi link đặt lại';
+
+  @override
+  String get sending => 'Đang gửi...';
+
+  @override
+  String get resetEmailSent => 'Email đặt lại mật khẩu đã được gửi';
+
+  @override
+  String pleaseCheckEmailAt(String email) {
+    return 'Vui lòng kiểm tra email $email';
+  }
+
+  @override
+  String get resend => 'Gửi lại';
+
+  @override
+  String get emailNotInSystem => 'Email không tồn tại trong hệ thống';
+
+  @override
+  String get weWillSendLink =>
+      'Chúng tôi sẽ gửi link đặt lại mật khẩu đến email của bạn';
+
+  @override
+  String get rememberPassword => 'Nhớ mật khẩu? ';
 }

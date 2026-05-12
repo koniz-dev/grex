@@ -671,4 +671,77 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get continueSetup => 'متابعة الإعداد';
+
+  @override
+  String get signingIn => 'جاري تسجيل الدخول...';
+
+  @override
+  String get registerAccount => 'إنشاء حساب';
+
+  @override
+  String get joinGrexExpenseShare => 'انضم إلى Grex لبدء مشاركة المصاريف';
+
+  @override
+  String get registering => 'جاري إنشاء الحساب...';
+
+  @override
+  String get displayNameRequired => 'الرجاء إدخال الاسم المعروض';
+
+  @override
+  String get displayNameEmpty => 'لا يمكن أن يكون الاسم فارغًا';
+
+  @override
+  String get displayNameTooLong => 'يجب أن يكون الاسم 50 حرفًا أو أقل';
+
+  @override
+  String get preferredCurrencyLabel => 'العملة المفضلة';
+
+  @override
+  String get passwordHintShort => '8 أحرف على الأقل';
+
+  @override
+  String get yourNameHint => 'اسمك';
+
+  @override
+  String get passwordHint =>
+      'يجب أن تحتوي على 8 أحرف على الأقل مع أحرف كبيرة وصغيرة وأرقام';
+
+  @override
+  String get alreadyHaveAccountPrefix => 'هل لديك حساب بالفعل؟ ';
+
+  @override
+  String get signIn => 'تسجيل الدخول';
+
+  @override
+  String get forgotPasswordTitle => 'هل نسيت كلمة المرور';
+
+  @override
+  String get enterEmailForResetShort =>
+      'أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور';
+
+  @override
+  String get sendResetLinkShort => 'إرسال الرابط';
+
+  @override
+  String get sending => 'جارٍ الإرسال...';
+
+  @override
+  String get resetEmailSent => 'تم إرسال بريد إعادة التعيين';
+
+  @override
+  String pleaseCheckEmailAt(String email) {
+    return 'يرجى التحقق من بريدك الإلكتروني $email';
+  }
+
+  @override
+  String get resend => 'إعادة الإرسال';
+
+  @override
+  String get emailNotInSystem => 'البريد الإلكتروني غير موجود في النظام';
+
+  @override
+  String get weWillSendLink => 'سنرسل إليك رابطًا لإعادة تعيين كلمة المرور';
+
+  @override
+  String get rememberPassword => 'هل تتذكر كلمة المرور؟ ';
 }

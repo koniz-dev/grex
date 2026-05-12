@@ -687,4 +687,79 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get continueSetup => 'Continuar configuración';
+
+  @override
+  String get signingIn => 'Iniciando sesión...';
+
+  @override
+  String get registerAccount => 'Crear cuenta';
+
+  @override
+  String get joinGrexExpenseShare =>
+      'Únete a Grex para empezar a dividir gastos';
+
+  @override
+  String get registering => 'Creando cuenta...';
+
+  @override
+  String get displayNameRequired => 'Por favor ingresa tu nombre';
+
+  @override
+  String get displayNameEmpty => 'El nombre no puede estar vacío';
+
+  @override
+  String get displayNameTooLong => 'El nombre debe tener 50 caracteres o menos';
+
+  @override
+  String get preferredCurrencyLabel => 'Moneda preferida';
+
+  @override
+  String get passwordHintShort => 'Mín. 8 caracteres';
+
+  @override
+  String get yourNameHint => 'Tu nombre';
+
+  @override
+  String get passwordHint =>
+      'Al menos 8 caracteres con mayúsculas, minúsculas y números';
+
+  @override
+  String get alreadyHaveAccountPrefix => '¿Ya tienes una cuenta? ';
+
+  @override
+  String get signIn => 'Iniciar sesión';
+
+  @override
+  String get forgotPasswordTitle => 'Olvidé mi contraseña';
+
+  @override
+  String get enterEmailForResetShort =>
+      'Ingresa tu correo para restablecer tu contraseña';
+
+  @override
+  String get sendResetLinkShort => 'Enviar enlace';
+
+  @override
+  String get sending => 'Enviando...';
+
+  @override
+  String get resetEmailSent => 'Se envió el correo de restablecimiento';
+
+  @override
+  String pleaseCheckEmailAt(String email) {
+    return 'Por favor revisa tu correo en $email';
+  }
+
+  @override
+  String get resend => 'Reenviar';
+
+  @override
+  String get emailNotInSystem => 'Correo no encontrado en el sistema';
+
+  @override
+  String get weWillSendLink =>
+      'Te enviaremos un enlace para restablecer tu contraseña';
+
+  @override
+  String get rememberPassword => '¿Recuerdas tu contraseña? ';
 }

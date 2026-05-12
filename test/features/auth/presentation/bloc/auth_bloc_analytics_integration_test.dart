@@ -339,63 +339,60 @@ void main() {
     });
 
     group('Analytics Error Type Mapping', () {
-      test(
-        'should map different failure types to correct analytics error types',
-        () {
-          // Test the private method indirectly through social login failure
-          final testCases = [
-            (const SocialAuthCancelledFailure(), 'cancelled'),
-            (const SocialAuthNetworkFailure(), 'network'),
-            (const SocialAuthTimeoutFailure(), 'timeout'),
-            (const AccountLinkingFailure('test'), 'linking'),
-            (const NetworkFailure(), 'network'),
-            (const GenericAuthFailure('unknown error'), 'unknown'),
-          ];
+      // blocTest declarations must happen during group setup, NOT inside a
+      // test() callback (which would defer declaration to runtime and trigger
+      // "Can't call test() once tests have begun running").
+      final testCases = [
+        (const SocialAuthCancelledFailure(), 'cancelled'),
+        (const SocialAuthNetworkFailure(), 'network'),
+        (const SocialAuthTimeoutFailure(), 'timeout'),
+        (const AccountLinkingFailure('test'), 'linking'),
+        (const NetworkFailure(), 'network'),
+        (const GenericAuthFailure('unknown error'), 'unknown'),
+      ];
 
-          for (final (failure, expectedType) in testCases) {
-            blocTest<AuthBloc, AuthState>(
-              'should map ${failure.runtimeType} to $expectedType',
-              build: () => AuthBloc(
-                authRepository: mockAuthRepository,
-                userRepository: mockUserRepository,
-                sessionManager: mockSessionManager,
-                socialAuthRepository: mockSocialAuthRepository,
-                deepLinkHandler: mockDeepLinkHandler,
-                analytics: mockAnalytics,
-              ),
-              act: (bloc) => bloc.add(const AuthSocialLoginRequested('google')),
-              setUp: () {
-                when(
-                  mockSocialAuthRepository.signInWithGoogle(),
-                ).thenAnswer((_) async => Left(failure));
-                when(
-                  mockSessionManager.initialize(),
-                ).thenAnswer((_) async => const Right(null));
-                when(
-                  mockAuthRepository.authStateChanges,
-                ).thenAnswer((_) => const Stream.empty());
-              },
-              verify: (_) {
-                if (failure is SocialAuthCancelledFailure) {
-                  verify(
-                    mockAnalytics.logSocialLoginCancelled(
-                      SocialAuthProvider.google,
-                    ),
-                  ).called(1);
-                } else {
-                  verify(
-                    mockAnalytics.logSocialLoginFailure(
-                      provider: SocialAuthProvider.google,
-                      errorType: expectedType,
-                    ),
-                  ).called(1);
-                }
-              },
-              tearDown: () async => authBloc.close(),
-            );
-          }
-        },
-      );
+      for (final (failure, expectedType) in testCases) {
+        blocTest<AuthBloc, AuthState>(
+          'should map ${failure.runtimeType} to $expectedType',
+          build: () => AuthBloc(
+            authRepository: mockAuthRepository,
+            userRepository: mockUserRepository,
+            sessionManager: mockSessionManager,
+            socialAuthRepository: mockSocialAuthRepository,
+            deepLinkHandler: mockDeepLinkHandler,
+            analytics: mockAnalytics,
+          ),
+          act: (bloc) => bloc.add(const AuthSocialLoginRequested('google')),
+          setUp: () {
+            when(
+              mockSocialAuthRepository.signInWithGoogle(),
+            ).thenAnswer((_) async => Left(failure));
+            when(
+              mockSessionManager.initialize(),
+            ).thenAnswer((_) async => const Right(null));
+            when(
+              mockAuthRepository.authStateChanges,
+            ).thenAnswer((_) => const Stream.empty());
+          },
+          verify: (_) {
+            if (failure is SocialAuthCancelledFailure) {
+              verify(
+                mockAnalytics.logSocialLoginCancelled(
+                  SocialAuthProvider.google,
+                ),
+              ).called(1);
+            } else {
+              verify(
+                mockAnalytics.logSocialLoginFailure(
+                  provider: SocialAuthProvider.google,
+                  errorType: expectedType,
+                ),
+              ).called(1);
+            }
+          },
+          tearDown: () async => authBloc.close(),
+        );
+      }
     });
   });
 }

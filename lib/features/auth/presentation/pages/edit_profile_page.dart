@@ -6,6 +6,7 @@ import 'package:grex/core/routing/auth_navigation_extensions.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// Edit profile page for updating user information.
 ///
@@ -24,8 +25,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
   final _displayNameController = TextEditingController();
 
-  String _selectedCurrency = 'VND';
-  String _selectedLanguage = 'vi';
+  String _selectedCurrency = LocaleDefaults.currencyCode;
+  String _selectedLanguage = LocaleDefaults.languageCode;
   bool _isFormValid = false;
   bool _hasChanges = false;
 

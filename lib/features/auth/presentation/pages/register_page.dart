@@ -6,17 +6,13 @@ import 'package:grex/features/auth/domain/entities/failures.dart';
 import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:grex/features/auth/domain/entities/user_profile.dart';
-import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// Registration page for new user sign up.
-///
-/// Implements the register screen design with:
-/// - Display name, email, password fields
-/// - Currency selector
-/// - Social login options (Google, Apple)
-/// - Password requirements hint
 class RegisterPage extends StatefulWidget {
   /// Creates a [RegisterPage].
   const RegisterPage({super.key});
@@ -31,7 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  String _selectedCurrency = 'VND';
+  String _selectedCurrency = LocaleDefaults.currencyCode;
 
   final List<Map<String, String>> _currencies = [
     {'code': 'VND', 'name': 'VND - Vietnamese Dong'},
@@ -56,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
           password: _passwordController.text,
           displayName: _displayNameController.text.trim(),
           preferredCurrency: _selectedCurrency,
-          languageCode: 'en', // Default language
+          languageCode: LocaleDefaults.languageCode,
         ),
       );
     }
@@ -64,6 +60,42 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _onSocialLogin(SocialAuthProvider provider) {
     context.read<AuthBloc>().add(AuthSocialLoginRequested(provider.name));
+  }
+
+  String? _validateDisplayName(AppLocalizations l10n, String? value) {
+    if (value == null || value.isEmpty) {
+      return l10n.displayNameRequired;
+    }
+    if (value.trim().isEmpty) {
+      return l10n.displayNameEmpty;
+    }
+    if (value.trim().length > 50) {
+      return l10n.displayNameTooLong;
+    }
+    return null;
+  }
+
+  String? _validateEmail(AppLocalizations l10n, String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return l10n.emailRequired;
+    }
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$',
+    );
+    if (!emailRegex.hasMatch(value.trim())) {
+      return l10n.emailInvalid;
+    }
+    return null;
+  }
+
+  String? _validatePassword(AppLocalizations l10n, String? value) {
+    if (value == null || value.isEmpty) {
+      return l10n.passwordRequired;
+    }
+    if (value.length < 8) {
+      return l10n.passwordMinLength(8);
+    }
+    return null;
   }
 
   void showAccountLinkingDialog({
@@ -87,8 +119,8 @@ class _RegisterPageState extends State<RegisterPage> {
             id: '',
             email: email,
             displayName: '',
-            preferredCurrency: 'VND',
-            languageCode: 'vi',
+            preferredCurrency: LocaleDefaults.currencyCode,
+            languageCode: LocaleDefaults.languageCode,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),
@@ -100,6 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -141,13 +174,10 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Spacer
                   const SizedBox(height: 40),
-
-                  // Title section
-                  const Text(
-                    'Create Account',
-                    style: TextStyle(
+                  Text(
+                    l10n.registerAccount,
+                    style: const TextStyle(
                       fontFamily: 'Outfit',
                       fontSize: 40,
                       fontWeight: FontWeight.w800,
@@ -156,9 +186,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Join Grex to start splitting expenses',
-                    style: TextStyle(
+                  Text(
+                    l10n.joinGrexExpenseShare,
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
@@ -166,42 +196,43 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-
-                  // Form section
                   AuthTextField(
-                    label: 'Display Name',
-                    placeholder: 'Your name',
+                    label: l10n.displayName,
+                    placeholder: l10n.yourNameHint,
+                    fieldKey: const Key('display_name_field'),
                     controller: _displayNameController,
                     textInputAction: TextInputAction.next,
-                    validator: InputValidators.validateDisplayName,
+                    validator: (value) => _validateDisplayName(l10n, value),
                   ),
                   const SizedBox(height: 16),
-
                   AuthTextField(
-                    label: 'Email',
-                    placeholder: 'your@email.com',
+                    label: l10n.email,
+                    placeholder: l10n.enterYourEmail,
+                    fieldKey: const Key('email_field'),
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    validator: InputValidators.validateEmail,
+                    validator: (value) => _validateEmail(l10n, value),
                   ),
                   const SizedBox(height: 16),
-
                   AuthTextField(
-                    label: 'Password',
-                    placeholder: 'Min. 8 characters',
+                    label: l10n.password,
+                    placeholder: l10n.passwordHintShort,
+                    fieldKey: const Key('password_field'),
+                    visibilityToggleKey: const Key(
+                      'password_visibility_toggle',
+                    ),
                     controller: _passwordController,
                     obscureText: true,
+                    showVisibilityToggle: true,
                     textInputAction: TextInputAction.done,
-                    validator: InputValidators.validatePassword,
+                    validator: (value) => _validatePassword(l10n, value),
                     onFieldSubmitted: (_) => _onRegisterPressed(),
                   ),
                   const SizedBox(height: 8),
-
-                  // Password hint
-                  const Text(
-                    'Must be at least 8 characters with mixed case and numbers',
-                    style: TextStyle(
+                  Text(
+                    l10n.passwordHint,
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
@@ -210,14 +241,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-
-                  // Currency selector
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Preferred Currency',
-                        style: TextStyle(
+                      Text(
+                        l10n.preferredCurrencyLabel,
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
@@ -266,27 +295,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                   const SizedBox(height: 32),
-
-                  // Register button
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading =
                           state is AuthLoading ||
                           state is AuthSocialLoginInProgress;
                       return PrimaryButton(
-                        text: 'Create Account',
+                        text: l10n.register,
                         isLoading: state is AuthLoading,
+                        loadingText: l10n.registering,
                         onPressed: isLoading ? null : _onRegisterPressed,
                       );
                     },
                   ),
                   const SizedBox(height: 32),
-
-                  // Or divider
                   const OrDivider(),
                   const SizedBox(height: 12),
-
-                  // Social login buttons
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading =
@@ -295,7 +319,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       final isGoogleLoading =
                           state is AuthSocialLoginInProgress &&
                           state.provider == SocialAuthProvider.google;
-
                       return SocialLoginButton(
                         provider: SocialAuthProvider.google,
                         onPressed: isLoading
@@ -306,7 +329,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   const SizedBox(height: 12),
-
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading =
@@ -315,7 +337,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       final isAppleLoading =
                           state is AuthSocialLoginInProgress &&
                           state.provider == SocialAuthProvider.apple;
-
                       return SocialLoginButton(
                         provider: SocialAuthProvider.apple,
                         onPressed: isLoading
@@ -326,12 +347,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   const SizedBox(height: 32),
-
-                  // Error display
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthError) {
-                        // Check if it's a social auth error
                         if (state.failure != null &&
                             (state.failure is SocialAuthFailure ||
                                 state.failure is SocialAuthCancelledFailure ||
@@ -342,13 +360,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             padding: const EdgeInsets.only(bottom: 24),
                             child: SocialAuthErrorWidget(
                               failure: state.failure!,
-                              onRetry: () {
-                                // Retry the last attempted social login
-                                // This would need to be tracked in the BLoC
-                                // state
-                              },
+                              errorMessage: state.message,
+                              onRetry: () {},
                               onFallback: () {
-                                // Focus on email field for fallback
                                 FocusScope.of(context).requestFocus();
                               },
                             ),
@@ -363,33 +377,18 @@ class _RegisterPageState extends State<RegisterPage> {
                       return const SizedBox.shrink();
                     },
                   ),
-
-                  // Login prompt
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Already have an account? ',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Color(0xFF71717A),
-                        ),
+                  GestureDetector(
+                    onTap: () => context.goToLogin(),
+                    child: Text(
+                      l10n.alreadyHaveAccount,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
                       ),
-                      GestureDetector(
-                        onTap: () => context.goToLogin(),
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),

@@ -2,24 +2,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:grex/core/performance/performance_service.dart';
 import 'package:grex/features/auth/data/handlers/auth_deep_link_handler.dart';
+import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/social_auth_repository.dart';
+import 'package:grex/features/auth/domain/repositories/user_repository.dart';
+import 'package:grex/features/auth/domain/services/session_manager.dart';
 import 'package:grex/features/auth/domain/services/social_login_analytics.dart';
 import 'package:grex/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Mock classes
+// Mock classes — must `implements <T>` for the constructor's typed
+// parameters to accept the mock instance.
 class MockSupabaseClient extends Mock implements SupabaseClient {}
 
 class MockSocialLoginAnalytics extends Mock implements SocialLoginAnalytics {}
 
 class MockSocialAuthRepository extends Mock implements SocialAuthRepository {}
 
-class MockAuthRepository extends Mock {}
+class MockAuthRepository extends Mock implements AuthRepository {}
 
-class MockUserRepository extends Mock {}
+class MockUserRepository extends Mock implements UserRepository {}
 
-class MockSessionManager extends Mock {}
+class MockSessionManager extends Mock implements SessionManager {}
 
 class MockPerformanceService extends Mock implements PerformanceService {}
 
@@ -42,7 +46,7 @@ void main() {
         final mockSupabaseClient = MockSupabaseClient();
         getIt
           ..registerLazySingleton<SupabaseClient>(() => mockSupabaseClient)
-          ..registerLazySingleton(MockUserRepository.new)
+          ..registerLazySingleton<UserRepository>(MockUserRepository.new)
           ..registerLazySingleton<SocialAuthRepository>(
             MockSocialAuthRepository.new,
           );
@@ -61,7 +65,7 @@ void main() {
         final mockSupabaseClient = MockSupabaseClient();
         getIt
           ..registerLazySingleton<SupabaseClient>(() => mockSupabaseClient)
-          ..registerLazySingleton(MockUserRepository.new)
+          ..registerLazySingleton<UserRepository>(MockUserRepository.new)
           ..registerLazySingleton<SocialAuthRepository>(
             MockSocialAuthRepository.new,
           );
@@ -143,9 +147,9 @@ void main() {
         final mockPerformanceService = MockPerformanceService();
         getIt
           ..registerLazySingleton<SupabaseClient>(() => mockSupabaseClient)
-          ..registerLazySingleton(MockAuthRepository.new)
-          ..registerLazySingleton(MockUserRepository.new)
-          ..registerLazySingleton(MockSessionManager.new)
+          ..registerLazySingleton<AuthRepository>(MockAuthRepository.new)
+          ..registerLazySingleton<UserRepository>(MockUserRepository.new)
+          ..registerLazySingleton<SessionManager>(MockSessionManager.new)
           ..registerLazySingleton<SocialAuthRepository>(
             MockSocialAuthRepository.new,
           )
@@ -160,9 +164,9 @@ void main() {
           )
           ..registerLazySingleton<AuthBloc>(
             () => AuthBloc(
-              authRepository: getIt(),
-              userRepository: getIt(),
-              sessionManager: getIt(),
+              authRepository: getIt<AuthRepository>(),
+              userRepository: getIt<UserRepository>(),
+              sessionManager: getIt<SessionManager>(),
               socialAuthRepository: getIt<SocialAuthRepository>(),
               deepLinkHandler: getIt<AuthDeepLinkHandler>(),
               analytics: getIt<SocialLoginAnalytics>(),
@@ -182,9 +186,9 @@ void main() {
         final mockPerformanceService = MockPerformanceService();
         getIt
           ..registerLazySingleton<SupabaseClient>(() => mockSupabaseClient)
-          ..registerLazySingleton(MockAuthRepository.new)
-          ..registerLazySingleton(MockUserRepository.new)
-          ..registerLazySingleton(MockSessionManager.new)
+          ..registerLazySingleton<AuthRepository>(MockAuthRepository.new)
+          ..registerLazySingleton<UserRepository>(MockUserRepository.new)
+          ..registerLazySingleton<SessionManager>(MockSessionManager.new)
           ..registerLazySingleton<SocialAuthRepository>(
             MockSocialAuthRepository.new,
           )
@@ -199,9 +203,9 @@ void main() {
           )
           ..registerLazySingleton<AuthBloc>(
             () => AuthBloc(
-              authRepository: getIt(),
-              userRepository: getIt(),
-              sessionManager: getIt(),
+              authRepository: getIt<AuthRepository>(),
+              userRepository: getIt<UserRepository>(),
+              sessionManager: getIt<SessionManager>(),
               socialAuthRepository: getIt<SocialAuthRepository>(),
               deepLinkHandler: getIt<AuthDeepLinkHandler>(),
               analytics: getIt<SocialLoginAnalytics>(),
@@ -227,9 +231,9 @@ void main() {
           // External dependencies
           ..registerLazySingleton<SupabaseClient>(() => mockSupabaseClient)
           // Core repositories
-          ..registerLazySingleton(MockAuthRepository.new)
-          ..registerLazySingleton(MockUserRepository.new)
-          ..registerLazySingleton(MockSessionManager.new)
+          ..registerLazySingleton<AuthRepository>(MockAuthRepository.new)
+          ..registerLazySingleton<UserRepository>(MockUserRepository.new)
+          ..registerLazySingleton<SessionManager>(MockSessionManager.new)
           // Social login dependencies
           ..registerLazySingleton<SocialAuthRepository>(
             MockSocialAuthRepository.new,
@@ -246,9 +250,9 @@ void main() {
           // AuthBloc with all dependencies
           ..registerLazySingleton<AuthBloc>(
             () => AuthBloc(
-              authRepository: getIt(),
-              userRepository: getIt(),
-              sessionManager: getIt(),
+              authRepository: getIt<AuthRepository>(),
+              userRepository: getIt<UserRepository>(),
+              sessionManager: getIt<SessionManager>(),
               socialAuthRepository: getIt<SocialAuthRepository>(),
               deepLinkHandler: getIt<AuthDeepLinkHandler>(),
               analytics: getIt<SocialLoginAnalytics>(),
@@ -266,19 +270,20 @@ void main() {
         // Arrange - Register AuthBloc without dependencies
         getIt.registerLazySingleton<AuthBloc>(
           () => AuthBloc(
-            authRepository: getIt(), // This will fail
-            userRepository: getIt(),
-            sessionManager: getIt(),
+            authRepository: getIt<AuthRepository>(), // This will fail
+            userRepository: getIt<UserRepository>(),
+            sessionManager: getIt<SessionManager>(),
             socialAuthRepository: getIt<SocialAuthRepository>(),
             deepLinkHandler: getIt<AuthDeepLinkHandler>(),
             analytics: getIt<SocialLoginAnalytics>(),
           ),
         );
 
-        // Act & Assert
+        // Act & Assert — GetIt throws StateError ("Object/factory with type X
+        // is not registered") which is an Error, not an Exception.
         expect(
           () => getIt<AuthBloc>(),
-          throwsA(isA<Exception>()),
+          throwsA(isA<StateError>()),
         );
       });
     });

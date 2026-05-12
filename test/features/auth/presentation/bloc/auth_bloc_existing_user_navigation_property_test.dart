@@ -143,20 +143,16 @@ void main() {
             analytics: mockAnalytics,
           );
 
-          // Test the property
-          await expectLater(
+          // Set up expectation, then trigger event (add must come BEFORE await)
+          final expectation = expectLater(
             testBloc.stream,
             emitsInOrder([
               isA<AuthSocialLoginInProgress>(),
               isA<AuthAuthenticated>(),
             ]),
           );
-
-          // Trigger social login
           testBloc.add(AuthSocialLoginRequested(provider));
-
-          // Wait for state changes
-          await Future<void>.delayed(const Duration(milliseconds: 100));
+          await expectation;
 
           // Verify final state is authenticated
           expect(testBloc.state, isA<AuthAuthenticated>());

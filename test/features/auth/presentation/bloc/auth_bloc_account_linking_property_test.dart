@@ -46,6 +46,13 @@ void main() {
       when(mockAuthRepository.authStateChanges).thenAnswer(
         (_) => const Stream<User?>.empty(),
       );
+      when(mockAuthRepository.currentUser).thenReturn(
+        User(
+          id: 'default-current-user',
+          email: 'current@example.com',
+          createdAt: DateTime.now(),
+        ),
+      );
       when(mockDeepLinkHandler.initialize()).thenAnswer((_) async {
         return;
       });
@@ -421,6 +428,13 @@ void main() {
             when(
               mockUserRepository.getUserProfile(existingUserId),
             ).thenAnswer((_) async => Right(existingProfile));
+            when(mockAuthRepository.currentUser).thenReturn(
+              User(
+                id: existingUserId,
+                email: sharedEmail,
+                createdAt: DateTime.now(),
+              ),
+            );
             when(mockAuthRepository.currentSession).thenReturn(
               supabase.Session(
                 accessToken: 'success-token-$i',

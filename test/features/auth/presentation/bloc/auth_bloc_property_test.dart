@@ -29,6 +29,10 @@ void main() {
     when(mockAuthRepository.authStateChanges).thenAnswer(
       (_) => const Stream<User?>.empty(),
     );
+    when(mockAuthRepository.currentSession).thenReturn(null);
+    when(
+      mockSessionManager.endSession(),
+    ).thenAnswer((_) async => const Right(null));
 
     authBloc = AuthBloc(
       authRepository: mockAuthRepository,
@@ -116,25 +120,21 @@ void main() {
               socialAuthRepository: mockSocialAuthRepository,
             );
 
-            // Test the property
-            await expectLater(
+            // Set up expectation, then trigger event (add must come BEFORE await)
+            final expectation = expectLater(
               testBloc.stream,
               emitsInOrder([
                 const AuthLoading(),
                 AuthAuthenticated(user: testUser, profile: testProfile),
               ]),
             );
-
-            // Trigger authentication
             testBloc.add(
               AuthLoginRequested(
                 email: email,
                 password: password,
               ),
             );
-
-            // Wait for completion
-            await Future<void>.delayed(const Duration(milliseconds: 100));
+            await expectation;
 
             // Verify final state
             expect(testBloc.state, isA<AuthAuthenticated>());
@@ -227,20 +227,16 @@ void main() {
             // Verify we start in authenticated state
             expect(testBloc.state, isA<AuthAuthenticated>());
 
-            // Test the sign out property
-            await expectLater(
+            // Set up expectation, then trigger event (add must come BEFORE await)
+            final signOutExpectation = expectLater(
               stream,
               emitsInOrder([
                 const AuthLoading(),
                 const AuthUnauthenticated(),
               ]),
             );
-
-            // Trigger sign out
             testBloc.add(const AuthLogoutRequested());
-
-            // Wait for completion
-            await Future<void>.delayed(const Duration(milliseconds: 100));
+            await signOutExpectation;
 
             // Property assertions: Sign out must clear all session data
             // 1. State should be AuthUnauthenticated

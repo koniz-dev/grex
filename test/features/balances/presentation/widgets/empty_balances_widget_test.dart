@@ -25,8 +25,8 @@ void main() {
 
       expect(
         find.text(
-          'Balances will appear here once expenses\n'
-          'and payments are added to the group.',
+          'Balances will appear here once expenses and payments '
+          'are added to the group.',
         ),
         findsOneWidget,
       );

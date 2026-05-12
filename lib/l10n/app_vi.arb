@@ -36,11 +36,11 @@
   "@name": {
     "description": "Name field label"
   },
-  "emailRequired": "Vui lòng nhập email của bạn",
+  "emailRequired": "Vui lòng nhập email",
   "@emailRequired": {
     "description": "Email validation error message"
   },
-  "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
+  "emailInvalid": "Email không hợp lệ",
   "@emailInvalid": {
     "description": "Invalid email validation error"
   },
@@ -597,7 +597,7 @@
   "enterEmailForReset": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn liên kết để đặt lại mật khẩu",
   "sendResetLink": "Gửi liên kết đặt lại",
   "resetLinkSent": "Đã gửi liên kết đặt lại! Kiểm tra email của bạn.",
-  "backToSignIn": "Quay lại Đăng nhập",
+  "backToSignIn": "Quay lại đăng nhập",
   "verifyYourEmail": "Xác thực email của bạn",
   "verificationEmailSent": "Chúng tôi đã gửi email xác thực đến:",
   "checkInboxAndClick": "Kiểm tra hộp thư đến và nhấp vào liên kết xác thực để tiếp tục.",
@@ -646,6 +646,48 @@
   "cancelProfileSetup": "Hủy thiết lập",
   "cancelProfileSetupMessage": "Bạn có chắc chắn muốn hủy không? Bạn sẽ được đăng xuất và cần đăng nhập lại.",
   "continueSetup": "Tiếp tục thiết lập",
-  "signInWithEmail": "Đăng nhập bằng email"
+  "signInWithEmail": "Đăng nhập bằng email",
+  "signingIn": "Đang đăng nhập...",
+  "registerAccount": "Đăng ký tài khoản",
+  "joinGrexExpenseShare": "Tham gia Grex để bắt đầu chia sẻ chi phí",
+  "registering": "Đang đăng ký...",
+  "displayNameRequired": "Vui lòng nhập tên hiển thị",
+  "displayNameEmpty": "Tên hiển thị không được để trống",
+  "displayNameTooLong": "Tên hiển thị quá dài",
+  "preferredCurrencyLabel": "Tiền tệ ưa thích",
+  "passwordHintShort": "Tối thiểu 8 ký tự",
+  "yourNameHint": "Tên của bạn",
+  "passwordHint": "Phải có ít nhất 8 ký tự với chữ hoa, chữ thường và số",
+  "alreadyHaveAccountPrefix": "Đã có tài khoản? ",
+  "signIn": "Đăng nhập",
+  "forgotPasswordTitle": "Quên mật khẩu",
+  "enterEmailForResetShort": "Nhập email để đặt lại mật khẩu",
+  "sendResetLinkShort": "Gửi link đặt lại",
+  "sending": "Đang gửi...",
+  "resetEmailSent": "Email đặt lại mật khẩu đã được gửi",
+  "pleaseCheckEmailAt": "Vui lòng kiểm tra email {email}",
+  "@pleaseCheckEmailAt": {
+    "placeholders": {"email": {"type": "String"}}
+  },
+  "resend": "Gửi lại",
+  "emailNotInSystem": "Email không tồn tại trong hệ thống",
+  "weWillSendLink": "Chúng tôi sẽ gửi link đặt lại mật khẩu đến email của bạn",
+  "rememberPassword": "Nhớ mật khẩu? ",
+  "dismiss": "Đóng",
+  "@dismiss": {
+    "description": "Dismiss button for error dialogs"
+  },
+  "repeatedNetworkFailureMessage": "Phát hiện nhiều lỗi mạng. Vui lòng kiểm tra kết nối internet hoặc thử đăng nhập bằng email.",
+  "@repeatedNetworkFailureMessage": {
+    "description": "Message shown after repeated network failures"
+  },
+  "repeatedTimeoutFailureMessage": "Xác thực liên tục hết thời gian chờ. Vui lòng thử đăng nhập bằng email.",
+  "@repeatedTimeoutFailureMessage": {
+    "description": "Message shown after repeated timeout failures"
+  },
+  "repeatedAuthFailureMessage": "Xác thực thất bại nhiều lần. Vui lòng thử đăng nhập bằng email hoặc liên hệ hỗ trợ.",
+  "@repeatedAuthFailureMessage": {
+    "description": "Message shown after repeated authentication failures"
+  }
 }
 

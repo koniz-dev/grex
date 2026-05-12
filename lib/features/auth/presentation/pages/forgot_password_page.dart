@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
-import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Forgot password page for password reset.
-///
-/// Implements the forgot password screen design with:
-/// - Back button
-/// - Email input field
-/// - Send reset link button
 class ForgotPasswordPage extends StatefulWidget {
   /// Creates a [ForgotPasswordPage].
   const ForgotPasswordPage({super.key});
@@ -39,155 +35,237 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
   }
 
+  String? _validateEmail(AppLocalizations l10n, String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return l10n.emailRequired;
+    }
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$',
+    );
+    if (!emailRegex.hasMatch(value.trim())) {
+      return l10n.emailInvalid;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthPasswordResetSent) {
-              // Show success message
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Password reset link sent to your email'),
-                  backgroundColor: Colors.green,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 24),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: GestureDetector(
+                    onTap: () => context.goToLogin(),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF4F4F5),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
                 ),
-              );
-              // Navigate back to login
-              context.goToLogin();
-            }
-          },
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 24),
-
-                  // Back button
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF4F4F5),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.arrow_back,
-                          size: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-
-                  // Title section
-                  const Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      fontFamily: 'Outfit',
-                      fontSize: 40,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -1,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Enter your email to receive a password reset link',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: Color(0xFF71717A),
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Email field
-                  AuthTextField(
-                    label: 'Email',
-                    placeholder: 'your@email.com',
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.done,
-                    validator: InputValidators.validateEmail,
-                    onFieldSubmitted: (_) => _onSendResetLink(),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Send button
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      return PrimaryButton(
-                        text: 'Send Reset Link',
-                        isLoading: state is AuthLoading,
-                        onPressed: state is AuthLoading
-                            ? null
-                            : _onSendResetLink,
+                const SizedBox(height: 40),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthPasswordResetSent) {
+                      return _SuccessView(email: state.email);
+                    }
+                    return _FormView(
+                      l10n: l10n,
+                      emailController: _emailController,
+                      validator: (value) => _validateEmail(l10n, value),
+                      onSubmit: _onSendResetLink,
+                    );
+                  },
+                ),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthError) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: ErrorBanner(message: state.message),
                       );
-                    },
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Error display
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      if (state is AuthError) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 24),
-                          child: ErrorBanner(message: state.message),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-
-                  // Spacer
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.3),
-
-                  // Back to login prompt
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Remember your password? ',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Color(0xFF71717A),
-                        ),
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+                const SizedBox(height: 32),
+                Center(
+                  child: GestureDetector(
+                    onTap: () => context.goToLogin(),
+                    child: Text(
+                      l10n.backToSignIn,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
-                      GestureDetector(
-                        onTap: () => context.goToLogin(),
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _FormView extends StatelessWidget {
+  const _FormView({
+    required this.l10n,
+    required this.emailController,
+    required this.validator,
+    required this.onSubmit,
+  });
+
+  final AppLocalizations l10n;
+  final TextEditingController emailController;
+  final String? Function(String?) validator;
+  final VoidCallback onSubmit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          l10n.forgotPasswordTitle,
+          style: const TextStyle(
+            fontFamily: 'Outfit',
+            fontSize: 40,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -1,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.enterEmailForResetShort,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: Color(0xFF71717A),
+            height: 1.4,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          l10n.weWillSendLink,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 13,
+            fontWeight: FontWeight.normal,
+            color: Color(0xFFA1A1AA),
+            height: 1.4,
+          ),
+        ),
+        const SizedBox(height: 32),
+        AuthTextField(
+          label: l10n.email,
+          placeholder: l10n.enterYourEmail,
+          fieldKey: const Key('email_field'),
+          controller: emailController,
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.done,
+          validator: validator,
+          onFieldSubmitted: (_) => onSubmit(),
+        ),
+        const SizedBox(height: 32),
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            return PrimaryButton(
+              text: l10n.sendResetLinkShort,
+              isLoading: state is AuthLoading,
+              loadingText: l10n.sending,
+              onPressed: state is AuthLoading ? null : onSubmit,
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _SuccessView extends StatelessWidget {
+  const _SuccessView({required this.email});
+
+  final String email;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Icon(Icons.check_circle, size: 64, color: Color(0xFF22C55E)),
+        const SizedBox(height: 24),
+        Text(
+          l10n.resetEmailSent,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontFamily: 'Outfit',
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          l10n.pleaseCheckEmailAt(email),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: Color(0xFF71717A),
+            height: 1.4,
+          ),
+        ),
+        const SizedBox(height: 32),
+        OutlinedButton(
+          onPressed: () {
+            context.read<AuthBloc>().add(
+              AuthPasswordResetRequested(email: email),
+            );
+          },
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          child: Text(
+            l10n.resend,
+            style: const TextStyle(
+              fontFamily: 'Outfit',
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

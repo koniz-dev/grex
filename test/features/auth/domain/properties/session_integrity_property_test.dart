@@ -32,7 +32,7 @@ void main() {
 
       for (var i = 0; i < 100; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
         final originalSession = generateValidSessionData(user, userProfile);
 
         // Mock consistent session storage and retrieval
@@ -150,7 +150,7 @@ void main() {
 
       for (var i = 0; i < 50; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
         final validSession = generateValidSessionData(user, userProfile);
 
         // Generate corrupted session data
@@ -212,7 +212,7 @@ void main() {
 
       for (var i = 0; i < 30; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
         final sessionData = generateValidSessionData(user, userProfile);
 
         // Mock consistent session behavior
@@ -263,15 +263,21 @@ void main() {
           );
         }
 
-        // Property: All session data should be consistent
-        final sessionResults = results
-            .where(
-              (r) => r.isRight() && r.getOrElse(() => null) is SessionData?,
-            )
-            .map((r) => r.getOrElse(() => null) as SessionData?)
-            .where((s) => s != null)
-            .cast<SessionData>()
-            .toList();
+        // Property: All session data should be consistent. Filter to results
+        // that actually carry SessionData (getCurrentSession returns Either<L,
+        // SessionData?>; isSessionValid returns Either<L, bool> — skip the
+        // latter).
+        final sessionResults = <SessionData>[];
+        for (final r in results) {
+          r.fold(
+            (_) {},
+            (right) {
+              if (right is SessionData) {
+                sessionResults.add(right);
+              }
+            },
+          );
+        }
 
         if (sessionResults.isNotEmpty) {
           final firstSession = sessionResults.first;
@@ -343,7 +349,7 @@ void main() {
 
       for (var i = 0; i < 50; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
         final originalSession = generateValidSessionData(user, userProfile);
 
         // Simulate serialization/deserialization by converting to/from JSON

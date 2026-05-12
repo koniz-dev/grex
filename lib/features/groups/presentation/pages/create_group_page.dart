@@ -6,6 +6,7 @@ import 'package:grex/features/groups/presentation/bloc/group_bloc.dart';
 import 'package:grex/features/groups/presentation/bloc/group_event.dart';
 import 'package:grex/features/groups/presentation/bloc/group_state.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// Page for creating a new expense sharing group
 class CreateGroupPage extends StatelessWidget {
@@ -35,7 +36,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  String _selectedCurrency = 'VND';
+  String _selectedCurrency = LocaleDefaults.currencyCode;
   bool _isLoading = false;
 
   @override

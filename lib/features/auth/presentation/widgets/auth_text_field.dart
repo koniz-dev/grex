@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-/// Custom text field for authentication forms
+/// Custom text field for authentication forms.
 ///
 /// Styled according to design specs with proper colors, spacing, and error
-/// states.
-class AuthTextField extends StatelessWidget {
+/// states. The label is rendered via [InputDecoration.label] (a descendant of
+/// the inner [TextFormField]) so widget tests can locate the field using
+/// `find.widgetWithText(TextFormField, label)`.
+class AuthTextField extends StatefulWidget {
   /// Creates an [AuthTextField].
   ///
   /// The [label] and [placeholder] parameters are required.
@@ -12,9 +14,12 @@ class AuthTextField extends StatelessWidget {
     required this.label,
     required this.placeholder,
     super.key,
+    this.fieldKey,
+    this.visibilityToggleKey,
     this.controller,
     this.validator,
     this.obscureText = false,
+    this.showVisibilityToggle = false,
     this.keyboardType,
     this.textInputAction,
     this.onChanged,
@@ -30,6 +35,12 @@ class AuthTextField extends StatelessWidget {
   /// The placeholder text shown when the field is empty.
   final String placeholder;
 
+  /// Optional key applied to the inner [TextFormField] for widget tests.
+  final Key? fieldKey;
+
+  /// Optional key applied to the visibility toggle button.
+  final Key? visibilityToggleKey;
+
   /// The controller for the text field.
   final TextEditingController? controller;
 
@@ -38,6 +49,10 @@ class AuthTextField extends StatelessWidget {
 
   /// Whether to obscure the text (for passwords).
   final bool obscureText;
+
+  /// Whether to show the visibility toggle (only effective when
+  /// [obscureText] is true).
+  final bool showVisibilityToggle;
 
   /// The keyboard type to use for the input.
   final TextInputType? keyboardType;
@@ -61,13 +76,49 @@ class AuthTextField extends StatelessWidget {
   final bool readOnly;
 
   @override
+  State<AuthTextField> createState() => _AuthTextFieldState();
+}
+
+class _AuthTextFieldState extends State<AuthTextField> {
+  late bool _obscure;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscure = widget.obscureText;
+  }
+
+  @override
+  void didUpdateWidget(covariant AuthTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.obscureText != widget.obscureText) {
+      _obscure = widget.obscureText;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Label
-        Text(
-          label,
+    final showToggle = widget.obscureText && widget.showVisibilityToggle;
+    return TextFormField(
+      key: widget.fieldKey,
+      controller: widget.controller,
+      validator: widget.validator,
+      obscureText: _obscure,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      onChanged: widget.onChanged,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      enabled: widget.enabled,
+      readOnly: widget.readOnly,
+      style: const TextStyle(
+        fontFamily: 'Inter',
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+        color: Colors.black,
+      ),
+      decoration: InputDecoration(
+        label: Text(
+          widget.label,
           style: const TextStyle(
             fontFamily: 'Inter',
             fontSize: 13,
@@ -75,67 +126,58 @@ class AuthTextField extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        const SizedBox(height: 6),
-        // Input field
-        TextFormField(
-          controller: controller,
-          validator: validator,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          textInputAction: textInputAction,
-          onChanged: onChanged,
-          onFieldSubmitted: onFieldSubmitted,
-          enabled: enabled,
-          readOnly: readOnly,
-          style: const TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14,
-            fontWeight: FontWeight.normal,
-            color: Colors.black,
-          ),
-          decoration: InputDecoration(
-            hintText: placeholder,
-            hintStyle: const TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-              color: Color(0xFFA1A1AA),
-            ),
-            filled: true,
-            fillColor: const Color(0xFFF4F4F5),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(
-                color: Color(0xFFDC2626),
-                width: 2,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(
-                color: Color(0xFFDC2626),
-                width: 2,
-              ),
-            ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        hintText: widget.placeholder,
+        hintStyle: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 14,
+          fontWeight: FontWeight.normal,
+          color: Color(0xFFA1A1AA),
+        ),
+        filled: true,
+        fillColor: const Color(0xFFF4F4F5),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        suffixIcon: showToggle
+            ? IconButton(
+                key: widget.visibilityToggleKey,
+                icon: Icon(
+                  _obscure ? Icons.visibility_off : Icons.visibility,
+                  color: const Color(0xFF71717A),
+                  size: 20,
+                ),
+                onPressed: () => setState(() => _obscure = !_obscure),
+              )
+            : null,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(
+            color: Color(0xFFDC2626),
+            width: 2,
           ),
         ),
-      ],
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(
+            color: Color(0xFFDC2626),
+            width: 2,
+          ),
+        ),
+      ),
     );
   }
 }

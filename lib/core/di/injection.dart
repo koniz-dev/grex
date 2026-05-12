@@ -10,12 +10,16 @@ import 'package:grex/features/auth/data/handlers/auth_deep_link_handler.dart';
 import 'package:grex/features/auth/data/repositories/supabase_auth_repository.dart';
 import 'package:grex/features/auth/data/repositories/supabase_social_auth_repository.dart';
 import 'package:grex/features/auth/data/repositories/supabase_user_repository.dart';
+import 'package:grex/features/auth/data/services/native_apple_sign_in_service_impl.dart';
+import 'package:grex/features/auth/data/services/nonce_generator_impl.dart';
 import 'package:grex/features/auth/data/services/secure_session_service.dart';
 import 'package:grex/features/auth/data/services/supabase_email_verification_service.dart';
 import 'package:grex/features/auth/domain/repositories/auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/social_auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/user_repository.dart';
 import 'package:grex/features/auth/domain/services/email_verification_service.dart';
+import 'package:grex/features/auth/domain/services/native_apple_sign_in_service.dart';
+import 'package:grex/features/auth/domain/services/nonce_generator.dart';
 import 'package:grex/features/auth/domain/services/session_manager.dart';
 import 'package:grex/features/auth/domain/services/session_service.dart';
 import 'package:grex/features/auth/domain/services/social_login_analytics.dart';
@@ -46,6 +50,15 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton<PerformanceService>(
       PerformanceService.new,
     )
+    // OAuth enhancement services
+    ..registerLazySingleton<NonceGenerator>(
+      NonceGeneratorImpl.new,
+    )
+    ..registerLazySingleton<NativeAppleSignInService>(
+      () => NativeAppleSignInServiceImpl(
+        supabaseClient: getIt<SupabaseClient>(),
+      ),
+    )
     // Repositories
     ..registerLazySingleton<AuthRepository>(
       () => SupabaseAuthRepository(supabaseClient: getIt<SupabaseClient>()),
@@ -59,6 +72,8 @@ Future<void> configureDependencies() async {
         supabaseClient: getIt<SupabaseClient>(),
         userRepository: getIt<UserRepository>(),
         performanceService: getIt<PerformanceService>(),
+        nonceGenerator: getIt<NonceGenerator>(),
+        nativeAppleSignInService: getIt<NativeAppleSignInService>(),
       ),
     )
     // Services

@@ -1,7 +1,9 @@
 import 'package:grex/features/auth/domain/entities/entities.dart';
 
-/// Generate valid user for property testing
-User generateValidUser() {
+/// Generate valid user for property testing.
+///
+/// Pass [email] to fix the user's email (e.g. to match generated credentials).
+User generateValidUser({String? email}) {
   final now = DateTime.now();
   final userIds = [
     'user-id-1-${now.millisecond}',
@@ -18,14 +20,16 @@ User generateValidUser() {
 
   return User(
     id: userIds[now.millisecond % userIds.length],
-    email: emails[now.microsecond % emails.length],
+    email: email ?? emails[now.microsecond % emails.length],
     createdAt: now.subtract(Duration(days: now.day % 30 + 1)),
     lastSignInAt: now.subtract(Duration(hours: now.hour % 24)),
   );
 }
 
-/// Generate valid user profile for property testing
-UserProfile generateValidUserProfile() {
+/// Generate valid user profile for property testing.
+///
+/// Pass [user] to align the profile with an existing user (matching id+email).
+UserProfile generateValidUserProfile({User? user}) {
   final now = DateTime.now();
   final displayNames = [
     'Test User One',
@@ -37,15 +41,15 @@ UserProfile generateValidUserProfile() {
   final currencies = ['VND', 'USD', 'EUR', 'GBP', 'JPY'];
   final languages = ['vi', 'en', 'zh', 'ja', 'ko'];
 
-  final user = generateValidUser();
+  final resolvedUser = user ?? generateValidUser();
 
   return UserProfile(
-    id: user.id,
-    email: user.email,
+    id: resolvedUser.id,
+    email: resolvedUser.email,
     displayName: displayNames[now.millisecond % displayNames.length],
     preferredCurrency: currencies[now.microsecond % currencies.length],
     languageCode: languages[now.second % languages.length],
-    createdAt: user.createdAt,
+    createdAt: resolvedUser.createdAt,
     updatedAt: now,
   );
 }

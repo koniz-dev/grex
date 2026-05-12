@@ -44,6 +44,7 @@ void main() {
       when(mockAuthRepository.authStateChanges).thenAnswer(
         (_) => const Stream<User?>.empty(),
       );
+      when(mockAuthRepository.currentUser).thenReturn(null);
       when(mockDeepLinkHandler.initialize()).thenAnswer((_) async {
         return;
       });
@@ -95,20 +96,16 @@ void main() {
             analytics: mockAnalytics,
           );
 
-          // Test the property
-          await expectLater(
+          // Set up expectation, then trigger event (add must come BEFORE await)
+          final expectation = expectLater(
             testBloc.stream,
             emitsInOrder([
               isA<AuthSocialLoginInProgress>(),
               isA<AuthError>(),
             ]),
           );
-
-          // Trigger social login
           testBloc.add(AuthSocialLoginRequested(provider));
-
-          // Wait for state changes
-          await Future<void>.delayed(const Duration(milliseconds: 100));
+          await expectation;
 
           // Verify final state is error
           expect(testBloc.state, isA<AuthError>());

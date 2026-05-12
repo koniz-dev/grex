@@ -190,7 +190,7 @@ void main() {
       expect(find.text('All Settled Up!'), findsOneWidget);
       expect(
         find.text(
-          'Everyone in the group is settled up.\n'
+          'Everyone in the group is settled up. '
           'No payments are needed at this time.',
         ),
         findsOneWidget,
@@ -559,7 +559,7 @@ void main() {
       expect(find.text('All Settled Up!'), findsOneWidget);
       expect(
         find.text(
-          'Everyone in the group is settled up.\n'
+          'Everyone in the group is settled up. '
           'No payments are needed at this time.',
         ),
         findsOneWidget,

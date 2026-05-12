@@ -9,6 +9,7 @@ import 'package:grex/features/groups/presentation/bloc/group_bloc.dart';
 import 'package:grex/features/groups/presentation/bloc/group_event.dart';
 import 'package:grex/features/groups/presentation/bloc/group_state.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 import 'package:intl/intl.dart';
 
 /// Page for viewing and editing group settings
@@ -52,7 +53,7 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
   final _inviteEmailController = TextEditingController();
   final _inviteNameController = TextEditingController();
 
-  String _selectedCurrency = 'VND';
+  String _selectedCurrency = LocaleDefaults.currencyCode;
   MemberRole _selectedInviteRole = MemberRole.editor;
   bool _isLoading = false;
   Group? _currentGroup;

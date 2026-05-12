@@ -181,13 +181,21 @@ class AccountLinkingDialog extends StatelessWidget {
     required UserProfile existingProfile,
     required SocialAuthProvider provider,
   }) {
+    // Capture the AuthBloc from the calling context. showDialog mounts the
+    // dialog under the root Navigator, which sits above any BlocProvider
+    // we have inserted below MaterialApp, so the dialog's own descendants
+    // can't reach the bloc via context.read otherwise.
+    final authBloc = context.read<AuthBloc>();
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // Prevent accidental dismissal
-      builder: (context) => AccountLinkingDialog(
-        newUser: newUser,
-        existingProfile: existingProfile,
-        provider: provider,
+      builder: (_) => BlocProvider<AuthBloc>.value(
+        value: authBloc,
+        child: AccountLinkingDialog(
+          newUser: newUser,
+          existingProfile: existingProfile,
+          provider: provider,
+        ),
       ),
     );
   }

@@ -34,7 +34,7 @@ void main() {
       for (var i = 0; i < 100; i++) {
         // Generate random valid session data
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
         final sessionData = generateValidSessionData(user, userProfile);
 
         // Mock successful session storage
@@ -229,7 +229,7 @@ void main() {
 
       for (var i = 0; i < 20; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
         final sessionData = generateValidSessionData(user, userProfile);
 
         // Mock session operations
@@ -289,7 +289,7 @@ void main() {
 
       for (var i = 0; i < 50; i++) {
         final user = generateValidUser();
-        final userProfile = generateValidUserProfile();
+        final userProfile = generateValidUserProfile(user: user);
         final sessionData = generateValidSessionData(user, userProfile);
 
         // Mock consistent validation

@@ -908,6 +908,99 @@
   "signInWithEmail": "Sign in with email",
   "@signInWithEmail": {
     "description": "Fallback button to use email authentication"
+  },
+  "signingIn": "Signing in...",
+  "@signingIn": {
+    "description": "Loading text shown during sign-in"
+  },
+  "registerAccount": "Create Account",
+  "@registerAccount": {
+    "description": "Register page title"
+  },
+  "joinGrexExpenseShare": "Join Grex to start splitting expenses",
+  "@joinGrexExpenseShare": {
+    "description": "Register page subtitle"
+  },
+  "registering": "Creating account...",
+  "@registering": {
+    "description": "Loading text shown during registration"
+  },
+  "displayNameRequired": "Please enter your display name",
+  "@displayNameRequired": {
+    "description": "Validation error when display name is missing"
+  },
+  "displayNameEmpty": "Display name cannot be empty",
+  "@displayNameEmpty": {
+    "description": "Validation error when display name is only whitespace"
+  },
+  "displayNameTooLong": "Display name must be 50 characters or less",
+  "@displayNameTooLong": {
+    "description": "Validation error for display name length"
+  },
+  "preferredCurrencyLabel": "Preferred Currency",
+  "@preferredCurrencyLabel": {
+    "description": "Label for preferred currency selector"
+  },
+  "passwordHintShort": "Min. 8 characters",
+  "@passwordHintShort": {
+    "description": "Short password placeholder"
+  },
+  "yourNameHint": "Your name",
+  "@yourNameHint": {
+    "description": "Display name field placeholder"
+  },
+  "passwordHint": "Must be at least 8 characters with mixed case and numbers",
+  "@passwordHint": {
+    "description": "Hint shown beneath password input"
+  },
+  "alreadyHaveAccountPrefix": "Already have an account? ",
+  "@alreadyHaveAccountPrefix": {
+    "description": "Prefix before the sign-in link on register page"
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign-in CTA"
+  },
+  "forgotPasswordTitle": "Forgot Password",
+  "@forgotPasswordTitle": {
+    "description": "Forgot password screen title without question mark"
+  },
+  "enterEmailForResetShort": "Enter your email to reset your password",
+  "@enterEmailForResetShort": {
+    "description": "Short forgot password instructions"
+  },
+  "sendResetLinkShort": "Send Reset Link",
+  "@sendResetLinkShort": {
+    "description": "Short send reset link button"
+  },
+  "sending": "Sending...",
+  "@sending": {
+    "description": "Loading text shown during password reset send"
+  },
+  "resetEmailSent": "Password reset email sent",
+  "@resetEmailSent": {
+    "description": "Success message after reset email sent"
+  },
+  "pleaseCheckEmailAt": "Please check your email at {email}",
+  "@pleaseCheckEmailAt": {
+    "description": "Success detail referencing the email address",
+    "placeholders": {"email": {"type": "String"}}
+  },
+  "resend": "Resend",
+  "@resend": {
+    "description": "Resend button label"
+  },
+  "emailNotInSystem": "Email not found in our system",
+  "@emailNotInSystem": {
+    "description": "Error when email not registered"
+  },
+  "weWillSendLink": "We'll send a link to reset your password to your email",
+  "@weWillSendLink": {
+    "description": "Helper text on forgot password"
+  },
+  "rememberPassword": "Remember your password? ",
+  "@rememberPassword": {
+    "description": "Prefix above sign-in link on forgot password"
   }
 }
 

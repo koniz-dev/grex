@@ -55,10 +55,12 @@ class ExpenseCalculator {
       throw ArgumentError('Percentages map cannot be empty');
     }
 
-    // Validate percentages sum to 100
-    final totalPercentage = percentages.values.fold(
+    // Validate percentages sum to 100. Use the full double value, not
+    // `.toInt()`, so e.g. {33.33, 33.33, 33.34} = 100.00 is accepted
+    // instead of being truncated to 99.
+    final totalPercentage = percentages.values.fold<double>(
       0,
-      (sum, percentage) => sum + percentage.toInt(),
+      (sum, percentage) => sum + percentage,
     );
     if ((totalPercentage - 100.0).abs() > 0.01) {
       throw ArgumentError(

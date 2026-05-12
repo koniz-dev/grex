@@ -7,45 +7,43 @@ import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/entities/profile_setup_data.dart';
 import 'package:grex/features/auth/domain/repositories/social_auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/user_repository.dart';
+import 'package:grex/features/auth/domain/services/native_apple_sign_in_service.dart';
+import 'package:grex/features/auth/domain/services/nonce_generator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 /// Supabase implementation of [SocialAuthRepository].
 ///
-/// This class provides concrete implementations of social authentication
-/// operations using Supabase Auth's OAuth provider support. It handles
-/// the complete OAuth flow including browser launch, callback handling,
-/// session establishment, and error mapping with performance optimizations.
+/// Handles OAuth via Supabase Auth with nonce-based replay protection. On
+/// iOS/macOS the Apple flow can use native Apple Authentication Services
+/// (Face ID / Touch ID) instead of the web OAuth fallback.
 class SupabaseSocialAuthRepository implements SocialAuthRepository {
-  /// Creates a [SupabaseSocialAuthRepository] with required dependencies.
-  ///
-  /// Parameters:
-  /// - [supabaseClient]: Supabase client for OAuth operations
-  /// - [userRepository]: Repository for user profile operations
-  /// - [performanceService]: Service for performance monitoring
-  const SupabaseSocialAuthRepository({
+  SupabaseSocialAuthRepository({
     required supabase.SupabaseClient supabaseClient,
     required UserRepository userRepository,
     required PerformanceService performanceService,
+    required NonceGenerator nonceGenerator,
+    required NativeAppleSignInService nativeAppleSignInService,
   }) : _supabaseClient = supabaseClient,
        _userRepository = userRepository,
-       _performanceService = performanceService;
+       _performanceService = performanceService,
+       _nonceGenerator = nonceGenerator,
+       _nativeAppleSignInService = nativeAppleSignInService;
 
   final supabase.SupabaseClient _supabaseClient;
   final UserRepository _userRepository;
   final PerformanceService _performanceService;
+  final NonceGenerator _nonceGenerator;
+  final NativeAppleSignInService _nativeAppleSignInService;
 
-  /// OAuth callback redirect URL for deep linking
   static const String _redirectUrl = 'io.supabase.grex://login-callback/';
-
-  /// Timeout duration for waiting for auth user after OAuth callback
   static const Duration _authUserTimeout = Duration(seconds: 10);
 
   @override
-  Future<Either<AuthFailure, User>> signInWithGoogle() async {
+  Future<Either<AuthFailure, User>> signInWithGoogle() {
     return _performanceService.measureOperation(
       name: 'oauth_google_signin',
       attributes: {'provider': 'google'},
-      operation: () => _performOAuthSignIn(
+      operation: () => _performWebOAuth(
         provider: supabase.OAuthProvider.google,
         providerName: 'Google',
       ),
@@ -53,70 +51,89 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, User>> signInWithApple() async {
+  Future<Either<AuthFailure, User>> signInWithApple({
+    bool useNativeFlow = true,
+  }) {
     return _performanceService.measureOperation(
       name: 'oauth_apple_signin',
-      attributes: {'provider': 'apple'},
-      operation: () => _performOAuthSignIn(
-        provider: supabase.OAuthProvider.apple,
-        providerName: 'Apple',
-      ),
+      attributes: {
+        'provider': 'apple',
+        'native_flow': useNativeFlow.toString(),
+      },
+      operation: () async {
+        if (useNativeFlow && _nativeAppleSignInService.isAvailable()) {
+          return _performNativeAppleSignIn();
+        }
+        return _performWebOAuth(
+          provider: supabase.OAuthProvider.apple,
+          providerName: 'Apple',
+        );
+      },
     );
   }
 
-  /// Performs OAuth sign-in with performance monitoring and optimizations.
-  ///
-  /// This method handles the complete OAuth flow with:
-  /// - Fast external browser launch
-  /// - Optimized timeout handling (10 seconds)
-  /// - Minimal UI redraws during authentication
-  /// - Performance tracking
-  Future<Either<AuthFailure, User>> _performOAuthSignIn({
+  Future<Either<AuthFailure, User>> _performWebOAuth({
     required supabase.OAuthProvider provider,
     required String providerName,
   }) async {
-    final stopwatch = Stopwatch()..start();
-
     try {
-      // Start OAuth flow with external browser for fastest launch
+      final nonce = await _nonceGenerator.generateNonce();
+
       final response = await _supabaseClient.auth.signInWithOAuth(
         provider,
         redirectTo: _redirectUrl,
         authScreenLaunchMode: supabase.LaunchMode.externalApplication,
+        queryParams: {'nonce': nonce.hashedNonce},
       );
 
       if (!response) {
-        debugPrint('$providerName OAuth cancelled by user');
         return const Left(SocialAuthCancelledFailure());
       }
 
-      // Wait for auth state change with optimized timeout
-      final user = await _waitForAuthUserOptimized();
-
+      final user = await _waitForAuthUser();
       if (user == null) {
-        debugPrint('$providerName OAuth failed - no user received');
         return const Left(SocialAuthFailure('Authentication failed'));
       }
 
-      stopwatch.stop();
-      debugPrint(
-        '$providerName OAuth completed in ${stopwatch.elapsedMilliseconds}ms',
-      );
-
       return Right(User.fromSupabaseUser(user));
     } on supabase.AuthException catch (e) {
-      stopwatch.stop();
-      debugPrint('$providerName OAuth failed with AuthException: ${e.message}');
       return Left(_mapAuthException(e));
     } on TimeoutException catch (_) {
-      stopwatch.stop();
-      debugPrint(
-        '$providerName OAuth timed out after ${stopwatch.elapsedMilliseconds}ms',
-      );
       return const Left(SocialAuthTimeoutFailure());
     } on Object catch (e) {
-      stopwatch.stop();
-      debugPrint('$providerName OAuth failed with error: $e');
+      debugPrint('$providerName OAuth failed: $e');
+      return Left(SocialAuthFailure(e.toString()));
+    }
+  }
+
+  Future<Either<AuthFailure, User>> _performNativeAppleSignIn() async {
+    try {
+      final nonce = await _nonceGenerator.generateNonce();
+
+      final signInResult = await _nativeAppleSignInService.signIn(
+        nonce: nonce.hashedNonce,
+      );
+
+      return signInResult.fold(
+        Left.new,
+        (appleResult) async {
+          final credentialResult = await _nativeAppleSignInService
+              .handleAppleCredential(
+                idToken: appleResult.idToken,
+                plainNonce: nonce.plainNonce,
+                authorizationCode: appleResult.authorizationCode,
+                email: appleResult.email,
+                fullName: appleResult.fullName,
+              );
+          return credentialResult;
+        },
+      );
+    } on supabase.AuthException catch (e) {
+      return Left(_mapAuthException(e));
+    } on TimeoutException catch (_) {
+      return const Left(SocialAuthTimeoutFailure());
+    } on Object catch (e) {
+      debugPrint('Apple Native sign-in failed: $e');
       return Left(SocialAuthFailure(e.toString()));
     }
   }
@@ -124,10 +141,7 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
   @override
   Future<bool> hasUserProfile(String userId) async {
     final result = await _userRepository.getUserProfile(userId);
-    return result.fold(
-      (failure) => false,
-      (profile) => true,
-    );
+    return result.isRight();
   }
 
   @override
@@ -136,8 +150,6 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
     required SocialAuthProvider provider,
   }) async {
     try {
-      // Supabase automatically links providers when same email is used
-      // This method initiates the OAuth flow for linking
       final response = await _supabaseClient.auth.signInWithOAuth(
         provider == SocialAuthProvider.google
             ? supabase.OAuthProvider.google
@@ -150,26 +162,18 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
         return const Left(SocialAuthCancelledFailure());
       }
 
-      // Wait for auth state change with timeout
       final user = await _waitForAuthUser();
-
       if (user == null) {
-        return const Left(
-          AccountLinkingFailure('Failed to link account'),
-        );
+        return const Left(AccountLinkingFailure('Failed to link account'));
       }
 
       return const Right(null);
     } on supabase.AuthException catch (e) {
-      return Left(
-        AccountLinkingFailure('Failed to link account: ${e.message}'),
-      );
+      return Left(AccountLinkingFailure('Failed to link account: ${e.message}'));
     } on TimeoutException catch (_) {
       return const Left(SocialAuthTimeoutFailure());
     } on Object catch (e) {
-      return Left(
-        AccountLinkingFailure('Failed to link account: ${e.runtimeType}: $e'),
-      );
+      return Left(AccountLinkingFailure('Failed to link account: $e'));
     }
   }
 
@@ -178,15 +182,11 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
     String userId,
     ProfileSetupData profileData,
   ) async {
-    // Get current user to extract OAuth metadata
     final currentUser = _supabaseClient.auth.currentUser;
     if (currentUser == null) {
-      return const Left(
-        GenericAuthFailure('No authenticated user found'),
-      );
+      return const Left(GenericAuthFailure('No authenticated user found'));
     }
 
-    // Create UserProfile entity
     final userProfile = UserProfile(
       id: userId,
       email: currentUser.email ?? '',
@@ -197,9 +197,7 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
       updatedAt: DateTime.now(),
     );
 
-    // Use UserRepository to create the profile
     final result = await _userRepository.createUserProfile(userProfile);
-
     return result.fold(
       (failure) => Left(
         GenericAuthFailure('Failed to create profile: ${failure.message}'),
@@ -208,29 +206,18 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
     );
   }
 
-  /// Waits for the authenticated user to be available after OAuth callback.
-  ///
-  /// Optimized version with:
-  /// - Reduced polling interval for faster response
-  /// - Early exit on first successful auth
-  /// - Better timeout handling (10 seconds as per requirements)
-  ///
-  /// Returns the authenticated [supabase.User] or null if timeout occurs.
-  Future<supabase.User?> _waitForAuthUserOptimized() async {
+  /// Polls Supabase for the authenticated user after an OAuth callback.
+  /// Throws [TimeoutException] if no user appears within [_authUserTimeout].
+  Future<supabase.User?> _waitForAuthUser() async {
     const pollInterval = Duration(milliseconds: 250);
-    final maxAttempts =
-        (_authUserTimeout.inMilliseconds / pollInterval.inMilliseconds).round();
+    final maxAttempts = _authUserTimeout.inMilliseconds ~/
+        pollInterval.inMilliseconds;
 
     for (var attempt = 0; attempt < maxAttempts; attempt++) {
       final user = _supabaseClient.auth.currentUser;
       if (user != null) {
-        debugPrint(
-          'Auth user received after ${attempt * pollInterval.inMilliseconds}ms',
-        );
         return user;
       }
-
-      // Use shorter intervals for faster response
       await Future<void>.delayed(pollInterval);
     }
 
@@ -239,35 +226,25 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
     );
   }
 
-  /// Legacy method for backward compatibility
-  Future<supabase.User?> _waitForAuthUser() => _waitForAuthUserOptimized();
-
-  /// Maps Supabase [supabase.AuthException] to domain [AuthFailure].
-  ///
-  /// This method examines the exception message and status code to
-  /// determine the appropriate domain failure type.
   AuthFailure _mapAuthException(supabase.AuthException exception) {
     final message = exception.message.toLowerCase();
 
-    // Check for network-related errors
+    if (message.contains('nonce')) {
+      return const NonceMismatchFailure();
+    }
     if (message.contains('network') ||
         message.contains('connection') ||
         message.contains('timeout')) {
       return const SocialAuthNetworkFailure();
     }
-
-    // Check for cancellation
     if (message.contains('cancel') || message.contains('abort')) {
       return const SocialAuthCancelledFailure();
     }
-
-    // Check for account linking errors
     if (message.contains('already linked') ||
         message.contains('provider already exists')) {
       return AccountLinkingFailure(exception.message);
     }
 
-    // Generic social auth failure
     return SocialAuthFailure(exception.message);
   }
 }

@@ -596,5 +596,47 @@
   "cancelProfileSetup": "Cancelar configuración",
   "cancelProfileSetupMessage": "¿Estás seguro de que quieres cancelar? Serás desconectado y necesitarás iniciar sesión de nuevo.",
   "continueSetup": "Continuar configuración",
-  "signInWithEmail": "Iniciar sesión con correo"
+  "signInWithEmail": "Iniciar sesión con correo",
+  "signingIn": "Iniciando sesión...",
+  "registerAccount": "Crear cuenta",
+  "joinGrexExpenseShare": "Únete a Grex para empezar a dividir gastos",
+  "registering": "Creando cuenta...",
+  "displayNameRequired": "Por favor ingresa tu nombre",
+  "displayNameEmpty": "El nombre no puede estar vacío",
+  "displayNameTooLong": "El nombre debe tener 50 caracteres o menos",
+  "preferredCurrencyLabel": "Moneda preferida",
+  "passwordHintShort": "Mín. 8 caracteres",
+  "yourNameHint": "Tu nombre",
+  "passwordHint": "Al menos 8 caracteres con mayúsculas, minúsculas y números",
+  "alreadyHaveAccountPrefix": "¿Ya tienes una cuenta? ",
+  "signIn": "Iniciar sesión",
+  "forgotPasswordTitle": "Olvidé mi contraseña",
+  "enterEmailForResetShort": "Ingresa tu correo para restablecer tu contraseña",
+  "sendResetLinkShort": "Enviar enlace",
+  "sending": "Enviando...",
+  "resetEmailSent": "Se envió el correo de restablecimiento",
+  "pleaseCheckEmailAt": "Por favor revisa tu correo en {email}",
+  "@pleaseCheckEmailAt": {
+    "placeholders": {"email": {"type": "String"}}
+  },
+  "resend": "Reenviar",
+  "emailNotInSystem": "Correo no encontrado en el sistema",
+  "weWillSendLink": "Te enviaremos un enlace para restablecer tu contraseña",
+  "rememberPassword": "¿Recuerdas tu contraseña? ",
+  "dismiss": "Descartar",
+  "@dismiss": {
+    "description": "Dismiss button for error dialogs"
+  },
+  "repeatedNetworkFailureMessage": "Se detectaron múltiples errores de red. Verifica tu conexión o intenta iniciar sesión con correo electrónico.",
+  "@repeatedNetworkFailureMessage": {
+    "description": "Message shown after repeated network failures"
+  },
+  "repeatedTimeoutFailureMessage": "La autenticación sigue agotando el tiempo. Intenta iniciar sesión con correo electrónico.",
+  "@repeatedTimeoutFailureMessage": {
+    "description": "Message shown after repeated timeout failures"
+  },
+  "repeatedAuthFailureMessage": "La autenticación falló varias veces. Intenta iniciar sesión con correo electrónico o contacta a soporte.",
+  "@repeatedAuthFailureMessage": {
+    "description": "Message shown after repeated authentication failures"
+  }
 }

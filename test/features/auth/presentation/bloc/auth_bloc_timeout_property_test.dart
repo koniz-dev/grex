@@ -91,7 +91,8 @@ void main() {
           expectedStates.addAll([
             const AuthSocialLoginInProgress(SocialAuthProvider.google),
             const AuthError(
-              message: 'Social login timed out',
+              message:
+                  'Connection timed out. Please check your network and try again.',
               failure: SocialAuthTimeoutFailure(),
             ),
           ]);
@@ -135,7 +136,8 @@ void main() {
           expectedStates.addAll([
             const AuthSocialLoginInProgress(SocialAuthProvider.apple),
             const AuthError(
-              message: 'Social login timed out',
+              message:
+                  'Connection timed out. Please check your network and try again.',
               failure: SocialAuthTimeoutFailure(),
             ),
           ]);
@@ -184,10 +186,6 @@ void main() {
       // Property: Timeout errors should not leave user in loading or inconsistent state
 
       for (var i = 0; i < 100; i++) {
-        final provider = i.isEven
-            ? SocialAuthProvider.google
-            : SocialAuthProvider.apple;
-
         // Simulate timeout scenario
         final timeoutState = AuthError(
           message: _generateTimeoutMessage(i),
@@ -196,14 +194,13 @@ void main() {
 
         // Verify timeout state properties
         expect(timeoutState.failure, isA<SocialAuthTimeoutFailure>());
-        expect(timeoutState.message, contains('timeout'));
+        expect(
+          timeoutState.message.toLowerCase(),
+          anyOf(contains('timeout'), contains('timed out')),
+        );
 
-        // Verify provider-specific timeout handling
-        if (provider == SocialAuthProvider.google) {
-          expect(timeoutState.message, contains('Google'));
-        } else {
-          expect(timeoutState.message, contains('Apple'));
-        }
+        // Provider context is shown in AuthSocialLoginInProgress; the
+        // error message itself stays generic for clean UX.
 
         // Verify state indicates return to login
         expect(timeoutState, isA<AuthError>());

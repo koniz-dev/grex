@@ -1301,6 +1301,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue Setup'**
   String get continueSetup;
+
+  /// Loading text shown during sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in...'**
+  String get signingIn;
+
+  /// Register page title
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get registerAccount;
+
+  /// Register page subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Join Grex to start splitting expenses'**
+  String get joinGrexExpenseShare;
+
+  /// Loading text shown during registration
+  ///
+  /// In en, this message translates to:
+  /// **'Creating account...'**
+  String get registering;
+
+  /// Validation error when display name is missing
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your display name'**
+  String get displayNameRequired;
+
+  /// Validation error when display name is only whitespace
+  ///
+  /// In en, this message translates to:
+  /// **'Display name cannot be empty'**
+  String get displayNameEmpty;
+
+  /// Validation error for display name length
+  ///
+  /// In en, this message translates to:
+  /// **'Display name must be 50 characters or less'**
+  String get displayNameTooLong;
+
+  /// Label for preferred currency selector
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Currency'**
+  String get preferredCurrencyLabel;
+
+  /// Short password placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Min. 8 characters'**
+  String get passwordHintShort;
+
+  /// Display name field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get yourNameHint;
+
+  /// Hint shown beneath password input
+  ///
+  /// In en, this message translates to:
+  /// **'Must be at least 8 characters with mixed case and numbers'**
+  String get passwordHint;
+
+  /// Prefix before the sign-in link on register page
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? '**
+  String get alreadyHaveAccountPrefix;
+
+  /// Sign-in CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// Forgot password screen title without question mark
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPasswordTitle;
+
+  /// Short forgot password instructions
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email to reset your password'**
+  String get enterEmailForResetShort;
+
+  /// Short send reset link button
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLinkShort;
+
+  /// Loading text shown during password reset send
+  ///
+  /// In en, this message translates to:
+  /// **'Sending...'**
+  String get sending;
+
+  /// Success message after reset email sent
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent'**
+  String get resetEmailSent;
+
+  /// Success detail referencing the email address
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your email at {email}'**
+  String pleaseCheckEmailAt(String email);
+
+  /// Resend button label
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get resend;
+
+  /// Error when email not registered
+  ///
+  /// In en, this message translates to:
+  /// **'Email not found in our system'**
+  String get emailNotInSystem;
+
+  /// Helper text on forgot password
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send a link to reset your password to your email'**
+  String get weWillSendLink;
+
+  /// Prefix above sign-in link on forgot password
+  ///
+  /// In en, this message translates to:
+  /// **'Remember your password? '**
+  String get rememberPassword;
 }
 
 class _AppLocalizationsDelegate

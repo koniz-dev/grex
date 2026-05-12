@@ -163,8 +163,8 @@ void main() {
       );
 
       blocTest<AuthBloc, AuthState>(
-        'emits [AuthSocialLoginInProgress, AuthError] when Google login is '
-        'cancelled',
+        'emits [AuthSocialLoginInProgress, AuthUnauthenticated] when Google '
+        'login is cancelled',
         build: () {
           when(mockSocialAuthRepository.signInWithGoogle()).thenAnswer(
             (_) async => const Left(SocialAuthCancelledFailure()),
@@ -174,7 +174,7 @@ void main() {
         act: (bloc) => bloc.add(const AuthSocialLoginRequested('google')),
         expect: () => [
           const AuthSocialLoginInProgress(SocialAuthProvider.google),
-          isA<AuthError>(),
+          const AuthUnauthenticated(),
         ],
       );
     });
@@ -418,6 +418,7 @@ void main() {
           when(mockUserRepository.getUserProfile('existing-user')).thenAnswer(
             (_) async => Right(linkingState.existingProfile),
           );
+          when(mockAuthRepository.currentUser).thenReturn(linkingState.newUser);
           when(mockAuthRepository.currentSession).thenReturn(
             supabase.Session(
               accessToken: 'linked-token',

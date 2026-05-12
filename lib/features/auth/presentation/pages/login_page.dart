@@ -6,9 +6,11 @@ import 'package:grex/features/auth/domain/entities/failures.dart';
 import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:grex/features/auth/domain/entities/user_profile.dart';
-import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// Login page for user authentication.
 ///
@@ -52,6 +54,29 @@ class _LoginPageState extends State<LoginPage> {
     context.read<AuthBloc>().add(AuthSocialLoginRequested(provider.name));
   }
 
+  String? _validateEmail(AppLocalizations l10n, String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return l10n.emailRequired;
+    }
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$',
+    );
+    if (!emailRegex.hasMatch(value.trim())) {
+      return l10n.emailInvalid;
+    }
+    return null;
+  }
+
+  String? _validatePassword(AppLocalizations l10n, String? value) {
+    if (value == null || value.isEmpty) {
+      return l10n.passwordRequired;
+    }
+    if (value.length < 8) {
+      return l10n.passwordMinLength(8);
+    }
+    return null;
+  }
+
   void showAccountLinkingDialog({
     required BuildContext context,
     required String email,
@@ -73,8 +98,8 @@ class _LoginPageState extends State<LoginPage> {
             id: '',
             email: email,
             displayName: '',
-            preferredCurrency: 'VND',
-            languageCode: 'vi',
+            preferredCurrency: LocaleDefaults.currencyCode,
+            languageCode: LocaleDefaults.languageCode,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),
@@ -86,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -127,17 +153,12 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Spacer
                   const SizedBox(height: 60),
-
-                  // Logo section
                   const AppLogo(),
                   const SizedBox(height: 32),
-
-                  // Title section
-                  const Text(
-                    'Welcome back',
-                    style: TextStyle(
+                  Text(
+                    l10n.welcomeBack,
+                    style: const TextStyle(
                       fontFamily: 'Outfit',
                       fontSize: 40,
                       fontWeight: FontWeight.w800,
@@ -146,9 +167,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Sign in to continue',
-                    style: TextStyle(
+                  Text(
+                    l10n.signInToContinue,
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
@@ -156,40 +177,36 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-
-                  // Form section
                   AuthTextField(
-                    label: 'Email',
-                    placeholder: 'your@email.com',
+                    label: l10n.email,
+                    placeholder: l10n.enterYourEmail,
+                    fieldKey: const Key('email_field'),
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    validator: InputValidators.validateEmail,
+                    validator: (value) => _validateEmail(l10n, value),
                   ),
                   const SizedBox(height: 16),
-
                   AuthTextField(
-                    label: 'Password',
-                    placeholder: '••••••••',
+                    label: l10n.password,
+                    placeholder: l10n.enterYourPassword,
+                    fieldKey: const Key('password_field'),
+                    visibilityToggleKey: const Key(
+                      'password_visibility_toggle',
+                    ),
                     controller: _passwordController,
                     obscureText: true,
+                    showVisibilityToggle: true,
                     textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
+                    validator: (value) => _validatePassword(l10n, value),
                     onFieldSubmitted: (_) => _onLoginPressed(),
                   ),
                   const SizedBox(height: 16),
-
-                  // Forgot password link
                   GestureDetector(
                     onTap: () => context.goToForgotPassword(),
-                    child: const Text(
-                      'Forgot password?',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.forgotPassword,
+                      style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
@@ -198,27 +215,22 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-
-                  // Login button
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading =
                           state is AuthLoading ||
                           state is AuthSocialLoginInProgress;
                       return PrimaryButton(
-                        text: 'Sign In',
+                        text: l10n.login,
                         isLoading: state is AuthLoading,
+                        loadingText: l10n.signingIn,
                         onPressed: isLoading ? null : _onLoginPressed,
                       );
                     },
                   ),
                   const SizedBox(height: 32),
-
-                  // Or divider
                   const OrDivider(),
                   const SizedBox(height: 12),
-
-                  // Social login buttons
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading =
@@ -227,7 +239,6 @@ class _LoginPageState extends State<LoginPage> {
                       final isGoogleLoading =
                           state is AuthSocialLoginInProgress &&
                           state.provider == SocialAuthProvider.google;
-
                       return SocialLoginButton(
                         provider: SocialAuthProvider.google,
                         onPressed: isLoading
@@ -238,7 +249,6 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   const SizedBox(height: 12),
-
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading =
@@ -247,7 +257,6 @@ class _LoginPageState extends State<LoginPage> {
                       final isAppleLoading =
                           state is AuthSocialLoginInProgress &&
                           state.provider == SocialAuthProvider.apple;
-
                       return SocialLoginButton(
                         provider: SocialAuthProvider.apple,
                         onPressed: isLoading
@@ -258,12 +267,9 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   const SizedBox(height: 32),
-
-                  // Error display
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthError) {
-                        // Check if it's a social auth error
                         if (state.failure != null &&
                             (state.failure is SocialAuthFailure ||
                                 state.failure is SocialAuthCancelledFailure ||
@@ -274,13 +280,9 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(bottom: 24),
                             child: SocialAuthErrorWidget(
                               failure: state.failure!,
-                              onRetry: () {
-                                // Retry the last attempted social login
-                                // This would need to be tracked in the BLoC
-                                // state
-                              },
+                              errorMessage: state.message,
+                              onRetry: () {},
                               onFallback: () {
-                                // Focus on email field for fallback
                                 FocusScope.of(context).requestFocus();
                               },
                             ),
@@ -295,28 +297,17 @@ class _LoginPageState extends State<LoginPage> {
                       return const SizedBox.shrink();
                     },
                   ),
-
-                  // Register prompt
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Don't have an account? ",
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Color(0xFF71717A),
-                        ),
-                      ),
                       GestureDetector(
                         onTap: () => context.goToRegister(),
-                        child: const Text(
-                          'Register',
-                          style: TextStyle(
+                        child: Text(
+                          l10n.dontHaveAccount,
+                          style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
                         ),

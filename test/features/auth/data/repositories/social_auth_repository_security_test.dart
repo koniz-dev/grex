@@ -4,21 +4,23 @@ import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/entities/profile_setup_data.dart';
 import 'package:grex/features/auth/domain/repositories/social_auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/user_repository.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
-// Mock classes
-class MockSupabaseClient extends Mock implements sb.SupabaseClient {}
+import 'social_auth_repository_security_test.mocks.dart';
 
-class MockGoTrueClient extends Mock implements sb.GoTrueClient {}
-
-class MockUserRepository extends Mock implements UserRepository {}
-
-class MockSupabaseUser extends Mock implements sb.User {}
-
-class MockSocialAuthRepository extends Mock implements SocialAuthRepository {}
-
+@GenerateMocks([
+  sb.SupabaseClient,
+  sb.GoTrueClient,
+  sb.User,
+  UserRepository,
+  SocialAuthRepository,
+])
 void main() {
+  setUpAll(() {
+    provideDummy<sb.GoTrueClient>(MockGoTrueClient());
+  });
   group('SocialAuthRepository - Security Features', () {
     late MockSocialAuthRepository repository;
     late MockSupabaseClient mockSupabaseClient;

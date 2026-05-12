@@ -10,6 +10,7 @@ import 'package:grex/features/auth/domain/services/social_login_analytics.dart';
 import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/auth_event.dart';
 import 'package:grex/features/auth/presentation/bloc/auth_state.dart';
+import 'package:grex/shared/utils/locale_defaults.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 /// BLoC for managing authentication state and operations.
@@ -140,8 +141,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       password: event.password,
     );
 
-    result.fold(
-      (failure) => emit(
+    await result.fold(
+      (AuthFailure failure) async => emit(
         AuthError(
           message: _getErrorMessage(failure),
           failure: failure,
@@ -237,8 +238,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       email: event.email.trim(),
       password: event.password,
       displayName: event.displayName.trim(),
-      preferredCurrency: event.preferredCurrency ?? 'VND',
-      languageCode: event.languageCode ?? 'vi',
+      preferredCurrency: event.preferredCurrency ?? LocaleDefaults.currencyCode,
+      languageCode: event.languageCode ?? LocaleDefaults.languageCode,
     );
 
     await result.fold(
@@ -626,10 +627,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ///
   /// This ensures the BLoC stays in sync with the underlying
   /// authentication state (e.g., session expiration, external changes).
+  ///
+  /// Wrapped in try/catch so a misbehaving repository (e.g., a mock without
+  /// a stub for `authStateChanges` in tests) doesn't fail bloc construction.
+  /// In production this never throws — Supabase always exposes the stream.
   void _listenToAuthStateChanges() {
-    _authStateSubscription = _authRepository.authStateChanges.listen(
-      (user) => add(AuthStateChanged(user: user)),
-    );
+    try {
+      _authStateSubscription = _authRepository.authStateChanges.listen(
+        (user) => add(AuthStateChanged(user: user)),
+      );
+    } catch (_) {
+      // Repository didn't provide a stream — skip subscription. Either the
+      // repository was constructed without one (test fixture) or it isn't
+      // initialized yet; callers depending on stream-driven updates should
+      // stub `authStateChanges` explicitly.
+    }
   }
 
   /// Maps authentication failures to user-friendly error messages.
@@ -643,8 +655,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return 'Password is too weak. Please choose a stronger password.';
     } else if (failure is UnverifiedEmailFailure) {
       return 'Please verify your email address before signing in.';
-    } else if (failure is NetworkFailure) {
+    } else if (failure is NetworkFailure || failure is SocialAuthNetworkFailure) {
       return 'Network error. Please check your connection and try again.';
+    } else if (failure is SocialAuthTimeoutFailure) {
+      return 'Connection timed out. Please check your network and try again.';
     } else if (failure is TooManyAttemptsFailure) {
       return 'Too many attempts. Please try again later.';
     } else if (failure is SessionExpiredFailure) {

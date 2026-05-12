@@ -514,14 +514,20 @@ class MockSocialAuthRepository extends _i1.Mock
           as _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>> signInWithApple() =>
+  _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>> signInWithApple({
+    bool? useNativeFlow = true,
+  }) =>
       (super.noSuchMethod(
-            Invocation.method(#signInWithApple, []),
+            Invocation.method(#signInWithApple, [], {
+              #useNativeFlow: useNativeFlow,
+            }),
             returnValue:
                 _i5.Future<_i2.Either<_i6.AuthFailure, _i6.User>>.value(
                   _FakeEither_0<_i6.AuthFailure, _i6.User>(
                     this,
-                    Invocation.method(#signInWithApple, []),
+                    Invocation.method(#signInWithApple, [], {
+                      #useNativeFlow: useNativeFlow,
+                    }),
                   ),
                 ),
           )

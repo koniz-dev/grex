@@ -119,7 +119,10 @@ class SocialLoginAnalyticsImpl implements SocialLoginAnalytics {
   }
 
   String _extractEmailDomain(String email) {
-    final parts = email.split('@');
-    return parts.length > 1 ? parts[1] : 'unknown';
+    final atIndex = email.indexOf('@');
+    if (atIndex < 0 || atIndex == email.length - 1) {
+      return 'unknown';
+    }
+    return email.substring(atIndex + 1);
   }
 }

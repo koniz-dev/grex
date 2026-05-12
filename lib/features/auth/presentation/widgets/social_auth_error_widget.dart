@@ -15,6 +15,7 @@ class SocialAuthErrorWidget extends StatelessWidget {
   const SocialAuthErrorWidget({
     required this.failure,
     super.key,
+    this.errorMessage,
     this.onRetry,
     this.onFallback,
     this.onDismiss,
@@ -23,6 +24,11 @@ class SocialAuthErrorWidget extends StatelessWidget {
 
   /// The authentication failure to display
   final AuthFailure failure;
+
+  /// Optional explicit error message. When provided, overrides the message
+  /// derived from [failure] via [SocialAuthErrorHandler]. Useful when the
+  /// caller (e.g., a BLoC state) already has a localized message to display.
+  final String? errorMessage;
 
   /// Callback for retry action
   final VoidCallback? onRetry;
@@ -45,13 +51,15 @@ class SocialAuthErrorWidget extends StatelessWidget {
 
     final theme = Theme.of(context);
 
-    final errorMessage = attemptCount >= 3
-        ? SocialAuthErrorHandler.getRepeatedFailureMessage(
-            context,
-            failure,
-            attemptCount,
-          )
-        : SocialAuthErrorHandler.getErrorMessage(context, failure);
+    final errorMessage =
+        this.errorMessage ??
+        (attemptCount >= 3
+            ? SocialAuthErrorHandler.getRepeatedFailureMessage(
+                context,
+                failure,
+                attemptCount,
+              )
+            : SocialAuthErrorHandler.getErrorMessage(context, failure));
 
     final errorIcon = SocialAuthErrorHandler.getErrorIcon(failure);
     final errorColor = SocialAuthErrorHandler.getErrorColor(context, failure);

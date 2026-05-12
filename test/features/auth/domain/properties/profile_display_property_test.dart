@@ -3,13 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/repositories/repositories.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-// Manual mocks for now
-class MockUserRepository extends Mock implements UserRepository {}
+import 'profile_display_property_test.mocks.dart';
 
-class MockAuthRepository extends Mock implements AuthRepository {}
-
+@GenerateMocks([UserRepository, AuthRepository])
 void main() {
   group('Profile Display Property Tests', () {
     late MockUserRepository mockUserRepository;

@@ -21,7 +21,9 @@ class MockSocialAuthRepository implements SocialAuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, User>> signInWithApple() async {
+  Future<Either<AuthFailure, User>> signInWithApple({
+    bool useNativeFlow = true,
+  }) async {
     if (!shouldSucceed) {
       return Left(
         failureToReturn ?? const SocialAuthFailure('Apple sign in failed'),
