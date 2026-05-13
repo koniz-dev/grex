@@ -7,7 +7,9 @@
       "PowerShell(dart format *)",
       "PowerShell(dart fix *)",
       "PowerShell(flutter analyze *)",
-      "Bash(dart fix *)"
+      "Bash(dart fix *)",
+      "Bash(python *)",
+      "Bash(git add *)"
     ]
   }
 }

@@ -22,7 +22,7 @@ void main() {
         'AFTER `paymentBloc.add(...)` and bloc.stream is a broadcast stream '
         'that does not replay — the Loading/Loaded emits race the test '
         'subscriber and the stream closes by the time the test listens. '
-        'Restructure with bloc_test\'s blocTest (which subscribes first) or '
+        "Restructure with bloc_test's blocTest (which subscribes first) or "
         'subscribe before dispatching to re-enable.',
     () {
     late MockPaymentRepository mockRepository;

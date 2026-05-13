@@ -124,7 +124,7 @@ const _es = <String, String>{
   'emailSentCheckInbox': '¡Correo enviado! Revisa tu bandeja.',
   'emailVerifiedSuccessfully': 'Tu correo se ha verificado exitosamente',
   'enterEmailForReset':
-      "Ingresa tu dirección de correo y te enviaremos un enlace para restablecer la contraseña",
+      'Ingresa tu dirección de correo y te enviaremos un enlace para restablecer la contraseña',
   'enterNewPassword': 'Ingresa tu nueva contraseña abajo',
   'enterYourEmail': 'Ingresa tu correo',
   'enterYourName': 'Ingresa tu nombre',
@@ -199,7 +199,7 @@ void main() {
       }
     }
 
-    final encoder = const JsonEncoder.withIndent('  ');
+    const encoder = JsonEncoder.withIndent('  ');
     File(path).writeAsStringSync('${encoder.convert(arb)}\n');
     print('Wrote $path (${arb.length ~/ 2} keys)');
   }
