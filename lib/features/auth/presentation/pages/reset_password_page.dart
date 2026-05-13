@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
-import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Reset password page for setting new password.
 ///
@@ -42,8 +43,29 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     }
   }
 
+  String? _validatePassword(AppLocalizations l10n, String? value) {
+    if (value == null || value.isEmpty) {
+      return l10n.passwordRequired;
+    }
+    if (value.length < 8) {
+      return l10n.passwordMinLength(8);
+    }
+    return null;
+  }
+
+  String? _validatePasswordConfirmation(AppLocalizations l10n, String? value) {
+    if (value == null || value.isEmpty) {
+      return l10n.passwordRequired;
+    }
+    if (value != _passwordController.text) {
+      return l10n.passwordsDoNotMatch;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -52,8 +74,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             if (state is AuthPasswordUpdated) {
               // Show success and navigate to login
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Password reset successfully'),
+                SnackBar(
+                  content: Text(l10n.passwordResetSuccessfully),
                   backgroundColor: Colors.green,
                 ),
               );
@@ -92,9 +114,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   const SizedBox(height: 40),
 
                   // Title section
-                  const Text(
-                    'Reset Password',
-                    style: TextStyle(
+                  Text(
+                    l10n.resetPassword,
+                    style: const TextStyle(
                       fontFamily: 'Outfit',
                       fontSize: 40,
                       fontWeight: FontWeight.w800,
@@ -103,9 +125,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Enter your new password',
-                    style: TextStyle(
+                  Text(
+                    l10n.enterNewPassword,
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
@@ -117,19 +139,19 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
                   // New password field
                   AuthTextField(
-                    label: 'New Password',
-                    placeholder: 'Min. 8 characters',
+                    label: l10n.newPassword,
+                    placeholder: l10n.passwordHintShort,
                     controller: _passwordController,
                     obscureText: true,
                     textInputAction: TextInputAction.next,
-                    validator: InputValidators.validatePassword,
+                    validator: (value) => _validatePassword(l10n, value),
                   ),
                   const SizedBox(height: 8),
 
                   // Password hint
-                  const Text(
-                    'Must be at least 8 characters with mixed case and numbers',
-                    style: TextStyle(
+                  Text(
+                    l10n.passwordHint,
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
@@ -141,16 +163,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
                   // Confirm password field
                   AuthTextField(
-                    label: 'Confirm Password',
-                    placeholder: 'Re-enter password',
+                    label: l10n.confirmPassword,
+                    placeholder: l10n.reenterPassword,
                     controller: _confirmPasswordController,
                     obscureText: true,
                     textInputAction: TextInputAction.done,
                     validator: (value) =>
-                        InputValidators.validatePasswordConfirmation(
-                          _passwordController.text,
-                          value,
-                        ),
+                        _validatePasswordConfirmation(l10n, value),
                     onFieldSubmitted: (_) => _onResetPasswordPressed(),
                   ),
                   const SizedBox(height: 32),
@@ -159,7 +178,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return PrimaryButton(
-                        text: 'Reset Password',
+                        text: l10n.resetPassword,
                         isLoading: state is AuthLoading,
                         onPressed: state is AuthLoading
                             ? null

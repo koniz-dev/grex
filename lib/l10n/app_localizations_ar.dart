@@ -853,4 +853,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get editProfileTipLanguage =>
       '• تغييرات اللغة تنطبق على التطبيق بالكامل';
+
+  @override
+  String get reenterPassword => 'أعد إدخال كلمة المرور';
+
+  @override
+  String get currencyRequired => 'يرجى اختيار عملة';
+
+  @override
+  String get languageRequired => 'يرجى اختيار لغة';
 }

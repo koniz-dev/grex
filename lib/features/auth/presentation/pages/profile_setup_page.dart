@@ -7,6 +7,7 @@ import 'package:grex/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:grex/features/auth/presentation/bloc/auth_event.dart';
 import 'package:grex/features/auth/presentation/bloc/auth_state.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
+import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:grex/shared/utils/locale_defaults.dart';
 
@@ -82,6 +83,34 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     super.dispose();
   }
 
+  String? _validateDisplayName(AppLocalizations l10n, String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return l10n.displayNameRequired;
+    }
+    final trimmed = value.trim();
+    if (trimmed.length < 2) {
+      return l10n.displayNameTooShort(2);
+    }
+    if (trimmed.length > 50) {
+      return l10n.displayNameTooLong;
+    }
+    return null;
+  }
+
+  String? _validateCurrency(AppLocalizations l10n, String? value) {
+    if (value == null || value.isEmpty) {
+      return l10n.currencyRequired;
+    }
+    return null;
+  }
+
+  String? _validateLanguage(AppLocalizations l10n, String? value) {
+    if (value == null || value.isEmpty) {
+      return l10n.languageRequired;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
@@ -132,7 +161,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Complete your profile to start using Grex',
+                    context.l10n.profileSetupDescription,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(
                         context,
@@ -146,7 +175,8 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                     controller: _displayNameController,
                     label: context.l10n.displayName,
                     placeholder: context.l10n.enterYourName,
-                    validator: ProfileSetupData.validateDisplayName,
+                    validator: (value) =>
+                        _validateDisplayName(context.l10n, value),
                     enabled: !_isLoading,
                   ),
                   const SizedBox(height: 16),
@@ -184,7 +214,8 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                               });
                             }
                           },
-                    validator: ProfileSetupData.validateCurrency,
+                    validator: (value) =>
+                        _validateCurrency(context.l10n, value),
                   ),
                   const SizedBox(height: 16),
 
@@ -211,7 +242,8 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                               });
                             }
                           },
-                    validator: ProfileSetupData.validateLanguage,
+                    validator: (value) =>
+                        _validateLanguage(context.l10n, value),
                   ),
                   const SizedBox(height: 32),
 
@@ -264,23 +296,21 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   }
 
   void _showCancelDialog() {
+    final l10n = context.l10n;
     unawaited(
       showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Cancel Profile Setup'),
-          content: const Text(
-            'Are you sure you want to cancel? You will be signed out and '
-            'returned to the login screen.',
-          ),
+          title: Text(l10n.cancelProfileSetup),
+          content: Text(l10n.cancelProfileSetupMessage),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Continue Setup'),
+              child: Text(l10n.continueSetup),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Cancel'),
+              child: Text(l10n.cancel),
             ),
           ],
         ),

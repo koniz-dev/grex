@@ -882,4 +882,13 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get editProfileTipLanguage =>
       '• Los cambios de idioma se aplican a toda la app';
+
+  @override
+  String get reenterPassword => 'Reingresa la contraseña';
+
+  @override
+  String get currencyRequired => 'Por favor selecciona una moneda';
+
+  @override
+  String get languageRequired => 'Por favor selecciona un idioma';
 }

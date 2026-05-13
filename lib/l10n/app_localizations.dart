@@ -1631,6 +1631,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'• Language changes apply across the whole app'**
   String get editProfileTipLanguage;
+
+  /// Placeholder for confirm-password field
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter password'**
+  String get reenterPassword;
+
+  /// Validation error when currency dropdown has no selection
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a currency'**
+  String get currencyRequired;
+
+  /// Validation error when language dropdown has no selection
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a language'**
+  String get languageRequired;
 }
 
 class _AppLocalizationsDelegate

@@ -90,9 +90,9 @@ void main() {
       // Should display title
       expect(find.text('Complete Your Profile'), findsAtLeastNWidgets(1));
 
-      // Should display description
+      // Should display description (l10n profileSetupDescription)
       expect(
-        find.text('Complete your profile to start using Grex'),
+        find.text('Please complete your profile to get started with Grex'),
         findsOneWidget,
       );
 
@@ -143,8 +143,11 @@ void main() {
       await tester.tap(find.text('Continue'));
       await tester.pump();
 
-      // Should show validation error
-      expect(find.text('Display name is required'), findsOneWidget);
+      // Should show validation error (l10n displayNameRequired)
+      expect(
+        find.text('Please enter your display name'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('should validate display name minimum length', (tester) async {
@@ -180,9 +183,9 @@ void main() {
       await tester.tap(find.text('Continue'));
       await tester.pump();
 
-      // Should show validation error
+      // Should show validation error (l10n displayNameTooLong)
       expect(
-        find.text('Display name must be less than 50 characters'),
+        find.text('Display name must be 50 characters or less'),
         findsOneWidget,
       );
     });
@@ -255,7 +258,7 @@ void main() {
         // sentence ("Are you sure you want to cancel? You will be signed
         // out and returned to the login screen.") so match via
         // textContaining.
-        expect(find.text('Cancel Profile Setup'), findsOneWidget);
+        expect(find.text('Cancel Setup'), findsOneWidget);
         expect(
           find.textContaining('Are you sure you want to cancel?'),
           findsOneWidget,
@@ -307,7 +310,7 @@ void main() {
         );
 
         // Dialog should be dismissed
-        expect(find.text('Cancel Profile Setup'), findsNothing);
+        expect(find.text('Cancel Setup'), findsNothing);
       },
     );
 

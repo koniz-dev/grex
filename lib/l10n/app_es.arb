@@ -998,5 +998,17 @@
   "yesterday": "Ayer",
   "@yesterday": {
     "description": "Relative time: yesterday"
+  },
+  "reenterPassword": "Reingresa la contraseña",
+  "@reenterPassword": {
+    "description": "Placeholder for confirm-password field"
+  },
+  "currencyRequired": "Por favor selecciona una moneda",
+  "@currencyRequired": {
+    "description": "Validation error when currency dropdown has no selection"
+  },
+  "languageRequired": "Por favor selecciona un idioma",
+  "@languageRequired": {
+    "description": "Validation error when language dropdown has no selection"
   }
 }

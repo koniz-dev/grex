@@ -851,6 +851,18 @@
   "editProfileTipLanguage": "• Thay đổi ngôn ngữ sẽ áp dụng cho toàn bộ ứng dụng",
   "@editProfileTipLanguage": {
     "description": "Edit-profile tip about language scope"
+  },
+  "reenterPassword": "Nhập lại mật khẩu",
+  "@reenterPassword": {
+    "description": "Placeholder for confirm-password field"
+  },
+  "currencyRequired": "Vui lòng chọn tiền tệ",
+  "@currencyRequired": {
+    "description": "Validation error when currency dropdown has no selection"
+  },
+  "languageRequired": "Vui lòng chọn ngôn ngữ",
+  "@languageRequired": {
+    "description": "Validation error when language dropdown has no selection"
   }
 }
 

@@ -868,4 +868,13 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get editProfileTipLanguage =>
       '• Thay đổi ngôn ngữ sẽ áp dụng cho toàn bộ ứng dụng';
+
+  @override
+  String get reenterPassword => 'Nhập lại mật khẩu';
+
+  @override
+  String get currencyRequired => 'Vui lòng chọn tiền tệ';
+
+  @override
+  String get languageRequired => 'Vui lòng chọn ngôn ngữ';
 }

@@ -1164,6 +1164,18 @@
   "editProfileTipLanguage": "• Language changes apply across the whole app",
   "@editProfileTipLanguage": {
     "description": "Edit-profile tip about language scope"
+  },
+  "reenterPassword": "Re-enter password",
+  "@reenterPassword": {
+    "description": "Placeholder for confirm-password field"
+  },
+  "currencyRequired": "Please select a currency",
+  "@currencyRequired": {
+    "description": "Validation error when currency dropdown has no selection"
+  },
+  "languageRequired": "Please select a language",
+  "@languageRequired": {
+    "description": "Validation error when language dropdown has no selection"
   }
 }
 
