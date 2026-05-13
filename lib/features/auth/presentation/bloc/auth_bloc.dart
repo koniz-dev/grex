@@ -142,7 +142,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     await result.fold(
-      (AuthFailure failure) async => emit(
+      (failure) async => emit(
         AuthError(
           message: _getErrorMessage(failure),
           failure: failure,
@@ -243,7 +243,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     await result.fold(
-      (AuthFailure failure) async => emit(
+      (failure) async => emit(
         AuthError(
           message: _getErrorMessage(failure),
           failure: failure,
@@ -564,7 +564,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     await result.fold(
-      (AuthFailure failure) async => emit(
+      (failure) async => emit(
         AuthError(
           message: _getOtpErrorMessage(failure),
           failure: failure,
@@ -695,7 +695,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         : await _socialAuthRepository.signInWithApple();
 
     await result.fold(
-      (AuthFailure failure) async {
+      (failure) async {
         // Log analytics event for social login failure
         _analytics.logSocialLoginFailure(
           provider: provider,
@@ -840,7 +840,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     await result.fold(
-      (AuthFailure failure) async => emit(
+      (failure) async => emit(
         AuthError(
           message: _getErrorMessage(failure),
           failure: failure,
@@ -863,7 +863,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
 
         await profileResult.fold(
-          (UserFailure failure) async =>
+          (failure) async =>
               emit(AuthAuthenticated(user: currentUser)),
           (profile) async {
             // Start session management
@@ -935,7 +935,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     await result.fold(
-      (AuthFailure failure) async => emit(
+      (failure) async => emit(
         AuthError(
           message: _getErrorMessage(failure),
           failure: failure,
@@ -948,7 +948,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
 
         await profileResult.fold(
-          (UserFailure failure) async {
+          (failure) async {
             final currentUser = _authRepository.currentUser;
             if (currentUser != null) {
               emit(AuthAuthenticated(user: currentUser));

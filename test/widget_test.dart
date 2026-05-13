@@ -15,7 +15,7 @@ void main() {
   // actually finishes mounting. Re-enable after a full-boot test harness is
   // wired.
   testWidgets('App displays welcome message', skip: true, (
-    WidgetTester tester,
+    tester,
   ) async {
     // Build our app and trigger a frame.
     // Note: MyApp requires ProviderScope, so we need to wrap it

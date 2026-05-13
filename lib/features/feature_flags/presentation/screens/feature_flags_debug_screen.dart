@@ -119,7 +119,7 @@ class _FeatureFlagsDebugScreenState
       // Try to find category from FeatureFlags definitions
       final flagKey =
           FeatureFlags.all
-              .where((FeatureFlagKey key) => key.value == flag.key)
+              .where((key) => key.value == flag.key)
               .firstOrNull ??
           FeatureFlagKey(
             value: flag.key,
@@ -160,7 +160,7 @@ class _FeatureFlagsDebugScreenState
   Widget _buildFlagTile(FeatureFlag flag) {
     final flagKey =
         FeatureFlags.all
-            .where((FeatureFlagKey key) => key.value == flag.key)
+            .where((key) => key.value == flag.key)
             .firstOrNull ??
         FeatureFlagKey(
           value: flag.key,

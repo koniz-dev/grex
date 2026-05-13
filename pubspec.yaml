@@ -109,7 +109,9 @@ dev_dependencies:
   bloc_test: ^9.1.7
 
   # Code Generation - Build system for generating code from annotations
-  build_runner: ^2.10.3
+  # Pinned <2.15.0: build_runner 2.15+ requires `dart build` command not yet
+  # available in the bundled Dart SDK.
+  build_runner: '>=2.10.3 <2.15.0'
 
   # Testing - Flutter testing framework and utilities
   flutter_launcher_icons: ^0.14.4
@@ -136,6 +138,12 @@ dev_dependencies:
 
   # Linting - Comprehensive lint rules for Flutter/Dart (Very Good Ventures)
   very_good_analysis: ^10.0.0
+
+# Pinned to avoid pulling `hooks`/`objective_c` (native build hooks) which
+# require a `dart build` command not yet in this Flutter SDK (3.38.5 / Dart 3.10.4).
+dependency_overrides:
+  path_provider_android: 2.2.22
+  path_provider_foundation: 2.5.1
 
   # REMOVED UNUSED DEV DEPENDENCIES:
   # go_router_builder: ^4.1.1 - Not used (go_router removed), can add back when implementing routing

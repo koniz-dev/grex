@@ -40,7 +40,7 @@ class _GlobalErrorHandlerState extends State<GlobalErrorHandler> {
     super.initState();
 
     // Set up global error handler
-    FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.onError = (details) {
       // Log the error
       ErrorLoggingService.logError(
         details.exception,

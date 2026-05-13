@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grex/core/di/providers.dart';
-import 'package:grex/core/errors/failures.dart';
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
 
@@ -70,14 +69,14 @@ class AuthNotifier extends Notifier<AuthState> {
     final result = await getCurrentUserUseCase();
 
     result.when(
-      success: (User? user) {
+      success: (user) {
         state = state.copyWith(
           user: user,
           isLoading: false,
           error: null,
         );
       },
-      failureCallback: (Failure failure) {
+      failureCallback: (failure) {
         state = state.copyWith(
           isLoading: false,
           error: failure.message,
@@ -94,8 +93,8 @@ class AuthNotifier extends Notifier<AuthState> {
     final result = await isAuthenticatedUseCase();
 
     return result.when(
-      success: (bool isAuth) => isAuth,
-      failureCallback: (Failure _) => false,
+      success: (isAuth) => isAuth,
+      failureCallback: (_) => false,
     );
   }
 }

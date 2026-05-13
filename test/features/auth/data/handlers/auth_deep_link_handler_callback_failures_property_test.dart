@@ -55,7 +55,7 @@ void main() {
       );
 
       // Override debug print to capture logs
-      debugPrint = (String? message, {int? wrapWidth}) {
+      debugPrint = (message, {wrapWidth}) {
         if (message != null) {
           capturedLogs.add(message);
         }

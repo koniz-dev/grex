@@ -723,13 +723,24 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
           as _i4.Future<_i2.UserResponse>);
 
   @override
-  _i4.Future<_i2.AuthResponse> setSession(String? refreshToken) =>
+  _i4.Future<_i2.AuthResponse> setSession(
+    String? refreshToken, {
+    String? accessToken,
+  }) =>
       (super.noSuchMethod(
-            Invocation.method(#setSession, [refreshToken]),
+            Invocation.method(
+              #setSession,
+              [refreshToken],
+              {#accessToken: accessToken},
+            ),
             returnValue: _i4.Future<_i2.AuthResponse>.value(
               _FakeAuthResponse_11(
                 this,
-                Invocation.method(#setSession, [refreshToken]),
+                Invocation.method(
+                  #setSession,
+                  [refreshToken],
+                  {#accessToken: accessToken},
+                ),
               ),
             ),
           )

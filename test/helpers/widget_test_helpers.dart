@@ -84,7 +84,7 @@ GoRouter createTestRouter(TestDependencies deps) {
         builder: (context, state) => const MockHomePage(),
       ),
     ],
-    redirect: (BuildContext context, GoRouterState state) {
+    redirect: (context, state) {
       final isAuthenticated = deps.mockAuthRepository.currentUser != null;
       final isAuthRoute = _isAuthRoute(state.matchedLocation);
       final isProtectedRoute = _isProtectedRoute(state.matchedLocation);

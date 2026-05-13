@@ -28,7 +28,7 @@ class LocaleNotifier extends Notifier<Locale> {
   Locale build() {
     // Initialize from storage when provider is first created
     ref.listen<AsyncValue<Locale>>(currentLocaleProvider, (previous, next) {
-      next.whenData((Locale locale) {
+      next.whenData((locale) {
         state = locale;
         // Keep LocaleDefaults in sync so signup / profile-setup / new-group
         // defaults follow the user's selected language, not the device.

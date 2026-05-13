@@ -325,7 +325,7 @@ void main() {
           // Assert
           expect(result.isLeft(), true);
           result.fold(
-            (AuthFailure failure) =>
+            (failure) =>
                 expect(failure, isA<AccountLinkingFailure>()),
             (_) => fail('Should not return success'),
           );
@@ -349,7 +349,7 @@ void main() {
           // Assert
           expect(result.isLeft(), true);
           result.fold(
-            (AuthFailure failure) =>
+            (failure) =>
                 expect(failure, isA<SocialAuthCancelledFailure>()),
             (_) => fail('Should not return success'),
           );
@@ -380,7 +380,7 @@ void main() {
           expect(result.isRight(), true);
           result.fold(
             (failure) => fail('Should not return failure'),
-            (UserProfile profile) {
+            (profile) {
               expect(profile.id, 'test-user-id');
               expect(profile.displayName, 'Test User');
               expect(profile.preferredCurrency, 'VND');
@@ -408,7 +408,7 @@ void main() {
         // Assert
         expect(result.isLeft(), true);
         result.fold(
-          (AuthFailure failure) => expect(failure, isA<AuthFailure>()),
+          (failure) => expect(failure, isA<AuthFailure>()),
           (_) => fail('Should not return success'),
         );
       });

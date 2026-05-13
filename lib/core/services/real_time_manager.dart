@@ -47,7 +47,7 @@ class RealTimeManager {
           controller.add(data);
         }
       },
-      onError: (Object error) {
+      onError: (error) {
         if (!controller.isClosed) {
           controller.addError(error);
         }
@@ -77,7 +77,7 @@ class RealTimeManager {
           controller.add(data);
         }
       },
-      onError: (Object error) {
+      onError: (error) {
         if (!controller.isClosed) {
           controller.addError(error);
         }
@@ -107,7 +107,7 @@ class RealTimeManager {
           controller.add(data);
         }
       },
-      onError: (Object error) {
+      onError: (error) {
         if (!controller.isClosed) {
           controller.addError(error);
         }
@@ -137,7 +137,7 @@ class RealTimeManager {
           controller.add(data);
         }
       },
-      onError: (Object error) {
+      onError: (error) {
         if (!controller.isClosed) {
           controller.addError(error);
         }

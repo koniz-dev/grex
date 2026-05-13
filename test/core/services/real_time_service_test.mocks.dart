@@ -1382,6 +1382,17 @@ class MockSupabaseQueryBuilder extends _i1.Mock
           as _i2.PostgrestFilterBuilder<int>);
 
   @override
+  _i2.PostgrestQueryBuilder<dynamic> retry({required bool? enabled}) =>
+      (super.noSuchMethod(
+            Invocation.method(#retry, [], {#enabled: enabled}),
+            returnValue: _FakePostgrestQueryBuilder_15<dynamic>(
+              this,
+              Invocation.method(#retry, [], {#enabled: enabled}),
+            ),
+          )
+          as _i2.PostgrestQueryBuilder<dynamic>);
+
+  @override
   _i2.PostgrestQueryBuilder<dynamic> setHeader(String? key, String? value) =>
       (super.noSuchMethod(
             Invocation.method(#setHeader, [key, value]),
@@ -1599,6 +1610,17 @@ class MockPostgrestQueryBuilderRealTime extends _i1.Mock
             ),
           )
           as _i2.PostgrestFilterBuilder<int>);
+
+  @override
+  _i2.PostgrestQueryBuilder<dynamic> retry({required bool? enabled}) =>
+      (super.noSuchMethod(
+            Invocation.method(#retry, [], {#enabled: enabled}),
+            returnValue: _FakePostgrestQueryBuilder_15<dynamic>(
+              this,
+              Invocation.method(#retry, [], {#enabled: enabled}),
+            ),
+          )
+          as _i2.PostgrestQueryBuilder<dynamic>);
 
   @override
   _i2.PostgrestQueryBuilder<dynamic> setHeader(String? key, String? value) =>
@@ -2115,6 +2137,17 @@ class MockPostgrestFilterBuilderRealTime extends _i1.Mock
             returnValue: _FakePostgrestFilterBuilder_7<dynamic>(
               this,
               Invocation.method(#isDistinct, [column, value]),
+            ),
+          )
+          as _i2.PostgrestFilterBuilder<dynamic>);
+
+  @override
+  _i2.PostgrestFilterBuilder<dynamic> retry({required bool? enabled}) =>
+      (super.noSuchMethod(
+            Invocation.method(#retry, [], {#enabled: enabled}),
+            returnValue: _FakePostgrestFilterBuilder_7<dynamic>(
+              this,
+              Invocation.method(#retry, [], {#enabled: enabled}),
             ),
           )
           as _i2.PostgrestFilterBuilder<dynamic>);
