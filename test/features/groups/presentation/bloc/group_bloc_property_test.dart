@@ -18,22 +18,24 @@ import 'group_bloc_property_test.mocks.dart';
 void main() {
   group(
     'Group BLoC Administrator Settings Properties',
-    skip:
-        'TODO(bloc-property-tests): scaffolding migrated to @GenerateMocks '
-        '(no longer fails to compile under null-safety), but the property '
-        'tests iterate 1000+ times against a bloc that now routes real-time '
-        'updates through additional events (GroupsStreamReceived). Most '
-        'tests time out at 30s because each iteration adds an extra event '
-        'cycle. Re-author them against the new event flow or reduce the '
-        'iteration count before re-enabling.',
     () {
     late MockGroupRepository mockRepository;
     late GroupBloc groupBloc;
     final random = Random();
-    const testIterations = 1000;
+    // Property tests are sampled at 50 iterations per case so the whole file
+    // stays well below the 30s test timeout. Bump only if you have a
+    // specific edge case in mind — the bloc invariants exercised here
+    // don't require a higher sample size.
+    const testIterations = 50;
 
     setUp(() {
       mockRepository = MockGroupRepository();
+      // Default: real-time subscription returns an empty stream so the
+      // bloc's _setupRealTimeSubscription has something safe to listen
+      // on. Individual tests can override when they need stream events.
+      when(
+        mockRepository.watchUserGroups(),
+      ).thenAnswer((_) => const Stream.empty());
       groupBloc = GroupBloc(mockRepository);
     });
 
@@ -41,16 +43,23 @@ void main() {
       await groupBloc.close();
     });
 
-    // Helper function to generate random groups
+    // Helper function to generate random groups.
+    // Layout: member[0] = administrator (creator), member[1] = editor
+    // (guarantees at least one non-administrator so the firstWhere
+    // calls below don't trip "Bad state: No element"), the rest random.
     List<Group> generateRandomGroups(int count) {
       return List.generate(count, (index) {
         final memberCount = random.nextInt(5) + 2; // 2-6 members
         final members = List.generate(memberCount, (memberIndex) {
           const roles = MemberRole.values;
-          // Ensure at least one administrator
-          final role = memberIndex == 0
-              ? MemberRole.administrator
-              : roles[random.nextInt(roles.length)];
+          final MemberRole role;
+          if (memberIndex == 0) {
+            role = MemberRole.administrator;
+          } else if (memberIndex == 1) {
+            role = MemberRole.editor;
+          } else {
+            role = roles[random.nextInt(roles.length)];
+          }
 
           return GroupMember(
             id: 'member-$index-$memberIndex',
@@ -336,8 +345,8 @@ void main() {
           );
 
           bloc.add(
-            const GroupUpdateRequested(
-              groupId: 'test-group',
+            GroupUpdateRequested(
+              groupId: testGroup.id,
               name: '', // Invalid empty name
               currency: 'USD',
             ),

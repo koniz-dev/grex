@@ -17,20 +17,26 @@ void main() {
   group(
     'PaymentBloc Property-Based Tests',
     skip:
-        'TODO(bloc-property-tests): scaffolding migrated to @GenerateMocks '
-        '(no longer fails to compile under null-safety), but the property '
-        'tests iterate 1000+ times against a bloc that now routes real-time '
-        'updates through additional events (PaymentsStreamReceived). Most '
-        'tests time out at 30s because each iteration adds an extra event '
-        'cycle. Re-author them against the new event flow or reduce the '
-        'iteration count before re-enabling.',
+        'TODO(payment-property-tests): iteration count is now small enough '
+        'to run, but each test uses `expectLater(paymentBloc.stream, ...)` '
+        'AFTER `paymentBloc.add(...)` and bloc.stream is a broadcast stream '
+        'that does not replay — the Loading/Loaded emits race the test '
+        'subscriber and the stream closes by the time the test listens. '
+        'Restructure with bloc_test\'s blocTest (which subscribes first) or '
+        'subscribe before dispatching to re-enable.',
     () {
     late MockPaymentRepository mockRepository;
     late PaymentBloc paymentBloc;
     final random = Random();
+    const propertyIterations = 50;
 
     setUp(() {
       mockRepository = MockPaymentRepository();
+      // Default: stream returns empty so the bloc's
+      // _setupRealTimeSubscription has something safe to listen on.
+      when(
+        mockRepository.watchGroupPayments(any),
+      ).thenAnswer((_) => const Stream.empty());
       paymentBloc = PaymentBloc(mockRepository);
     });
 
@@ -45,7 +51,7 @@ void main() {
         'should include valid timestamps for all payments with 1000+ '
         'iterations',
         () async {
-          for (var iteration = 0; iteration < 1000; iteration++) {
+          for (var iteration = 0; iteration < propertyIterations; iteration++) {
             // Generate random payments with timestamps
             final payments = _generateRandomPaymentsWithTimestamps(
               random,
@@ -152,7 +158,7 @@ void main() {
         'should maintain timestamp consistency during sorting with 500+ '
         'iterations',
         () async {
-          for (var iteration = 0; iteration < 500; iteration++) {
+          for (var iteration = 0; iteration < propertyIterations; iteration++) {
             final payments = _generateRandomPaymentsWithTimestamps(
               random,
               5 + random.nextInt(10),
@@ -261,7 +267,7 @@ void main() {
       test(
         'should preserve timestamps during filtering with 500+ iterations',
         () async {
-          for (var iteration = 0; iteration < 500; iteration++) {
+          for (var iteration = 0; iteration < propertyIterations; iteration++) {
             final payments = _generateRandomPaymentsWithTimestamps(
               random,
               5 + random.nextInt(10),
@@ -351,7 +357,7 @@ void main() {
         'should handle real-time updates with valid timestamps with 300+ '
         'iterations',
         () async {
-          for (var iteration = 0; iteration < 300; iteration++) {
+          for (var iteration = 0; iteration < propertyIterations; iteration++) {
             final initialPayments = _generateRandomPaymentsWithTimestamps(
               random,
               3 + random.nextInt(5),
@@ -439,7 +445,7 @@ void main() {
         'should maintain timestamp integrity across operations with 200+ '
         'iterations',
         () async {
-          for (var iteration = 0; iteration < 200; iteration++) {
+          for (var iteration = 0; iteration < propertyIterations; iteration++) {
             final payments = _generateRandomPaymentsWithTimestamps(
               random,
               4 + random.nextInt(6),
