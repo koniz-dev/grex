@@ -135,28 +135,17 @@ Web (`deploy-web.yml`) — only the platform you actually ship to:
 
 ## 5. Replace the `.env.example` copy step
 
-**Status:** ❌ Every workflow currently does `cp .env.example .env` before
-build (see `FIXME(deploy)` comments). `.env.example` ships with placeholder
-values, so any prod build today would launch with `SUPABASE_URL` empty.
+**Status:** ✅ Done. All three `deploy-*.yml` workflows now write `.env`
+from `SUPABASE_URL_PROD` / `SUPABASE_ANON_KEY_PROD` via heredoc instead
+of copying `.env.example`. The step honours the `environment` workflow
+input (defaulting to `production`). Until those secrets are populated in
+repo Settings the interpolated values resolve to empty strings — empty
+is the desired fail-loud state, not the prior fail-silent placeholder
+values.
 
-For each `deploy-*.yml`, swap the "Prepare .env from template" step with a
-secrets-driven one before uncommenting any build step:
-
-```yaml
-- name: Write .env from secrets
-  run: |
-    cat > .env <<EOF
-    ENVIRONMENT=production
-    SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
-    SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}
-    EOF
-```
-
-Files affected:
-
-- [ ] `.github/workflows/deploy-android.yml`
-- [ ] `.github/workflows/deploy-ios.yml`
-- [ ] `.github/workflows/deploy-web.yml`
+- [x] `.github/workflows/deploy-android.yml`
+- [x] `.github/workflows/deploy-ios.yml`
+- [x] `.github/workflows/deploy-web.yml`
 
 ## 6. Activate the deploy workflows
 

@@ -24,8 +24,8 @@ name: Deploy Android
 #      what's in Play Console (currently `com.example.grex`).
 #
 # Activation order (do these in sequence as each piece becomes ready):
-#   1. Replace the "Prepare .env from template" step with a
-#      secrets-driven step (see FIXME(deploy) note on that step).
+#   1. Populate SUPABASE_URL_PROD / SUPABASE_ANON_KEY_PROD secrets so the
+#      "Write .env from secrets" step has real values to interpolate.
 #   2. Uncomment "Setup Android keystore".
 #   3. Uncomment "Build App Bundle".
 #   4. Uncomment "Setup Google Play" — OR leave commented and rely on
@@ -90,12 +90,20 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
-      # this to prod. Before activating the build/upload steps below, swap
-      # this for a step that writes `.env` from GitHub Secrets
-      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
-      - name: Prepare .env from template
-        run: cp .env.example .env
+      # Writes `.env` from GitHub Secrets at runtime. Required secrets:
+      # SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD. Until those are set in
+      # the repo, the interpolated values resolve to empty strings — still
+      # safer than shipping the placeholder values from `.env.example`.
+      - name: Write .env from secrets
+        env:
+          ENV_INPUT: ${{ github.event.inputs.environment }}
+        run: |
+          ENV="${ENV_INPUT:-production}"
+          cat > .env <<EOF
+          ENVIRONMENT=$ENV
+          SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
+          SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}
+          EOF
 
       - name: Get dependencies
         run: flutter pub get

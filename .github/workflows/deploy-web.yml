@@ -31,8 +31,8 @@ name: Deploy Web
 #   output or project settings.
 #
 # Activation order (per chosen platform):
-#   1. Replace "Prepare .env from template" with a secrets-driven step
-#      (see FIXME(deploy) note on that step).
+#   1. Populate SUPABASE_URL_PROD / SUPABASE_ANON_KEY_PROD secrets so the
+#      "Write .env from secrets" step has real values to interpolate.
 #   2. Uncomment "Build Web" inside the chosen job.
 #   3. Uncomment the platform-specific deploy step.
 #   4. (Optional) Switch trigger to `push: branches: [main]` or
@@ -99,12 +99,20 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
-      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
-      # this to prod. Before activating the build/upload steps below, swap
-      # this for a step that writes `.env` from GitHub Secrets
-      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
-      - name: Prepare .env from template
-        run: cp .env.example .env
+      # Writes `.env` from GitHub Secrets at runtime. Required secrets:
+      # SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD. Until those are set in
+      # the repo, the interpolated values resolve to empty strings — still
+      # safer than shipping the placeholder values from `.env.example`.
+      - name: Write .env from secrets
+        env:
+          ENV_INPUT: ${{ github.event.inputs.environment }}
+        run: |
+          ENV="${ENV_INPUT:-production}"
+          cat > .env <<EOF
+          ENVIRONMENT=$ENV
+          SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
+          SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}
+          EOF
 
       - name: Get dependencies
         run: flutter pub get
@@ -166,12 +174,20 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
-      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
-      # this to prod. Before activating the build/upload steps below, swap
-      # this for a step that writes `.env` from GitHub Secrets
-      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
-      - name: Prepare .env from template
-        run: cp .env.example .env
+      # Writes `.env` from GitHub Secrets at runtime. Required secrets:
+      # SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD. Until those are set in
+      # the repo, the interpolated values resolve to empty strings — still
+      # safer than shipping the placeholder values from `.env.example`.
+      - name: Write .env from secrets
+        env:
+          ENV_INPUT: ${{ github.event.inputs.environment }}
+        run: |
+          ENV="${ENV_INPUT:-production}"
+          cat > .env <<EOF
+          ENVIRONMENT=$ENV
+          SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
+          SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}
+          EOF
 
       - name: Get dependencies
         run: flutter pub get
@@ -228,12 +244,20 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
-      # FIXME(deploy): `.env.example` has placeholder values — do NOT ship
-      # this to prod. Before activating the build/upload steps below, swap
-      # this for a step that writes `.env` from GitHub Secrets
-      # (SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD, ENVIRONMENT, etc.).
-      - name: Prepare .env from template
-        run: cp .env.example .env
+      # Writes `.env` from GitHub Secrets at runtime. Required secrets:
+      # SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD. Until those are set in
+      # the repo, the interpolated values resolve to empty strings — still
+      # safer than shipping the placeholder values from `.env.example`.
+      - name: Write .env from secrets
+        env:
+          ENV_INPUT: ${{ github.event.inputs.environment }}
+        run: |
+          ENV="${ENV_INPUT:-production}"
+          cat > .env <<EOF
+          ENVIRONMENT=$ENV
+          SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
+          SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}
+          EOF
 
       - name: Get dependencies
         run: flutter pub get
