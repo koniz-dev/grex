@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:grex/features/payments/domain/entities/payment.dart';
 
 /// Base class for all payment events
 abstract class PaymentEvent extends Equatable {
@@ -7,6 +8,35 @@ abstract class PaymentEvent extends Equatable {
 
   @override
   List<Object?> get props => [];
+}
+
+/// Internal event dispatched when `watchGroupPayments` pushes an update.
+/// Routing the stream through the event loop keeps emits inside an event
+/// handler (avoids the emit-after-complete assertion).
+class PaymentsStreamReceived extends PaymentEvent {
+  /// Creates a [PaymentsStreamReceived] event.
+  const PaymentsStreamReceived(this.payments);
+
+  /// The latest payment list from the stream.
+  final List<Payment> payments;
+
+  @override
+  List<Object?> get props => [payments];
+}
+
+/// Internal event dispatched when `watchGroupPayments` errors.
+class PaymentsStreamErrored extends PaymentEvent {
+  /// Creates a [PaymentsStreamErrored] event.
+  const PaymentsStreamErrored(this.error, this.groupId);
+
+  /// The error pushed onto the stream.
+  final Object error;
+
+  /// Group whose stream errored — preserved so the error state can carry it.
+  final String groupId;
+
+  @override
+  List<Object?> get props => [error, groupId];
 }
 
 /// Event to load payments for a specific group

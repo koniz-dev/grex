@@ -62,7 +62,7 @@ void main() {
             ).thenAnswer((_) async => Right(testGroups));
             when(
               mockRepository.watchUserGroups(),
-            ).thenAnswer((_) => Stream.value(testGroups));
+            ).thenAnswer((_) => const Stream.empty());
             return groupBloc;
           },
           act: (bloc) => bloc.add(const GroupsLoadRequested()),
@@ -712,7 +712,7 @@ void main() {
             ).thenAnswer((_) async => Right(testGroups));
             when(
               mockRepository.watchUserGroups(),
-            ).thenAnswer((_) => Stream.value(testGroups));
+            ).thenAnswer((_) => const Stream.empty());
             return groupBloc;
           },
           act: (bloc) => bloc.add(const GroupRefreshRequested()),
@@ -738,6 +738,9 @@ void main() {
             when(
               mockRepository.getUserGroups(),
             ).thenAnswer((_) async => Right(testGroups));
+            when(
+              mockRepository.watchUserGroups(),
+            ).thenAnswer((_) => const Stream.empty());
 
             groupBloc.add(const GroupsLoadRequested());
 
@@ -775,7 +778,6 @@ void main() {
             ).thenAnswer((_) async => Right(testGroups));
             when(mockRepository.watchUserGroups()).thenAnswer(
               (_) => Stream.fromIterable([
-                testGroups,
                 [
                   ...testGroups,
                   testGroup.copyWith(id: 'group-2', name: 'New Group'),
@@ -840,15 +842,5 @@ void main() {
         );
       });
     },
-    skip:
-        'TODO(group-bloc-emit-after-complete): @GenerateMocks migration is '
-        'complete (10/22 tests now pass), but the remaining 12 tests expose a '
-        'GroupBloc bug — `_setupRealTimeSubscription` listens to '
-        '`watchUserGroups()` and emits after the event handler returns, and '
-        'every write event (`Create/Update/Invite/Remove/Leave/Delete`) calls '
-        '`unawaited(_refreshGroups(emit, ...))` so the success state is '
-        'emitted after completion too. Bloc framework asserts against this. '
-        'Fix the bloc with `emit.onEach()` / `emit.forEach()` instead of '
-        'fire-and-forget subscription + `unawaited`, then re-enable.',
   );
 }

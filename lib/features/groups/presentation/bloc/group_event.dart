@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:grex/features/groups/domain/entities/group.dart';
 import 'package:grex/features/groups/domain/entities/member_role.dart';
 
 /// Base class for all group events
@@ -8,6 +9,33 @@ abstract class GroupEvent extends Equatable {
 
   @override
   List<Object?> get props => [];
+}
+
+/// Internal event dispatched when the real-time `watchUserGroups` stream
+/// pushes an update. Carries the updated list so the handler can emit
+/// synchronously within its own lifecycle (avoids emit-after-complete).
+class GroupsStreamReceived extends GroupEvent {
+  /// Creates a [GroupsStreamReceived] event.
+  const GroupsStreamReceived(this.groups);
+
+  /// The latest group list from the stream.
+  final List<Group> groups;
+
+  @override
+  List<Object?> get props => [groups];
+}
+
+/// Internal event dispatched when the real-time `watchUserGroups` stream
+/// errors. Keeps subscription error handling on the event-handler thread.
+class GroupsStreamErrored extends GroupEvent {
+  /// Creates a [GroupsStreamErrored] event.
+  const GroupsStreamErrored(this.error);
+
+  /// The error pushed onto the stream.
+  final Object error;
+
+  @override
+  List<Object?> get props => [error];
 }
 
 /// Event to request loading of user's groups

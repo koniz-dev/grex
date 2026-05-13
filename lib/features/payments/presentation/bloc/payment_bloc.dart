@@ -19,6 +19,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     on<PaymentFilterRequested>(_onPaymentFilterRequested);
     on<PaymentFilterCleared>(_onPaymentFilterCleared);
     on<PaymentSortRequested>(_onPaymentSortRequested);
+    on<PaymentsStreamReceived>(_onPaymentsStreamReceived);
+    on<PaymentsStreamErrored>(_onPaymentsStreamErrored);
   }
   final PaymentRepository _paymentRepository;
   StreamSubscription<List<Payment>>? _paymentsSubscription;
@@ -66,7 +68,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           );
 
           // Set up real-time subscription
-          _setupRealTimeSubscription(event.groupId, emit);
+          _setupRealTimeSubscription(event.groupId);
         },
       );
     } on Exception catch (e) {
@@ -79,51 +81,61 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     }
   }
 
-  /// Set up real-time subscription for payment updates
-  void _setupRealTimeSubscription(String groupId, Emitter<PaymentState> emit) {
+  // Pushes stream updates through the bloc event loop so emits happen
+  // inside a handler's lifecycle (avoids emit-after-complete).
+  void _setupRealTimeSubscription(String groupId) {
     _paymentsSubscription = _paymentRepository
         .watchGroupPayments(groupId)
         .listen(
           (payments) {
-            if (!isClosed && state is PaymentsLoaded) {
-              final currentState = state as PaymentsLoaded;
-              final sortedPayments = _sortPayments(
-                payments,
-                currentState.sortBy,
-                currentState.sortAscending,
-              );
-
-              final filteredPayments = _applyFilters(
-                sortedPayments,
-                currentState.activeFilter,
-              );
-
-              emit(
-                currentState.copyWith(
-                  payments: sortedPayments,
-                  filteredPayments: filteredPayments,
-                  lastUpdated: DateTime.now(),
-                ),
-              );
-            }
+            if (!isClosed) add(PaymentsStreamReceived(payments));
           },
           onError: (Object error) {
-            if (!isClosed) {
-              emit(
-                PaymentError(
-                  failure: const PaymentNetworkFailure(
-                    'Real-time connection error',
-                  ),
-                  message: 'Connection error: $error',
-                  payments: state is PaymentsLoaded
-                      ? (state as PaymentsLoaded).payments
-                      : null,
-                  groupId: groupId,
-                ),
-              );
-            }
+            if (!isClosed) add(PaymentsStreamErrored(error, groupId));
           },
         );
+  }
+
+  void _onPaymentsStreamReceived(
+    PaymentsStreamReceived event,
+    Emitter<PaymentState> emit,
+  ) {
+    if (state is! PaymentsLoaded) return;
+    final currentState = state as PaymentsLoaded;
+    final sortedPayments = _sortPayments(
+      event.payments,
+      currentState.sortBy,
+      currentState.sortAscending,
+    );
+    final filteredPayments = _applyFilters(
+      sortedPayments,
+      currentState.activeFilter,
+    );
+    emit(
+      currentState.copyWith(
+        payments: sortedPayments,
+        filteredPayments: filteredPayments,
+        lastUpdated: DateTime.now(),
+      ),
+    );
+  }
+
+  void _onPaymentsStreamErrored(
+    PaymentsStreamErrored event,
+    Emitter<PaymentState> emit,
+  ) {
+    emit(
+      PaymentError(
+        failure: const PaymentNetworkFailure(
+          'Real-time connection error',
+        ),
+        message: 'Connection error: ${event.error}',
+        payments: state is PaymentsLoaded
+            ? (state as PaymentsLoaded).payments
+            : null,
+        groupId: event.groupId,
+      ),
+    );
   }
 
   /// Handle payment creation
@@ -151,27 +163,26 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 
       final result = await _paymentRepository.createPayment(payment);
 
-      result.fold(
-        (failure) => emit(
-          PaymentError(
-            failure: failure,
-            message: 'Failed to create payment',
-            payments: state is PaymentsLoaded
-                ? (state as PaymentsLoaded).payments
-                : null,
-            groupId: event.groupId,
-          ),
-        ),
-        (payment) {
-          unawaited(
-            _refreshPayments(
-              emit,
-              event.groupId,
-              'Payment created successfully',
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            PaymentError(
+              failure: failure,
+              message: 'Failed to create payment',
+              payments: state is PaymentsLoaded
+                  ? (state as PaymentsLoaded).payments
+                  : null,
+              groupId: event.groupId,
             ),
           );
+          return null;
         },
+        (_) => 'Payment created successfully',
       );
+
+      if (successMessage != null) {
+        await _refreshPayments(emit, event.groupId, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         PaymentError(
@@ -191,35 +202,34 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     PaymentDeleteRequested event,
     Emitter<PaymentState> emit,
   ) async {
+    final activeGroupId = state is PaymentsLoaded
+        ? (state as PaymentsLoaded).groupId
+        : null;
     emit(const PaymentLoading(message: 'Deleting payment...'));
 
     try {
       final result = await _paymentRepository.deletePayment(event.paymentId);
 
-      result.fold(
-        (failure) => emit(
-          PaymentError(
-            failure: failure,
-            message: 'Failed to delete payment',
-            payments: state is PaymentsLoaded
-                ? (state as PaymentsLoaded).payments
-                : null,
-            groupId: state is PaymentsLoaded
-                ? (state as PaymentsLoaded).groupId
-                : null,
-          ),
-        ),
-        (_) {
-          final groupId = state is PaymentsLoaded
-              ? (state as PaymentsLoaded).groupId
-              : null;
-          if (groupId != null) {
-            unawaited(
-              _refreshPayments(emit, groupId, 'Payment deleted successfully'),
-            );
-          }
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            PaymentError(
+              failure: failure,
+              message: 'Failed to delete payment',
+              payments: state is PaymentsLoaded
+                  ? (state as PaymentsLoaded).payments
+                  : null,
+              groupId: activeGroupId,
+            ),
+          );
+          return null;
         },
+        (_) => 'Payment deleted successfully',
       );
+
+      if (successMessage != null && activeGroupId != null) {
+        await _refreshPayments(emit, activeGroupId, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         PaymentError(
@@ -296,15 +306,24 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       maxAmount: event.maxAmount,
     );
 
+    final newActiveFilter = filter.isEmpty ? null : filter;
     final filteredPayments = _applyFilters(
       currentState.payments,
-      filter.isEmpty ? null : filter,
+      newActiveFilter,
     );
 
+    // PaymentsLoaded.copyWith uses `??` so it cannot distinguish "not
+    // provided" from "set to null" — construct PaymentsLoaded directly
+    // when we need to actually clear activeFilter.
     emit(
-      currentState.copyWith(
+      PaymentsLoaded(
+        payments: currentState.payments,
         filteredPayments: filteredPayments,
-        activeFilter: filter.isEmpty ? null : filter,
+        groupId: currentState.groupId,
+        lastUpdated: currentState.lastUpdated,
+        activeFilter: newActiveFilter,
+        sortBy: currentState.sortBy,
+        sortAscending: currentState.sortAscending,
       ),
     );
   }
@@ -318,9 +337,15 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 
     final currentState = state as PaymentsLoaded;
 
+    // Construct PaymentsLoaded directly so activeFilter actually clears.
     emit(
-      currentState.copyWith(
+      PaymentsLoaded(
+        payments: currentState.payments,
         filteredPayments: currentState.payments,
+        groupId: currentState.groupId,
+        lastUpdated: currentState.lastUpdated,
+        sortBy: currentState.sortBy,
+        sortAscending: currentState.sortAscending,
       ),
     );
   }

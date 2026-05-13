@@ -21,6 +21,8 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     on<GroupLeaveRequested>(_onGroupLeaveRequested);
     on<GroupDeleteRequested>(_onGroupDeleteRequested);
     on<GroupRefreshRequested>(_onGroupRefreshRequested);
+    on<GroupsStreamReceived>(_onGroupsStreamReceived);
+    on<GroupsStreamErrored>(_onGroupsStreamErrored);
   }
   final GroupRepository _groupRepository;
   StreamSubscription<List<Group>>? _groupsSubscription;
@@ -61,7 +63,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
           );
 
           // Set up real-time subscription
-          _setupRealTimeSubscription(emit);
+          _setupRealTimeSubscription();
         },
       );
     } on Exception catch (e) {
@@ -74,32 +76,41 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     }
   }
 
-  /// Set up real-time subscription for group updates
-  void _setupRealTimeSubscription(Emitter<GroupState> emit) {
+  // Pushes stream updates through the bloc event loop so emits happen
+  // inside a handler's lifecycle (avoids the emit-after-complete assertion).
+  void _setupRealTimeSubscription() {
     _groupsSubscription = _groupRepository.watchUserGroups().listen(
       (groups) {
-        if (!isClosed) {
-          emit(
-            GroupsLoaded(
-              groups: groups,
-              lastUpdated: DateTime.now(),
-            ),
-          );
-        }
+        if (!isClosed) add(GroupsStreamReceived(groups));
       },
       onError: (Object error) {
-        if (!isClosed) {
-          emit(
-            GroupError(
-              failure: const GroupNetworkFailure('Real-time connection error'),
-              message: 'Connection error: $error',
-              groups: state is GroupsLoaded
-                  ? (state as GroupsLoaded).groups
-                  : null,
-            ),
-          );
-        }
+        if (!isClosed) add(GroupsStreamErrored(error));
       },
+    );
+  }
+
+  void _onGroupsStreamReceived(
+    GroupsStreamReceived event,
+    Emitter<GroupState> emit,
+  ) {
+    emit(
+      GroupsLoaded(
+        groups: event.groups,
+        lastUpdated: DateTime.now(),
+      ),
+    );
+  }
+
+  void _onGroupsStreamErrored(
+    GroupsStreamErrored event,
+    Emitter<GroupState> emit,
+  ) {
+    emit(
+      GroupError(
+        failure: const GroupNetworkFailure('Real-time connection error'),
+        message: 'Connection error: ${event.error}',
+        groups: state is GroupsLoaded ? (state as GroupsLoaded).groups : null,
+      ),
     );
   }
 
@@ -117,23 +128,25 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         description: event.description,
       );
 
-      result.fold(
-        (failure) => emit(
-          GroupError(
-            failure: failure,
-            message: 'Failed to create group',
-            groups: state is GroupsLoaded
-                ? (state as GroupsLoaded).groups
-                : null,
-          ),
-        ),
-        (group) {
-          // Get updated groups list
-          unawaited(
-            _refreshGroups(emit, 'Group "${group.name}" created successfully'),
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            GroupError(
+              failure: failure,
+              message: 'Failed to create group',
+              groups: state is GroupsLoaded
+                  ? (state as GroupsLoaded).groups
+                  : null,
+            ),
           );
+          return null;
         },
+        (group) => 'Group "${group.name}" created successfully',
       );
+
+      if (successMessage != null) {
+        await _refreshGroups(emit, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         GroupError(
@@ -160,20 +173,25 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         description: event.description,
       );
 
-      result.fold(
-        (failure) => emit(
-          GroupError(
-            failure: failure,
-            message: 'Failed to update group',
-            groups: state is GroupsLoaded
-                ? (state as GroupsLoaded).groups
-                : null,
-          ),
-        ),
-        (group) {
-          unawaited(_refreshGroups(emit, 'Group updated successfully'));
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            GroupError(
+              failure: failure,
+              message: 'Failed to update group',
+              groups: state is GroupsLoaded
+                  ? (state as GroupsLoaded).groups
+                  : null,
+            ),
+          );
+          return null;
         },
+        (group) => 'Group updated successfully',
       );
+
+      if (successMessage != null) {
+        await _refreshGroups(emit, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         GroupError(
@@ -200,25 +218,25 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         role: event.role,
       );
 
-      result.fold(
-        (failure) => emit(
-          GroupError(
-            failure: failure,
-            message: 'Failed to invite member',
-            groups: state is GroupsLoaded
-                ? (state as GroupsLoaded).groups
-                : null,
-          ),
-        ),
-        (member) {
-          unawaited(
-            _refreshGroups(
-              emit,
-              'Member "${member.displayName}" invited successfully',
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            GroupError(
+              failure: failure,
+              message: 'Failed to invite member',
+              groups: state is GroupsLoaded
+                  ? (state as GroupsLoaded).groups
+                  : null,
             ),
           );
+          return null;
         },
+        (member) => 'Member "${member.displayName}" invited successfully',
       );
+
+      if (successMessage != null) {
+        await _refreshGroups(emit, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         GroupError(
@@ -244,25 +262,25 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         newRole: event.newRole,
       );
 
-      result.fold(
-        (failure) => emit(
-          GroupError(
-            failure: failure,
-            message: 'Failed to update member role',
-            groups: state is GroupsLoaded
-                ? (state as GroupsLoaded).groups
-                : null,
-          ),
-        ),
-        (member) {
-          unawaited(
-            _refreshGroups(
-              emit,
-              'Member role updated to ${event.newRole.displayName}',
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            GroupError(
+              failure: failure,
+              message: 'Failed to update member role',
+              groups: state is GroupsLoaded
+                  ? (state as GroupsLoaded).groups
+                  : null,
             ),
           );
+          return null;
         },
+        (member) => 'Member role updated to ${event.newRole.displayName}',
       );
+
+      if (successMessage != null) {
+        await _refreshGroups(emit, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         GroupError(
@@ -287,20 +305,25 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         userId: event.userId,
       );
 
-      result.fold(
-        (failure) => emit(
-          GroupError(
-            failure: failure,
-            message: 'Failed to remove member',
-            groups: state is GroupsLoaded
-                ? (state as GroupsLoaded).groups
-                : null,
-          ),
-        ),
-        (_) {
-          unawaited(_refreshGroups(emit, 'Member removed successfully'));
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            GroupError(
+              failure: failure,
+              message: 'Failed to remove member',
+              groups: state is GroupsLoaded
+                  ? (state as GroupsLoaded).groups
+                  : null,
+            ),
+          );
+          return null;
         },
+        (_) => 'Member removed successfully',
       );
+
+      if (successMessage != null) {
+        await _refreshGroups(emit, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         GroupError(
@@ -322,20 +345,25 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     try {
       final result = await _groupRepository.leaveGroup(event.groupId);
 
-      result.fold(
-        (failure) => emit(
-          GroupError(
-            failure: failure,
-            message: 'Failed to leave group',
-            groups: state is GroupsLoaded
-                ? (state as GroupsLoaded).groups
-                : null,
-          ),
-        ),
-        (_) {
-          unawaited(_refreshGroups(emit, 'Left group successfully'));
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            GroupError(
+              failure: failure,
+              message: 'Failed to leave group',
+              groups: state is GroupsLoaded
+                  ? (state as GroupsLoaded).groups
+                  : null,
+            ),
+          );
+          return null;
         },
+        (_) => 'Left group successfully',
       );
+
+      if (successMessage != null) {
+        await _refreshGroups(emit, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         GroupError(
@@ -357,20 +385,25 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     try {
       final result = await _groupRepository.deleteGroup(event.groupId);
 
-      result.fold(
-        (failure) => emit(
-          GroupError(
-            failure: failure,
-            message: 'Failed to delete group',
-            groups: state is GroupsLoaded
-                ? (state as GroupsLoaded).groups
-                : null,
-          ),
-        ),
-        (_) {
-          unawaited(_refreshGroups(emit, 'Group deleted successfully'));
+      final successMessage = result.fold<String?>(
+        (failure) {
+          emit(
+            GroupError(
+              failure: failure,
+              message: 'Failed to delete group',
+              groups: state is GroupsLoaded
+                  ? (state as GroupsLoaded).groups
+                  : null,
+            ),
+          );
+          return null;
         },
+        (_) => 'Group deleted successfully',
       );
+
+      if (successMessage != null) {
+        await _refreshGroups(emit, successMessage);
+      }
     } on Exception catch (e) {
       emit(
         GroupError(
