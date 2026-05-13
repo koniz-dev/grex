@@ -9,11 +9,12 @@ import 'package:grex/features/groups/domain/repositories/group_repository.dart';
 import 'package:grex/features/groups/presentation/bloc/group_bloc.dart';
 import 'package:grex/features/groups/presentation/bloc/group_event.dart';
 import 'package:grex/features/groups/presentation/bloc/group_state.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-// Mock classes
-class MockGroupRepository extends Mock implements GroupRepository {}
+import 'group_bloc_test.mocks.dart';
 
+@GenerateMocks([GroupRepository])
 void main() {
   group(
     'GroupBloc',
@@ -840,11 +841,14 @@ void main() {
       });
     },
     skip:
-        'TODO(mockito-null-safety): `class MockGroupRepository extends Mock '
-        'implements GroupRepository` returns null for every method under '
-        'mockito null-safety, so each blocTest sees "type \'Null\' is not a '
-        'subtype of type \'Future<Either<...>>\'". Migrate to @GenerateMocks '
-        '(see test/features/auth/presentation/bloc/*_test.dart for the '
-        'template).',
+        'TODO(group-bloc-emit-after-complete): @GenerateMocks migration is '
+        'complete (10/22 tests now pass), but the remaining 12 tests expose a '
+        'GroupBloc bug — `_setupRealTimeSubscription` listens to '
+        '`watchUserGroups()` and emits after the event handler returns, and '
+        'every write event (`Create/Update/Invite/Remove/Leave/Delete`) calls '
+        '`unawaited(_refreshGroups(emit, ...))` so the success state is '
+        'emitted after completion too. Bloc framework asserts against this. '
+        'Fix the bloc with `emit.onEach()` / `emit.forEach()` instead of '
+        'fire-and-forget subscription + `unawaited`, then re-enable.',
   );
 }
