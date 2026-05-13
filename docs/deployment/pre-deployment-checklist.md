@@ -174,9 +174,41 @@ total 80%, domain 100%, data 90%, presentation 80%, core 80%.
 - [ ] `LocaleDefaults.appLocale` exposed as a mutable static field — fine
       for now, but if multiple call sites grow, consider wrapping in a
       proper service.
-- [ ] `// TODO(mockito-null-safety):` files in `test/features/` are
-      placeholders for tests rewritten away from `@GenerateMocks`. Eight
-      files have the marker.
-- [ ] `// TODO(i18n):` Profile / EditProfile pages and InputValidators
-      still use hard-coded strings (tracked in the `auth_i18n_progress`
-      auto-memory).
+- [x] `// TODO(mockito-null-safety):` files in `test/features/` ✅
+      Migrated `group_bloc_test`, `payment_bloc_test`,
+      `group_bloc_property_test`, and `payment_bloc_property_test` to
+      `@GenerateMocks`. Of these, `group_bloc_test` + `payment_bloc_test`
+      pass fully; `group_bloc_property_test` passes its 4 property tests
+      at 50 iterations each; `payment_bloc_property_test` is still
+      skipped pending a `blocTest` restructure (its `expectLater(bloc.
+      stream, ...)` races the broadcast stream — clearly documented in
+      the file's skip reason). Three placeholder files remain:
+      `profile_forms_widget_test`, `group_repository_property_test`,
+      `payment_repository_property_test` — the latter two need Supabase
+      builder mocks (separate engineering task).
+- [x] `// TODO(i18n):` Profile / EditProfile / ProfileSetup /
+      ResetPassword pages ✅ All four pages now route chrome through
+      `AppLocalizations`; raw `InputValidators.validateX` / `ProfileSetup
+      Data.validateX` calls replaced with page-local
+      `_validateX(l10n, value)` so error strings follow the locale.
+      `app_es.arb` and `app_ar.arb` were backfilled with the 79 keys
+      they were missing and the ARB synchronization test is no longer
+      skipped.
+- [ ] **GroupBloc / PaymentBloc emit-after-complete refactor (done)** —
+      Routing real-time stream updates through internal events
+      (Groups/PaymentsStreamReceived) and replacing
+      `unawaited(_refreshXxx(emit, ...))` with `await` fixed a bloc 8
+      anti-pattern that would have triggered assertion failures in
+      release-mode user sessions, not just tests. No follow-up needed.
+
+## Current production-readiness snapshot
+
+- Test suite: **1097 pass / 479 skip / 0 fail** across
+  `test/features/` + `test/l10n/`.
+- `flutter analyze lib/` clean.
+- All 4 ARB locales (en / vi / es / ar) carry 255 keys each; the ARB
+  sync test runs in CI.
+- The remaining gating items are all **external decisions / accounts**
+  (sections 1–4 above): bundle identifier, Firebase project, store
+  accounts, GitHub Secrets. None can be checked off from inside the
+  repo.
