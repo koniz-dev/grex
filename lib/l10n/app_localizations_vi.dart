@@ -754,4 +754,118 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get rememberPassword => 'Nhớ mật khẩu? ';
+
+  @override
+  String get profileTitle => 'Hồ sơ';
+
+  @override
+  String get profileFullTitle => 'Hồ sơ cá nhân';
+
+  @override
+  String get signOutConfirmTitle => 'Đăng xuất';
+
+  @override
+  String get signOutConfirmMessage => 'Bạn có chắc chắn muốn đăng xuất?';
+
+  @override
+  String get profileLoadFailed => 'Không thể tải thông tin hồ sơ';
+
+  @override
+  String get noProfileData => 'Không có dữ liệu hồ sơ';
+
+  @override
+  String get accountCreatedAt => 'Ngày tạo tài khoản';
+
+  @override
+  String get lastUpdatedAt => 'Cập nhật lần cuối';
+
+  @override
+  String get editProfile => 'Chỉnh sửa hồ sơ';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Lỗi: $message';
+  }
+
+  @override
+  String get refreshTooltip => 'Làm mới';
+
+  @override
+  String joinedAt(String date) {
+    return 'Tham gia $date';
+  }
+
+  @override
+  String get today => 'Hôm nay';
+
+  @override
+  String get yesterday => 'Hôm qua';
+
+  @override
+  String daysAgo(int count) {
+    return '$count ngày trước';
+  }
+
+  @override
+  String weeksAgo(int count) {
+    return '$count tuần trước';
+  }
+
+  @override
+  String monthsAgo(int count) {
+    return '$count tháng trước';
+  }
+
+  @override
+  String yearsAgo(int count) {
+    return '$count năm trước';
+  }
+
+  @override
+  String get saveChanges => 'Lưu thay đổi';
+
+  @override
+  String get saving => 'Đang lưu...';
+
+  @override
+  String get cancelChangesTitle => 'Hủy thay đổi';
+
+  @override
+  String get unsavedChangesMessage =>
+      'Bạn có những thay đổi chưa được lưu. Bạn có chắc chắn muốn hủy?';
+
+  @override
+  String get continueEditing => 'Tiếp tục chỉnh sửa';
+
+  @override
+  String get discardChanges => 'Hủy thay đổi';
+
+  @override
+  String get profileUpdatedSuccess => 'Cập nhật hồ sơ thành công';
+
+  @override
+  String get displayNameHint => 'Nhập tên hiển thị của bạn';
+
+  @override
+  String displayNameTooShort(int min) {
+    return 'Tên hiển thị phải có ít nhất $min ký tự';
+  }
+
+  @override
+  String get displayNameInvalidChars => 'Tên hiển thị có ký tự không hợp lệ';
+
+  @override
+  String get editProfileNoteTitle => 'Lưu ý';
+
+  @override
+  String get editProfileTipDisplayName =>
+      '• Tên hiển thị sẽ được hiển thị cho các thành viên khác';
+
+  @override
+  String get editProfileTipCurrency =>
+      '• Tiền tệ ưa thích sẽ được sử dụng làm mặc định';
+
+  @override
+  String get editProfileTipLanguage =>
+      '• Thay đổi ngôn ngữ sẽ áp dụng cho toàn bộ ứng dụng';
 }

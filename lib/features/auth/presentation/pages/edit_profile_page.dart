@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
-import 'package:grex/features/auth/domain/validators/validators.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// Edit profile page for updating user information.
@@ -135,28 +136,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _onCancelPressed() {
     if (_hasChanges) {
+      final l10n = context.l10n;
       unawaited(
         showDialog<void>(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Hủy thay đổi'),
-            content: const Text(
-              'Bạn có những thay đổi chưa được lưu. '
-              'Bạn có chắc chắn muốn hủy?',
-            ),
+            title: Text(l10n.cancelChangesTitle),
+            content: Text(l10n.unsavedChangesMessage),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Tiếp tục chỉnh sửa'),
+                child: Text(l10n.continueEditing),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close dialog
                   context.goBackOrHome(); // Go back
                 },
-                child: const Text(
-                  'Hủy thay đổi',
-                  style: TextStyle(color: Colors.red),
+                child: Text(
+                  l10n.discardChanges,
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
             ],
@@ -168,11 +167,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
+  String? _validateDisplayName(AppLocalizations l10n, String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return l10n.displayNameRequired;
+    }
+    final trimmed = value.trim();
+    if (trimmed.length < 2) {
+      return l10n.displayNameTooShort(2);
+    }
+    if (trimmed.length > 50) {
+      return l10n.displayNameTooLong;
+    }
+    if (!RegExp(r'^[a-zA-Z0-9\s\-_.]+$').hasMatch(trimmed)) {
+      return l10n.displayNameInvalidChars;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chỉnh sửa hồ sơ'),
+        title: Text(l10n.editProfile),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.close),
@@ -193,7 +210,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         height: 16,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Lưu'),
+                    : Text(l10n.save),
               );
             },
           ),
@@ -204,8 +221,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           if (state is ProfileUpdateSuccess) {
             // Show success message and go back
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Cập nhật hồ sơ thành công'),
+              SnackBar(
+                content: Text(l10n.profileUpdatedSuccess),
                 backgroundColor: Colors.green,
               ),
             );
@@ -237,7 +254,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Không thể tải thông tin hồ sơ',
+                        l10n.profileLoadFailed,
                         style: Theme.of(context).textTheme.headlineSmall,
                         textAlign: TextAlign.center,
                       ),
@@ -257,7 +274,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           );
                         },
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Thử lại'),
+                        label: Text(l10n.retry),
                       ),
                     ],
                   ),
@@ -318,13 +335,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       controller: _displayNameController,
                       textInputAction: TextInputAction.next,
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(
-                        labelText: 'Tên hiển thị',
-                        hintText: 'Nhập tên hiển thị của bạn',
-                        prefixIcon: Icon(Icons.person_outlined),
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: l10n.displayName,
+                        hintText: l10n.displayNameHint,
+                        prefixIcon: const Icon(Icons.person_outlined),
+                        border: const OutlineInputBorder(),
                       ),
-                      validator: InputValidators.validateDisplayName,
+                      validator: (value) => _validateDisplayName(l10n, value),
                       onChanged: (_) => _checkForChanges(),
                     ),
                     const SizedBox(height: 24),
@@ -332,10 +349,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     // Currency Selection
                     DropdownButtonFormField<String>(
                       initialValue: _selectedCurrency,
-                      decoration: const InputDecoration(
-                        labelText: 'Tiền tệ ưa thích',
-                        prefixIcon: Icon(Icons.attach_money),
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: l10n.preferredCurrencyLabel,
+                        prefixIcon: const Icon(Icons.attach_money),
+                        border: const OutlineInputBorder(),
                       ),
                       items: _currencies.map((currency) {
                         return DropdownMenuItem<String>(
@@ -357,10 +374,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     // Language Selection
                     DropdownButtonFormField<String>(
                       initialValue: _selectedLanguage,
-                      decoration: const InputDecoration(
-                        labelText: 'Ngôn ngữ',
-                        prefixIcon: Icon(Icons.language),
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: l10n.language,
+                        prefixIcon: const Icon(Icons.language),
+                        border: const OutlineInputBorder(),
                       ),
                       items: _languages.map((language) {
                         return DropdownMenuItem<String>(
@@ -395,10 +412,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                           ),
                           child: isLoading
-                              ? const Row(
+                              ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 20,
                                       height: 20,
                                       child: CircularProgressIndicator(
@@ -409,13 +426,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             ),
                                       ),
                                     ),
-                                    SizedBox(width: 12),
-                                    Text('Đang lưu...'),
+                                    const SizedBox(width: 12),
+                                    Text(l10n.saving),
                                   ],
                                 )
-                              : const Text(
-                                  'Lưu thay đổi',
-                                  style: TextStyle(fontSize: 16),
+                              : Text(
+                                  l10n.saveChanges,
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                         );
                       },
@@ -431,7 +448,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Hủy'),
+                      child: Text(l10n.cancel),
                     ),
                     const SizedBox(height: 24),
 
@@ -484,7 +501,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               Icon(Icons.info_outline, color: Colors.blue[700]),
                               const SizedBox(width: 8),
                               Text(
-                                'Lưu ý',
+                                l10n.editProfileNoteTitle,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.blue[700],
@@ -494,11 +511,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            '• Tên hiển thị sẽ được hiển thị cho các thành '
-                            'viên khác\n'
-                            '• Tiền tệ ưa thích sẽ được sử dụng làm mặc định\n'
-                            '• Thay đổi ngôn ngữ sẽ áp dụng cho toàn bộ ứng '
-                            'dụng',
+                            '${l10n.editProfileTipDisplayName}\n'
+                            '${l10n.editProfileTipCurrency}\n'
+                            '${l10n.editProfileTipLanguage}',
                             style: TextStyle(color: Colors.blue[700]),
                           ),
                         ],

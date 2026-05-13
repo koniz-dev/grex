@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
+import 'package:grex/l10n/app_localizations.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// Profile page displaying user information.
 ///
@@ -31,25 +33,26 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _onSignOutPressed() {
+    final l10n = context.l10n;
     unawaited(
       showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Đăng xuất'),
-          content: const Text('Bạn có chắc chắn muốn đăng xuất?'),
+          title: Text(l10n.signOutConfirmTitle),
+          content: Text(l10n.signOutConfirmMessage),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Hủy'),
+              child: Text(l10n.cancel),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 context.read<AuthBloc>().add(const AuthLogoutRequested());
               },
-              child: const Text(
-                'Đăng xuất',
-                style: TextStyle(color: Colors.red),
+              child: Text(
+                l10n.signOut,
+                style: const TextStyle(color: Colors.red),
               ),
             ),
           ],
@@ -97,9 +100,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hồ sơ'),
+        title: Text(l10n.profileFullTitle),
         centerTitle: true,
         actions: [
           BlocBuilder<ProfileBloc, ProfileState>(
@@ -113,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.refresh),
-                tooltip: 'Làm mới',
+                tooltip: l10n.refreshTooltip,
               );
             },
           ),
@@ -148,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Không thể tải thông tin hồ sơ',
+                        l10n.profileLoadFailed,
                         style: Theme.of(context).textTheme.headlineSmall,
                         textAlign: TextAlign.center,
                       ),
@@ -164,7 +168,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ElevatedButton.icon(
                         onPressed: _onRefreshPressed,
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Thử lại'),
+                        label: Text(l10n.retry),
                       ),
                     ],
                   ),
@@ -182,8 +186,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 : (state as ProfileError).profile;
 
             if (profile == null) {
-              return const Center(
-                child: Text('Không có dữ liệu hồ sơ'),
+              return Center(
+                child: Text(l10n.noProfileData),
               );
             }
 
@@ -254,7 +258,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   // Profile Information Cards
                   _buildInfoCard(
                     icon: Icons.attach_money,
-                    title: 'Tiền tệ ưa thích',
+                    title: l10n.preferredCurrencyLabel,
                     value: _getCurrencyDisplayName(profile.preferredCurrency),
                     color: Colors.green,
                   ),
@@ -262,7 +266,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   _buildInfoCard(
                     icon: Icons.language,
-                    title: 'Ngôn ngữ',
+                    title: l10n.language,
                     value: _getLanguageDisplayName(profile.languageCode),
                     color: Colors.blue,
                   ),
@@ -270,16 +274,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   _buildInfoCard(
                     icon: Icons.calendar_today,
-                    title: 'Ngày tạo tài khoản',
-                    value: _formatDate(profile.createdAt),
+                    title: l10n.accountCreatedAt,
+                    value: l10n.joinedAt(_formatDate(l10n, profile.createdAt)),
                     color: Colors.orange,
                   ),
                   const SizedBox(height: 16),
 
                   _buildInfoCard(
                     icon: Icons.update,
-                    title: 'Cập nhật lần cuối',
-                    value: _formatDate(profile.updatedAt),
+                    title: l10n.lastUpdatedAt,
+                    value: _formatDate(l10n, profile.updatedAt),
                     color: Colors.purple,
                   ),
                   const SizedBox(height: 32),
@@ -288,7 +292,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ElevatedButton.icon(
                     onPressed: _onEditProfilePressed,
                     icon: const Icon(Icons.edit),
-                    label: const Text('Chỉnh sửa hồ sơ'),
+                    label: Text(l10n.editProfile),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -301,9 +305,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   OutlinedButton.icon(
                     onPressed: _onSignOutPressed,
                     icon: const Icon(Icons.logout, color: Colors.red),
-                    label: const Text(
-                      'Đăng xuất',
-                      style: TextStyle(color: Colors.red),
+                    label: Text(
+                      l10n.signOut,
+                      style: const TextStyle(color: Colors.red),
                     ),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -330,7 +334,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Lỗi: ${state.message}',
+                              l10n.errorWithMessage(state.message),
                               style: TextStyle(color: Colors.orange[700]),
                             ),
                           ),
@@ -398,25 +402,22 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(AppLocalizations l10n, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'Hôm nay';
+      return l10n.today;
     } else if (difference.inDays == 1) {
-      return 'Hôm qua';
+      return l10n.yesterday;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} ngày trước';
+      return l10n.daysAgo(difference.inDays);
     } else if (difference.inDays < 30) {
-      final weeks = (difference.inDays / 7).floor();
-      return '$weeks tuần trước';
+      return l10n.weeksAgo((difference.inDays / 7).floor());
     } else if (difference.inDays < 365) {
-      final months = (difference.inDays / 30).floor();
-      return '$months tháng trước';
+      return l10n.monthsAgo((difference.inDays / 30).floor());
     } else {
-      final years = (difference.inDays / 365).floor();
-      return '$years năm trước';
+      return l10n.yearsAgo((difference.inDays / 365).floor());
     }
   }
 }

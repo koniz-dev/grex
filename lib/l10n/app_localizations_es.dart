@@ -762,4 +762,119 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rememberPassword => '¿Recuerdas tu contraseña? ';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get profileFullTitle => 'Your Profile';
+
+  @override
+  String get signOutConfirmTitle => 'Sign out';
+
+  @override
+  String get signOutConfirmMessage => 'Are you sure you want to sign out?';
+
+  @override
+  String get profileLoadFailed => 'Could not load your profile';
+
+  @override
+  String get noProfileData => 'No profile data';
+
+  @override
+  String get accountCreatedAt => 'Account created';
+
+  @override
+  String get lastUpdatedAt => 'Last updated';
+
+  @override
+  String get editProfile => 'Edit profile';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get refreshTooltip => 'Refresh';
+
+  @override
+  String joinedAt(String date) {
+    return 'Joined $date';
+  }
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String daysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String weeksAgo(int count) {
+    return '$count weeks ago';
+  }
+
+  @override
+  String monthsAgo(int count) {
+    return '$count months ago';
+  }
+
+  @override
+  String yearsAgo(int count) {
+    return '$count years ago';
+  }
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String get saving => 'Saving...';
+
+  @override
+  String get cancelChangesTitle => 'Discard changes?';
+
+  @override
+  String get unsavedChangesMessage =>
+      'You have unsaved changes. Are you sure you want to cancel?';
+
+  @override
+  String get continueEditing => 'Continue editing';
+
+  @override
+  String get discardChanges => 'Discard';
+
+  @override
+  String get profileUpdatedSuccess => 'Profile updated successfully';
+
+  @override
+  String get displayNameHint => 'Enter your display name';
+
+  @override
+  String displayNameTooShort(int min) {
+    return 'Display name must be at least $min characters';
+  }
+
+  @override
+  String get displayNameInvalidChars =>
+      'Display name contains invalid characters';
+
+  @override
+  String get editProfileNoteTitle => 'Note';
+
+  @override
+  String get editProfileTipDisplayName =>
+      '• Your display name is shown to other members';
+
+  @override
+  String get editProfileTipCurrency =>
+      '• Preferred currency is used as the default';
+
+  @override
+  String get editProfileTipLanguage =>
+      '• Language changes apply across the whole app';
 }

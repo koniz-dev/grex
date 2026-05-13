@@ -688,6 +688,169 @@
   "repeatedAuthFailureMessage": "Xác thực thất bại nhiều lần. Vui lòng thử đăng nhập bằng email hoặc liên hệ hỗ trợ.",
   "@repeatedAuthFailureMessage": {
     "description": "Message shown after repeated authentication failures"
+  },
+  "profileTitle": "Hồ sơ",
+  "@profileTitle": {
+    "description": "Profile page app bar title"
+  },
+  "profileFullTitle": "Hồ sơ cá nhân",
+  "@profileFullTitle": {
+    "description": "Profile page large heading / hero title"
+  },
+  "signOutConfirmTitle": "Đăng xuất",
+  "@signOutConfirmTitle": {
+    "description": "Sign-out confirmation dialog title"
+  },
+  "signOutConfirmMessage": "Bạn có chắc chắn muốn đăng xuất?",
+  "@signOutConfirmMessage": {
+    "description": "Sign-out confirmation dialog body"
+  },
+  "profileLoadFailed": "Không thể tải thông tin hồ sơ",
+  "@profileLoadFailed": {
+    "description": "Profile page error title when load fails"
+  },
+  "noProfileData": "Không có dữ liệu hồ sơ",
+  "@noProfileData": {
+    "description": "Shown when profile state has no profile attached"
+  },
+  "accountCreatedAt": "Ngày tạo tài khoản",
+  "@accountCreatedAt": {
+    "description": "Info card title for profile creation date"
+  },
+  "lastUpdatedAt": "Cập nhật lần cuối",
+  "@lastUpdatedAt": {
+    "description": "Info card title for last profile update"
+  },
+  "editProfile": "Chỉnh sửa hồ sơ",
+  "@editProfile": {
+    "description": "Edit profile button + page title"
+  },
+  "errorWithMessage": "Lỗi: {message}",
+  "@errorWithMessage": {
+    "description": "Inline error banner with detail message",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "refreshTooltip": "Làm mới",
+  "@refreshTooltip": {
+    "description": "Tooltip for refresh action button"
+  },
+  "joinedAt": "Tham gia {date}",
+  "@joinedAt": {
+    "description": "Profile creation summary line",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "today": "Hôm nay",
+  "@today": {
+    "description": "Relative time: today"
+  },
+  "yesterday": "Hôm qua",
+  "@yesterday": {
+    "description": "Relative time: yesterday"
+  },
+  "daysAgo": "{count} ngày trước",
+  "@daysAgo": {
+    "description": "Relative time: N days ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "weeksAgo": "{count} tuần trước",
+  "@weeksAgo": {
+    "description": "Relative time: N weeks ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "monthsAgo": "{count} tháng trước",
+  "@monthsAgo": {
+    "description": "Relative time: N months ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yearsAgo": "{count} năm trước",
+  "@yearsAgo": {
+    "description": "Relative time: N years ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "saveChanges": "Lưu thay đổi",
+  "@saveChanges": {
+    "description": "Save button on edit profile"
+  },
+  "saving": "Đang lưu...",
+  "@saving": {
+    "description": "Save button loading label"
+  },
+  "cancelChangesTitle": "Hủy thay đổi",
+  "@cancelChangesTitle": {
+    "description": "Confirm-cancel dialog title"
+  },
+  "unsavedChangesMessage": "Bạn có những thay đổi chưa được lưu. Bạn có chắc chắn muốn hủy?",
+  "@unsavedChangesMessage": {
+    "description": "Confirm-cancel dialog body"
+  },
+  "continueEditing": "Tiếp tục chỉnh sửa",
+  "@continueEditing": {
+    "description": "Confirm-cancel: keep editing button"
+  },
+  "discardChanges": "Hủy thay đổi",
+  "@discardChanges": {
+    "description": "Confirm-cancel: discard button"
+  },
+  "profileUpdatedSuccess": "Cập nhật hồ sơ thành công",
+  "@profileUpdatedSuccess": {
+    "description": "Snackbar after profile saves successfully"
+  },
+  "displayNameHint": "Nhập tên hiển thị của bạn",
+  "@displayNameHint": {
+    "description": "Hint for display name text field"
+  },
+  "displayNameTooShort": "Tên hiển thị phải có ít nhất {min} ký tự",
+  "@displayNameTooShort": {
+    "description": "Display name minimum length error",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "displayNameInvalidChars": "Tên hiển thị có ký tự không hợp lệ",
+  "@displayNameInvalidChars": {
+    "description": "Display name forbidden-character error"
+  },
+  "editProfileNoteTitle": "Lưu ý",
+  "@editProfileNoteTitle": {
+    "description": "Section title for tips on edit profile"
+  },
+  "editProfileTipDisplayName": "• Tên hiển thị sẽ được hiển thị cho các thành viên khác",
+  "@editProfileTipDisplayName": {
+    "description": "Edit-profile tip about display name visibility"
+  },
+  "editProfileTipCurrency": "• Tiền tệ ưa thích sẽ được sử dụng làm mặc định",
+  "@editProfileTipCurrency": {
+    "description": "Edit-profile tip about default currency"
+  },
+  "editProfileTipLanguage": "• Thay đổi ngôn ngữ sẽ áp dụng cho toàn bộ ứng dụng",
+  "@editProfileTipLanguage": {
+    "description": "Edit-profile tip about language scope"
   }
 }
 

@@ -1439,6 +1439,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remember your password? '**
   String get rememberPassword;
+
+  /// Profile page app bar title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// Profile page large heading / hero title
+  ///
+  /// In en, this message translates to:
+  /// **'Your Profile'**
+  String get profileFullTitle;
+
+  /// Sign-out confirmation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOutConfirmTitle;
+
+  /// Sign-out confirmation dialog body
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to sign out?'**
+  String get signOutConfirmMessage;
+
+  /// Profile page error title when load fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your profile'**
+  String get profileLoadFailed;
+
+  /// Shown when profile state has no profile attached
+  ///
+  /// In en, this message translates to:
+  /// **'No profile data'**
+  String get noProfileData;
+
+  /// Info card title for profile creation date
+  ///
+  /// In en, this message translates to:
+  /// **'Account created'**
+  String get accountCreatedAt;
+
+  /// Info card title for last profile update
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get lastUpdatedAt;
+
+  /// Edit profile button + page title
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get editProfile;
+
+  /// Inline error banner with detail message
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String errorWithMessage(String message);
+
+  /// Tooltip for refresh action button
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refreshTooltip;
+
+  /// Profile creation summary line
+  ///
+  /// In en, this message translates to:
+  /// **'Joined {date}'**
+  String joinedAt(String date);
+
+  /// Relative time: today
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// Relative time: yesterday
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// Relative time: N days ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String daysAgo(int count);
+
+  /// Relative time: N weeks ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count} weeks ago'**
+  String weeksAgo(int count);
+
+  /// Relative time: N months ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count} months ago'**
+  String monthsAgo(int count);
+
+  /// Relative time: N years ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count} years ago'**
+  String yearsAgo(int count);
+
+  /// Save button on edit profile
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
+
+  /// Save button loading label
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get saving;
+
+  /// Confirm-cancel dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get cancelChangesTitle;
+
+  /// Confirm-cancel dialog body
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Are you sure you want to cancel?'**
+  String get unsavedChangesMessage;
+
+  /// Confirm-cancel: keep editing button
+  ///
+  /// In en, this message translates to:
+  /// **'Continue editing'**
+  String get continueEditing;
+
+  /// Confirm-cancel: discard button
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discardChanges;
+
+  /// Snackbar after profile saves successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully'**
+  String get profileUpdatedSuccess;
+
+  /// Hint for display name text field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your display name'**
+  String get displayNameHint;
+
+  /// Display name minimum length error
+  ///
+  /// In en, this message translates to:
+  /// **'Display name must be at least {min} characters'**
+  String displayNameTooShort(int min);
+
+  /// Display name forbidden-character error
+  ///
+  /// In en, this message translates to:
+  /// **'Display name contains invalid characters'**
+  String get displayNameInvalidChars;
+
+  /// Section title for tips on edit profile
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get editProfileNoteTitle;
+
+  /// Edit-profile tip about display name visibility
+  ///
+  /// In en, this message translates to:
+  /// **'• Your display name is shown to other members'**
+  String get editProfileTipDisplayName;
+
+  /// Edit-profile tip about default currency
+  ///
+  /// In en, this message translates to:
+  /// **'• Preferred currency is used as the default'**
+  String get editProfileTipCurrency;
+
+  /// Edit-profile tip about language scope
+  ///
+  /// In en, this message translates to:
+  /// **'• Language changes apply across the whole app'**
+  String get editProfileTipLanguage;
 }
 
 class _AppLocalizationsDelegate
