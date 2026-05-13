@@ -617,7 +617,11 @@
   "resetEmailSent": "Se envió el correo de restablecimiento",
   "pleaseCheckEmailAt": "Por favor revisa tu correo en {email}",
   "@pleaseCheckEmailAt": {
-    "placeholders": {"email": {"type": "String"}}
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
   },
   "resend": "Reenviar",
   "emailNotInSystem": "Correo no encontrado en el sistema",
@@ -638,5 +642,361 @@
   "repeatedAuthFailureMessage": "La autenticación falló varias veces. Intenta iniciar sesión con correo electrónico o contacta a soporte.",
   "@repeatedAuthFailureMessage": {
     "description": "Message shown after repeated authentication failures"
+  },
+  "accountCreatedAt": "Cuenta creada",
+  "@accountCreatedAt": {
+    "description": "Info card title for profile creation date"
+  },
+  "accountCreatedSuccessfully": "Tu cuenta se ha creado exitosamente",
+  "@accountCreatedSuccessfully": {
+    "description": "Account creation success message"
+  },
+  "alreadyHaveAccountSignIn": "¿Ya tienes una cuenta? Inicia sesión",
+  "@alreadyHaveAccountSignIn": {
+    "description": "Link to login from register"
+  },
+  "back": "Atrás",
+  "@back": {
+    "description": "Back button"
+  },
+  "backToSignIn": "Volver a inicio de sesión",
+  "@backToSignIn": {
+    "description": "Link back to login"
+  },
+  "cancelChangesTitle": "¿Descartar cambios?",
+  "@cancelChangesTitle": {
+    "description": "Confirm-cancel dialog title"
+  },
+  "checkInboxAndClick": "Revisa tu bandeja y haz clic en el enlace de verificación para continuar.",
+  "@checkInboxAndClick": {
+    "description": "Email verification instructions continued"
+  },
+  "checkSpamFolder": "• Revisa tu carpeta de spam o correo no deseado",
+  "@checkSpamFolder": {
+    "description": "Help tip 1"
+  },
+  "completeSetup": "Completar configuración",
+  "@completeSetup": {
+    "description": "Complete setup button"
+  },
+  "confirmPassword": "Confirmar contraseña",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  "confirmYourPassword": "Confirma tu contraseña",
+  "@confirmYourPassword": {
+    "description": "Confirm password field hint"
+  },
+  "continueButton": "Continuar",
+  "@continueButton": {
+    "description": "Continue button"
+  },
+  "continueEditing": "Continuar editando",
+  "@continueEditing": {
+    "description": "Confirm-cancel: keep editing button"
+  },
+  "createAccount": "Crear cuenta",
+  "@createAccount": {
+    "description": "Register screen title"
+  },
+  "daysAgo": "hace {count} días",
+  "@daysAgo": {
+    "description": "Relative time: N days ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "didntReceiveEmail": "¿No recibiste el correo?",
+  "@didntReceiveEmail": {
+    "description": "Help section title"
+  },
+  "discardChanges": "Descartar",
+  "@discardChanges": {
+    "description": "Confirm-cancel: discard button"
+  },
+  "displayName": "Nombre visible",
+  "@displayName": {
+    "description": "Display name field label"
+  },
+  "displayNameHint": "Ingresa tu nombre visible",
+  "@displayNameHint": {
+    "description": "Hint for display name text field"
+  },
+  "displayNameInvalidChars": "El nombre contiene caracteres no válidos",
+  "@displayNameInvalidChars": {
+    "description": "Display name forbidden-character error"
+  },
+  "displayNameTooShort": "El nombre debe tener al menos {min} caracteres",
+  "@displayNameTooShort": {
+    "description": "Display name minimum length error",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "editProfile": "Editar perfil",
+  "@editProfile": {
+    "description": "Edit profile button + page title"
+  },
+  "editProfileNoteTitle": "Nota",
+  "@editProfileNoteTitle": {
+    "description": "Section title for tips on edit profile"
+  },
+  "editProfileTipCurrency": "• La moneda preferida se usa como predeterminada",
+  "@editProfileTipCurrency": {
+    "description": "Edit-profile tip about default currency"
+  },
+  "editProfileTipDisplayName": "• Tu nombre visible se muestra a otros miembros",
+  "@editProfileTipDisplayName": {
+    "description": "Edit-profile tip about display name visibility"
+  },
+  "editProfileTipLanguage": "• Los cambios de idioma se aplican a toda la app",
+  "@editProfileTipLanguage": {
+    "description": "Edit-profile tip about language scope"
+  },
+  "emailSentCheckInbox": "¡Correo enviado! Revisa tu bandeja.",
+  "@emailSentCheckInbox": {
+    "description": "Success message after resending email"
+  },
+  "emailVerifiedSuccessfully": "Tu correo se ha verificado exitosamente",
+  "@emailVerifiedSuccessfully": {
+    "description": "Email verification success message"
+  },
+  "enterEmailForReset": "Ingresa tu dirección de correo y te enviaremos un enlace para restablecer la contraseña",
+  "@enterEmailForReset": {
+    "description": "Forgot password instructions"
+  },
+  "enterNewPassword": "Ingresa tu nueva contraseña abajo",
+  "@enterNewPassword": {
+    "description": "Reset password instructions"
+  },
+  "enterYourEmail": "Ingresa tu correo",
+  "@enterYourEmail": {
+    "description": "Email field hint"
+  },
+  "enterYourName": "Ingresa tu nombre",
+  "@enterYourName": {
+    "description": "Display name field hint"
+  },
+  "enterYourPassword": "Ingresa tu contraseña",
+  "@enterYourPassword": {
+    "description": "Password field hint"
+  },
+  "errorWithMessage": "Error: {message}",
+  "@errorWithMessage": {
+    "description": "Inline error banner with detail message",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+  "@forgotPassword": {
+    "description": "Forgot password link"
+  },
+  "forgotPasswordQuestion": "¿Olvidaste tu contraseña?",
+  "@forgotPasswordQuestion": {
+    "description": "Forgot password screen title"
+  },
+  "getStarted": "Comenzar",
+  "@getStarted": {
+    "description": "Get started button"
+  },
+  "joinGrexToday": "Únete a Grex hoy",
+  "@joinGrexToday": {
+    "description": "Register screen subtitle"
+  },
+  "joinedAt": "Se unió {date}",
+  "@joinedAt": {
+    "description": "Profile creation summary line",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "lastUpdatedAt": "Última actualización",
+  "@lastUpdatedAt": {
+    "description": "Info card title for last profile update"
+  },
+  "monthsAgo": "hace {count} meses",
+  "@monthsAgo": {
+    "description": "Relative time: N months ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newPassword": "Nueva contraseña",
+  "@newPassword": {
+    "description": "New password field label"
+  },
+  "noProfileData": "Sin datos de perfil",
+  "@noProfileData": {
+    "description": "Shown when profile state has no profile attached"
+  },
+  "openEmailApp": "Abrir app de correo",
+  "@openEmailApp": {
+    "description": "Open email app button"
+  },
+  "orContinueWith": "o",
+  "@orContinueWith": {
+    "description": "Divider text for social login"
+  },
+  "passwordRequirements": "Al menos 8 caracteres con mayúsculas, minúsculas y números",
+  "@passwordRequirements": {
+    "description": "Password requirements hint"
+  },
+  "passwordResetSuccessfully": "Tu contraseña se ha restablecido exitosamente",
+  "@passwordResetSuccessfully": {
+    "description": "Password reset success message"
+  },
+  "passwordsDoNotMatch": "Las contraseñas no coinciden",
+  "@passwordsDoNotMatch": {
+    "description": "Password mismatch error"
+  },
+  "pleaseWaitSeconds": "Por favor espera {seconds} segundos",
+  "@pleaseWaitSeconds": {
+    "description": "Cooldown message for resend button",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "profileFullTitle": "Tu perfil",
+  "@profileFullTitle": {
+    "description": "Profile page large heading / hero title"
+  },
+  "profileLoadFailed": "No se pudo cargar el perfil",
+  "@profileLoadFailed": {
+    "description": "Profile page error title when load fails"
+  },
+  "profileTitle": "Perfil",
+  "@profileTitle": {
+    "description": "Profile page app bar title"
+  },
+  "profileUpdatedSuccess": "Perfil actualizado exitosamente",
+  "@profileUpdatedSuccess": {
+    "description": "Snackbar after profile saves successfully"
+  },
+  "refreshTooltip": "Actualizar",
+  "@refreshTooltip": {
+    "description": "Tooltip for refresh action button"
+  },
+  "resendEmail": "Reenviar correo",
+  "@resendEmail": {
+    "description": "Resend verification email button"
+  },
+  "resetLinkSent": "¡Enlace de restablecimiento enviado! Revisa tu correo.",
+  "@resetLinkSent": {
+    "description": "Success message after sending reset link"
+  },
+  "resetPassword": "Restablecer contraseña",
+  "@resetPassword": {
+    "description": "Reset password screen title"
+  },
+  "saveChanges": "Guardar cambios",
+  "@saveChanges": {
+    "description": "Save button on edit profile"
+  },
+  "saving": "Guardando...",
+  "@saving": {
+    "description": "Save button loading label"
+  },
+  "selectCurrency": "Seleccionar moneda",
+  "@selectCurrency": {
+    "description": "Currency selector label"
+  },
+  "sendResetLink": "Enviar enlace de restablecimiento",
+  "@sendResetLink": {
+    "description": "Send reset link button"
+  },
+  "signInToContinue": "Inicia sesión para continuar",
+  "@signInToContinue": {
+    "description": "Login screen subtitle"
+  },
+  "signOut": "Cerrar sesión",
+  "@signOut": {
+    "description": "Sign out button"
+  },
+  "signOutConfirmMessage": "¿Estás seguro de que quieres cerrar sesión?",
+  "@signOutConfirmMessage": {
+    "description": "Sign-out confirmation dialog body"
+  },
+  "signOutConfirmTitle": "Cerrar sesión",
+  "@signOutConfirmTitle": {
+    "description": "Sign-out confirmation dialog title"
+  },
+  "skipForNow": "Omitir por ahora",
+  "@skipForNow": {
+    "description": "Skip setup button"
+  },
+  "stepOfTwo": "Paso 1 de 2",
+  "@stepOfTwo": {
+    "description": "Progress indicator"
+  },
+  "success": "¡Éxito!",
+  "@success": {
+    "description": "Success screen title"
+  },
+  "today": "Hoy",
+  "@today": {
+    "description": "Relative time: today"
+  },
+  "unsavedChangesMessage": "Tienes cambios sin guardar. ¿Seguro que quieres cancelar?",
+  "@unsavedChangesMessage": {
+    "description": "Confirm-cancel dialog body"
+  },
+  "uploadPhoto": "Subir foto",
+  "@uploadPhoto": {
+    "description": "Avatar upload button"
+  },
+  "verificationEmailSent": "Hemos enviado un correo de verificación a:",
+  "@verificationEmailSent": {
+    "description": "Email verification instructions"
+  },
+  "verifyEmailAddress": "• Asegúrate de que la dirección de correo sea correcta",
+  "@verifyEmailAddress": {
+    "description": "Help tip 2"
+  },
+  "verifyYourEmail": "Verifica tu correo",
+  "@verifyYourEmail": {
+    "description": "Email verification screen title"
+  },
+  "waitFewMinutes": "• Espera unos minutos e intenta de nuevo",
+  "@waitFewMinutes": {
+    "description": "Help tip 3"
+  },
+  "weeksAgo": "hace {count} semanas",
+  "@weeksAgo": {
+    "description": "Relative time: N weeks ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "welcomeBack": "Bienvenido de nuevo",
+  "@welcomeBack": {
+    "description": "Login screen title"
+  },
+  "yearsAgo": "hace {count} años",
+  "@yearsAgo": {
+    "description": "Relative time: N years ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yesterday": "Ayer",
+  "@yesterday": {
+    "description": "Relative time: yesterday"
   }
 }

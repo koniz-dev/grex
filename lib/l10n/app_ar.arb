@@ -617,7 +617,11 @@
   "resetEmailSent": "تم إرسال بريد إعادة التعيين",
   "pleaseCheckEmailAt": "يرجى التحقق من بريدك الإلكتروني {email}",
   "@pleaseCheckEmailAt": {
-    "placeholders": {"email": {"type": "String"}}
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
   },
   "resend": "إعادة الإرسال",
   "emailNotInSystem": "البريد الإلكتروني غير موجود في النظام",
@@ -638,5 +642,361 @@
   "repeatedAuthFailureMessage": "فشلت المصادقة عدة مرات. يرجى المحاولة باستخدام البريد الإلكتروني أو الاتصال بالدعم.",
   "@repeatedAuthFailureMessage": {
     "description": "Message shown after repeated authentication failures"
+  },
+  "accountCreatedAt": "تم إنشاء الحساب",
+  "@accountCreatedAt": {
+    "description": "Info card title for profile creation date"
+  },
+  "accountCreatedSuccessfully": "تم إنشاء حسابك بنجاح",
+  "@accountCreatedSuccessfully": {
+    "description": "Account creation success message"
+  },
+  "alreadyHaveAccountSignIn": "هل لديك حساب بالفعل؟ سجل الدخول",
+  "@alreadyHaveAccountSignIn": {
+    "description": "Link to login from register"
+  },
+  "back": "رجوع",
+  "@back": {
+    "description": "Back button"
+  },
+  "backToSignIn": "العودة إلى تسجيل الدخول",
+  "@backToSignIn": {
+    "description": "Link back to login"
+  },
+  "cancelChangesTitle": "تجاهل التغييرات؟",
+  "@cancelChangesTitle": {
+    "description": "Confirm-cancel dialog title"
+  },
+  "checkInboxAndClick": "تحقق من بريدك الوارد وانقر على رابط التحقق للمتابعة.",
+  "@checkInboxAndClick": {
+    "description": "Email verification instructions continued"
+  },
+  "checkSpamFolder": "• تحقق من مجلد الرسائل غير المرغوب فيها",
+  "@checkSpamFolder": {
+    "description": "Help tip 1"
+  },
+  "completeSetup": "إكمال الإعداد",
+  "@completeSetup": {
+    "description": "Complete setup button"
+  },
+  "confirmPassword": "تأكيد كلمة المرور",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  "confirmYourPassword": "أكد كلمة المرور",
+  "@confirmYourPassword": {
+    "description": "Confirm password field hint"
+  },
+  "continueButton": "متابعة",
+  "@continueButton": {
+    "description": "Continue button"
+  },
+  "continueEditing": "متابعة التحرير",
+  "@continueEditing": {
+    "description": "Confirm-cancel: keep editing button"
+  },
+  "createAccount": "إنشاء حساب",
+  "@createAccount": {
+    "description": "Register screen title"
+  },
+  "daysAgo": "منذ {count} يوم",
+  "@daysAgo": {
+    "description": "Relative time: N days ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "didntReceiveEmail": "لم تستلم البريد؟",
+  "@didntReceiveEmail": {
+    "description": "Help section title"
+  },
+  "discardChanges": "تجاهل",
+  "@discardChanges": {
+    "description": "Confirm-cancel: discard button"
+  },
+  "displayName": "الاسم المعروض",
+  "@displayName": {
+    "description": "Display name field label"
+  },
+  "displayNameHint": "أدخل اسمك المعروض",
+  "@displayNameHint": {
+    "description": "Hint for display name text field"
+  },
+  "displayNameInvalidChars": "الاسم يحتوي على أحرف غير صالحة",
+  "@displayNameInvalidChars": {
+    "description": "Display name forbidden-character error"
+  },
+  "displayNameTooShort": "يجب أن يكون الاسم على الأقل {min} حرفًا",
+  "@displayNameTooShort": {
+    "description": "Display name minimum length error",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "editProfile": "تعديل الملف الشخصي",
+  "@editProfile": {
+    "description": "Edit profile button + page title"
+  },
+  "editProfileNoteTitle": "ملاحظة",
+  "@editProfileNoteTitle": {
+    "description": "Section title for tips on edit profile"
+  },
+  "editProfileTipCurrency": "• العملة المفضلة تُستخدم كافتراضية",
+  "@editProfileTipCurrency": {
+    "description": "Edit-profile tip about default currency"
+  },
+  "editProfileTipDisplayName": "• اسمك المعروض يظهر للأعضاء الآخرين",
+  "@editProfileTipDisplayName": {
+    "description": "Edit-profile tip about display name visibility"
+  },
+  "editProfileTipLanguage": "• تغييرات اللغة تنطبق على التطبيق بالكامل",
+  "@editProfileTipLanguage": {
+    "description": "Edit-profile tip about language scope"
+  },
+  "emailSentCheckInbox": "تم إرسال البريد! تحقق من بريدك الوارد.",
+  "@emailSentCheckInbox": {
+    "description": "Success message after resending email"
+  },
+  "emailVerifiedSuccessfully": "تم التحقق من بريدك بنجاح",
+  "@emailVerifiedSuccessfully": {
+    "description": "Email verification success message"
+  },
+  "enterEmailForReset": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور",
+  "@enterEmailForReset": {
+    "description": "Forgot password instructions"
+  },
+  "enterNewPassword": "أدخل كلمة المرور الجديدة أدناه",
+  "@enterNewPassword": {
+    "description": "Reset password instructions"
+  },
+  "enterYourEmail": "أدخل بريدك الإلكتروني",
+  "@enterYourEmail": {
+    "description": "Email field hint"
+  },
+  "enterYourName": "أدخل اسمك",
+  "@enterYourName": {
+    "description": "Display name field hint"
+  },
+  "enterYourPassword": "أدخل كلمة المرور",
+  "@enterYourPassword": {
+    "description": "Password field hint"
+  },
+  "errorWithMessage": "خطأ: {message}",
+  "@errorWithMessage": {
+    "description": "Inline error banner with detail message",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "@forgotPassword": {
+    "description": "Forgot password link"
+  },
+  "forgotPasswordQuestion": "نسيت كلمة المرور؟",
+  "@forgotPasswordQuestion": {
+    "description": "Forgot password screen title"
+  },
+  "getStarted": "ابدأ",
+  "@getStarted": {
+    "description": "Get started button"
+  },
+  "joinGrexToday": "انضم إلى Grex اليوم",
+  "@joinGrexToday": {
+    "description": "Register screen subtitle"
+  },
+  "joinedAt": "انضم في {date}",
+  "@joinedAt": {
+    "description": "Profile creation summary line",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "lastUpdatedAt": "آخر تحديث",
+  "@lastUpdatedAt": {
+    "description": "Info card title for last profile update"
+  },
+  "monthsAgo": "منذ {count} شهر",
+  "@monthsAgo": {
+    "description": "Relative time: N months ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newPassword": "كلمة المرور الجديدة",
+  "@newPassword": {
+    "description": "New password field label"
+  },
+  "noProfileData": "لا توجد بيانات للملف الشخصي",
+  "@noProfileData": {
+    "description": "Shown when profile state has no profile attached"
+  },
+  "openEmailApp": "فتح تطبيق البريد",
+  "@openEmailApp": {
+    "description": "Open email app button"
+  },
+  "orContinueWith": "أو",
+  "@orContinueWith": {
+    "description": "Divider text for social login"
+  },
+  "passwordRequirements": "على الأقل 8 أحرف مع أحرف كبيرة وصغيرة وأرقام",
+  "@passwordRequirements": {
+    "description": "Password requirements hint"
+  },
+  "passwordResetSuccessfully": "تمت إعادة تعيين كلمة المرور بنجاح",
+  "@passwordResetSuccessfully": {
+    "description": "Password reset success message"
+  },
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "@passwordsDoNotMatch": {
+    "description": "Password mismatch error"
+  },
+  "pleaseWaitSeconds": "يرجى الانتظار {seconds} ثانية",
+  "@pleaseWaitSeconds": {
+    "description": "Cooldown message for resend button",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "profileFullTitle": "ملفك الشخصي",
+  "@profileFullTitle": {
+    "description": "Profile page large heading / hero title"
+  },
+  "profileLoadFailed": "تعذر تحميل ملفك الشخصي",
+  "@profileLoadFailed": {
+    "description": "Profile page error title when load fails"
+  },
+  "profileTitle": "الملف الشخصي",
+  "@profileTitle": {
+    "description": "Profile page app bar title"
+  },
+  "profileUpdatedSuccess": "تم تحديث الملف الشخصي بنجاح",
+  "@profileUpdatedSuccess": {
+    "description": "Snackbar after profile saves successfully"
+  },
+  "refreshTooltip": "تحديث",
+  "@refreshTooltip": {
+    "description": "Tooltip for refresh action button"
+  },
+  "resendEmail": "إعادة إرسال البريد",
+  "@resendEmail": {
+    "description": "Resend verification email button"
+  },
+  "resetLinkSent": "تم إرسال رابط إعادة التعيين! تحقق من بريدك.",
+  "@resetLinkSent": {
+    "description": "Success message after sending reset link"
+  },
+  "resetPassword": "إعادة تعيين كلمة المرور",
+  "@resetPassword": {
+    "description": "Reset password screen title"
+  },
+  "saveChanges": "حفظ التغييرات",
+  "@saveChanges": {
+    "description": "Save button on edit profile"
+  },
+  "saving": "جارٍ الحفظ...",
+  "@saving": {
+    "description": "Save button loading label"
+  },
+  "selectCurrency": "اختر العملة",
+  "@selectCurrency": {
+    "description": "Currency selector label"
+  },
+  "sendResetLink": "إرسال رابط إعادة التعيين",
+  "@sendResetLink": {
+    "description": "Send reset link button"
+  },
+  "signInToContinue": "سجل الدخول للمتابعة",
+  "@signInToContinue": {
+    "description": "Login screen subtitle"
+  },
+  "signOut": "تسجيل الخروج",
+  "@signOut": {
+    "description": "Sign out button"
+  },
+  "signOutConfirmMessage": "هل أنت متأكد من تسجيل الخروج؟",
+  "@signOutConfirmMessage": {
+    "description": "Sign-out confirmation dialog body"
+  },
+  "signOutConfirmTitle": "تسجيل الخروج",
+  "@signOutConfirmTitle": {
+    "description": "Sign-out confirmation dialog title"
+  },
+  "skipForNow": "تخطي الآن",
+  "@skipForNow": {
+    "description": "Skip setup button"
+  },
+  "stepOfTwo": "الخطوة 1 من 2",
+  "@stepOfTwo": {
+    "description": "Progress indicator"
+  },
+  "success": "نجاح!",
+  "@success": {
+    "description": "Success screen title"
+  },
+  "today": "اليوم",
+  "@today": {
+    "description": "Relative time: today"
+  },
+  "unsavedChangesMessage": "لديك تغييرات غير محفوظة. هل أنت متأكد من الإلغاء؟",
+  "@unsavedChangesMessage": {
+    "description": "Confirm-cancel dialog body"
+  },
+  "uploadPhoto": "رفع صورة",
+  "@uploadPhoto": {
+    "description": "Avatar upload button"
+  },
+  "verificationEmailSent": "أرسلنا رسالة تحقق إلى:",
+  "@verificationEmailSent": {
+    "description": "Email verification instructions"
+  },
+  "verifyEmailAddress": "• تأكد من صحة عنوان البريد",
+  "@verifyEmailAddress": {
+    "description": "Help tip 2"
+  },
+  "verifyYourEmail": "تحقق من بريدك",
+  "@verifyYourEmail": {
+    "description": "Email verification screen title"
+  },
+  "waitFewMinutes": "• انتظر بضع دقائق وحاول مرة أخرى",
+  "@waitFewMinutes": {
+    "description": "Help tip 3"
+  },
+  "weeksAgo": "منذ {count} أسبوع",
+  "@weeksAgo": {
+    "description": "Relative time: N weeks ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "welcomeBack": "مرحبًا بعودتك",
+  "@welcomeBack": {
+    "description": "Login screen title"
+  },
+  "yearsAgo": "منذ {count} سنة",
+  "@yearsAgo": {
+    "description": "Relative time: N years ago",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yesterday": "أمس",
+  "@yesterday": {
+    "description": "Relative time: yesterday"
   }
 }

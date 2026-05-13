@@ -457,16 +457,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exampleScreenContent => 'Contenido de pantalla de ejemplo';
 
   @override
-  String get welcomeBack => 'Welcome back';
+  String get welcomeBack => 'Bienvenido de nuevo';
 
   @override
-  String get signInToContinue => 'Sign in to continue';
+  String get signInToContinue => 'Inicia sesión para continuar';
 
   @override
-  String get forgotPassword => 'Forgot password?';
+  String get forgotPassword => '¿Olvidaste tu contraseña?';
 
   @override
-  String get orContinueWith => 'or';
+  String get orContinueWith => 'o';
 
   @override
   String get continueWithGoogle => 'Continuar con Google';
@@ -475,144 +475,148 @@ class AppLocalizationsEs extends AppLocalizations {
   String get continueWithApple => 'Continuar con Apple';
 
   @override
-  String get createAccount => 'Create Account';
+  String get createAccount => 'Crear cuenta';
 
   @override
-  String get joinGrexToday => 'Join Grex today';
+  String get joinGrexToday => 'Únete a Grex hoy';
 
   @override
-  String get displayName => 'Display Name';
+  String get displayName => 'Nombre visible';
 
   @override
-  String get enterYourName => 'Enter your name';
+  String get enterYourName => 'Ingresa tu nombre';
 
   @override
-  String get enterYourEmail => 'Enter your email';
+  String get enterYourEmail => 'Ingresa tu correo';
 
   @override
-  String get enterYourPassword => 'Enter your password';
+  String get enterYourPassword => 'Ingresa tu contraseña';
 
   @override
-  String get selectCurrency => 'Select Currency';
+  String get selectCurrency => 'Seleccionar moneda';
 
   @override
   String get passwordRequirements =>
-      'At least 8 characters with uppercase, lowercase, and numbers';
+      'Al menos 8 caracteres con mayúsculas, minúsculas y números';
 
   @override
-  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+  String get alreadyHaveAccountSignIn => '¿Ya tienes una cuenta? Inicia sesión';
 
   @override
-  String get forgotPasswordQuestion => 'Forgot Password?';
+  String get forgotPasswordQuestion => '¿Olvidaste tu contraseña?';
 
   @override
   String get enterEmailForReset =>
-      'Enter your email address and we\'ll send you a link to reset your password';
+      'Ingresa tu dirección de correo y te enviaremos un enlace para restablecer la contraseña';
 
   @override
-  String get sendResetLink => 'Send Reset Link';
+  String get sendResetLink => 'Enviar enlace de restablecimiento';
 
   @override
-  String get resetLinkSent => 'Reset link sent! Check your email.';
+  String get resetLinkSent =>
+      '¡Enlace de restablecimiento enviado! Revisa tu correo.';
 
   @override
-  String get backToSignIn => 'Back to Sign in';
+  String get backToSignIn => 'Volver a inicio de sesión';
 
   @override
-  String get verifyYourEmail => 'Verify Your Email';
+  String get verifyYourEmail => 'Verifica tu correo';
 
   @override
-  String get verificationEmailSent => 'We\'ve sent a verification email to:';
+  String get verificationEmailSent =>
+      'Hemos enviado un correo de verificación a:';
 
   @override
   String get checkInboxAndClick =>
-      'Check your inbox and click the verification link to continue.';
+      'Revisa tu bandeja y haz clic en el enlace de verificación para continuar.';
 
   @override
-  String get resendEmail => 'Resend Email';
+  String get resendEmail => 'Reenviar correo';
 
   @override
-  String get openEmailApp => 'Open Email App';
+  String get openEmailApp => 'Abrir app de correo';
 
   @override
-  String get didntReceiveEmail => 'Didn\'t receive the email?';
+  String get didntReceiveEmail => '¿No recibiste el correo?';
 
   @override
-  String get checkSpamFolder => '• Check your spam or junk folder';
+  String get checkSpamFolder =>
+      '• Revisa tu carpeta de spam o correo no deseado';
 
   @override
-  String get verifyEmailAddress => '• Make sure the email address is correct';
+  String get verifyEmailAddress =>
+      '• Asegúrate de que la dirección de correo sea correcta';
 
   @override
-  String get waitFewMinutes => '• Wait a few minutes and try again';
+  String get waitFewMinutes => '• Espera unos minutos e intenta de nuevo';
 
   @override
-  String get signOut => 'Sign out';
+  String get signOut => 'Cerrar sesión';
 
   @override
-  String get emailSentCheckInbox => 'Email sent! Check your inbox.';
+  String get emailSentCheckInbox => '¡Correo enviado! Revisa tu bandeja.';
 
   @override
   String pleaseWaitSeconds(int seconds) {
-    return 'Please wait $seconds seconds';
+    return 'Por favor espera $seconds segundos';
   }
 
   @override
-  String get resetPassword => 'Reset Password';
+  String get resetPassword => 'Restablecer contraseña';
 
   @override
-  String get enterNewPassword => 'Enter your new password below';
+  String get enterNewPassword => 'Ingresa tu nueva contraseña abajo';
 
   @override
-  String get newPassword => 'New Password';
+  String get newPassword => 'Nueva contraseña';
 
   @override
-  String get confirmPassword => 'Confirm Password';
+  String get confirmPassword => 'Confirmar contraseña';
 
   @override
-  String get confirmYourPassword => 'Confirm your password';
+  String get confirmYourPassword => 'Confirma tu contraseña';
 
   @override
-  String get passwordsDoNotMatch => 'Passwords do not match';
+  String get passwordsDoNotMatch => 'Las contraseñas no coinciden';
 
   @override
   String get completeYourProfile => 'Completa tu perfil';
 
   @override
-  String get stepOfTwo => 'Step 1 of 2';
+  String get stepOfTwo => 'Paso 1 de 2';
 
   @override
-  String get uploadPhoto => 'Upload Photo';
+  String get uploadPhoto => 'Subir foto';
 
   @override
-  String get completeSetup => 'Complete Setup';
+  String get completeSetup => 'Completar configuración';
 
   @override
-  String get skipForNow => 'Skip for now';
+  String get skipForNow => 'Omitir por ahora';
 
   @override
-  String get success => 'Success!';
+  String get success => '¡Éxito!';
 
   @override
   String get accountCreatedSuccessfully =>
-      'Your account has been created successfully';
+      'Tu cuenta se ha creado exitosamente';
 
   @override
   String get passwordResetSuccessfully =>
-      'Your password has been reset successfully';
+      'Tu contraseña se ha restablecido exitosamente';
 
   @override
   String get emailVerifiedSuccessfully =>
-      'Your email has been verified successfully';
+      'Tu correo se ha verificado exitosamente';
 
   @override
-  String get continueButton => 'Continue';
+  String get continueButton => 'Continuar';
 
   @override
-  String get getStarted => 'Get Started';
+  String get getStarted => 'Comenzar';
 
   @override
-  String get back => 'Back';
+  String get back => 'Atrás';
 
   @override
   String get socialAuthFailed =>
@@ -764,31 +768,32 @@ class AppLocalizationsEs extends AppLocalizations {
   String get rememberPassword => '¿Recuerdas tu contraseña? ';
 
   @override
-  String get profileTitle => 'Profile';
+  String get profileTitle => 'Perfil';
 
   @override
-  String get profileFullTitle => 'Your Profile';
+  String get profileFullTitle => 'Tu perfil';
 
   @override
-  String get signOutConfirmTitle => 'Sign out';
+  String get signOutConfirmTitle => 'Cerrar sesión';
 
   @override
-  String get signOutConfirmMessage => 'Are you sure you want to sign out?';
+  String get signOutConfirmMessage =>
+      '¿Estás seguro de que quieres cerrar sesión?';
 
   @override
-  String get profileLoadFailed => 'Could not load your profile';
+  String get profileLoadFailed => 'No se pudo cargar el perfil';
 
   @override
-  String get noProfileData => 'No profile data';
+  String get noProfileData => 'Sin datos de perfil';
 
   @override
-  String get accountCreatedAt => 'Account created';
+  String get accountCreatedAt => 'Cuenta creada';
 
   @override
-  String get lastUpdatedAt => 'Last updated';
+  String get lastUpdatedAt => 'Última actualización';
 
   @override
-  String get editProfile => 'Edit profile';
+  String get editProfile => 'Editar perfil';
 
   @override
   String errorWithMessage(String message) {
@@ -796,85 +801,85 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get refreshTooltip => 'Refresh';
+  String get refreshTooltip => 'Actualizar';
 
   @override
   String joinedAt(String date) {
-    return 'Joined $date';
+    return 'Se unió $date';
   }
 
   @override
-  String get today => 'Today';
+  String get today => 'Hoy';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'Ayer';
 
   @override
   String daysAgo(int count) {
-    return '$count days ago';
+    return 'hace $count días';
   }
 
   @override
   String weeksAgo(int count) {
-    return '$count weeks ago';
+    return 'hace $count semanas';
   }
 
   @override
   String monthsAgo(int count) {
-    return '$count months ago';
+    return 'hace $count meses';
   }
 
   @override
   String yearsAgo(int count) {
-    return '$count years ago';
+    return 'hace $count años';
   }
 
   @override
-  String get saveChanges => 'Save changes';
+  String get saveChanges => 'Guardar cambios';
 
   @override
-  String get saving => 'Saving...';
+  String get saving => 'Guardando...';
 
   @override
-  String get cancelChangesTitle => 'Discard changes?';
+  String get cancelChangesTitle => '¿Descartar cambios?';
 
   @override
   String get unsavedChangesMessage =>
-      'You have unsaved changes. Are you sure you want to cancel?';
+      'Tienes cambios sin guardar. ¿Seguro que quieres cancelar?';
 
   @override
-  String get continueEditing => 'Continue editing';
+  String get continueEditing => 'Continuar editando';
 
   @override
-  String get discardChanges => 'Discard';
+  String get discardChanges => 'Descartar';
 
   @override
-  String get profileUpdatedSuccess => 'Profile updated successfully';
+  String get profileUpdatedSuccess => 'Perfil actualizado exitosamente';
 
   @override
-  String get displayNameHint => 'Enter your display name';
+  String get displayNameHint => 'Ingresa tu nombre visible';
 
   @override
   String displayNameTooShort(int min) {
-    return 'Display name must be at least $min characters';
+    return 'El nombre debe tener al menos $min caracteres';
   }
 
   @override
   String get displayNameInvalidChars =>
-      'Display name contains invalid characters';
+      'El nombre contiene caracteres no válidos';
 
   @override
-  String get editProfileNoteTitle => 'Note';
+  String get editProfileNoteTitle => 'Nota';
 
   @override
   String get editProfileTipDisplayName =>
-      '• Your display name is shown to other members';
+      '• Tu nombre visible se muestra a otros miembros';
 
   @override
   String get editProfileTipCurrency =>
-      '• Preferred currency is used as the default';
+      '• La moneda preferida se usa como predeterminada';
 
   @override
   String get editProfileTipLanguage =>
-      '• Language changes apply across the whole app';
+      '• Los cambios de idioma se aplican a toda la app';
 }

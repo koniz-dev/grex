@@ -196,10 +196,5 @@ void main() {
         }
       });
     },
-    skip:
-        'TODO(arb-sync): the Vietnamese auth-i18n work added ~40 keys '
-        '(welcomeBack, signInToContinue, forgotPassword, etc.) that were not '
-        'mirrored into app_es.arb or app_ar.arb. Backfill those translations '
-        'before re-enabling — running this test in CI is the long-term goal.',
   );
 }

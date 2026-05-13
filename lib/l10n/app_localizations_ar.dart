@@ -442,16 +442,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get exampleScreenContent => 'محتوى شاشة المثال';
 
   @override
-  String get welcomeBack => 'Welcome back';
+  String get welcomeBack => 'مرحبًا بعودتك';
 
   @override
-  String get signInToContinue => 'Sign in to continue';
+  String get signInToContinue => 'سجل الدخول للمتابعة';
 
   @override
-  String get forgotPassword => 'Forgot password?';
+  String get forgotPassword => 'نسيت كلمة المرور؟';
 
   @override
-  String get orContinueWith => 'or';
+  String get orContinueWith => 'أو';
 
   @override
   String get continueWithGoogle => 'المتابعة مع Google';
@@ -460,144 +460,141 @@ class AppLocalizationsAr extends AppLocalizations {
   String get continueWithApple => 'المتابعة مع Apple';
 
   @override
-  String get createAccount => 'Create Account';
+  String get createAccount => 'إنشاء حساب';
 
   @override
-  String get joinGrexToday => 'Join Grex today';
+  String get joinGrexToday => 'انضم إلى Grex اليوم';
 
   @override
-  String get displayName => 'Display Name';
+  String get displayName => 'الاسم المعروض';
 
   @override
-  String get enterYourName => 'Enter your name';
+  String get enterYourName => 'أدخل اسمك';
 
   @override
-  String get enterYourEmail => 'Enter your email';
+  String get enterYourEmail => 'أدخل بريدك الإلكتروني';
 
   @override
-  String get enterYourPassword => 'Enter your password';
+  String get enterYourPassword => 'أدخل كلمة المرور';
 
   @override
-  String get selectCurrency => 'Select Currency';
+  String get selectCurrency => 'اختر العملة';
 
   @override
   String get passwordRequirements =>
-      'At least 8 characters with uppercase, lowercase, and numbers';
+      'على الأقل 8 أحرف مع أحرف كبيرة وصغيرة وأرقام';
 
   @override
-  String get alreadyHaveAccountSignIn => 'Already have an account? Sign in';
+  String get alreadyHaveAccountSignIn => 'هل لديك حساب بالفعل؟ سجل الدخول';
 
   @override
-  String get forgotPasswordQuestion => 'Forgot Password?';
+  String get forgotPasswordQuestion => 'نسيت كلمة المرور؟';
 
   @override
   String get enterEmailForReset =>
-      'Enter your email address and we\'ll send you a link to reset your password';
+      'أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور';
 
   @override
-  String get sendResetLink => 'Send Reset Link';
+  String get sendResetLink => 'إرسال رابط إعادة التعيين';
 
   @override
-  String get resetLinkSent => 'Reset link sent! Check your email.';
+  String get resetLinkSent => 'تم إرسال رابط إعادة التعيين! تحقق من بريدك.';
 
   @override
-  String get backToSignIn => 'Back to Sign in';
+  String get backToSignIn => 'العودة إلى تسجيل الدخول';
 
   @override
-  String get verifyYourEmail => 'Verify Your Email';
+  String get verifyYourEmail => 'تحقق من بريدك';
 
   @override
-  String get verificationEmailSent => 'We\'ve sent a verification email to:';
+  String get verificationEmailSent => 'أرسلنا رسالة تحقق إلى:';
 
   @override
   String get checkInboxAndClick =>
-      'Check your inbox and click the verification link to continue.';
+      'تحقق من بريدك الوارد وانقر على رابط التحقق للمتابعة.';
 
   @override
-  String get resendEmail => 'Resend Email';
+  String get resendEmail => 'إعادة إرسال البريد';
 
   @override
-  String get openEmailApp => 'Open Email App';
+  String get openEmailApp => 'فتح تطبيق البريد';
 
   @override
-  String get didntReceiveEmail => 'Didn\'t receive the email?';
+  String get didntReceiveEmail => 'لم تستلم البريد؟';
 
   @override
-  String get checkSpamFolder => '• Check your spam or junk folder';
+  String get checkSpamFolder => '• تحقق من مجلد الرسائل غير المرغوب فيها';
 
   @override
-  String get verifyEmailAddress => '• Make sure the email address is correct';
+  String get verifyEmailAddress => '• تأكد من صحة عنوان البريد';
 
   @override
-  String get waitFewMinutes => '• Wait a few minutes and try again';
+  String get waitFewMinutes => '• انتظر بضع دقائق وحاول مرة أخرى';
 
   @override
-  String get signOut => 'Sign out';
+  String get signOut => 'تسجيل الخروج';
 
   @override
-  String get emailSentCheckInbox => 'Email sent! Check your inbox.';
+  String get emailSentCheckInbox => 'تم إرسال البريد! تحقق من بريدك الوارد.';
 
   @override
   String pleaseWaitSeconds(int seconds) {
-    return 'Please wait $seconds seconds';
+    return 'يرجى الانتظار $seconds ثانية';
   }
 
   @override
-  String get resetPassword => 'Reset Password';
+  String get resetPassword => 'إعادة تعيين كلمة المرور';
 
   @override
-  String get enterNewPassword => 'Enter your new password below';
+  String get enterNewPassword => 'أدخل كلمة المرور الجديدة أدناه';
 
   @override
-  String get newPassword => 'New Password';
+  String get newPassword => 'كلمة المرور الجديدة';
 
   @override
-  String get confirmPassword => 'Confirm Password';
+  String get confirmPassword => 'تأكيد كلمة المرور';
 
   @override
-  String get confirmYourPassword => 'Confirm your password';
+  String get confirmYourPassword => 'أكد كلمة المرور';
 
   @override
-  String get passwordsDoNotMatch => 'Passwords do not match';
+  String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
 
   @override
   String get completeYourProfile => 'أكمل ملفك الشخصي';
 
   @override
-  String get stepOfTwo => 'Step 1 of 2';
+  String get stepOfTwo => 'الخطوة 1 من 2';
 
   @override
-  String get uploadPhoto => 'Upload Photo';
+  String get uploadPhoto => 'رفع صورة';
 
   @override
-  String get completeSetup => 'Complete Setup';
+  String get completeSetup => 'إكمال الإعداد';
 
   @override
-  String get skipForNow => 'Skip for now';
+  String get skipForNow => 'تخطي الآن';
 
   @override
-  String get success => 'Success!';
+  String get success => 'نجاح!';
 
   @override
-  String get accountCreatedSuccessfully =>
-      'Your account has been created successfully';
+  String get accountCreatedSuccessfully => 'تم إنشاء حسابك بنجاح';
 
   @override
-  String get passwordResetSuccessfully =>
-      'Your password has been reset successfully';
+  String get passwordResetSuccessfully => 'تمت إعادة تعيين كلمة المرور بنجاح';
 
   @override
-  String get emailVerifiedSuccessfully =>
-      'Your email has been verified successfully';
+  String get emailVerifiedSuccessfully => 'تم التحقق من بريدك بنجاح';
 
   @override
-  String get continueButton => 'Continue';
+  String get continueButton => 'متابعة';
 
   @override
-  String get getStarted => 'Get Started';
+  String get getStarted => 'ابدأ';
 
   @override
-  String get back => 'Back';
+  String get back => 'رجوع';
 
   @override
   String get socialAuthFailed => 'فشل في المصادقة. يرجى المحاولة مرة أخرى.';
@@ -746,117 +743,114 @@ class AppLocalizationsAr extends AppLocalizations {
   String get rememberPassword => 'هل تتذكر كلمة المرور؟ ';
 
   @override
-  String get profileTitle => 'Profile';
+  String get profileTitle => 'الملف الشخصي';
 
   @override
-  String get profileFullTitle => 'Your Profile';
+  String get profileFullTitle => 'ملفك الشخصي';
 
   @override
-  String get signOutConfirmTitle => 'Sign out';
+  String get signOutConfirmTitle => 'تسجيل الخروج';
 
   @override
-  String get signOutConfirmMessage => 'Are you sure you want to sign out?';
+  String get signOutConfirmMessage => 'هل أنت متأكد من تسجيل الخروج؟';
 
   @override
-  String get profileLoadFailed => 'Could not load your profile';
+  String get profileLoadFailed => 'تعذر تحميل ملفك الشخصي';
 
   @override
-  String get noProfileData => 'No profile data';
+  String get noProfileData => 'لا توجد بيانات للملف الشخصي';
 
   @override
-  String get accountCreatedAt => 'Account created';
+  String get accountCreatedAt => 'تم إنشاء الحساب';
 
   @override
-  String get lastUpdatedAt => 'Last updated';
+  String get lastUpdatedAt => 'آخر تحديث';
 
   @override
-  String get editProfile => 'Edit profile';
+  String get editProfile => 'تعديل الملف الشخصي';
 
   @override
   String errorWithMessage(String message) {
-    return 'Error: $message';
+    return 'خطأ: $message';
   }
 
   @override
-  String get refreshTooltip => 'Refresh';
+  String get refreshTooltip => 'تحديث';
 
   @override
   String joinedAt(String date) {
-    return 'Joined $date';
+    return 'انضم في $date';
   }
 
   @override
-  String get today => 'Today';
+  String get today => 'اليوم';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'أمس';
 
   @override
   String daysAgo(int count) {
-    return '$count days ago';
+    return 'منذ $count يوم';
   }
 
   @override
   String weeksAgo(int count) {
-    return '$count weeks ago';
+    return 'منذ $count أسبوع';
   }
 
   @override
   String monthsAgo(int count) {
-    return '$count months ago';
+    return 'منذ $count شهر';
   }
 
   @override
   String yearsAgo(int count) {
-    return '$count years ago';
+    return 'منذ $count سنة';
   }
 
   @override
-  String get saveChanges => 'Save changes';
+  String get saveChanges => 'حفظ التغييرات';
 
   @override
-  String get saving => 'Saving...';
+  String get saving => 'جارٍ الحفظ...';
 
   @override
-  String get cancelChangesTitle => 'Discard changes?';
+  String get cancelChangesTitle => 'تجاهل التغييرات؟';
 
   @override
   String get unsavedChangesMessage =>
-      'You have unsaved changes. Are you sure you want to cancel?';
+      'لديك تغييرات غير محفوظة. هل أنت متأكد من الإلغاء؟';
 
   @override
-  String get continueEditing => 'Continue editing';
+  String get continueEditing => 'متابعة التحرير';
 
   @override
-  String get discardChanges => 'Discard';
+  String get discardChanges => 'تجاهل';
 
   @override
-  String get profileUpdatedSuccess => 'Profile updated successfully';
+  String get profileUpdatedSuccess => 'تم تحديث الملف الشخصي بنجاح';
 
   @override
-  String get displayNameHint => 'Enter your display name';
+  String get displayNameHint => 'أدخل اسمك المعروض';
 
   @override
   String displayNameTooShort(int min) {
-    return 'Display name must be at least $min characters';
+    return 'يجب أن يكون الاسم على الأقل $min حرفًا';
   }
 
   @override
-  String get displayNameInvalidChars =>
-      'Display name contains invalid characters';
+  String get displayNameInvalidChars => 'الاسم يحتوي على أحرف غير صالحة';
 
   @override
-  String get editProfileNoteTitle => 'Note';
+  String get editProfileNoteTitle => 'ملاحظة';
 
   @override
-  String get editProfileTipDisplayName =>
-      '• Your display name is shown to other members';
+  String get editProfileTipDisplayName => '• اسمك المعروض يظهر للأعضاء الآخرين';
 
   @override
-  String get editProfileTipCurrency =>
-      '• Preferred currency is used as the default';
+  String get editProfileTipCurrency => '• العملة المفضلة تُستخدم كافتراضية';
 
   @override
   String get editProfileTipLanguage =>
-      '• Language changes apply across the whole app';
+      '• تغييرات اللغة تنطبق على التطبيق بالكامل';
 }
