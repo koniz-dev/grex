@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grex/features/groups/presentation/pages/create_group_page.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:grex/shared/theme/app_icon_sizes.dart';
 import 'package:grex/shared/theme/app_radius.dart';
 import 'package:grex/shared/theme/app_spacing.dart';
 
-/// Empty-state shown on the group list when the user has no groups.
+/// Friendly error state for the group list.
 ///
-/// UX choices:
-///   * Centred illustration + title + body + primary CTA — the standard
-///     "what / why / how" empty-state pattern users learn from iOS Mail,
-///     Linear, Notion.
-///   * CTA uses `ElevatedButton.icon` so the action and its meaning land in
-///     the same scan — pairs with light haptic feedback to feel decisive.
-///   * The widget is scroll-aware via [SingleChildScrollView] so it never
-///     overflows on small phones (320pt) or when the keyboard is open.
-class EmptyGroupsWidget extends StatelessWidget {
-  /// Creates an [EmptyGroupsWidget].
-  const EmptyGroupsWidget({super.key});
+/// Showing a raw failure `toString()` to end users is one of the fastest ways
+/// to make an app feel unfinished. This widget renders a soft tinted icon,
+/// a humanised explanation, and a single primary retry action — matching the
+/// pattern users expect from premium consumer apps.
+class GroupListErrorWidget extends StatelessWidget {
+  /// Creates a [GroupListErrorWidget].
+  const GroupListErrorWidget({
+    required this.onRetry,
+    super.key,
+  });
+
+  /// Callback invoked when the user taps the retry CTA.
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +45,18 @@ class EmptyGroupsWidget extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: scheme.primaryContainer.withValues(alpha: 0.3),
+                      color: scheme.errorContainer.withValues(alpha: 0.4),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
-                      Icons.group_add_outlined,
+                      Icons.cloud_off_rounded,
                       size: AppIconSizes.illustration,
-                      color: scheme.primary,
+                      color: scheme.error,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   Text(
-                    l10n.noGroupsTitle,
+                    l10n.somethingWentWrong,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: scheme.onSurface,
@@ -64,7 +65,7 @@ class EmptyGroupsWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   Text(
-                    l10n.noGroupsDescription,
+                    l10n.couldNotLoadGroups,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: scheme.onSurfaceVariant,
                       height: 1.4,
@@ -73,9 +74,12 @@ class EmptyGroupsWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xxxl),
                   ElevatedButton.icon(
-                    onPressed: () => _openCreateGroup(context),
-                    icon: const Icon(Icons.add_rounded),
-                    label: Text(l10n.createNewGroup),
+                    onPressed: () {
+                      HapticFeedback.lightImpact();
+                      onRetry();
+                    },
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: Text(l10n.retry),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.xxl,
@@ -92,13 +96,6 @@ class EmptyGroupsWidget extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Future<void> _openCreateGroup(BuildContext context) async {
-    HapticFeedback.lightImpact();
-    await Navigator.of(context).push<bool>(
-      MaterialPageRoute<bool>(builder: (_) => const CreateGroupPage()),
     );
   }
 }

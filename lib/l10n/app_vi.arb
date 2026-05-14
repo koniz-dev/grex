@@ -863,6 +863,36 @@
   "languageRequired": "Vui lòng chọn ngôn ngữ",
   "@languageRequired": {
     "description": "Validation error when language dropdown has no selection"
+  },
+  "myGroups": "Nhóm của tôi",
+  "@myGroups": {
+    "description": "App bar title on the group list page"
+  },
+  "noGroupsTitle": "Chưa có nhóm nào",
+  "@noGroupsTitle": {
+    "description": "Empty-state title shown when the user has no groups"
+  },
+  "noGroupsDescription": "Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia đình.",
+  "@noGroupsDescription": {
+    "description": "Empty-state body shown when the user has no groups"
+  },
+  "somethingWentWrong": "Đã xảy ra lỗi",
+  "@somethingWentWrong": {
+    "description": "Generic error title used on error states"
+  },
+  "couldNotLoadGroups": "Không thể tải danh sách nhóm. Vui lòng kiểm tra kết nối và thử lại.",
+  "@couldNotLoadGroups": {
+    "description": "Friendly explanation shown when the groups list fails to load"
+  },
+  "membersCount": "{count, plural, =0{Chưa có thành viên} =1{1 thành viên} other{{count} thành viên}}",
+  "@membersCount": {
+    "description": "Pluralized count of members in a group",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
   }
 }
 

@@ -891,4 +891,33 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get languageRequired => 'Por favor selecciona un idioma';
+
+  @override
+  String get myGroups => 'Mis grupos';
+
+  @override
+  String get noGroupsTitle => 'Aún no hay grupos';
+
+  @override
+  String get noGroupsDescription =>
+      'Crea tu primer grupo para empezar a compartir gastos con amigos y familia.';
+
+  @override
+  String get somethingWentWrong => 'Algo salió mal';
+
+  @override
+  String get couldNotLoadGroups =>
+      'No pudimos cargar tus grupos. Verifica tu conexión e inténtalo de nuevo.';
+
+  @override
+  String membersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count miembros',
+      one: '1 miembro',
+      zero: 'Sin miembros',
+    );
+    return '$_temp0';
+  }
 }

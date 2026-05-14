@@ -873,4 +873,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageRequired => 'Please select a language';
+
+  @override
+  String get myGroups => 'My Groups';
+
+  @override
+  String get noGroupsTitle => 'No groups yet';
+
+  @override
+  String get noGroupsDescription =>
+      'Create your first group to start splitting expenses with friends and family.';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong';
+
+  @override
+  String get couldNotLoadGroups =>
+      'We couldn\'t load your groups. Check your connection and try again.';
+
+  @override
+  String membersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members',
+      one: '1 member',
+      zero: 'No members',
+    );
+    return '$_temp0';
+  }
 }

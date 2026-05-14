@@ -877,4 +877,33 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get languageRequired => 'Vui lòng chọn ngôn ngữ';
+
+  @override
+  String get myGroups => 'Nhóm của tôi';
+
+  @override
+  String get noGroupsTitle => 'Chưa có nhóm nào';
+
+  @override
+  String get noGroupsDescription =>
+      'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia đình.';
+
+  @override
+  String get somethingWentWrong => 'Đã xảy ra lỗi';
+
+  @override
+  String get couldNotLoadGroups =>
+      'Không thể tải danh sách nhóm. Vui lòng kiểm tra kết nối và thử lại.';
+
+  @override
+  String membersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count thành viên',
+      one: '1 thành viên',
+      zero: 'Chưa có thành viên',
+    );
+    return '$_temp0';
+  }
 }

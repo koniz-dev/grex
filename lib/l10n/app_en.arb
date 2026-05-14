@@ -1176,6 +1176,36 @@
   "languageRequired": "Please select a language",
   "@languageRequired": {
     "description": "Validation error when language dropdown has no selection"
+  },
+  "myGroups": "My Groups",
+  "@myGroups": {
+    "description": "App bar title on the group list page"
+  },
+  "noGroupsTitle": "No groups yet",
+  "@noGroupsTitle": {
+    "description": "Empty-state title shown when the user has no groups"
+  },
+  "noGroupsDescription": "Create your first group to start splitting expenses with friends and family.",
+  "@noGroupsDescription": {
+    "description": "Empty-state body shown when the user has no groups"
+  },
+  "somethingWentWrong": "Something went wrong",
+  "@somethingWentWrong": {
+    "description": "Generic error title used on error states"
+  },
+  "couldNotLoadGroups": "We couldn't load your groups. Check your connection and try again.",
+  "@couldNotLoadGroups": {
+    "description": "Friendly explanation shown when the groups list fails to load"
+  },
+  "membersCount": "{count, plural, =0{No members} =1{1 member} other{{count} members}}",
+  "@membersCount": {
+    "description": "Pluralized count of members in a group",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
   }
 }
 

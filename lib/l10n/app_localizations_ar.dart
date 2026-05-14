@@ -862,4 +862,36 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get languageRequired => 'يرجى اختيار لغة';
+
+  @override
+  String get myGroups => 'مجموعاتي';
+
+  @override
+  String get noGroupsTitle => 'لا توجد مجموعات بعد';
+
+  @override
+  String get noGroupsDescription =>
+      'أنشئ مجموعتك الأولى لبدء تقسيم النفقات مع الأصدقاء والعائلة.';
+
+  @override
+  String get somethingWentWrong => 'حدث خطأ ما';
+
+  @override
+  String get couldNotLoadGroups =>
+      'تعذر تحميل مجموعاتك. تحقق من اتصالك وحاول مرة أخرى.';
+
+  @override
+  String membersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عضو',
+      many: '$count عضواً',
+      few: '$count أعضاء',
+      two: 'عضوان',
+      one: 'عضو واحد',
+      zero: 'لا يوجد أعضاء',
+    );
+    return '$_temp0';
+  }
 }

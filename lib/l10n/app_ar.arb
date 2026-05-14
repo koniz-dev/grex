@@ -1010,5 +1010,35 @@
   "languageRequired": "يرجى اختيار لغة",
   "@languageRequired": {
     "description": "Validation error when language dropdown has no selection"
+  },
+  "myGroups": "مجموعاتي",
+  "@myGroups": {
+    "description": "App bar title on the group list page"
+  },
+  "noGroupsTitle": "لا توجد مجموعات بعد",
+  "@noGroupsTitle": {
+    "description": "Empty-state title shown when the user has no groups"
+  },
+  "noGroupsDescription": "أنشئ مجموعتك الأولى لبدء تقسيم النفقات مع الأصدقاء والعائلة.",
+  "@noGroupsDescription": {
+    "description": "Empty-state body shown when the user has no groups"
+  },
+  "somethingWentWrong": "حدث خطأ ما",
+  "@somethingWentWrong": {
+    "description": "Generic error title used on error states"
+  },
+  "couldNotLoadGroups": "تعذر تحميل مجموعاتك. تحقق من اتصالك وحاول مرة أخرى.",
+  "@couldNotLoadGroups": {
+    "description": "Friendly explanation shown when the groups list fails to load"
+  },
+  "membersCount": "{count, plural, zero{لا يوجد أعضاء} one{عضو واحد} two{عضوان} few{{count} أعضاء} many{{count} عضواً} other{{count} عضو}}",
+  "@membersCount": {
+    "description": "Pluralized count of members in a group",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
   }
 }

@@ -1649,6 +1649,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select a language'**
   String get languageRequired;
+
+  /// App bar title on the group list page
+  ///
+  /// In en, this message translates to:
+  /// **'My Groups'**
+  String get myGroups;
+
+  /// Empty-state title shown when the user has no groups
+  ///
+  /// In en, this message translates to:
+  /// **'No groups yet'**
+  String get noGroupsTitle;
+
+  /// Empty-state body shown when the user has no groups
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first group to start splitting expenses with friends and family.'**
+  String get noGroupsDescription;
+
+  /// Generic error title used on error states
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get somethingWentWrong;
+
+  /// Friendly explanation shown when the groups list fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your groups. Check your connection and try again.'**
+  String get couldNotLoadGroups;
+
+  /// Pluralized count of members in a group
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No members} =1{1 member} other{{count} members}}'**
+  String membersCount(int count);
 }
 
 class _AppLocalizationsDelegate
