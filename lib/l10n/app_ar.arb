@@ -1040,5 +1040,89 @@
         "example": "3"
       }
     }
+  },
+  "expensesPageTitle": "نفقات {groupName}",
+  "@expensesPageTitle": {
+    "description": "App bar title on the expense list page",
+    "placeholders": {
+      "groupName": {
+        "type": "String",
+        "example": "Roadtrip 2025"
+      }
+    }
+  },
+  "expensesSearchHint": "ابحث في النفقات…",
+  "@expensesSearchHint": {
+    "description": "Placeholder text in the expense search field"
+  },
+  "filterExpenses": "تصفية النفقات",
+  "@filterExpenses": {
+    "description": "Tooltip for the expense filter button"
+  },
+  "clearFilters": "مسح عوامل التصفية",
+  "@clearFilters": {
+    "description": "Tooltip for the clear-filters action"
+  },
+  "addExpense": "إضافة نفقة",
+  "@addExpense": {
+    "description": "Label / tooltip for the add-expense action"
+  },
+  "noExpensesTitle": "لا توجد نفقات بعد",
+  "@noExpensesTitle": {
+    "description": "Empty-state title on the expense list"
+  },
+  "noExpensesDescription": "ابدأ بتتبع نفقات المجموعة بإضافة أول نفقة.",
+  "@noExpensesDescription": {
+    "description": "Empty-state body when no expenses exist"
+  },
+  "noExpensesMatchFilters": "لا توجد نفقات تطابق عوامل التصفية. حاول توسيع المعايير.",
+  "@noExpensesMatchFilters": {
+    "description": "Empty-state body when search/filter returns no results"
+  },
+  "addFirstExpense": "أضف أول نفقة",
+  "@addFirstExpense": {
+    "description": "Empty-state CTA label"
+  },
+  "couldNotLoadExpenses": "تعذر تحميل النفقات. تحقق من اتصالك وحاول مرة أخرى.",
+  "@couldNotLoadExpenses": {
+    "description": "Friendly explanation shown when the expense list fails to load"
+  },
+  "paidByPerson": "دفع بواسطة {name}",
+  "@paidByPerson": {
+    "description": "Label showing who paid for an expense",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  "participantsCount": "{count, plural, zero{لا يوجد مشاركون} one{مشارك واحد} two{مشاركان} few{{count} مشاركين} many{{count} مشاركاً} other{{count} مشارك}}",
+  "@participantsCount": {
+    "description": "Pluralized count of participants in a split",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "invalidSplit": "تقسيم غير صالح",
+  "@invalidSplit": {
+    "description": "Badge shown when an expense's split totals do not match its amount"
+  },
+  "validSplit": "صالح",
+  "@validSplit": {
+    "description": "Badge shown when an expense's split totals match its amount"
+  },
+  "groupCurrencyLabel": "المجموعة: {currency}",
+  "@groupCurrencyLabel": {
+    "description": "Small label shown when an expense is in a currency different from the group's",
+    "placeholders": {
+      "currency": {
+        "type": "String",
+        "example": "USD"
+      }
+    }
   }
 }

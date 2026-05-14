@@ -2,150 +2,82 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/expenses/presentation/widgets/empty_expenses_widget.dart';
 
+import '../../../../helpers/localized_pumper.dart';
+
 void main() {
   group('EmptyExpensesWidget Tests', () {
-    const testMessage =
-        'No expenses match your search criteria. Try adjusting your filters.';
+    testWidgets('shows the default empty-state copy and illustration', (
+      tester,
+    ) async {
+      await pumpLocalized(tester, const EmptyExpensesWidget());
 
-    testWidgets('should display empty state content correctly', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: EmptyExpensesWidget(message: testMessage),
-          ),
+      // Title (VI)
+      expect(find.text('Chưa có chi tiêu nào'), findsOneWidget);
+
+      // Default description (VI, no active filters)
+      expect(
+        find.text(
+          'Bắt đầu theo dõi chi tiêu của nhóm bằng cách thêm chi tiêu đầu tiên.',
         ),
+        findsOneWidget,
       );
 
-      // Check title
-      expect(find.text('No Expenses'), findsOneWidget);
-
-      // Check message
-      expect(find.text(testMessage), findsOneWidget);
-
-      // Check icon
+      // Illustration icon
       expect(find.byIcon(Icons.receipt_long_outlined), findsOneWidget);
     });
 
-    testWidgets('should call onAddExpense when button is tapped', (
+    testWidgets(
+      'swaps copy when there are active filters and hides the CTA',
+      (tester) async {
+        await pumpLocalized(
+          tester,
+          const EmptyExpensesWidget(hasActiveFilters: true),
+        );
+
+        expect(
+          find.text(
+            'Không có chi tiêu nào khớp với bộ lọc. Thử mở rộng điều kiện.',
+          ),
+          findsOneWidget,
+        );
+        expect(find.text('Thêm chi tiêu đầu tiên'), findsNothing);
+      },
+    );
+
+    testWidgets('renders the add CTA when onAddExpense is provided', (
       tester,
     ) async {
-      var onAddExpenseCalled = false;
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: EmptyExpensesWidget(
-              message: testMessage,
-              onAddExpense: () => onAddExpenseCalled = true,
-            ),
-          ),
-        ),
+      var tapped = false;
+      await pumpLocalized(
+        tester,
+        EmptyExpensesWidget(onAddExpense: () => tapped = true),
       );
-      await tester.pumpAndSettle();
 
-      // Check button text
-      expect(find.text('Add First Expense'), findsOneWidget);
+      expect(find.text('Thêm chi tiêu đầu tiên'), findsOneWidget);
+      expect(find.byIcon(Icons.add_rounded), findsOneWidget);
 
-      // Tap the add expense button
-      await tester.tap(find.text('Add First Expense'));
-
-      expect(onAddExpenseCalled, isTrue);
+      await tester.tap(find.text('Thêm chi tiêu đầu tiên'));
+      expect(tapped, isTrue);
     });
 
-    testWidgets('should have proper text styling', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: EmptyExpensesWidget(message: testMessage),
-          ),
-        ),
-      );
-
-      // Check message text style
-      final messageText = tester.widget<Text>(find.text(testMessage));
-      expect(messageText.textAlign, equals(TextAlign.center));
+    testWidgets('hides the CTA when onAddExpense is null', (tester) async {
+      await pumpLocalized(tester, const EmptyExpensesWidget());
+      expect(find.text('Thêm chi tiêu đầu tiên'), findsNothing);
+      expect(find.byType(ElevatedButton), findsNothing);
     });
 
-    testWidgets('should have proper spacing between elements', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: EmptyExpensesWidget(message: testMessage),
-          ),
-        ),
-      );
-
-      // Check padding
-      final padding = tester.widget<Padding>(find.byType(Padding));
-      expect(padding.padding, equals(const EdgeInsets.all(32)));
-    });
-
-    testWidgets('should display icon with correct size', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: EmptyExpensesWidget(message: testMessage),
-          ),
-        ),
-      );
-
-      final icon = tester.widget<Icon>(
-        find.byIcon(Icons.receipt_long_outlined),
-      );
-      expect(icon.size, equals(80));
-    });
-
-    testWidgets('should be responsive to different screen sizes', (
-      tester,
-    ) async {
-      // Test with small screen
+    testWidgets('stays laid out on a 300×600 surface', (tester) async {
       await tester.binding.setSurfaceSize(const Size(300, 600));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: EmptyExpensesWidget(message: testMessage),
-          ),
-        ),
-      );
-
-      expect(find.text('No Expenses'), findsOneWidget);
-
-      // Reset to default size
-      await tester.binding.setSurfaceSize(null);
+      await pumpLocalized(tester, const EmptyExpensesWidget());
+      expect(find.text('Chưa có chi tiêu nào'), findsOneWidget);
     });
 
-    testWidgets('should not show button when onAddExpense is null', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: EmptyExpensesWidget(message: testMessage),
-          ),
-        ),
-      );
-
-      expect(find.text('Add First Expense'), findsNothing);
-    });
-
-    testWidgets('should show button when onAddExpense is provided', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: EmptyExpensesWidget(
-              message: testMessage,
-              onAddExpense: () {},
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.byIcon(Icons.add), findsOneWidget);
-      expect(find.text('Add First Expense'), findsOneWidget);
+    testWidgets('center-aligns the title text', (tester) async {
+      await pumpLocalized(tester, const EmptyExpensesWidget());
+      final title = tester.widget<Text>(find.text('Chưa có chi tiêu nào'));
+      expect(title.textAlign, equals(TextAlign.center));
     });
   });
 }

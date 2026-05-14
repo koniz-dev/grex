@@ -920,4 +920,67 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String expensesPageTitle(String groupName) {
+    return 'Gastos de $groupName';
+  }
+
+  @override
+  String get expensesSearchHint => 'Buscar gastos…';
+
+  @override
+  String get filterExpenses => 'Filtrar gastos';
+
+  @override
+  String get clearFilters => 'Borrar filtros';
+
+  @override
+  String get addExpense => 'Añadir gasto';
+
+  @override
+  String get noExpensesTitle => 'Aún no hay gastos';
+
+  @override
+  String get noExpensesDescription =>
+      'Empieza a registrar los gastos del grupo añadiendo el primero.';
+
+  @override
+  String get noExpensesMatchFilters =>
+      'Ningún gasto coincide con los filtros. Prueba a ampliar los criterios.';
+
+  @override
+  String get addFirstExpense => 'Añadir primer gasto';
+
+  @override
+  String get couldNotLoadExpenses =>
+      'No pudimos cargar los gastos. Verifica tu conexión e inténtalo de nuevo.';
+
+  @override
+  String paidByPerson(String name) {
+    return 'Pagado por $name';
+  }
+
+  @override
+  String participantsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count participantes',
+      one: '1 participante',
+      zero: 'Sin participantes',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get invalidSplit => 'División inválida';
+
+  @override
+  String get validSplit => 'Válida';
+
+  @override
+  String groupCurrencyLabel(String currency) {
+    return 'Grupo: $currency';
+  }
 }

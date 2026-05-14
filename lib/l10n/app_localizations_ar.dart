@@ -894,4 +894,70 @@ class AppLocalizationsAr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String expensesPageTitle(String groupName) {
+    return 'نفقات $groupName';
+  }
+
+  @override
+  String get expensesSearchHint => 'ابحث في النفقات…';
+
+  @override
+  String get filterExpenses => 'تصفية النفقات';
+
+  @override
+  String get clearFilters => 'مسح عوامل التصفية';
+
+  @override
+  String get addExpense => 'إضافة نفقة';
+
+  @override
+  String get noExpensesTitle => 'لا توجد نفقات بعد';
+
+  @override
+  String get noExpensesDescription =>
+      'ابدأ بتتبع نفقات المجموعة بإضافة أول نفقة.';
+
+  @override
+  String get noExpensesMatchFilters =>
+      'لا توجد نفقات تطابق عوامل التصفية. حاول توسيع المعايير.';
+
+  @override
+  String get addFirstExpense => 'أضف أول نفقة';
+
+  @override
+  String get couldNotLoadExpenses =>
+      'تعذر تحميل النفقات. تحقق من اتصالك وحاول مرة أخرى.';
+
+  @override
+  String paidByPerson(String name) {
+    return 'دفع بواسطة $name';
+  }
+
+  @override
+  String participantsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مشارك',
+      many: '$count مشاركاً',
+      few: '$count مشاركين',
+      two: 'مشاركان',
+      one: 'مشارك واحد',
+      zero: 'لا يوجد مشاركون',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get invalidSplit => 'تقسيم غير صالح';
+
+  @override
+  String get validSplit => 'صالح';
+
+  @override
+  String groupCurrencyLabel(String currency) {
+    return 'المجموعة: $currency';
+  }
 }

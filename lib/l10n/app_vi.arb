@@ -893,6 +893,90 @@
         "example": "3"
       }
     }
+  },
+  "expensesPageTitle": "Chi tiêu của {groupName}",
+  "@expensesPageTitle": {
+    "description": "App bar title on the expense list page",
+    "placeholders": {
+      "groupName": {
+        "type": "String",
+        "example": "Roadtrip 2025"
+      }
+    }
+  },
+  "expensesSearchHint": "Tìm chi tiêu…",
+  "@expensesSearchHint": {
+    "description": "Placeholder text in the expense search field"
+  },
+  "filterExpenses": "Lọc chi tiêu",
+  "@filterExpenses": {
+    "description": "Tooltip for the expense filter button"
+  },
+  "clearFilters": "Xoá bộ lọc",
+  "@clearFilters": {
+    "description": "Tooltip for the clear-filters action"
+  },
+  "addExpense": "Thêm chi tiêu",
+  "@addExpense": {
+    "description": "Label / tooltip for the add-expense action"
+  },
+  "noExpensesTitle": "Chưa có chi tiêu nào",
+  "@noExpensesTitle": {
+    "description": "Empty-state title on the expense list"
+  },
+  "noExpensesDescription": "Bắt đầu theo dõi chi tiêu của nhóm bằng cách thêm chi tiêu đầu tiên.",
+  "@noExpensesDescription": {
+    "description": "Empty-state body when no expenses exist"
+  },
+  "noExpensesMatchFilters": "Không có chi tiêu nào khớp với bộ lọc. Thử mở rộng điều kiện.",
+  "@noExpensesMatchFilters": {
+    "description": "Empty-state body when search/filter returns no results"
+  },
+  "addFirstExpense": "Thêm chi tiêu đầu tiên",
+  "@addFirstExpense": {
+    "description": "Empty-state CTA label"
+  },
+  "couldNotLoadExpenses": "Không thể tải danh sách chi tiêu. Vui lòng kiểm tra kết nối và thử lại.",
+  "@couldNotLoadExpenses": {
+    "description": "Friendly explanation shown when the expense list fails to load"
+  },
+  "paidByPerson": "Trả bởi {name}",
+  "@paidByPerson": {
+    "description": "Label showing who paid for an expense",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  "participantsCount": "{count, plural, =0{Không có người tham gia} =1{1 người tham gia} other{{count} người tham gia}}",
+  "@participantsCount": {
+    "description": "Pluralized count of participants in a split",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "invalidSplit": "Chia không hợp lệ",
+  "@invalidSplit": {
+    "description": "Badge shown when an expense's split totals do not match its amount"
+  },
+  "validSplit": "Hợp lệ",
+  "@validSplit": {
+    "description": "Badge shown when an expense's split totals match its amount"
+  },
+  "groupCurrencyLabel": "Nhóm: {currency}",
+  "@groupCurrencyLabel": {
+    "description": "Small label shown when an expense is in a currency different from the group's",
+    "placeholders": {
+      "currency": {
+        "type": "String",
+        "example": "USD"
+      }
+    }
   }
 }
 

@@ -5,29 +5,16 @@ import 'package:grex/shared/theme/app_icon_sizes.dart';
 import 'package:grex/shared/theme/app_radius.dart';
 import 'package:grex/shared/theme/app_spacing.dart';
 
-/// Empty-state widget shown on the expense list.
-///
-/// Renders a centred illustration, a localised title, a context-aware
-/// description (driven by [hasActiveFilters]), and an optional primary CTA
-/// to add the first expense. Wrapping in a [SingleChildScrollView] keeps the
-/// state scrollable so the surrounding [RefreshIndicator] still works and
-/// nothing overflows on small phones.
-class EmptyExpensesWidget extends StatelessWidget {
-  /// Creates an [EmptyExpensesWidget].
-  const EmptyExpensesWidget({
-    this.hasActiveFilters = false,
-    this.onAddExpense,
+/// Friendly error state for the expense list.
+class ExpenseListErrorWidget extends StatelessWidget {
+  /// Creates an [ExpenseListErrorWidget].
+  const ExpenseListErrorWidget({
+    required this.onRetry,
     super.key,
   });
 
-  /// Whether the page currently has active search or filters. Controls which
-  /// description is shown — "no expenses yet" vs "no results match".
-  final bool hasActiveFilters;
-
-  /// Optional callback invoked when the user taps the add-first-expense CTA.
-  /// The CTA is hidden when this is `null` (e.g. in filtered states where
-  /// adding an expense isn't the right next step).
-  final VoidCallback? onAddExpense;
+  /// Callback invoked when the user taps the retry CTA.
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +40,18 @@ class EmptyExpensesWidget extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: scheme.primaryContainer.withValues(alpha: 0.3),
+                      color: scheme.errorContainer.withValues(alpha: 0.4),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
-                      Icons.receipt_long_outlined,
+                      Icons.cloud_off_rounded,
                       size: AppIconSizes.illustration,
-                      color: scheme.primary,
+                      color: scheme.error,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   Text(
-                    l10n.noExpensesTitle,
+                    l10n.somethingWentWrong,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: scheme.onSurface,
@@ -73,35 +60,31 @@ class EmptyExpensesWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   Text(
-                    hasActiveFilters
-                        ? l10n.noExpensesMatchFilters
-                        : l10n.noExpensesDescription,
+                    l10n.couldNotLoadExpenses,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: scheme.onSurfaceVariant,
                       height: 1.4,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  if (onAddExpense != null) ...[
-                    const SizedBox(height: AppSpacing.xxxl),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        onAddExpense!();
-                      },
-                      icon: const Icon(Icons.add_rounded),
-                      label: Text(l10n.addFirstExpense),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xxl,
-                          vertical: AppSpacing.md,
-                        ),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: AppRadius.brMd,
-                        ),
+                  const SizedBox(height: AppSpacing.xxxl),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      HapticFeedback.lightImpact();
+                      onRetry();
+                    },
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: Text(l10n.retry),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xxl,
+                        vertical: AppSpacing.md,
+                      ),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: AppRadius.brMd,
                       ),
                     ),
-                  ],
+                  ),
                 ],
               ),
             ),

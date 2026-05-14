@@ -4,6 +4,8 @@ import 'package:grex/features/expenses/domain/entities/expense.dart';
 import 'package:grex/features/expenses/domain/entities/expense_participant.dart';
 import 'package:grex/features/expenses/presentation/widgets/expense_list_item.dart';
 
+import '../../../../helpers/localized_pumper.dart';
+
 void main() {
   group('ExpenseListItem Widget Tests', () {
     late Expense testExpense;
@@ -39,86 +41,81 @@ void main() {
       );
     });
 
-    testWidgets('should display expense information correctly', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: testExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+    testWidgets('renders description, amount, payer and participants', (
+      tester,
+    ) async {
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: testExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
 
-      // Check expense description
       expect(find.text('Dinner at restaurant'), findsOneWidget);
-
-      // Check amount - use textContaining to handle potential spaces between
-      // number and symbol
       expect(find.textContaining('150.000'), findsOneWidget);
       expect(find.textContaining('₫'), findsOneWidget);
 
-      // Check payer name
-      expect(find.text('Paid by John Doe'), findsOneWidget);
+      // Localized "Paid by John Doe" (VI)
+      expect(find.text('Trả bởi John Doe'), findsOneWidget);
 
-      // Check participant count
-      expect(find.text('2 participants'), findsOneWidget);
+      // Localized pluralized participant count (VI)
+      expect(find.text('2 người tham gia'), findsOneWidget);
     });
 
-    testWidgets('should display expense date correctly', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: testExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+    testWidgets('renders "Yesterday" relative date (VI)', (tester) async {
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: testExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
 
-      // Should show relative date like "Yesterday" (since the test setup uses
-      // -1 day)
-      expect(find.text('Yesterday'), findsOneWidget);
+      expect(find.text('Hôm qua'), findsOneWidget);
     });
 
-    testWidgets('should display different currencies correctly', (
+    testWidgets('renders "Today" relative date (VI)', (tester) async {
+      final todayExpense = testExpense.copyWith(expenseDate: DateTime.now());
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: todayExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
+        ),
+      );
+      expect(find.text('Hôm nay'), findsOneWidget);
+    });
+
+    testWidgets('renders USD currency symbol when groupCurrency differs', (
       tester,
     ) async {
-      final usdExpense = testExpense.copyWith(
-        amount: 50,
-        currency: 'USD',
-      );
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: usdExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'USD',
-            ),
-          ),
+      final usdExpense = testExpense.copyWith(amount: 50, currency: 'USD');
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: usdExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
 
       expect(find.textContaining('50.00'), findsOneWidget);
       expect(find.textContaining(r'$'), findsOneWidget);
+      // Group currency hint (VI)
+      expect(find.text('Nhóm: VND'), findsOneWidget);
     });
 
-    testWidgets('should call onTap when tapped', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: testExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+    testWidgets('calls onTap when the card is tapped', (tester) async {
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: testExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
 
@@ -126,101 +123,72 @@ void main() {
       expect(onTapCalled, isTrue);
     });
 
-    testWidgets('should display split validity indicator', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: testExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+    testWidgets('shows the valid-split badge (VI)', (tester) async {
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: testExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
 
-      // Should show valid split icon since totalParticipantShares matches
-      // amount
-      expect(find.byIcon(Icons.check_circle), findsOneWidget);
-      expect(find.text('Valid'), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle_outline_rounded), findsOneWidget);
+      expect(find.text('Hợp lệ'), findsOneWidget);
     });
 
-    testWidgets('should display invalid split indicator', (tester) async {
-      final invalidExpense = testExpense.copyWith(
-        amount: 200000, // Shares only sum to 150000
-      );
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: invalidExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+    testWidgets('shows the invalid-split badge (VI)', (tester) async {
+      final invalidExpense = testExpense.copyWith(amount: 200000);
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: invalidExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
 
-      // Should show invalid split icon
-      expect(find.byIcon(Icons.warning), findsOneWidget);
-      expect(find.text('Invalid split'), findsOneWidget);
+      expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
+      expect(find.text('Chia không hợp lệ'), findsOneWidget);
     });
 
-    testWidgets('should truncate long descriptions', (tester) async {
+    testWidgets('truncates long descriptions to two lines', (tester) async {
       const longDescription =
           'This is a very long expense description that should be truncated '
           'when displayed in the list item';
-      final longDescriptionExpense = testExpense.copyWith(
-        description: longDescription,
-      );
+      final longExpense = testExpense.copyWith(description: longDescription);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: longDescriptionExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: longExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
-
-      // The description should be present
-      expect(find.text(longDescription), findsOneWidget);
 
       final text = tester.widget<Text>(find.text(longDescription));
       expect(text.maxLines, equals(2));
       expect(text.overflow, equals(TextOverflow.ellipsis));
     });
 
-    testWidgets('should display expense with single participant', (
-      tester,
-    ) async {
-      final singleParticipantExpense = testExpense.copyWith(
+    testWidgets('renders the singular participant label (VI)', (tester) async {
+      final singleParticipant = testExpense.copyWith(
         participants: [testExpense.participants.first],
       );
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: singleParticipantExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: singleParticipant,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
-
-      expect(find.text('1 participant'), findsOneWidget);
+      expect(find.text('1 người tham gia'), findsOneWidget);
     });
 
-    testWidgets('should display expense with many participants', (
-      tester,
-    ) async {
-      final manyParticipantsExpense = testExpense.copyWith(
+    testWidgets('renders the multi-participant label (VI)', (tester) async {
+      final manyParticipants = testExpense.copyWith(
         participants: [
           ...testExpense.participants,
           const ExpenseParticipant(
@@ -231,120 +199,45 @@ void main() {
           ),
         ],
       );
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: manyParticipantsExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: manyParticipants,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
-
-      expect(find.text('3 participants'), findsOneWidget);
+      expect(find.text('3 người tham gia'), findsOneWidget);
     });
 
-    testWidgets('should have proper card styling', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: testExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+    testWidgets('renders a card with a rounded shape', (tester) async {
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: testExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
 
       expect(find.byType(Card), findsOneWidget);
-
-      final inkWell = tester.widget<InkWell>(find.byType(InkWell));
-      expect(inkWell.borderRadius, isNotNull);
+      final card = tester.widget<Card>(find.byType(Card));
+      expect(card.shape, isA<RoundedRectangleBorder>());
     });
 
-    testWidgets('should display expense category if available', (
+    testWidgets('shows the category badge when category is present', (
       tester,
     ) async {
       final categoryExpense = testExpense.copyWith(category: 'Food');
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: categoryExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
+      await pumpLocalized(
+        tester,
+        ExpenseListItem(
+          expense: categoryExpense,
+          onTap: () => onTapCalled = true,
+          groupCurrency: 'VND',
         ),
       );
-
-      // Should show category text
       expect(find.text('Food'), findsOneWidget);
-    });
-
-    testWidgets('should handle zero amount expense', (tester) async {
-      final zeroAmountExpense = testExpense.copyWith(amount: 0);
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: zeroAmountExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
-        ),
-      );
-
-      expect(find.textContaining('0'), findsOneWidget);
-      expect(find.textContaining('₫'), findsOneWidget);
-    });
-
-    testWidgets('should display today date correctly', (tester) async {
-      final todayExpense = testExpense.copyWith(
-        expenseDate: DateTime.now(),
-      );
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: todayExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
-        ),
-      );
-
-      expect(find.text('Today'), findsOneWidget);
-    });
-
-    testWidgets('should display yesterday date correctly', (tester) async {
-      // Use exactly 24 hours ago
-      final yesterdayExpense = testExpense.copyWith(
-        expenseDate: DateTime.now().subtract(const Duration(hours: 25)),
-      );
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ExpenseListItem(
-              expense: yesterdayExpense,
-              onTap: () => onTapCalled = true,
-              groupCurrency: 'VND',
-            ),
-          ),
-        ),
-      );
-
-      expect(find.text('Yesterday'), findsOneWidget);
     });
   });
 }

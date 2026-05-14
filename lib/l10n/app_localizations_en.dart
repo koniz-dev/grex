@@ -902,4 +902,67 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String expensesPageTitle(String groupName) {
+    return '$groupName expenses';
+  }
+
+  @override
+  String get expensesSearchHint => 'Search expenses…';
+
+  @override
+  String get filterExpenses => 'Filter expenses';
+
+  @override
+  String get clearFilters => 'Clear filters';
+
+  @override
+  String get addExpense => 'Add expense';
+
+  @override
+  String get noExpensesTitle => 'No expenses yet';
+
+  @override
+  String get noExpensesDescription =>
+      'Start tracking your group\'s spending by adding the first expense.';
+
+  @override
+  String get noExpensesMatchFilters =>
+      'No expenses match your filters. Try widening the criteria.';
+
+  @override
+  String get addFirstExpense => 'Add first expense';
+
+  @override
+  String get couldNotLoadExpenses =>
+      'We couldn\'t load expenses. Check your connection and try again.';
+
+  @override
+  String paidByPerson(String name) {
+    return 'Paid by $name';
+  }
+
+  @override
+  String participantsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count participants',
+      one: '1 participant',
+      zero: 'No participants',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get invalidSplit => 'Invalid split';
+
+  @override
+  String get validSplit => 'Valid';
+
+  @override
+  String groupCurrencyLabel(String currency) {
+    return 'Group: $currency';
+  }
 }

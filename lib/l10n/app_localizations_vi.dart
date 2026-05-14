@@ -906,4 +906,67 @@ class AppLocalizationsVi extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String expensesPageTitle(String groupName) {
+    return 'Chi tiêu của $groupName';
+  }
+
+  @override
+  String get expensesSearchHint => 'Tìm chi tiêu…';
+
+  @override
+  String get filterExpenses => 'Lọc chi tiêu';
+
+  @override
+  String get clearFilters => 'Xoá bộ lọc';
+
+  @override
+  String get addExpense => 'Thêm chi tiêu';
+
+  @override
+  String get noExpensesTitle => 'Chưa có chi tiêu nào';
+
+  @override
+  String get noExpensesDescription =>
+      'Bắt đầu theo dõi chi tiêu của nhóm bằng cách thêm chi tiêu đầu tiên.';
+
+  @override
+  String get noExpensesMatchFilters =>
+      'Không có chi tiêu nào khớp với bộ lọc. Thử mở rộng điều kiện.';
+
+  @override
+  String get addFirstExpense => 'Thêm chi tiêu đầu tiên';
+
+  @override
+  String get couldNotLoadExpenses =>
+      'Không thể tải danh sách chi tiêu. Vui lòng kiểm tra kết nối và thử lại.';
+
+  @override
+  String paidByPerson(String name) {
+    return 'Trả bởi $name';
+  }
+
+  @override
+  String participantsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count người tham gia',
+      one: '1 người tham gia',
+      zero: 'Không có người tham gia',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get invalidSplit => 'Chia không hợp lệ';
+
+  @override
+  String get validSplit => 'Hợp lệ';
+
+  @override
+  String groupCurrencyLabel(String currency) {
+    return 'Nhóm: $currency';
+  }
 }

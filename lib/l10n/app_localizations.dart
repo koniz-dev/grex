@@ -1685,6 +1685,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{No members} =1{1 member} other{{count} members}}'**
   String membersCount(int count);
+
+  /// App bar title on the expense list page
+  ///
+  /// In en, this message translates to:
+  /// **'{groupName} expenses'**
+  String expensesPageTitle(String groupName);
+
+  /// Placeholder text in the expense search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search expenses…'**
+  String get expensesSearchHint;
+
+  /// Tooltip for the expense filter button
+  ///
+  /// In en, this message translates to:
+  /// **'Filter expenses'**
+  String get filterExpenses;
+
+  /// Tooltip for the clear-filters action
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get clearFilters;
+
+  /// Label / tooltip for the add-expense action
+  ///
+  /// In en, this message translates to:
+  /// **'Add expense'**
+  String get addExpense;
+
+  /// Empty-state title on the expense list
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses yet'**
+  String get noExpensesTitle;
+
+  /// Empty-state body when no expenses exist
+  ///
+  /// In en, this message translates to:
+  /// **'Start tracking your group\'s spending by adding the first expense.'**
+  String get noExpensesDescription;
+
+  /// Empty-state body when search/filter returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses match your filters. Try widening the criteria.'**
+  String get noExpensesMatchFilters;
+
+  /// Empty-state CTA label
+  ///
+  /// In en, this message translates to:
+  /// **'Add first expense'**
+  String get addFirstExpense;
+
+  /// Friendly explanation shown when the expense list fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load expenses. Check your connection and try again.'**
+  String get couldNotLoadExpenses;
+
+  /// Label showing who paid for an expense
+  ///
+  /// In en, this message translates to:
+  /// **'Paid by {name}'**
+  String paidByPerson(String name);
+
+  /// Pluralized count of participants in a split
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No participants} =1{1 participant} other{{count} participants}}'**
+  String participantsCount(int count);
+
+  /// Badge shown when an expense's split totals do not match its amount
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid split'**
+  String get invalidSplit;
+
+  /// Badge shown when an expense's split totals match its amount
+  ///
+  /// In en, this message translates to:
+  /// **'Valid'**
+  String get validSplit;
+
+  /// Small label shown when an expense is in a currency different from the group's
+  ///
+  /// In en, this message translates to:
+  /// **'Group: {currency}'**
+  String groupCurrencyLabel(String currency);
 }
 
 class _AppLocalizationsDelegate
