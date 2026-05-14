@@ -965,4 +965,84 @@ class AppLocalizationsEn extends AppLocalizations {
   String groupCurrencyLabel(String currency) {
     return 'Group: $currency';
   }
+
+  @override
+  String balancesPageTitle(String groupName) {
+    return '$groupName balances';
+  }
+
+  @override
+  String get refreshBalances => 'Refresh balances';
+
+  @override
+  String get couldNotLoadBalances =>
+      'We couldn\'t load balances. Check your connection and try again.';
+
+  @override
+  String get memberBalances => 'Member balances';
+
+  @override
+  String get settleUp => 'Settle up';
+
+  @override
+  String get balanceAmountLabel => 'Balance';
+
+  @override
+  String get viewSettlementPlan => 'View settlement plan';
+
+  @override
+  String get balanceStatusOwes => 'Owes money to group';
+
+  @override
+  String get balanceStatusOwed => 'Is owed money by group';
+
+  @override
+  String get balanceStatusSettled => 'All settled up';
+
+  @override
+  String get balanceBadgeOwes => 'OWES';
+
+  @override
+  String get balanceBadgeOwed => 'OWED';
+
+  @override
+  String get balanceBadgeSettled => 'SETTLED';
+
+  @override
+  String get noBalancesTitle => 'No balances yet';
+
+  @override
+  String get noBalancesDescription =>
+      'Balances will appear here once expenses and payments are added to the group.';
+
+  @override
+  String get balancesAutoExplainer =>
+      'Balances are calculated automatically from your group\'s expenses and payments.';
+
+  @override
+  String get addExpenses => 'Add expenses';
+
+  @override
+  String get recordPayments => 'Record payments';
+
+  @override
+  String get balanceSummary => 'Balance summary';
+
+  @override
+  String get totalOwed => 'Total owed';
+
+  @override
+  String get totalOwes => 'Total owes';
+
+  @override
+  String get settledStat => 'Settled';
+
+  @override
+  String get unsettledStat => 'Unsettled';
+
+  @override
+  String get generateSettlementPlan => 'Generate settlement plan';
+
+  @override
+  String get allMembersSettledUp => 'All members are settled up!';
 }

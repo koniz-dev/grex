@@ -1124,5 +1124,111 @@
         "example": "USD"
       }
     }
+  },
+  "balancesPageTitle": "أرصدة {groupName}",
+  "@balancesPageTitle": {
+    "description": "App bar title on the balance page",
+    "placeholders": {
+      "groupName": {
+        "type": "String",
+        "example": "Roadtrip 2025"
+      }
+    }
+  },
+  "refreshBalances": "تحديث الأرصدة",
+  "@refreshBalances": {
+    "description": "Tooltip for the refresh-balances action"
+  },
+  "couldNotLoadBalances": "تعذر تحميل الأرصدة. تحقق من اتصالك وحاول مرة أخرى.",
+  "@couldNotLoadBalances": {
+    "description": "Friendly explanation shown when balances fail to load"
+  },
+  "memberBalances": "أرصدة الأعضاء",
+  "@memberBalances": {
+    "description": "Section title above the list of per-member balances"
+  },
+  "settleUp": "تسوية",
+  "@settleUp": {
+    "description": "FAB label that opens the settlement plan"
+  },
+  "balanceAmountLabel": "الرصيد",
+  "@balanceAmountLabel": {
+    "description": "Label above a single balance amount in the detail sheet"
+  },
+  "viewSettlementPlan": "عرض خطة التسوية",
+  "@viewSettlementPlan": {
+    "description": "CTA opening the settlement plan from a balance detail sheet"
+  },
+  "balanceStatusOwes": "مدين للمجموعة",
+  "@balanceStatusOwes": {
+    "description": "Subtitle shown when a member owes money to the group"
+  },
+  "balanceStatusOwed": "للمجموعة دَين عليه",
+  "@balanceStatusOwed": {
+    "description": "Subtitle shown when a member is owed money by the group"
+  },
+  "balanceStatusSettled": "تمت التسوية",
+  "@balanceStatusSettled": {
+    "description": "Subtitle shown when a member's balance is zero"
+  },
+  "balanceBadgeOwes": "مدين",
+  "@balanceBadgeOwes": {
+    "description": "Compact badge label for the 'owes' balance state"
+  },
+  "balanceBadgeOwed": "دائن",
+  "@balanceBadgeOwed": {
+    "description": "Compact badge label for the 'owed' balance state"
+  },
+  "balanceBadgeSettled": "متوازن",
+  "@balanceBadgeSettled": {
+    "description": "Compact badge label for the 'settled' balance state"
+  },
+  "noBalancesTitle": "لا توجد أرصدة بعد",
+  "@noBalancesTitle": {
+    "description": "Empty-state title on the balance page"
+  },
+  "noBalancesDescription": "ستظهر الأرصدة هنا بمجرد إضافة النفقات والمدفوعات إلى المجموعة.",
+  "@noBalancesDescription": {
+    "description": "Empty-state body on the balance page"
+  },
+  "balancesAutoExplainer": "تُحسب الأرصدة تلقائياً من نفقات ومدفوعات المجموعة.",
+  "@balancesAutoExplainer": {
+    "description": "Help text on the empty balance state"
+  },
+  "addExpenses": "إضافة نفقات",
+  "@addExpenses": {
+    "description": "CTA label that returns to the expense list to add expenses"
+  },
+  "recordPayments": "تسجيل المدفوعات",
+  "@recordPayments": {
+    "description": "CTA label that returns to the payment list to record payments"
+  },
+  "balanceSummary": "ملخص الأرصدة",
+  "@balanceSummary": {
+    "description": "Title for the summary card on the balance page"
+  },
+  "totalOwed": "إجمالي المستحق",
+  "@totalOwed": {
+    "description": "Stat label — total money owed to members in the group"
+  },
+  "totalOwes": "إجمالي الدَين",
+  "@totalOwes": {
+    "description": "Stat label — total money owed by members in the group"
+  },
+  "settledStat": "تمت التسوية",
+  "@settledStat": {
+    "description": "Stat label — number of members fully settled"
+  },
+  "unsettledStat": "غير مسوّى",
+  "@unsettledStat": {
+    "description": "Stat label — number of members still with non-zero balances"
+  },
+  "generateSettlementPlan": "إنشاء خطة تسوية",
+  "@generateSettlementPlan": {
+    "description": "Primary CTA in the balance summary card"
+  },
+  "allMembersSettledUp": "جميع الأعضاء في حالة توازن!",
+  "@allMembersSettledUp": {
+    "description": "Celebratory banner shown when nobody owes anything"
   }
 }

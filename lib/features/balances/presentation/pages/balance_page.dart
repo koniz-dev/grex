@@ -1,19 +1,26 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/di/injection.dart';
 import 'package:grex/features/balances/domain/entities/balance.dart';
 import 'package:grex/features/balances/presentation/bloc/balance_bloc.dart';
 import 'package:grex/features/balances/presentation/bloc/balance_event.dart';
 import 'package:grex/features/balances/presentation/bloc/balance_state.dart';
+import 'package:grex/features/balances/presentation/widgets/balance_list_error_widget.dart';
 import 'package:grex/features/balances/presentation/widgets/balance_list_item.dart';
+import 'package:grex/features/balances/presentation/widgets/balance_list_skeleton.dart';
 import 'package:grex/features/balances/presentation/widgets/balance_summary_card.dart';
 import 'package:grex/features/balances/presentation/widgets/empty_balances_widget.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_radius.dart';
+import 'package:grex/shared/theme/app_spacing.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
 
-/// Page displaying group member balances and settlement options
+/// Page displaying group member balances and settlement options.
 class BalancePage extends StatefulWidget {
-  /// Creates a [BalancePage] instance
+  /// Creates a [BalancePage].
   const BalancePage({
     required this.groupId,
     required this.groupName,
@@ -21,13 +28,13 @@ class BalancePage extends StatefulWidget {
     super.key,
   });
 
-  /// The ID of the group
+  /// The ID of the group whose balances are being displayed.
   final String groupId;
 
-  /// The name of the group
+  /// The display name of the group (rendered in the app bar).
   final String groupName;
 
-  /// The currency code of the group
+  /// The currency used for the group's balances.
   final String groupCurrency;
 
   @override
@@ -55,6 +62,7 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _generateSettlementPlan() {
+    HapticFeedback.lightImpact();
     unawaited(
       Navigator.of(context).pushNamed(
         '/settlement-plan',
@@ -69,296 +77,59 @@ class _BalancePageState extends State<BalancePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+
     return BlocProvider.value(
       value: _balanceBloc,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('${widget.groupName} - Balances'),
+          title: Text(l10n.balancesPageTitle(widget.groupName)),
+          backgroundColor: theme.colorScheme.surface,
+          foregroundColor: theme.colorScheme.onSurface,
+          elevation: 0,
+          scrolledUnderElevation: 1,
           actions: [
             IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: _loadBalances,
-              tooltip: 'Refresh balances',
+              icon: const Icon(Icons.refresh_rounded),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                _loadBalances();
+              },
+              tooltip: l10n.refreshBalances,
             ),
           ],
         ),
         body: BlocBuilder<BalanceBloc, BalanceState>(
           builder: (context, state) {
-            if (state is BalanceLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            if (state is BalanceError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Error loading balances',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      state.message,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton.icon(
-                      onPressed: _loadBalances,
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            if (state is BalancesLoaded) {
-              if (state.balances.isEmpty) {
-                return const EmptyBalancesWidget();
-              }
-
-              return RefreshIndicator(
-                onRefresh: () async {
-                  _loadBalances();
-                },
-                child: CustomScrollView(
-                  slivers: [
-                    // Balance summary card
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: BalanceSummaryCard(
-                          balances: state.balances,
-                          currency: widget.groupCurrency,
-                          onGenerateSettlement: _generateSettlementPlan,
-                        ),
-                      ),
-                    ),
-
-                    // Balance list header
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Member Balances',
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              '${state.balances.length} members',
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurfaceVariant,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    // Balance list
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final balance = state.balances[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 4,
-                            ),
-                            child: BalanceListItem(
-                              balance: balance,
-                              onTap: () => _showBalanceDetails(balance),
-                            ),
-                          );
-                        },
-                        childCount: state.balances.length,
-                      ),
-                    ),
-
-                    // Bottom padding
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 16),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            return const EmptyBalancesWidget();
+            return RefreshIndicator(
+              onRefresh: () async {
+                HapticFeedback.lightImpact();
+                _loadBalances();
+              },
+              child: _BalanceBody(
+                state: state,
+                groupCurrency: widget.groupCurrency,
+                onRetry: _loadBalances,
+                onGenerateSettlement: _generateSettlementPlan,
+                onShowBalanceDetail: _showBalanceDetails,
+              ),
+            );
           },
         ),
         floatingActionButton: BlocBuilder<BalanceBloc, BalanceState>(
           builder: (context, state) {
-            if (state is BalancesLoaded && state.balances.isNotEmpty) {
-              final hasUnsettledBalances = state.balances.any(
-                (b) => !b.isSettled,
-              );
-
-              if (hasUnsettledBalances) {
-                return FloatingActionButton.extended(
-                  onPressed: _generateSettlementPlan,
-                  icon: const Icon(Icons.account_balance_wallet),
-                  label: const Text('Settle Up'),
-                );
-              }
+            if (state is! BalancesLoaded || state.balances.isEmpty) {
+              return const SizedBox.shrink();
             }
-            return const SizedBox.shrink();
-          },
-        ),
-      ),
-    );
-  }
-
-  void _showBalanceDetails(Balance balance) {
-    unawaited(
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => DraggableScrollableSheet(
-          initialChildSize: 0.4,
-          minChildSize: 0.3,
-          maxChildSize: 0.8,
-          expand: false,
-          builder: (context, scrollController) {
-            return Container(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Handle bar
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Member info
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 24,
-                        child: Text(
-                          balance.displayName.isNotEmpty
-                              ? balance.displayName[0].toUpperCase()
-                              : '?',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              balance.displayName,
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            Text(
-                              balance.balanceStatusText,
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    color: _getBalanceColor(
-                                      context,
-                                      balance.status,
-                                    ),
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Balance amount
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color:
-                          Theme.of(
-                            context,
-                          ).colorScheme.surfaceContainerHighest.withValues(
-                            alpha: 0.3,
-                          ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Balance',
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          CurrencyFormatter.format(
-                            amount: balance.absoluteBalance,
-                            currencyCode: balance.currency,
-                          ),
-                          style: Theme.of(context).textTheme.headlineMedium
-                              ?.copyWith(
-                                color: _getBalanceColor(
-                                  context,
-                                  balance.status,
-                                ),
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Action buttons
-                  if (!balance.isSettled) ...[
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: _generateSettlementPlan,
-                        icon: const Icon(Icons.account_balance_wallet),
-                        label: const Text('View Settlement Plan'),
-                      ),
-                    ),
-                  ],
-                ],
+            final hasUnsettled = state.balances.any((b) => !b.isSettled);
+            if (!hasUnsettled) return const SizedBox.shrink();
+            return FloatingActionButton.extended(
+              onPressed: _generateSettlementPlan,
+              icon: const Icon(Icons.account_balance_wallet_rounded),
+              label: Text(l10n.settleUp),
+              shape: const RoundedRectangleBorder(
+                borderRadius: AppRadius.brLg,
               ),
             );
           },
@@ -367,14 +138,265 @@ class _BalancePageState extends State<BalancePage> {
     );
   }
 
-  Color _getBalanceColor(BuildContext context, BalanceStatus status) {
-    switch (status) {
-      case BalanceStatus.owes:
-        return Theme.of(context).colorScheme.error;
-      case BalanceStatus.owed:
-        return Colors.green;
-      case BalanceStatus.settled:
-        return Theme.of(context).colorScheme.onSurfaceVariant;
+  // ---------------- Balance detail sheet ----------------
+
+  void _showBalanceDetails(Balance balance) {
+    HapticFeedback.selectionClick();
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppRadius.lg),
+          ),
+        ),
+        builder: (sheetContext) => _BalanceDetailSheet(
+          balance: balance,
+          onViewSettlementPlan: () {
+            Navigator.of(sheetContext).pop();
+            _generateSettlementPlan();
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _BalanceBody extends StatelessWidget {
+  const _BalanceBody({
+    required this.state,
+    required this.groupCurrency,
+    required this.onRetry,
+    required this.onGenerateSettlement,
+    required this.onShowBalanceDetail,
+  });
+
+  final BalanceState state;
+  final String groupCurrency;
+  final VoidCallback onRetry;
+  final VoidCallback onGenerateSettlement;
+  final void Function(Balance balance) onShowBalanceDetail;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+
+    if (state is BalanceLoading) {
+      return const BalanceListSkeleton();
     }
+    if (state is BalanceError) {
+      return BalanceListErrorWidget(onRetry: onRetry);
+    }
+    if (state is BalancesLoaded) {
+      final loaded = state as BalancesLoaded;
+      if (loaded.balances.isEmpty) {
+        return const EmptyBalancesWidget();
+      }
+      return CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.sm,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: BalanceSummaryCard(
+                balances: loaded.balances,
+                currency: groupCurrency,
+                onGenerateSettlement: onGenerateSettlement,
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.sm,
+              AppSpacing.lg,
+              AppSpacing.sm,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: Row(
+                children: [
+                  Text(
+                    l10n.memberBalances,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    l10n.membersCount(loaded.balances.length),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              0,
+              AppSpacing.lg,
+              AppSpacing.huge + AppSpacing.lg,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final balance = loaded.balances[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                    child: BalanceListItem(
+                      balance: balance,
+                      onTap: () => onShowBalanceDetail(balance),
+                    ),
+                  );
+                },
+                childCount: loaded.balances.length,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    return const EmptyBalancesWidget();
+  }
+}
+
+class _BalanceDetailSheet extends StatelessWidget {
+  const _BalanceDetailSheet({
+    required this.balance,
+    required this.onViewSettlementPlan,
+  });
+
+  final Balance balance;
+  final VoidCallback onViewSettlementPlan;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final l10n = context.l10n;
+    final accent = _statusColor(theme, balance.status);
+    final subtitle = balance.isSettled
+        ? l10n.balanceStatusSettled
+        : (balance.owesMoneyToGroup
+              ? l10n.balanceStatusOwes
+              : l10n.balanceStatusOwed);
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.sm,
+        AppSpacing.lg,
+        MediaQuery.viewInsetsOf(context).bottom + AppSpacing.lg,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: accent.withValues(alpha: 0.1),
+                child: Text(
+                  balance.displayName.isNotEmpty
+                      ? balance.displayName.characters.first.toUpperCase()
+                      : '?',
+                  style: TextStyle(
+                    color: accent,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.lg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      balance.displayName,
+                      style: theme.textTheme.titleLarge,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      subtitle,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: accent,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.xxl),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerHighest.withValues(alpha: 0.3),
+              borderRadius: AppRadius.brMd,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  l10n.balanceAmountLabel,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  CurrencyFormatter.format(
+                    amount: balance.absoluteBalance,
+                    currencyCode: balance.currency,
+                  ),
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    color: accent,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (!balance.isSettled) ...[
+            const SizedBox(height: AppSpacing.lg),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: onViewSettlementPlan,
+                icon: const Icon(Icons.account_balance_wallet_rounded),
+                label: Text(l10n.viewSettlementPlan),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: AppRadius.brMd,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Color _statusColor(ThemeData theme, BalanceStatus status) {
+    return switch (status) {
+      BalanceStatus.owes => theme.colorScheme.error,
+      BalanceStatus.owed => Colors.green,
+      BalanceStatus.settled => theme.colorScheme.onSurfaceVariant,
+    };
   }
 }

@@ -1124,5 +1124,111 @@
         "example": "USD"
       }
     }
+  },
+  "balancesPageTitle": "Saldos de {groupName}",
+  "@balancesPageTitle": {
+    "description": "App bar title on the balance page",
+    "placeholders": {
+      "groupName": {
+        "type": "String",
+        "example": "Roadtrip 2025"
+      }
+    }
+  },
+  "refreshBalances": "Actualizar saldos",
+  "@refreshBalances": {
+    "description": "Tooltip for the refresh-balances action"
+  },
+  "couldNotLoadBalances": "No pudimos cargar los saldos. Verifica tu conexión e inténtalo de nuevo.",
+  "@couldNotLoadBalances": {
+    "description": "Friendly explanation shown when balances fail to load"
+  },
+  "memberBalances": "Saldos por miembro",
+  "@memberBalances": {
+    "description": "Section title above the list of per-member balances"
+  },
+  "settleUp": "Liquidar",
+  "@settleUp": {
+    "description": "FAB label that opens the settlement plan"
+  },
+  "balanceAmountLabel": "Saldo",
+  "@balanceAmountLabel": {
+    "description": "Label above a single balance amount in the detail sheet"
+  },
+  "viewSettlementPlan": "Ver plan de liquidación",
+  "@viewSettlementPlan": {
+    "description": "CTA opening the settlement plan from a balance detail sheet"
+  },
+  "balanceStatusOwes": "Debe dinero al grupo",
+  "@balanceStatusOwes": {
+    "description": "Subtitle shown when a member owes money to the group"
+  },
+  "balanceStatusOwed": "El grupo le debe dinero",
+  "@balanceStatusOwed": {
+    "description": "Subtitle shown when a member is owed money by the group"
+  },
+  "balanceStatusSettled": "Todo liquidado",
+  "@balanceStatusSettled": {
+    "description": "Subtitle shown when a member's balance is zero"
+  },
+  "balanceBadgeOwes": "DEBE",
+  "@balanceBadgeOwes": {
+    "description": "Compact badge label for the 'owes' balance state"
+  },
+  "balanceBadgeOwed": "LE DEBEN",
+  "@balanceBadgeOwed": {
+    "description": "Compact badge label for the 'owed' balance state"
+  },
+  "balanceBadgeSettled": "LIQUIDADO",
+  "@balanceBadgeSettled": {
+    "description": "Compact badge label for the 'settled' balance state"
+  },
+  "noBalancesTitle": "Aún no hay saldos",
+  "@noBalancesTitle": {
+    "description": "Empty-state title on the balance page"
+  },
+  "noBalancesDescription": "Los saldos aparecerán aquí cuando se añadan gastos y pagos al grupo.",
+  "@noBalancesDescription": {
+    "description": "Empty-state body on the balance page"
+  },
+  "balancesAutoExplainer": "Los saldos se calculan automáticamente a partir de los gastos y pagos del grupo.",
+  "@balancesAutoExplainer": {
+    "description": "Help text on the empty balance state"
+  },
+  "addExpenses": "Añadir gastos",
+  "@addExpenses": {
+    "description": "CTA label that returns to the expense list to add expenses"
+  },
+  "recordPayments": "Registrar pagos",
+  "@recordPayments": {
+    "description": "CTA label that returns to the payment list to record payments"
+  },
+  "balanceSummary": "Resumen de saldos",
+  "@balanceSummary": {
+    "description": "Title for the summary card on the balance page"
+  },
+  "totalOwed": "Total a favor",
+  "@totalOwed": {
+    "description": "Stat label — total money owed to members in the group"
+  },
+  "totalOwes": "Total adeudado",
+  "@totalOwes": {
+    "description": "Stat label — total money owed by members in the group"
+  },
+  "settledStat": "Liquidados",
+  "@settledStat": {
+    "description": "Stat label — number of members fully settled"
+  },
+  "unsettledStat": "Pendientes",
+  "@unsettledStat": {
+    "description": "Stat label — number of members still with non-zero balances"
+  },
+  "generateSettlementPlan": "Generar plan de liquidación",
+  "@generateSettlementPlan": {
+    "description": "Primary CTA in the balance summary card"
+  },
+  "allMembersSettledUp": "¡Todos los miembros están liquidados!",
+  "@allMembersSettledUp": {
+    "description": "Celebratory banner shown when nobody owes anything"
   }
 }

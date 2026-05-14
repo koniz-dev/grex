@@ -1290,6 +1290,112 @@
         "example": "USD"
       }
     }
+  },
+  "balancesPageTitle": "{groupName} balances",
+  "@balancesPageTitle": {
+    "description": "App bar title on the balance page",
+    "placeholders": {
+      "groupName": {
+        "type": "String",
+        "example": "Roadtrip 2025"
+      }
+    }
+  },
+  "refreshBalances": "Refresh balances",
+  "@refreshBalances": {
+    "description": "Tooltip for the refresh-balances action"
+  },
+  "couldNotLoadBalances": "We couldn't load balances. Check your connection and try again.",
+  "@couldNotLoadBalances": {
+    "description": "Friendly explanation shown when balances fail to load"
+  },
+  "memberBalances": "Member balances",
+  "@memberBalances": {
+    "description": "Section title above the list of per-member balances"
+  },
+  "settleUp": "Settle up",
+  "@settleUp": {
+    "description": "FAB label that opens the settlement plan"
+  },
+  "balanceAmountLabel": "Balance",
+  "@balanceAmountLabel": {
+    "description": "Label above a single balance amount in the detail sheet"
+  },
+  "viewSettlementPlan": "View settlement plan",
+  "@viewSettlementPlan": {
+    "description": "CTA opening the settlement plan from a balance detail sheet"
+  },
+  "balanceStatusOwes": "Owes money to group",
+  "@balanceStatusOwes": {
+    "description": "Subtitle shown when a member owes money to the group"
+  },
+  "balanceStatusOwed": "Is owed money by group",
+  "@balanceStatusOwed": {
+    "description": "Subtitle shown when a member is owed money by the group"
+  },
+  "balanceStatusSettled": "All settled up",
+  "@balanceStatusSettled": {
+    "description": "Subtitle shown when a member's balance is zero"
+  },
+  "balanceBadgeOwes": "OWES",
+  "@balanceBadgeOwes": {
+    "description": "Compact badge label for the 'owes' balance state"
+  },
+  "balanceBadgeOwed": "OWED",
+  "@balanceBadgeOwed": {
+    "description": "Compact badge label for the 'owed' balance state"
+  },
+  "balanceBadgeSettled": "SETTLED",
+  "@balanceBadgeSettled": {
+    "description": "Compact badge label for the 'settled' balance state"
+  },
+  "noBalancesTitle": "No balances yet",
+  "@noBalancesTitle": {
+    "description": "Empty-state title on the balance page"
+  },
+  "noBalancesDescription": "Balances will appear here once expenses and payments are added to the group.",
+  "@noBalancesDescription": {
+    "description": "Empty-state body on the balance page"
+  },
+  "balancesAutoExplainer": "Balances are calculated automatically from your group's expenses and payments.",
+  "@balancesAutoExplainer": {
+    "description": "Help text on the empty balance state"
+  },
+  "addExpenses": "Add expenses",
+  "@addExpenses": {
+    "description": "CTA label that returns to the expense list to add expenses"
+  },
+  "recordPayments": "Record payments",
+  "@recordPayments": {
+    "description": "CTA label that returns to the payment list to record payments"
+  },
+  "balanceSummary": "Balance summary",
+  "@balanceSummary": {
+    "description": "Title for the summary card on the balance page"
+  },
+  "totalOwed": "Total owed",
+  "@totalOwed": {
+    "description": "Stat label — total money owed to members in the group"
+  },
+  "totalOwes": "Total owes",
+  "@totalOwes": {
+    "description": "Stat label — total money owed by members in the group"
+  },
+  "settledStat": "Settled",
+  "@settledStat": {
+    "description": "Stat label — number of members fully settled"
+  },
+  "unsettledStat": "Unsettled",
+  "@unsettledStat": {
+    "description": "Stat label — number of members still with non-zero balances"
+  },
+  "generateSettlementPlan": "Generate settlement plan",
+  "@generateSettlementPlan": {
+    "description": "Primary CTA in the balance summary card"
+  },
+  "allMembersSettledUp": "All members are settled up!",
+  "@allMembersSettledUp": {
+    "description": "Celebratory banner shown when nobody owes anything"
   }
 }
 

@@ -983,4 +983,84 @@ class AppLocalizationsEs extends AppLocalizations {
   String groupCurrencyLabel(String currency) {
     return 'Grupo: $currency';
   }
+
+  @override
+  String balancesPageTitle(String groupName) {
+    return 'Saldos de $groupName';
+  }
+
+  @override
+  String get refreshBalances => 'Actualizar saldos';
+
+  @override
+  String get couldNotLoadBalances =>
+      'No pudimos cargar los saldos. Verifica tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get memberBalances => 'Saldos por miembro';
+
+  @override
+  String get settleUp => 'Liquidar';
+
+  @override
+  String get balanceAmountLabel => 'Saldo';
+
+  @override
+  String get viewSettlementPlan => 'Ver plan de liquidación';
+
+  @override
+  String get balanceStatusOwes => 'Debe dinero al grupo';
+
+  @override
+  String get balanceStatusOwed => 'El grupo le debe dinero';
+
+  @override
+  String get balanceStatusSettled => 'Todo liquidado';
+
+  @override
+  String get balanceBadgeOwes => 'DEBE';
+
+  @override
+  String get balanceBadgeOwed => 'LE DEBEN';
+
+  @override
+  String get balanceBadgeSettled => 'LIQUIDADO';
+
+  @override
+  String get noBalancesTitle => 'Aún no hay saldos';
+
+  @override
+  String get noBalancesDescription =>
+      'Los saldos aparecerán aquí cuando se añadan gastos y pagos al grupo.';
+
+  @override
+  String get balancesAutoExplainer =>
+      'Los saldos se calculan automáticamente a partir de los gastos y pagos del grupo.';
+
+  @override
+  String get addExpenses => 'Añadir gastos';
+
+  @override
+  String get recordPayments => 'Registrar pagos';
+
+  @override
+  String get balanceSummary => 'Resumen de saldos';
+
+  @override
+  String get totalOwed => 'Total a favor';
+
+  @override
+  String get totalOwes => 'Total adeudado';
+
+  @override
+  String get settledStat => 'Liquidados';
+
+  @override
+  String get unsettledStat => 'Pendientes';
+
+  @override
+  String get generateSettlementPlan => 'Generar plan de liquidación';
+
+  @override
+  String get allMembersSettledUp => '¡Todos los miembros están liquidados!';
 }

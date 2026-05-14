@@ -960,4 +960,84 @@ class AppLocalizationsAr extends AppLocalizations {
   String groupCurrencyLabel(String currency) {
     return 'المجموعة: $currency';
   }
+
+  @override
+  String balancesPageTitle(String groupName) {
+    return 'أرصدة $groupName';
+  }
+
+  @override
+  String get refreshBalances => 'تحديث الأرصدة';
+
+  @override
+  String get couldNotLoadBalances =>
+      'تعذر تحميل الأرصدة. تحقق من اتصالك وحاول مرة أخرى.';
+
+  @override
+  String get memberBalances => 'أرصدة الأعضاء';
+
+  @override
+  String get settleUp => 'تسوية';
+
+  @override
+  String get balanceAmountLabel => 'الرصيد';
+
+  @override
+  String get viewSettlementPlan => 'عرض خطة التسوية';
+
+  @override
+  String get balanceStatusOwes => 'مدين للمجموعة';
+
+  @override
+  String get balanceStatusOwed => 'للمجموعة دَين عليه';
+
+  @override
+  String get balanceStatusSettled => 'تمت التسوية';
+
+  @override
+  String get balanceBadgeOwes => 'مدين';
+
+  @override
+  String get balanceBadgeOwed => 'دائن';
+
+  @override
+  String get balanceBadgeSettled => 'متوازن';
+
+  @override
+  String get noBalancesTitle => 'لا توجد أرصدة بعد';
+
+  @override
+  String get noBalancesDescription =>
+      'ستظهر الأرصدة هنا بمجرد إضافة النفقات والمدفوعات إلى المجموعة.';
+
+  @override
+  String get balancesAutoExplainer =>
+      'تُحسب الأرصدة تلقائياً من نفقات ومدفوعات المجموعة.';
+
+  @override
+  String get addExpenses => 'إضافة نفقات';
+
+  @override
+  String get recordPayments => 'تسجيل المدفوعات';
+
+  @override
+  String get balanceSummary => 'ملخص الأرصدة';
+
+  @override
+  String get totalOwed => 'إجمالي المستحق';
+
+  @override
+  String get totalOwes => 'إجمالي الدَين';
+
+  @override
+  String get settledStat => 'تمت التسوية';
+
+  @override
+  String get unsettledStat => 'غير مسوّى';
+
+  @override
+  String get generateSettlementPlan => 'إنشاء خطة تسوية';
+
+  @override
+  String get allMembersSettledUp => 'جميع الأعضاء في حالة توازن!';
 }

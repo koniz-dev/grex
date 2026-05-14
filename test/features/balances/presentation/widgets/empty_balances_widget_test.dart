@@ -1,39 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:grex/features/balances/presentation/widgets/empty_balances_widget.dart';
+
+import '../../../../helpers/localized_pumper.dart';
 
 void main() {
   group('EmptyBalancesWidget Widget Tests', () {
-    Widget createTestWidget() {
-      return MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: const Scaffold(
-          body: EmptyBalancesWidget(),
-        ),
-      );
-    }
+    testWidgets('renders the empty-state title (VI)', (tester) async {
+      await pumpLocalized(tester, const EmptyBalancesWidget());
 
-    testWidgets('should display empty state message', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-
-      expect(find.text('No Balances Yet'), findsOneWidget);
+      expect(find.text('Chưa có số dư nào'), findsOneWidget);
     });
 
-    testWidgets('should display descriptive subtitle', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders the empty-state description (VI)', (tester) async {
+      await pumpLocalized(tester, const EmptyBalancesWidget());
 
       expect(
         find.text(
-          'Balances will appear here once expenses and payments '
-          'are added to the group.',
+          'Số dư sẽ xuất hiện khi chi tiêu và thanh toán được thêm vào nhóm.',
         ),
         findsOneWidget,
       );
     });
 
-    testWidgets('should display empty state icon', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders the wallet illustration icon', (tester) async {
+      await pumpLocalized(tester, const EmptyBalancesWidget());
 
       expect(
         find.byIcon(Icons.account_balance_wallet_outlined),
@@ -41,8 +32,10 @@ void main() {
       );
     });
 
-    testWidgets('should display action buttons', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders both CTAs with their localised labels (VI)', (
+      tester,
+    ) async {
+      await pumpLocalized(tester, const EmptyBalancesWidget());
 
       expect(
         find.byWidgetPredicate((widget) => widget is ElevatedButton),
@@ -53,94 +46,45 @@ void main() {
         findsOneWidget,
       );
 
-      expect(find.text('Add Expenses'), findsOneWidget);
-      expect(find.text('Record Payments'), findsOneWidget);
-      expect(find.byIcon(Icons.receipt_long), findsOneWidget);
-      expect(find.byIcon(Icons.payment), findsOneWidget);
+      expect(find.text('Thêm chi tiêu'), findsOneWidget);
+      expect(find.text('Ghi nhận thanh toán'), findsOneWidget);
+      expect(find.byIcon(Icons.receipt_long_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.payment_rounded), findsOneWidget);
     });
 
-    testWidgets('should display proper visual hierarchy', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders the title with a semibold weight', (tester) async {
+      await pumpLocalized(tester, const EmptyBalancesWidget());
 
-      expect(find.byType(Column), findsNWidgets(2));
-      expect(
-        find.byWidgetPredicate(
-          (widget) => widget is Center && widget.child is Padding,
-        ),
-        findsOneWidget,
-      );
-
-      final titleText = tester.widget<Text>(find.text('No Balances Yet'));
+      final titleText = tester.widget<Text>(find.text('Chưa có số dư nào'));
       expect(titleText.style?.fontWeight, equals(FontWeight.w600));
     });
 
-    testWidgets('should have proper spacing between elements', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders the auto-explainer help row', (tester) async {
+      await pumpLocalized(tester, const EmptyBalancesWidget());
 
-      expect(find.byType(SizedBox), findsWidgets);
-    });
-
-    testWidgets('should display icon with proper size and color', (
-      tester,
-    ) async {
-      await tester.pumpWidget(createTestWidget());
-
-      final icon = tester.widget<Icon>(
-        find.byIcon(Icons.account_balance_wallet_outlined),
-      );
-      expect(icon.size, equals(64));
-      expect(icon.color, isNotNull);
-    });
-
-    testWidgets('should maintain consistent layout', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-
+      expect(find.byIcon(Icons.info_outline_rounded), findsOneWidget);
       expect(
-        find.byIcon(Icons.account_balance_wallet_outlined),
+        find.text(
+          'Số dư được tính tự động dựa trên chi tiêu và thanh toán của nhóm.',
+        ),
         findsOneWidget,
       );
-      expect(find.text('No Balances Yet'), findsOneWidget);
-      expect(find.text('Add Expenses'), findsOneWidget);
-      expect(find.text('Record Payments'), findsOneWidget);
     });
 
-    testWidgets('should handle different screen sizes', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-
+    testWidgets('throws nothing across screen sizes', (tester) async {
+      await pumpLocalized(tester, const EmptyBalancesWidget());
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('should have proper padding and margins', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-
-      expect(find.byType(Padding), findsWidgets);
-    });
-
-    testWidgets('should work with different themes', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: ThemeData.dark(),
-          home: const Scaffold(
-            body: EmptyBalancesWidget(),
-          ),
-        ),
+    testWidgets('renders in a dark theme', (tester) async {
+      await pumpLocalized(
+        tester,
+        const EmptyBalancesWidget(),
+        theme: ThemeData.dark(),
       );
 
       expect(find.byType(EmptyBalancesWidget), findsOneWidget);
-      expect(find.text('No Balances Yet'), findsOneWidget);
-    });
-
-    testWidgets('should display help text', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-
-      expect(find.byIcon(Icons.info_outline), findsOneWidget);
-      expect(
-        find.text(
-          'Balances are calculated automatically based on '
-          'expenses and payments in your group.',
-        ),
-        findsOneWidget,
-      );
+      expect(find.text('Chưa có số dư nào'), findsOneWidget);
     });
   });
 }

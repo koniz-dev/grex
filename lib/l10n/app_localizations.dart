@@ -1775,6 +1775,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Group: {currency}'**
   String groupCurrencyLabel(String currency);
+
+  /// App bar title on the balance page
+  ///
+  /// In en, this message translates to:
+  /// **'{groupName} balances'**
+  String balancesPageTitle(String groupName);
+
+  /// Tooltip for the refresh-balances action
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh balances'**
+  String get refreshBalances;
+
+  /// Friendly explanation shown when balances fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load balances. Check your connection and try again.'**
+  String get couldNotLoadBalances;
+
+  /// Section title above the list of per-member balances
+  ///
+  /// In en, this message translates to:
+  /// **'Member balances'**
+  String get memberBalances;
+
+  /// FAB label that opens the settlement plan
+  ///
+  /// In en, this message translates to:
+  /// **'Settle up'**
+  String get settleUp;
+
+  /// Label above a single balance amount in the detail sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get balanceAmountLabel;
+
+  /// CTA opening the settlement plan from a balance detail sheet
+  ///
+  /// In en, this message translates to:
+  /// **'View settlement plan'**
+  String get viewSettlementPlan;
+
+  /// Subtitle shown when a member owes money to the group
+  ///
+  /// In en, this message translates to:
+  /// **'Owes money to group'**
+  String get balanceStatusOwes;
+
+  /// Subtitle shown when a member is owed money by the group
+  ///
+  /// In en, this message translates to:
+  /// **'Is owed money by group'**
+  String get balanceStatusOwed;
+
+  /// Subtitle shown when a member's balance is zero
+  ///
+  /// In en, this message translates to:
+  /// **'All settled up'**
+  String get balanceStatusSettled;
+
+  /// Compact badge label for the 'owes' balance state
+  ///
+  /// In en, this message translates to:
+  /// **'OWES'**
+  String get balanceBadgeOwes;
+
+  /// Compact badge label for the 'owed' balance state
+  ///
+  /// In en, this message translates to:
+  /// **'OWED'**
+  String get balanceBadgeOwed;
+
+  /// Compact badge label for the 'settled' balance state
+  ///
+  /// In en, this message translates to:
+  /// **'SETTLED'**
+  String get balanceBadgeSettled;
+
+  /// Empty-state title on the balance page
+  ///
+  /// In en, this message translates to:
+  /// **'No balances yet'**
+  String get noBalancesTitle;
+
+  /// Empty-state body on the balance page
+  ///
+  /// In en, this message translates to:
+  /// **'Balances will appear here once expenses and payments are added to the group.'**
+  String get noBalancesDescription;
+
+  /// Help text on the empty balance state
+  ///
+  /// In en, this message translates to:
+  /// **'Balances are calculated automatically from your group\'s expenses and payments.'**
+  String get balancesAutoExplainer;
+
+  /// CTA label that returns to the expense list to add expenses
+  ///
+  /// In en, this message translates to:
+  /// **'Add expenses'**
+  String get addExpenses;
+
+  /// CTA label that returns to the payment list to record payments
+  ///
+  /// In en, this message translates to:
+  /// **'Record payments'**
+  String get recordPayments;
+
+  /// Title for the summary card on the balance page
+  ///
+  /// In en, this message translates to:
+  /// **'Balance summary'**
+  String get balanceSummary;
+
+  /// Stat label — total money owed to members in the group
+  ///
+  /// In en, this message translates to:
+  /// **'Total owed'**
+  String get totalOwed;
+
+  /// Stat label — total money owed by members in the group
+  ///
+  /// In en, this message translates to:
+  /// **'Total owes'**
+  String get totalOwes;
+
+  /// Stat label — number of members fully settled
+  ///
+  /// In en, this message translates to:
+  /// **'Settled'**
+  String get settledStat;
+
+  /// Stat label — number of members still with non-zero balances
+  ///
+  /// In en, this message translates to:
+  /// **'Unsettled'**
+  String get unsettledStat;
+
+  /// Primary CTA in the balance summary card
+  ///
+  /// In en, this message translates to:
+  /// **'Generate settlement plan'**
+  String get generateSettlementPlan;
+
+  /// Celebratory banner shown when nobody owes anything
+  ///
+  /// In en, this message translates to:
+  /// **'All members are settled up!'**
+  String get allMembersSettledUp;
 }
 
 class _AppLocalizationsDelegate

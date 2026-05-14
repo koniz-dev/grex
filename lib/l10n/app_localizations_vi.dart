@@ -969,4 +969,84 @@ class AppLocalizationsVi extends AppLocalizations {
   String groupCurrencyLabel(String currency) {
     return 'Nhóm: $currency';
   }
+
+  @override
+  String balancesPageTitle(String groupName) {
+    return 'Số dư của $groupName';
+  }
+
+  @override
+  String get refreshBalances => 'Làm mới số dư';
+
+  @override
+  String get couldNotLoadBalances =>
+      'Không thể tải số dư. Vui lòng kiểm tra kết nối và thử lại.';
+
+  @override
+  String get memberBalances => 'Số dư từng thành viên';
+
+  @override
+  String get settleUp => 'Thanh toán';
+
+  @override
+  String get balanceAmountLabel => 'Số dư';
+
+  @override
+  String get viewSettlementPlan => 'Xem kế hoạch thanh toán';
+
+  @override
+  String get balanceStatusOwes => 'Đang nợ nhóm';
+
+  @override
+  String get balanceStatusOwed => 'Được nhóm nợ';
+
+  @override
+  String get balanceStatusSettled => 'Đã cân bằng';
+
+  @override
+  String get balanceBadgeOwes => 'NỢ';
+
+  @override
+  String get balanceBadgeOwed => 'ĐƯỢC NỢ';
+
+  @override
+  String get balanceBadgeSettled => 'CÂN BẰNG';
+
+  @override
+  String get noBalancesTitle => 'Chưa có số dư nào';
+
+  @override
+  String get noBalancesDescription =>
+      'Số dư sẽ xuất hiện khi chi tiêu và thanh toán được thêm vào nhóm.';
+
+  @override
+  String get balancesAutoExplainer =>
+      'Số dư được tính tự động dựa trên chi tiêu và thanh toán của nhóm.';
+
+  @override
+  String get addExpenses => 'Thêm chi tiêu';
+
+  @override
+  String get recordPayments => 'Ghi nhận thanh toán';
+
+  @override
+  String get balanceSummary => 'Tổng quan số dư';
+
+  @override
+  String get totalOwed => 'Tổng được nợ';
+
+  @override
+  String get totalOwes => 'Tổng đang nợ';
+
+  @override
+  String get settledStat => 'Cân bằng';
+
+  @override
+  String get unsettledStat => 'Chưa cân bằng';
+
+  @override
+  String get generateSettlementPlan => 'Tạo kế hoạch thanh toán';
+
+  @override
+  String get allMembersSettledUp => 'Mọi thành viên đã cân bằng!';
 }

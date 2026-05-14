@@ -977,6 +977,112 @@
         "example": "USD"
       }
     }
+  },
+  "balancesPageTitle": "Số dư của {groupName}",
+  "@balancesPageTitle": {
+    "description": "App bar title on the balance page",
+    "placeholders": {
+      "groupName": {
+        "type": "String",
+        "example": "Roadtrip 2025"
+      }
+    }
+  },
+  "refreshBalances": "Làm mới số dư",
+  "@refreshBalances": {
+    "description": "Tooltip for the refresh-balances action"
+  },
+  "couldNotLoadBalances": "Không thể tải số dư. Vui lòng kiểm tra kết nối và thử lại.",
+  "@couldNotLoadBalances": {
+    "description": "Friendly explanation shown when balances fail to load"
+  },
+  "memberBalances": "Số dư từng thành viên",
+  "@memberBalances": {
+    "description": "Section title above the list of per-member balances"
+  },
+  "settleUp": "Thanh toán",
+  "@settleUp": {
+    "description": "FAB label that opens the settlement plan"
+  },
+  "balanceAmountLabel": "Số dư",
+  "@balanceAmountLabel": {
+    "description": "Label above a single balance amount in the detail sheet"
+  },
+  "viewSettlementPlan": "Xem kế hoạch thanh toán",
+  "@viewSettlementPlan": {
+    "description": "CTA opening the settlement plan from a balance detail sheet"
+  },
+  "balanceStatusOwes": "Đang nợ nhóm",
+  "@balanceStatusOwes": {
+    "description": "Subtitle shown when a member owes money to the group"
+  },
+  "balanceStatusOwed": "Được nhóm nợ",
+  "@balanceStatusOwed": {
+    "description": "Subtitle shown when a member is owed money by the group"
+  },
+  "balanceStatusSettled": "Đã cân bằng",
+  "@balanceStatusSettled": {
+    "description": "Subtitle shown when a member's balance is zero"
+  },
+  "balanceBadgeOwes": "NỢ",
+  "@balanceBadgeOwes": {
+    "description": "Compact badge label for the 'owes' balance state"
+  },
+  "balanceBadgeOwed": "ĐƯỢC NỢ",
+  "@balanceBadgeOwed": {
+    "description": "Compact badge label for the 'owed' balance state"
+  },
+  "balanceBadgeSettled": "CÂN BẰNG",
+  "@balanceBadgeSettled": {
+    "description": "Compact badge label for the 'settled' balance state"
+  },
+  "noBalancesTitle": "Chưa có số dư nào",
+  "@noBalancesTitle": {
+    "description": "Empty-state title on the balance page"
+  },
+  "noBalancesDescription": "Số dư sẽ xuất hiện khi chi tiêu và thanh toán được thêm vào nhóm.",
+  "@noBalancesDescription": {
+    "description": "Empty-state body on the balance page"
+  },
+  "balancesAutoExplainer": "Số dư được tính tự động dựa trên chi tiêu và thanh toán của nhóm.",
+  "@balancesAutoExplainer": {
+    "description": "Help text on the empty balance state"
+  },
+  "addExpenses": "Thêm chi tiêu",
+  "@addExpenses": {
+    "description": "CTA label that returns to the expense list to add expenses"
+  },
+  "recordPayments": "Ghi nhận thanh toán",
+  "@recordPayments": {
+    "description": "CTA label that returns to the payment list to record payments"
+  },
+  "balanceSummary": "Tổng quan số dư",
+  "@balanceSummary": {
+    "description": "Title for the summary card on the balance page"
+  },
+  "totalOwed": "Tổng được nợ",
+  "@totalOwed": {
+    "description": "Stat label — total money owed to members in the group"
+  },
+  "totalOwes": "Tổng đang nợ",
+  "@totalOwes": {
+    "description": "Stat label — total money owed by members in the group"
+  },
+  "settledStat": "Cân bằng",
+  "@settledStat": {
+    "description": "Stat label — number of members fully settled"
+  },
+  "unsettledStat": "Chưa cân bằng",
+  "@unsettledStat": {
+    "description": "Stat label — number of members still with non-zero balances"
+  },
+  "generateSettlementPlan": "Tạo kế hoạch thanh toán",
+  "@generateSettlementPlan": {
+    "description": "Primary CTA in the balance summary card"
+  },
+  "allMembersSettledUp": "Mọi thành viên đã cân bằng!",
+  "@allMembersSettledUp": {
+    "description": "Celebratory banner shown when nobody owes anything"
   }
 }
 

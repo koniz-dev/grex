@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:grex/features/balances/domain/entities/balance.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_elevation.dart';
+import 'package:grex/shared/theme/app_icon_sizes.dart';
+import 'package:grex/shared/theme/app_radius.dart';
+import 'package:grex/shared/theme/app_spacing.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
 
-/// Widget displaying a summary of all balances in the group
+/// Summary card sitting at the top of the balance page showing aggregate
+/// stats and a primary CTA to generate a settlement plan.
 class BalanceSummaryCard extends StatelessWidget {
-  /// Creates a [BalanceSummaryCard] instance
+  /// Creates a [BalanceSummaryCard].
   const BalanceSummaryCard({
     required this.balances,
     required this.currency,
@@ -12,126 +19,133 @@ class BalanceSummaryCard extends StatelessWidget {
     this.onGenerateSettlement,
   });
 
-  /// The list of balances to summarize
+  /// All member balances to aggregate.
   final List<Balance> balances;
 
-  /// The currency code for the balances
+  /// Currency code rendered for the totals.
   final String currency;
 
-  /// Callback to generate a settlement plan
+  /// Callback invoked when the user taps the settlement plan CTA.
   final VoidCallback? onGenerateSettlement;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final l10n = context.l10n;
     final stats = _calculateStats();
 
     return Card(
+      elevation: AppElevation.card,
+      margin: EdgeInsets.zero,
+      shape: const RoundedRectangleBorder(borderRadius: AppRadius.brMd),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
             Row(
               children: [
                 Icon(
-                  Icons.account_balance_wallet,
-                  color: Theme.of(context).colorScheme.primary,
+                  Icons.account_balance_wallet_rounded,
+                  color: scheme.primary,
+                  size: AppIconSizes.lg,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Text(
-                  'Balance Summary',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  l10n.balanceSummary,
+                  style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
-
-            const SizedBox(height: 20),
-
-            // Statistics grid
+            const SizedBox(height: AppSpacing.xl),
             Row(
               children: [
                 Expanded(
                   child: _buildStatItem(
                     context,
-                    'Total Owed',
+                    l10n.totalOwed,
                     CurrencyFormatter.format(
                       amount: stats.totalOwed,
                       currencyCode: currency,
                     ),
                     Colors.green,
-                    Icons.trending_up,
+                    Icons.trending_up_rounded,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppSpacing.lg),
                 Expanded(
                   child: _buildStatItem(
                     context,
-                    'Total Owes',
+                    l10n.totalOwes,
                     CurrencyFormatter.format(
                       amount: stats.totalOwes,
                       currencyCode: currency,
                     ),
-                    Theme.of(context).colorScheme.error,
-                    Icons.trending_down,
+                    scheme.error,
+                    Icons.trending_down_rounded,
                   ),
                 ),
               ],
             ),
-
-            const SizedBox(height: 16),
-
+            const SizedBox(height: AppSpacing.lg),
             Row(
               children: [
                 Expanded(
                   child: _buildStatItem(
                     context,
-                    'Settled',
+                    l10n.settledStat,
                     '${stats.settledCount}',
-                    Theme.of(context).colorScheme.onSurfaceVariant,
-                    Icons.check_circle,
+                    scheme.onSurfaceVariant,
+                    Icons.check_circle_outline_rounded,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: AppSpacing.lg),
                 Expanded(
                   child: _buildStatItem(
                     context,
-                    'Unsettled',
+                    l10n.unsettledStat,
                     '${stats.unsettledCount}',
-                    Theme.of(context).colorScheme.primary,
-                    Icons.pending,
+                    scheme.primary,
+                    Icons.pending_outlined,
                   ),
                 ),
               ],
             ),
-
-            // Settlement button
             if (stats.unsettledCount > 0) ...[
-              const SizedBox(height: 20),
+              const SizedBox(height: AppSpacing.xl),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: onGenerateSettlement,
-                  icon: const Icon(Icons.calculate),
-                  label: const Text('Generate Settlement Plan'),
+                  onPressed: onGenerateSettlement == null
+                      ? null
+                      : () {
+                          HapticFeedback.lightImpact();
+                          onGenerateSettlement!.call();
+                        },
+                  icon: const Icon(Icons.calculate_rounded),
+                  label: Text(l10n.generateSettlementPlan),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.md,
+                    ),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: AppRadius.brMd,
+                    ),
                   ),
                 ),
               ),
             ],
-
-            // All settled message
             if (stats.unsettledCount == 0) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.lg),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.lg),
                 decoration: BoxDecoration(
                   color: Colors.green.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: AppRadius.brMd,
                   border: Border.all(
                     color: Colors.green.withValues(alpha: 0.3),
                   ),
@@ -139,14 +153,14 @@ class BalanceSummaryCard extends StatelessWidget {
                 child: Row(
                   children: [
                     const Icon(
-                      Icons.check_circle,
+                      Icons.check_circle_rounded,
                       color: Colors.green,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Text(
-                        'All members are settled up!',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        l10n.allMembersSettledUp,
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.green.shade700,
                           fontWeight: FontWeight.w500,
                         ),
@@ -170,22 +184,18 @@ class BalanceSummaryCard extends StatelessWidget {
     IconData icon,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.brMd,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(
-                icon,
-                size: 16,
-                color: color,
-              ),
-              const SizedBox(width: 4),
+              Icon(icon, size: AppIconSizes.sm, color: color),
+              const SizedBox(width: AppSpacing.xs),
               Expanded(
                 child: Text(
                   label,
@@ -193,11 +203,13 @@ class BalanceSummaryCard extends StatelessWidget {
                     color: color,
                     fontWeight: FontWeight.w500,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             value,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -245,6 +257,7 @@ class _BalanceStats {
     required this.settledCount,
     required this.unsettledCount,
   });
+
   final double totalOwed;
   final double totalOwes;
   final int settledCount;

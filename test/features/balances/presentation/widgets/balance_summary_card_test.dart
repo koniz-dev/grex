@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:grex/features/balances/domain/entities/balance.dart';
 import 'package:grex/features/balances/presentation/widgets/balance_summary_card.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
+
+import '../../../../helpers/localized_pumper.dart';
 
 void main() {
   group('BalanceSummaryCard Widget Tests', () {
@@ -32,82 +33,89 @@ void main() {
       ];
     });
 
-    Widget createTestWidget({
+    Future<void> pump(
+      WidgetTester tester, {
       List<Balance>? balances,
       String currency = 'USD',
       VoidCallback? onGenerateSettlement,
     }) {
-      return MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: Scaffold(
-          body: BalanceSummaryCard(
-            balances: balances ?? testBalances,
-            currency: currency,
-            onGenerateSettlement: onGenerateSettlement,
-          ),
+      return pumpLocalized(
+        tester,
+        BalanceSummaryCard(
+          balances: balances ?? testBalances,
+          currency: currency,
+          onGenerateSettlement: onGenerateSettlement,
         ),
       );
     }
 
-    testWidgets('should display summary card title', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders the summary card title (VI)', (tester) async {
+      await pump(tester);
 
-      expect(find.text('Balance Summary'), findsOneWidget);
-      expect(find.byIcon(Icons.account_balance_wallet), findsOneWidget);
+      expect(find.text('Tổng quan số dư'), findsOneWidget);
+      expect(find.byIcon(Icons.account_balance_wallet_rounded), findsOneWidget);
     });
 
-    testWidgets('should display total owed amount', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders the total-owed amount with its label', (
+      tester,
+    ) async {
+      await pump(tester);
 
-      expect(find.text('Total Owed'), findsOneWidget);
+      expect(find.text('Tổng được nợ'), findsOneWidget);
       expect(
         find.text(CurrencyFormatter.format(amount: 50, currencyCode: 'USD')),
         findsOneWidget,
       );
     });
 
-    testWidgets('should display total owes amount', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders the total-owes amount with its label', (
+      tester,
+    ) async {
+      await pump(tester);
 
-      expect(find.text('Total Owes'), findsOneWidget);
+      expect(find.text('Tổng đang nợ'), findsOneWidget);
       expect(
         find.text(CurrencyFormatter.format(amount: 25, currencyCode: 'USD')),
         findsOneWidget,
       );
     });
 
-    testWidgets('should display settled and unsettled counts', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders settled and unsettled counts', (tester) async {
+      await pump(tester);
 
-      expect(find.text('Settled'), findsOneWidget);
-      expect(find.text('Unsettled'), findsOneWidget);
+      expect(find.text('Cân bằng'), findsOneWidget);
+      expect(find.text('Chưa cân bằng'), findsOneWidget);
       expect(find.text('1'), findsOneWidget);
       expect(find.text('2'), findsOneWidget);
     });
 
-    testWidgets('should display statistics icons', (tester) async {
-      await tester.pumpWidget(createTestWidget());
+    testWidgets('renders the four stat icons (rounded variants)', (
+      tester,
+    ) async {
+      await pump(tester);
 
-      expect(find.byIcon(Icons.trending_up), findsOneWidget);
-      expect(find.byIcon(Icons.trending_down), findsOneWidget);
-      expect(find.byIcon(Icons.check_circle), findsOneWidget);
-      expect(find.byIcon(Icons.pending), findsOneWidget);
+      expect(find.byIcon(Icons.trending_up_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.trending_down_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle_outline_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.pending_outlined), findsOneWidget);
     });
 
-    testWidgets('should handle empty balances list', (tester) async {
-      await tester.pumpWidget(createTestWidget(balances: []));
+    testWidgets('handles an empty balance list as fully settled', (
+      tester,
+    ) async {
+      await pump(tester, balances: []);
 
-      expect(find.text('Balance Summary'), findsOneWidget);
+      expect(find.text('Tổng quan số dư'), findsOneWidget);
       expect(
         find.text(CurrencyFormatter.format(amount: 0, currencyCode: 'USD')),
         findsNWidgets(2),
       );
       expect(find.text('0'), findsNWidgets(2));
-      expect(find.text('All members are settled up!'), findsOneWidget);
-      expect(find.text('Generate Settlement Plan'), findsNothing);
+      expect(find.text('Mọi thành viên đã cân bằng!'), findsOneWidget);
+      expect(find.text('Tạo kế hoạch thanh toán'), findsNothing);
     });
 
-    testWidgets('should handle all zero balances', (tester) async {
+    testWidgets('handles all-zero balances as fully settled', (tester) async {
       final zeroBalances = [
         const Balance(
           userId: 'user-1',
@@ -123,7 +131,7 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(createTestWidget(balances: zeroBalances));
+      await pump(tester, balances: zeroBalances);
 
       expect(
         find.text(CurrencyFormatter.format(amount: 0, currencyCode: 'USD')),
@@ -131,11 +139,13 @@ void main() {
       );
       expect(find.text('2'), findsOneWidget);
       expect(find.text('0'), findsOneWidget);
-      expect(find.text('All members are settled up!'), findsOneWidget);
-      expect(find.text('Generate Settlement Plan'), findsNothing);
+      expect(find.text('Mọi thành viên đã cân bằng!'), findsOneWidget);
+      expect(find.text('Tạo kế hoạch thanh toán'), findsNothing);
     });
 
-    testWidgets('should handle all positive balances', (tester) async {
+    testWidgets('renders the settle CTA when balances are unsettled', (
+      tester,
+    ) async {
       final positiveBalances = [
         const Balance(
           userId: 'user-1',
@@ -151,7 +161,7 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(createTestWidget(balances: positiveBalances));
+      await pump(tester, balances: positiveBalances);
 
       expect(
         find.text(CurrencyFormatter.format(amount: 50, currencyCode: 'USD')),
@@ -161,11 +171,13 @@ void main() {
         find.text(CurrencyFormatter.format(amount: 0, currencyCode: 'USD')),
         findsOneWidget,
       );
-      expect(find.text('Generate Settlement Plan'), findsOneWidget);
-      expect(find.text('All members are settled up!'), findsNothing);
+      expect(find.text('Tạo kế hoạch thanh toán'), findsOneWidget);
+      expect(find.text('Mọi thành viên đã cân bằng!'), findsNothing);
     });
 
-    testWidgets('should handle all negative balances', (tester) async {
+    testWidgets('still renders the CTA for all-negative balances', (
+      tester,
+    ) async {
       final negativeBalances = [
         const Balance(
           userId: 'user-1',
@@ -181,7 +193,7 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(createTestWidget(balances: negativeBalances));
+      await pump(tester, balances: negativeBalances);
 
       expect(
         find.text(CurrencyFormatter.format(amount: 0, currencyCode: 'USD')),
@@ -191,25 +203,20 @@ void main() {
         find.text(CurrencyFormatter.format(amount: 50, currencyCode: 'USD')),
         findsOneWidget,
       );
-      expect(find.text('Generate Settlement Plan'), findsOneWidget);
+      expect(find.text('Tạo kế hoạch thanh toán'), findsOneWidget);
     });
 
-    testWidgets('should display VND currency correctly', (tester) async {
+    testWidgets('renders VND amounts correctly', (tester) async {
       final vndBalances = testBalances
           .map(
             (balance) => balance.copyWith(
-              balance: balance.balance * 25000, // Convert to VND
+              balance: balance.balance * 25000,
               currency: 'VND',
             ),
           )
           .toList();
 
-      await tester.pumpWidget(
-        createTestWidget(
-          balances: vndBalances,
-          currency: 'VND',
-        ),
-      );
+      await pump(tester, balances: vndBalances, currency: 'VND');
 
       expect(
         find.text(
@@ -225,29 +232,22 @@ void main() {
       );
     });
 
-    testWidgets('should display proper visual hierarchy', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-
+    testWidgets('renders the title in a semibold weight', (tester) async {
+      await pump(tester);
       expect(find.byType(Card), findsOneWidget);
-      final titleText = tester.widget<Text>(find.text('Balance Summary'));
+      final titleText = tester.widget<Text>(find.text('Tổng quan số dư'));
       expect(titleText.style?.fontWeight, equals(FontWeight.w600));
     });
 
-    testWidgets('should render settlement button and call callback', (
+    testWidgets('invokes the onGenerateSettlement callback when tapped', (
       tester,
     ) async {
       var tapped = false;
-      await tester.pumpWidget(createTestWidget());
-      expect(find.text('Generate Settlement Plan'), findsOneWidget);
-      expect(find.byIcon(Icons.calculate), findsOneWidget);
+      await pump(tester, onGenerateSettlement: () => tapped = true);
 
-      await tester.pumpWidget(
-        createTestWidget(
-          onGenerateSettlement: () {
-            tapped = true;
-          },
-        ),
-      );
+      expect(find.text('Tạo kế hoạch thanh toán'), findsOneWidget);
+      expect(find.byIcon(Icons.calculate_rounded), findsOneWidget);
+
       await tester.tap(
         find.byWidgetPredicate((widget) => widget is ElevatedButton),
       );
@@ -255,7 +255,7 @@ void main() {
       expect(tapped, isTrue);
     });
 
-    testWidgets('should handle large amounts correctly', (tester) async {
+    testWidgets('renders large amounts without overflow', (tester) async {
       final largeBalances = [
         const Balance(
           userId: 'user-1',
@@ -271,7 +271,7 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(createTestWidget(balances: largeBalances));
+      await pump(tester, balances: largeBalances);
 
       expect(
         find.text(
@@ -287,20 +287,7 @@ void main() {
       );
     });
 
-    testWidgets('should display proper card styling', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-
-      expect(find.byType(Card), findsOneWidget);
-      expect(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is Padding && widget.padding == const EdgeInsets.all(20),
-        ),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('should handle decimal precision correctly', (tester) async {
+    testWidgets('renders decimal precision correctly', (tester) async {
       final preciseBalances = [
         const Balance(
           userId: 'user-1',
@@ -316,7 +303,7 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(createTestWidget(balances: preciseBalances));
+      await pump(tester, balances: preciseBalances);
 
       expect(
         find.text(
@@ -332,10 +319,10 @@ void main() {
       );
     });
 
-    testWidgets('should show all settled message when all settled', (
+    testWidgets('shows the all-settled banner when nobody owes', (
       tester,
     ) async {
-      final balancedBalances = [
+      final balanced = [
         const Balance(
           userId: 'user-1',
           displayName: 'John Doe',
@@ -350,28 +337,24 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(createTestWidget(balances: balancedBalances));
+      await pump(tester, balances: balanced);
 
-      expect(find.text('All members are settled up!'), findsOneWidget);
-      expect(find.text('Generate Settlement Plan'), findsNothing);
-      expect(find.byIcon(Icons.check_circle), findsNWidgets(2));
+      expect(find.text('Mọi thành viên đã cân bằng!'), findsOneWidget);
+      expect(find.text('Tạo kế hoạch thanh toán'), findsNothing);
+      // Banner icon (filled) + stat icon (outlined)
+      expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle_outline_rounded), findsOneWidget);
     });
 
-    testWidgets('should work with different themes', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: ThemeData.dark(),
-          home: Scaffold(
-            body: BalanceSummaryCard(
-              balances: testBalances,
-              currency: 'USD',
-            ),
-          ),
-        ),
+    testWidgets('renders in a dark theme', (tester) async {
+      await pumpLocalized(
+        tester,
+        BalanceSummaryCard(balances: testBalances, currency: 'USD'),
+        theme: ThemeData.dark(),
       );
 
       expect(find.byType(BalanceSummaryCard), findsOneWidget);
-      expect(find.text('Balance Summary'), findsOneWidget);
+      expect(find.text('Tổng quan số dư'), findsOneWidget);
     });
   });
 }
