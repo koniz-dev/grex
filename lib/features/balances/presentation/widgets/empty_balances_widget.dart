@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
@@ -66,11 +68,11 @@ class EmptyBalancesWidget extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xxl),
                   _ActionRow(
                     onAddExpenses: () {
-                      HapticFeedback.lightImpact();
+                      unawaited(HapticFeedback.lightImpact());
                       Navigator.of(context).pop();
                     },
                     onRecordPayments: () {
-                      HapticFeedback.lightImpact();
+                      unawaited(HapticFeedback.lightImpact());
                       Navigator.of(context).pop();
                     },
                     addLabel: l10n.addExpenses,

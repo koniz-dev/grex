@@ -4,9 +4,9 @@ import 'package:grex/shared/theme/app_radius.dart';
 import 'package:grex/shared/theme/app_spacing.dart';
 import 'package:grex/shared/widgets/shimmer_box.dart';
 
-/// Skeleton placeholder for [GroupListView] while groups are being fetched.
+/// Skeleton placeholder for the group list while groups are being fetched.
 ///
-/// Renders a fixed number of cards whose silhouettes mirror [GroupListItem]
+/// Renders a fixed number of cards whose silhouettes mirror `GroupListItem`
 /// (avatar + two text lines + chevron). This is more truthful to the
 /// upcoming layout than a spinner, so the page doesn't visibly "reshuffle"
 /// when data lands.
@@ -24,7 +24,7 @@ class GroupListSkeleton extends StatelessWidget {
       padding: AppSpacing.page,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
-      itemBuilder: (_, __) => const Padding(
+      itemBuilder: (_, _) => const Padding(
         padding: EdgeInsets.only(bottom: AppSpacing.md),
         child: _SkeletonCard(),
       ),
@@ -37,13 +37,13 @@ class _SkeletonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return const Card(
       elevation: AppElevation.card,
-      shape: const RoundedRectangleBorder(borderRadius: AppRadius.brMd),
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.brMd),
       child: Padding(
         padding: AppSpacing.card,
         child: Row(
-          children: const [
+          children: [
             ShimmerBox(
               width: 48,
               height: 48,
@@ -55,14 +55,14 @@ class _SkeletonCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ShimmerBox(width: 160, height: 16),
+                  ShimmerBox(width: 160),
                   SizedBox(height: AppSpacing.sm),
                   ShimmerBox(width: 100, height: 12),
                 ],
               ),
             ),
             SizedBox(width: AppSpacing.sm),
-            ShimmerBox(width: 16, height: 16),
+            ShimmerBox(width: 16),
           ],
         ),
       ),

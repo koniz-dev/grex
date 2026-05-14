@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grex/features/balances/domain/entities/balance.dart';
@@ -40,7 +42,7 @@ class BalanceListItem extends StatelessWidget {
           onTap: onTap == null
               ? null
               : () {
-                  HapticFeedback.selectionClick();
+                  unawaited(HapticFeedback.selectionClick());
                   onTap!.call();
                 },
           child: Padding(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grex/features/groups/presentation/pages/create_group_page.dart';
@@ -96,7 +98,7 @@ class EmptyGroupsWidget extends StatelessWidget {
   }
 
   Future<void> _openCreateGroup(BuildContext context) async {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
     await Navigator.of(context).push<bool>(
       MaterialPageRoute<bool>(builder: (_) => const CreateGroupPage()),
     );

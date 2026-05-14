@@ -6,9 +6,9 @@ import 'package:grex/shared/widgets/shimmer_box.dart';
 
 /// Shimmer placeholder for the expense list while data is being fetched.
 ///
-/// Mirrors the visual rhythm of [ExpenseListItem] (description + amount header,
-/// payer / participants row, date / split-validity row) so the page does not
-/// visually "snap" when real data lands.
+/// Mirrors the visual rhythm of `ExpenseListItem` (description + amount
+/// header, payer / participants row, date / split-validity row) so the page
+/// does not visually "snap" when real data lands.
 class ExpenseListSkeleton extends StatelessWidget {
   /// Creates an [ExpenseListSkeleton].
   const ExpenseListSkeleton({this.itemCount = 5, super.key});
@@ -23,7 +23,7 @@ class ExpenseListSkeleton extends StatelessWidget {
       padding: AppSpacing.page,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
-      itemBuilder: (_, __) => const Padding(
+      itemBuilder: (_, _) => const Padding(
         padding: EdgeInsets.only(bottom: AppSpacing.md),
         child: _SkeletonCard(),
       ),
@@ -36,15 +36,15 @@ class _SkeletonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return const Card(
       elevation: AppElevation.card,
       margin: EdgeInsets.zero,
-      shape: const RoundedRectangleBorder(borderRadius: AppRadius.brMd),
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.brMd),
       child: Padding(
         padding: AppSpacing.card,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -52,7 +52,7 @@ class _SkeletonCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ShimmerBox(width: 180, height: 16),
+                      ShimmerBox(width: 180),
                       SizedBox(height: AppSpacing.xs),
                       ShimmerBox(width: 64, height: 12),
                     ],

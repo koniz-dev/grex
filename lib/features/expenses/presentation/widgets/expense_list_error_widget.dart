@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
@@ -70,7 +72,7 @@ class ExpenseListErrorWidget extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xxxl),
                   ElevatedButton.icon(
                     onPressed: () {
-                      HapticFeedback.lightImpact();
+                      unawaited(HapticFeedback.lightImpact());
                       onRetry();
                     },
                     icon: const Icon(Icons.refresh_rounded),

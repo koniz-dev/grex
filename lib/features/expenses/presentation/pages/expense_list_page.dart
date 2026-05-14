@@ -92,7 +92,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   }
 
   Future<void> _showFilterSheet() async {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
     final filters = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
       isScrollControlled: true,
@@ -122,7 +122,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   }
 
   void _clearFilters() {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
     setState(() {
       _startDate = null;
       _endDate = null;
@@ -174,13 +174,14 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               onChanged: _onSearchChanged,
               hintText: l10n.expensesSearchHint,
             ),
-            if (_hasActiveFilters) _FilterSummaryBanner(summary: _filterSummary),
+            if (_hasActiveFilters)
+              _FilterSummaryBanner(summary: _filterSummary),
             Expanded(
               child: BlocBuilder<ExpenseBloc, ExpenseState>(
                 builder: (context, state) {
                   return RefreshIndicator(
                     onRefresh: () async {
-                      HapticFeedback.lightImpact();
+                      unawaited(HapticFeedback.lightImpact());
                       _loadExpenses();
                     },
                     child: _ExpenseListBody(
@@ -228,19 +229,16 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
     if (_minAmount != null || _maxAmount != null) {
       final min = _minAmount;
       final max = _maxAmount;
+      String fmt(double v) => CurrencyFormatter.format(
+        amount: v,
+        currencyCode: widget.groupCurrency,
+      );
       if (min != null && max != null) {
-        filters.add(
-          '${CurrencyFormatter.format(amount: min, currencyCode: widget.groupCurrency)} – '
-          '${CurrencyFormatter.format(amount: max, currencyCode: widget.groupCurrency)}',
-        );
+        filters.add('${fmt(min)} – ${fmt(max)}');
       } else if (min != null) {
-        filters.add(
-          '≥ ${CurrencyFormatter.format(amount: min, currencyCode: widget.groupCurrency)}',
-        );
+        filters.add('≥ ${fmt(min)}');
       } else if (max != null) {
-        filters.add(
-          '≤ ${CurrencyFormatter.format(amount: max, currencyCode: widget.groupCurrency)}',
-        );
+        filters.add('≤ ${fmt(max)}');
       }
     }
     if (_selectedParticipant != null) filters.add('@');
@@ -257,7 +255,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   // ---------------- Navigation ----------------
 
   void _navigateToCreateExpense() {
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
     unawaited(
       Navigator.of(context)
           .push(

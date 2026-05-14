@@ -38,11 +38,11 @@ class _SummarySkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return const Card(
       elevation: AppElevation.card,
       margin: EdgeInsets.zero,
-      shape: const RoundedRectangleBorder(borderRadius: AppRadius.brMd),
-      child: const Padding(
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.brMd),
+      child: Padding(
         padding: EdgeInsets.all(AppSpacing.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,14 +76,14 @@ class _RowSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return const Card(
       elevation: AppElevation.card,
       margin: EdgeInsets.zero,
-      shape: const RoundedRectangleBorder(borderRadius: AppRadius.brMd),
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.brMd),
       child: Padding(
         padding: AppSpacing.card,
         child: Row(
-          children: const [
+          children: [
             ShimmerBox(
               width: 40,
               height: 40,
@@ -95,7 +95,7 @@ class _RowSkeleton extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ShimmerBox(width: 140, height: 16),
+                  ShimmerBox(width: 140),
                   SizedBox(height: AppSpacing.xs),
                   ShimmerBox(width: 90, height: 12),
                 ],
@@ -105,7 +105,7 @@ class _RowSkeleton extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                ShimmerBox(width: 70, height: 16),
+                ShimmerBox(width: 70),
                 SizedBox(height: AppSpacing.xs),
                 ShimmerBox(width: 50, height: 12),
               ],

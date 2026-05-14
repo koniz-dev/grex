@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,7 +61,7 @@ class GroupListView extends StatelessWidget {
         builder: (context, state) {
           return RefreshIndicator(
             onRefresh: () async {
-              HapticFeedback.lightImpact();
+              unawaited(HapticFeedback.lightImpact());
               context.read<GroupBloc>().add(const GroupsLoadRequested());
             },
             child: _GroupListBody(state: state),
@@ -68,7 +70,7 @@ class GroupListView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          HapticFeedback.lightImpact();
+          unawaited(HapticFeedback.lightImpact());
           context.goToCreateGroup();
         },
         icon: const Icon(Icons.add_rounded),

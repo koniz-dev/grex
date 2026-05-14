@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grex/features/balances/domain/entities/balance.dart';
@@ -122,7 +124,7 @@ class BalanceSummaryCard extends StatelessWidget {
                   onPressed: onGenerateSettlement == null
                       ? null
                       : () {
-                          HapticFeedback.lightImpact();
+                          unawaited(HapticFeedback.lightImpact());
                           onGenerateSettlement!.call();
                         },
                   icon: const Icon(Icons.calculate_rounded),

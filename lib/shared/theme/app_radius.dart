@@ -27,8 +27,15 @@ class AppRadius {
   /// Fully rounded (pill / circle).
   static const double full = 999;
 
+  /// Const [BorderRadius] convenience matching [sm].
   static const BorderRadius brSm = BorderRadius.all(Radius.circular(sm));
+
+  /// Const [BorderRadius] convenience matching [md].
   static const BorderRadius brMd = BorderRadius.all(Radius.circular(md));
+
+  /// Const [BorderRadius] convenience matching [lg].
   static const BorderRadius brLg = BorderRadius.all(Radius.circular(lg));
+
+  /// Const [BorderRadius] convenience matching [xl].
   static const BorderRadius brXl = BorderRadius.all(Radius.circular(xl));
 }
