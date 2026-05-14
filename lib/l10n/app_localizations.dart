@@ -1704,12 +1704,6 @@ abstract class AppLocalizations {
   /// **'Filter expenses'**
   String get filterExpenses;
 
-  /// Tooltip for the clear-filters action
-  ///
-  /// In en, this message translates to:
-  /// **'Clear filters'**
-  String get clearFilters;
-
   /// Label / tooltip for the add-expense action
   ///
   /// In en, this message translates to:

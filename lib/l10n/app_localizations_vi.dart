@@ -919,9 +919,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get filterExpenses => 'Lọc chi tiêu';
 
   @override
-  String get clearFilters => 'Xoá bộ lọc';
-
-  @override
   String get addExpense => 'Thêm chi tiêu';
 
   @override

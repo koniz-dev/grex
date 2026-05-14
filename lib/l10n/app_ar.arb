@@ -1059,10 +1059,6 @@
   "@filterExpenses": {
     "description": "Tooltip for the expense filter button"
   },
-  "clearFilters": "مسح عوامل التصفية",
-  "@clearFilters": {
-    "description": "Tooltip for the clear-filters action"
-  },
   "addExpense": "إضافة نفقة",
   "@addExpense": {
     "description": "Label / tooltip for the add-expense action"

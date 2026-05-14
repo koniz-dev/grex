@@ -907,9 +907,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get filterExpenses => 'تصفية النفقات';
 
   @override
-  String get clearFilters => 'مسح عوامل التصفية';
-
-  @override
   String get addExpense => 'إضافة نفقة';
 
   @override

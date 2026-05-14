@@ -1059,10 +1059,6 @@
   "@filterExpenses": {
     "description": "Tooltip for the expense filter button"
   },
-  "clearFilters": "Borrar filtros",
-  "@clearFilters": {
-    "description": "Tooltip for the clear-filters action"
-  },
   "addExpense": "Añadir gasto",
   "@addExpense": {
     "description": "Label / tooltip for the add-expense action"

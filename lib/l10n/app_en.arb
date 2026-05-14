@@ -1225,10 +1225,6 @@
   "@filterExpenses": {
     "description": "Tooltip for the expense filter button"
   },
-  "clearFilters": "Clear filters",
-  "@clearFilters": {
-    "description": "Tooltip for the clear-filters action"
-  },
   "addExpense": "Add expense",
   "@addExpense": {
     "description": "Label / tooltip for the add-expense action"

@@ -912,10 +912,6 @@
   "@filterExpenses": {
     "description": "Tooltip for the expense filter button"
   },
-  "clearFilters": "Xoá bộ lọc",
-  "@clearFilters": {
-    "description": "Tooltip for the clear-filters action"
-  },
   "addExpense": "Thêm chi tiêu",
   "@addExpense": {
     "description": "Label / tooltip for the add-expense action"

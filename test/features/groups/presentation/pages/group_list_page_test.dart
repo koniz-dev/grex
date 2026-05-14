@@ -11,6 +11,7 @@ import 'package:grex/features/groups/presentation/bloc/group_bloc.dart';
 import 'package:grex/features/groups/presentation/bloc/group_event.dart';
 import 'package:grex/features/groups/presentation/bloc/group_state.dart';
 import 'package:grex/features/groups/presentation/pages/group_list_page.dart';
+import 'package:grex/features/groups/presentation/widgets/group_list_skeleton.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -48,7 +49,7 @@ void main() {
       mockGroupBloc = MockGroupBloc();
     });
 
-    testWidgets('should display loading indicator when state is loading', (
+    testWidgets('should display skeleton loader when state is loading', (
       tester,
     ) async {
       whenListen(
@@ -59,7 +60,7 @@ void main() {
 
       await tester.pumpWidget(_wrap(const GroupListView(), mockGroupBloc));
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(GroupListSkeleton), findsOneWidget);
     });
 
     testWidgets('should display empty state when no groups exist', (
@@ -80,11 +81,13 @@ void main() {
       expect(find.text('Chưa có nhóm nào'), findsOneWidget);
       expect(
         find.text(
-          'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia đình',
+          'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia đình.',
         ),
         findsOneWidget,
       );
-      expect(find.text('Tạo nhóm mới'), findsOneWidget);
+      // The CTA label is shared between the empty-state action and the
+      // page-level FloatingActionButton.extended — both render here.
+      expect(find.text('Tạo nhóm mới'), findsNWidgets(2));
     });
 
     testWidgets('should display groups when groups exist', (tester) async {
@@ -147,10 +150,16 @@ void main() {
 
       await tester.pumpWidget(_wrap(const GroupListView(), mockGroupBloc));
 
-      expect(find.text('Có lỗi xảy ra'), findsOneWidget);
-      // The page renders state.failure.toString() in the error body, not
-      // state.message — so assert against what GroupNetworkFailure produces.
-      expect(find.textContaining('Network error'), findsWidgets);
+      // After the iteration-1 refactor the page no longer leaks raw failure
+      // text to users — it renders the localised "Đã xảy ra lỗi" title and a
+      // friendly explanation alongside a Retry CTA.
+      expect(find.text('Đã xảy ra lỗi'), findsOneWidget);
+      expect(
+        find.text(
+          'Không thể tải danh sách nhóm. Vui lòng kiểm tra kết nối và thử lại.',
+        ),
+        findsOneWidget,
+      );
       expect(find.text('Thử lại'), findsOneWidget);
     });
 
@@ -164,7 +173,7 @@ void main() {
       await tester.pumpWidget(_wrap(const GroupListView(), mockGroupBloc));
 
       expect(find.byType(FloatingActionButton), findsOneWidget);
-      expect(find.byIcon(Icons.add), findsOneWidget);
+      expect(find.byIcon(Icons.add_rounded), findsOneWidget);
     });
 
     testWidgets('should trigger refresh when pull to refresh', (tester) async {

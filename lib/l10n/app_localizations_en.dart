@@ -915,9 +915,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get filterExpenses => 'Filter expenses';
 
   @override
-  String get clearFilters => 'Clear filters';
-
-  @override
   String get addExpense => 'Add expense';
 
   @override
