@@ -1042,4 +1042,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allMembersSettledUp => 'All members are settled up!';
+
+  @override
+  String get couldNotLoadPayments =>
+      'We couldn\'t load payments. Check your connection and try again.';
+
+  @override
+  String get deletePaymentTooltip => 'Delete payment';
 }

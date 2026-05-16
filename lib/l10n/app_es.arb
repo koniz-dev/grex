@@ -1226,5 +1226,13 @@
   "allMembersSettledUp": "¡Todos los miembros están liquidados!",
   "@allMembersSettledUp": {
     "description": "Celebratory banner shown when nobody owes anything"
+  },
+  "couldNotLoadPayments": "No pudimos cargar los pagos. Verifica tu conexión e inténtalo de nuevo.",
+  "@couldNotLoadPayments": {
+    "description": "Friendly explanation shown when the payment list fails to load"
+  },
+  "deletePaymentTooltip": "Eliminar pago",
+  "@deletePaymentTooltip": {
+    "description": "Tooltip on the delete-payment icon button"
   }
 }

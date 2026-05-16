@@ -1392,6 +1392,14 @@
   "allMembersSettledUp": "All members are settled up!",
   "@allMembersSettledUp": {
     "description": "Celebratory banner shown when nobody owes anything"
+  },
+  "couldNotLoadPayments": "We couldn't load payments. Check your connection and try again.",
+  "@couldNotLoadPayments": {
+    "description": "Friendly explanation shown when the payment list fails to load"
+  },
+  "deletePaymentTooltip": "Delete payment",
+  "@deletePaymentTooltip": {
+    "description": "Tooltip on the delete-payment icon button"
   }
 }
 

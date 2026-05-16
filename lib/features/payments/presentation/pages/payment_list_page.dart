@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/di/injection.dart';
 import 'package:grex/features/payments/domain/entities/payment.dart';
@@ -9,14 +11,19 @@ import 'package:grex/features/payments/presentation/bloc/payment_state.dart';
 import 'package:grex/features/payments/presentation/pages/create_payment_page.dart';
 import 'package:grex/features/payments/presentation/widgets/empty_payments_widget.dart';
 import 'package:grex/features/payments/presentation/widgets/payment_filter_sheet.dart';
+import 'package:grex/features/payments/presentation/widgets/payment_list_error_widget.dart';
 import 'package:grex/features/payments/presentation/widgets/payment_list_item.dart';
+import 'package:grex/features/payments/presentation/widgets/payment_list_skeleton.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_elevation.dart';
+import 'package:grex/shared/theme/app_radius.dart';
+import 'package:grex/shared/theme/app_spacing.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
 
-/// Page displaying list of payments for a group with filtering and sorting
-/// functionality
+/// Page displaying the list of payments for a group, with filter / sort and
+/// pull-to-refresh.
 class PaymentListPage extends StatefulWidget {
-  /// Creates a [PaymentListPage] instance
+  /// Creates a [PaymentListPage].
   const PaymentListPage({
     required this.groupId,
     required this.groupName,
@@ -24,24 +31,22 @@ class PaymentListPage extends StatefulWidget {
     super.key,
   });
 
-  /// The ID of the group to display payments for
+  /// The ID of the group whose payments are being displayed.
   final String groupId;
 
-  /// The name of the group
+  /// The display name of the group (rendered in the app bar).
   final String groupName;
 
-  /// The currency of the group
+  /// The currency of the group, used for amount conversion hints.
   final String groupCurrency;
 
   @override
   State<PaymentListPage> createState() => _PaymentListPageState();
 }
 
-/// State class for PaymentListPage
 class _PaymentListPageState extends State<PaymentListPage> {
   late final PaymentBloc _paymentBloc;
 
-  // Filter state
   DateTime? _startDate;
   DateTime? _endDate;
   String? _selectedPayer;
@@ -82,7 +87,18 @@ class _PaymentListPageState extends State<PaymentListPage> {
     );
   }
 
+  void _applySorting() {
+    _paymentBloc.add(
+      PaymentSortRequested(
+        groupId: widget.groupId,
+        sortBy: _sortBy,
+        ascending: _sortAscending,
+      ),
+    );
+  }
+
   void _clearFilters() {
+    unawaited(HapticFeedback.lightImpact());
     setState(() {
       _startDate = null;
       _endDate = null;
@@ -96,51 +112,37 @@ class _PaymentListPageState extends State<PaymentListPage> {
     _paymentBloc.add(PaymentFilterCleared(groupId: widget.groupId));
   }
 
-  void _showFilterSheet() {
-    unawaited(
-      showModalBottomSheet<Map<String, dynamic>>(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => PaymentFilterSheet(
-          startDate: _startDate,
-          endDate: _endDate,
-          selectedPayer: _selectedPayer,
-          selectedRecipient: _selectedRecipient,
-          minAmount: _minAmount,
-          maxAmount: _maxAmount,
-          sortBy: _sortBy,
-          sortAscending: _sortAscending,
-          groupCurrency: widget.groupCurrency,
-        ),
-      ).then((filters) {
-        if (filters != null) {
-          setState(() {
-            _startDate = filters['startDate'] as DateTime?;
-            _endDate = filters['endDate'] as DateTime?;
-            _selectedPayer = filters['selectedPayer'] as String?;
-            _selectedRecipient = filters['selectedRecipient'] as String?;
-            _minAmount = filters['minAmount'] as double?;
-            _maxAmount = filters['maxAmount'] as double?;
-            _sortBy =
-                filters['sortBy'] as PaymentSortCriteria? ??
-                PaymentSortCriteria.date;
-            _sortAscending = filters['sortAscending'] as bool? ?? false;
-          });
-          _applyFilters();
-          _applySorting();
-        }
-      }),
-    );
-  }
-
-  void _applySorting() {
-    _paymentBloc.add(
-      PaymentSortRequested(
-        groupId: widget.groupId,
+  Future<void> _showFilterSheet() async {
+    unawaited(HapticFeedback.lightImpact());
+    final filters = await showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => PaymentFilterSheet(
+        startDate: _startDate,
+        endDate: _endDate,
+        selectedPayer: _selectedPayer,
+        selectedRecipient: _selectedRecipient,
+        minAmount: _minAmount,
+        maxAmount: _maxAmount,
         sortBy: _sortBy,
-        ascending: _sortAscending,
+        sortAscending: _sortAscending,
+        groupCurrency: widget.groupCurrency,
       ),
     );
+    if (filters == null || !mounted) return;
+    setState(() {
+      _startDate = filters['startDate'] as DateTime?;
+      _endDate = filters['endDate'] as DateTime?;
+      _selectedPayer = filters['selectedPayer'] as String?;
+      _selectedRecipient = filters['selectedRecipient'] as String?;
+      _minAmount = filters['minAmount'] as double?;
+      _maxAmount = filters['maxAmount'] as double?;
+      _sortBy =
+          filters['sortBy'] as PaymentSortCriteria? ?? PaymentSortCriteria.date;
+      _sortAscending = filters['sortAscending'] as bool? ?? false;
+    });
+    _applyFilters();
+    _applySorting();
   }
 
   bool get _hasActiveFilters {
@@ -154,327 +156,113 @@ class _PaymentListPageState extends State<PaymentListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final l10n = context.l10n;
+
     return BlocProvider.value(
       value: _paymentBloc,
       child: Scaffold(
         appBar: AppBar(
           title: Text(l10n.groupPayments(widget.groupName)),
+          backgroundColor: theme.colorScheme.surface,
+          foregroundColor: theme.colorScheme.onSurface,
+          elevation: 0,
+          scrolledUnderElevation: 1,
           actions: [
             IconButton(
               icon: Icon(
-                Icons.filter_list,
-                color: _hasActiveFilters
-                    ? Theme.of(context).colorScheme.primary
-                    : null,
+                Icons.filter_list_rounded,
+                color: _hasActiveFilters ? theme.colorScheme.primary : null,
               ),
               onPressed: _showFilterSheet,
               tooltip: l10n.filterPayments,
             ),
             if (_hasActiveFilters)
               IconButton(
-                icon: const Icon(Icons.clear),
+                icon: const Icon(Icons.close_rounded),
                 onPressed: _clearFilters,
                 tooltip: l10n.clearFilters,
               ),
           ],
         ),
         body: BlocListener<PaymentBloc, PaymentState>(
-          listener: (context, state) {
-            if (state is PaymentOperationSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.green,
-                ),
-              );
-              // Data is already updated in the state, no need to reload
-            }
-
-            if (state is PaymentError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                ),
-              );
-            }
-          },
+          listener: _handleStateNotifications,
           child: Column(
             children: [
-              // Filter summary
               BlocBuilder<PaymentBloc, PaymentState>(
                 builder: (context, state) {
-                  if ((state is PaymentsLoaded && state.hasActiveFilters) ||
-                      (state is PaymentOperationSuccess)) {
-                    final summary = state is PaymentsLoaded
-                        ? _getFilterSummary(state)
-                        : null; // Success state doesn't have details here yet
-
-                    if (summary == null) return const SizedBox.shrink();
-
-                    return Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest,
-                      child: Text(
-                        summary,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
+                  final hasFilters = (state is PaymentsLoaded &&
+                          state.hasActiveFilters) ||
+                      _hasActiveFilters;
+                  if (!hasFilters) return const SizedBox.shrink();
+                  return const _FilterBadge();
                 },
               ),
-
-              // Payment list
               Expanded(
                 child: BlocBuilder<PaymentBloc, PaymentState>(
                   builder: (context, state) {
-                    if (state is PaymentLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                    if (state is PaymentError) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.error_outline,
-                              size: 64,
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              l10n.errorLoadingPayments,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              state.message,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: _loadPayments,
-                              child: Text(l10n.retry),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    if (state is PaymentsLoaded ||
-                        state is PaymentOperationSuccess) {
-                      final payments = state is PaymentsLoaded
-                          ? state.filteredPayments
-                          : (state as PaymentOperationSuccess).filteredPayments;
-
-                      if (payments.isEmpty) {
-                        return EmptyPaymentsWidget(
-                          message: state is PaymentsLoaded
-                              ? _getEmptyStateMessage(state)
-                              : l10n.noPaymentsMatchCriteria,
-                          onAddPayment: _navigateToCreatePayment,
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        unawaited(HapticFeedback.lightImpact());
+                        _paymentBloc.add(
+                          PaymentRefreshRequested(groupId: widget.groupId),
                         );
-                      }
-
-                      return RefreshIndicator(
-                        onRefresh: () async {
-                          _paymentBloc.add(
-                            PaymentRefreshRequested(groupId: widget.groupId),
-                          );
-                        },
-                        child: Column(
-                          children: [
-                            // Summary card
-                            if (payments.isNotEmpty)
-                              _buildSummaryCard(payments),
-
-                            // Payment list
-                            Expanded(
-                              child: ListView.builder(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                itemCount: payments.length,
-                                itemBuilder: (context, index) {
-                                  final payment = payments[index];
-                                  return PaymentListItem(
-                                    payment: payment,
-                                    onTap: () => _showPaymentDetails(payment),
-                                    onDelete: _canDeletePayment(payment)
-                                        ? () => _confirmDeletePayment(payment)
-                                        : null,
-                                    groupCurrency: widget.groupCurrency,
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    return const SizedBox.shrink();
+                      },
+                      child: _PaymentListBody(
+                        state: state,
+                        groupCurrency: widget.groupCurrency,
+                        hasActiveFilters: _hasActiveFilters,
+                        onRetry: _loadPayments,
+                        onAddPayment: _navigateToCreatePayment,
+                        onTapPayment: _showPaymentDetails,
+                        canDelete: _canDeletePayment,
+                        onDelete: _confirmDeletePayment,
+                      ),
+                    );
                   },
                 ),
               ),
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
           onPressed: _navigateToCreatePayment,
-          tooltip: l10n.addPayment,
-          child: const Icon(Icons.add),
+          icon: const Icon(Icons.add_rounded),
+          label: Text(l10n.addPayment),
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.brLg),
         ),
       ),
     );
   }
 
-  Widget _buildSummaryCard(List<Payment> payments) {
-    final l10n = context.l10n;
-    final totalAmount = payments.fold<double>(0, (sum, p) => sum + p.amount);
-    return Card(
-      margin: const EdgeInsets.all(16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n.paymentSummary,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.totalPayments,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                    ),
-                    Text(
-                      '${payments.length}',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      l10n.totalAmount,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                    ),
-                    Text(
-                      CurrencyFormatter.format(
-                        amount: totalAmount,
-                        currencyCode: widget.groupCurrency,
-                      ),
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+  void _handleStateNotifications(BuildContext context, PaymentState state) {
+    if (state is PaymentOperationSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.message),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.brSm),
         ),
-      ),
-    );
-  }
-
-  String _getFilterSummary(PaymentsLoaded state) {
-    final parts = <String>[];
-
-    if (_startDate != null || _endDate != null) {
-      if (_startDate != null && _endDate != null) {
-        parts.add(
-          'Date: ${_formatDate(_startDate!)} - ${_formatDate(_endDate!)}',
-        );
-      } else if (_startDate != null) {
-        parts.add('From: ${_formatDate(_startDate!)}');
-      } else {
-        parts.add('Until: ${_formatDate(_endDate!)}');
-      }
+      );
     }
-
-    if (_minAmount != null || _maxAmount != null) {
-      if (_minAmount != null && _maxAmount != null) {
-        final minFormatted = CurrencyFormatter.format(
-          amount: _minAmount!,
-          currencyCode: widget.groupCurrency,
-        );
-        final maxFormatted = CurrencyFormatter.format(
-          amount: _maxAmount!,
-          currencyCode: widget.groupCurrency,
-        );
-        parts.add('Amount: $minFormatted - $maxFormatted');
-      } else if (_minAmount != null) {
-        final minFormatted = CurrencyFormatter.format(
-          amount: _minAmount!,
-          currencyCode: widget.groupCurrency,
-        );
-        parts.add('Min: $minFormatted');
-      } else {
-        final maxFormatted = CurrencyFormatter.format(
-          amount: _maxAmount!,
-          currencyCode: widget.groupCurrency,
-        );
-        parts.add('Max: $maxFormatted');
-      }
-    }
-
-    if (_selectedPayer != null) {
-      parts.add('Payer filter active');
-    }
-
-    if (_selectedRecipient != null) {
-      parts.add('Recipient filter active');
-    }
-
-    return 'Filters: ${parts.join(', ')} (${state.filteredCount}/${state.totalCount} payments)';
-  }
-
-  String _getEmptyStateMessage(PaymentsLoaded state) {
-    final l10n = context.l10n;
-    if (state.hasActiveFilters) {
-      return l10n.noPaymentsMatchSearch;
-    } else {
-      return l10n.noPaymentsYet;
+    if (state is PaymentError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+          behavior: SnackBarBehavior.floating,
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.brSm),
+        ),
+      );
     }
   }
 
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
-  }
+  // ---------------- Navigation / actions ----------------
 
   bool _canDeletePayment(Payment payment) {
-    // For now, allow deletion of all payments
-    // In a real app, this would check user permissions
+    // For now, allow deletion of all payments. In a real app this would
+    // check user permissions / payment ownership.
     return true;
   }
 
@@ -517,6 +305,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
 
   void _confirmDeletePayment(Payment payment) {
     final l10n = context.l10n;
+    unawaited(HapticFeedback.lightImpact());
     unawaited(
       showDialog<bool>(
         context: context,
@@ -551,20 +340,223 @@ class _PaymentListPageState extends State<PaymentListPage> {
   }
 
   void _navigateToCreatePayment() {
+    unawaited(HapticFeedback.lightImpact());
     unawaited(
       Navigator.of(context)
           .push(
             MaterialPageRoute<void>(
-              builder: (context) => CreatePaymentPage(
+              builder: (_) => CreatePaymentPage(
                 groupId: widget.groupId,
                 groupCurrency: widget.groupCurrency,
               ),
             ),
           )
-          .then((_) {
-            // Refresh payments after creating new one
-            _loadPayments();
-          }),
+          .then((_) => _loadPayments()),
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
+}
+
+class _FilterBadge extends StatelessWidget {
+  const _FilterBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
+      color: theme.colorScheme.surfaceContainerHighest,
+      child: Row(
+        children: [
+          Icon(
+            Icons.filter_alt_outlined,
+            size: 14,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: AppSpacing.xs),
+          Expanded(
+            child: Text(
+              context.l10n.filterPayments,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PaymentListBody extends StatelessWidget {
+  const _PaymentListBody({
+    required this.state,
+    required this.groupCurrency,
+    required this.hasActiveFilters,
+    required this.onRetry,
+    required this.onAddPayment,
+    required this.onTapPayment,
+    required this.canDelete,
+    required this.onDelete,
+  });
+
+  final PaymentState state;
+  final String groupCurrency;
+  final bool hasActiveFilters;
+  final VoidCallback onRetry;
+  final VoidCallback onAddPayment;
+  final void Function(Payment payment) onTapPayment;
+  final bool Function(Payment payment) canDelete;
+  final void Function(Payment payment) onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    if (state is PaymentLoading) {
+      return const PaymentListSkeleton();
+    }
+    if (state is PaymentError) {
+      return PaymentListErrorWidget(onRetry: onRetry);
+    }
+    if (state is PaymentsLoaded || state is PaymentOperationSuccess) {
+      final payments = state is PaymentsLoaded
+          ? (state as PaymentsLoaded).filteredPayments
+          : (state as PaymentOperationSuccess).filteredPayments;
+
+      if (payments.isEmpty) {
+        return EmptyPaymentsWidget(
+          hasActiveFilters: hasActiveFilters,
+          onAddPayment: hasActiveFilters ? null : onAddPayment,
+        );
+      }
+
+      return Column(
+        children: [
+          _SummaryCard(
+            payments: payments,
+            currency: groupCurrency,
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.huge + AppSpacing.lg,
+              ),
+              itemCount: payments.length,
+              itemBuilder: (context, index) {
+                final payment = payments[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                  child: PaymentListItem(
+                    payment: payment,
+                    groupCurrency: groupCurrency,
+                    onTap: () => onTapPayment(payment),
+                    onDelete: canDelete(payment)
+                        ? () => onDelete(payment)
+                        : null,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      );
+    }
+    return const PaymentListSkeleton();
+  }
+}
+
+class _SummaryCard extends StatelessWidget {
+  const _SummaryCard({required this.payments, required this.currency});
+
+  final List<Payment> payments;
+  final String currency;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+    final totalAmount = payments.fold<double>(0, (sum, p) => sum + p.amount);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.sm,
+      ),
+      child: Card(
+        elevation: AppElevation.card,
+        margin: EdgeInsets.zero,
+        shape: const RoundedRectangleBorder(borderRadius: AppRadius.brMd),
+        child: Padding(
+          padding: AppSpacing.card,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.paymentSummary,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.totalPayments,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.outline,
+                        ),
+                      ),
+                      Text(
+                        '${payments.length}',
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        l10n.totalAmount,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.outline,
+                        ),
+                      ),
+                      Text(
+                        CurrencyFormatter.format(
+                          amount: totalAmount,
+                          currencyCode: currency,
+                        ),
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

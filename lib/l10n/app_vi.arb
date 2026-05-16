@@ -1079,6 +1079,14 @@
   "allMembersSettledUp": "Mọi thành viên đã cân bằng!",
   "@allMembersSettledUp": {
     "description": "Celebratory banner shown when nobody owes anything"
+  },
+  "couldNotLoadPayments": "Không thể tải danh sách thanh toán. Vui lòng kiểm tra kết nối và thử lại.",
+  "@couldNotLoadPayments": {
+    "description": "Friendly explanation shown when the payment list fails to load"
+  },
+  "deletePaymentTooltip": "Xoá thanh toán",
+  "@deletePaymentTooltip": {
+    "description": "Tooltip on the delete-payment icon button"
   }
 }
 

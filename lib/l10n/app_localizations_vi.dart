@@ -1046,4 +1046,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get allMembersSettledUp => 'Mọi thành viên đã cân bằng!';
+
+  @override
+  String get couldNotLoadPayments =>
+      'Không thể tải danh sách thanh toán. Vui lòng kiểm tra kết nối và thử lại.';
+
+  @override
+  String get deletePaymentTooltip => 'Xoá thanh toán';
 }

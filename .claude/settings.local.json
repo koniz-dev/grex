@@ -9,7 +9,14 @@
       "PowerShell(flutter analyze *)",
       "Bash(dart fix *)",
       "Bash(python *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git checkout *)",
+      "Bash(flutter gen-l10n *)",
+      "Bash(fvm --version)",
+      "Read(//Users/nguyenanhkiet/**)",
+      "Bash(dart --version)",
+      "Bash(git status *)",
+      "Bash(git commit *)"
     ]
   }
 }

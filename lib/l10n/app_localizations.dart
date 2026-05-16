@@ -1919,6 +1919,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All members are settled up!'**
   String get allMembersSettledUp;
+
+  /// Friendly explanation shown when the payment list fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load payments. Check your connection and try again.'**
+  String get couldNotLoadPayments;
+
+  /// Tooltip on the delete-payment icon button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete payment'**
+  String get deletePaymentTooltip;
 }
 
 class _AppLocalizationsDelegate

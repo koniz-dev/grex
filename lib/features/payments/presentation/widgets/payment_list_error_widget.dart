@@ -7,28 +7,13 @@ import 'package:grex/shared/theme/app_icon_sizes.dart';
 import 'package:grex/shared/theme/app_radius.dart';
 import 'package:grex/shared/theme/app_spacing.dart';
 
-/// Empty-state widget shown on the payment list.
-///
-/// Renders a centred illustration, a localised title, a context-aware
-/// description (driven by [hasActiveFilters]), and an optional primary CTA
-/// to record the first payment. Wrapping in a [SingleChildScrollView] keeps
-/// the layout scrollable so the surrounding [RefreshIndicator] still works.
-class EmptyPaymentsWidget extends StatelessWidget {
-  /// Creates an [EmptyPaymentsWidget].
-  const EmptyPaymentsWidget({
-    this.hasActiveFilters = false,
-    this.onAddPayment,
-    super.key,
-  });
+/// Friendly error state for the payment list.
+class PaymentListErrorWidget extends StatelessWidget {
+  /// Creates a [PaymentListErrorWidget].
+  const PaymentListErrorWidget({required this.onRetry, super.key});
 
-  /// Whether the page currently has active search or filters. Controls which
-  /// description is shown — "no payments yet" vs "no results match".
-  final bool hasActiveFilters;
-
-  /// Optional callback invoked when the user taps the add-first-payment CTA.
-  /// The CTA is hidden when this is `null` (e.g. in filtered states where
-  /// adding a payment isn't the right next step).
-  final VoidCallback? onAddPayment;
+  /// Callback invoked when the user taps the retry CTA.
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +39,18 @@ class EmptyPaymentsWidget extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: scheme.primaryContainer.withValues(alpha: 0.3),
+                      color: scheme.errorContainer.withValues(alpha: 0.4),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
-                      Icons.payments_outlined,
+                      Icons.cloud_off_rounded,
                       size: AppIconSizes.illustration,
-                      color: scheme.primary,
+                      color: scheme.error,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
                   Text(
-                    l10n.noPayments,
+                    l10n.somethingWentWrong,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: scheme.onSurface,
@@ -74,35 +59,31 @@ class EmptyPaymentsWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   Text(
-                    hasActiveFilters
-                        ? l10n.noPaymentsMatchSearch
-                        : l10n.noPaymentsYet,
+                    l10n.couldNotLoadPayments,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: scheme.onSurfaceVariant,
                       height: 1.4,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  if (onAddPayment != null) ...[
-                    const SizedBox(height: AppSpacing.xxxl),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        unawaited(HapticFeedback.lightImpact());
-                        onAddPayment!();
-                      },
-                      icon: const Icon(Icons.add_rounded),
-                      label: Text(l10n.addFirstPayment),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xxl,
-                          vertical: AppSpacing.md,
-                        ),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: AppRadius.brMd,
-                        ),
+                  const SizedBox(height: AppSpacing.xxxl),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      unawaited(HapticFeedback.lightImpact());
+                      onRetry();
+                    },
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: Text(l10n.retry),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xxl,
+                        vertical: AppSpacing.md,
+                      ),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: AppRadius.brMd,
                       ),
                     ),
-                  ],
+                  ),
                 ],
               ),
             ),

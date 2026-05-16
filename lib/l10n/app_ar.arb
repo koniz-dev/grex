@@ -1226,5 +1226,13 @@
   "allMembersSettledUp": "جميع الأعضاء في حالة توازن!",
   "@allMembersSettledUp": {
     "description": "Celebratory banner shown when nobody owes anything"
+  },
+  "couldNotLoadPayments": "تعذر تحميل المدفوعات. تحقق من اتصالك وحاول مرة أخرى.",
+  "@couldNotLoadPayments": {
+    "description": "Friendly explanation shown when the payment list fails to load"
+  },
+  "deletePaymentTooltip": "حذف الدفعة",
+  "@deletePaymentTooltip": {
+    "description": "Tooltip on the delete-payment icon button"
   }
 }

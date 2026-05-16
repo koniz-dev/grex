@@ -1060,4 +1060,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get allMembersSettledUp => '¡Todos los miembros están liquidados!';
+
+  @override
+  String get couldNotLoadPayments =>
+      'No pudimos cargar los pagos. Verifica tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get deletePaymentTooltip => 'Eliminar pago';
 }

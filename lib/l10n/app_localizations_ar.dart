@@ -1037,4 +1037,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get allMembersSettledUp => 'جميع الأعضاء في حالة توازن!';
+
+  @override
+  String get couldNotLoadPayments =>
+      'تعذر تحميل المدفوعات. تحقق من اتصالك وحاول مرة أخرى.';
+
+  @override
+  String get deletePaymentTooltip => 'حذف الدفعة';
 }
