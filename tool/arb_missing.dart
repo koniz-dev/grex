@@ -6,12 +6,15 @@ import 'dart:convert';
 import 'dart:io';
 
 void main() {
-  final en = json.decode(File('lib/l10n/app_en.arb').readAsStringSync())
-      as Map<String, dynamic>;
-  final ar = json.decode(File('lib/l10n/app_ar.arb').readAsStringSync())
-      as Map<String, dynamic>;
-  final es = json.decode(File('lib/l10n/app_es.arb').readAsStringSync())
-      as Map<String, dynamic>;
+  final en =
+      json.decode(File('lib/l10n/app_en.arb').readAsStringSync())
+          as Map<String, dynamic>;
+  final ar =
+      json.decode(File('lib/l10n/app_ar.arb').readAsStringSync())
+          as Map<String, dynamic>;
+  final es =
+      json.decode(File('lib/l10n/app_es.arb').readAsStringSync())
+          as Map<String, dynamic>;
 
   Set<String> top(Map<String, dynamic> arb) =>
       arb.keys.where((k) => !k.startsWith('@')).toSet();

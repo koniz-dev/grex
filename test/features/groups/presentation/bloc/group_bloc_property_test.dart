@@ -16,9 +16,7 @@ import 'group_bloc_property_test.mocks.dart';
 
 @GenerateMocks([GroupRepository])
 void main() {
-  group(
-    'Group BLoC Administrator Settings Properties',
-    () {
+  group('Group BLoC Administrator Settings Properties', () {
     late MockGroupRepository mockRepository;
     late GroupBloc groupBloc;
     final random = Random();

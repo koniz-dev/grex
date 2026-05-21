@@ -863,8 +863,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
 
         await profileResult.fold(
-          (failure) async =>
-              emit(AuthAuthenticated(user: currentUser)),
+          (failure) async => emit(AuthAuthenticated(user: currentUser)),
           (profile) async {
             // Start session management
             final session = _authRepository.currentSession;

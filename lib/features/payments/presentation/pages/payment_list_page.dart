@@ -192,8 +192,8 @@ class _PaymentListPageState extends State<PaymentListPage> {
             children: [
               BlocBuilder<PaymentBloc, PaymentState>(
                 builder: (context, state) {
-                  final hasFilters = (state is PaymentsLoaded &&
-                          state.hasActiveFilters) ||
+                  final hasFilters =
+                      (state is PaymentsLoaded && state.hasActiveFilters) ||
                       _hasActiveFilters;
                   if (!hasFilters) return const SizedBox.shrink();
                   return const _FilterBadge();

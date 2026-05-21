@@ -325,8 +325,7 @@ void main() {
           // Assert
           expect(result.isLeft(), true);
           result.fold(
-            (failure) =>
-                expect(failure, isA<AccountLinkingFailure>()),
+            (failure) => expect(failure, isA<AccountLinkingFailure>()),
             (_) => fail('Should not return success'),
           );
         },
@@ -349,8 +348,7 @@ void main() {
           // Assert
           expect(result.isLeft(), true);
           result.fold(
-            (failure) =>
-                expect(failure, isA<SocialAuthCancelledFailure>()),
+            (failure) => expect(failure, isA<SocialAuthCancelledFailure>()),
             (_) => fail('Should not return success'),
           );
         },

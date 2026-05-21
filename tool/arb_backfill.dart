@@ -78,8 +78,7 @@ const _ar = <String, String>{
   'stepOfTwo': 'الخطوة 1 من 2',
   'success': 'نجاح!',
   'today': 'اليوم',
-  'unsavedChangesMessage':
-      'لديك تغييرات غير محفوظة. هل أنت متأكد من الإلغاء؟',
+  'unsavedChangesMessage': 'لديك تغييرات غير محفوظة. هل أنت متأكد من الإلغاء؟',
   'uploadPhoto': 'رفع صورة',
   'verificationEmailSent': 'أرسلنا رسالة تحقق إلى:',
   'verifyEmailAddress': '• تأكد من صحة عنوان البريد',
@@ -116,12 +115,10 @@ const _es = <String, String>{
   'displayNameTooShort': 'El nombre debe tener al menos {min} caracteres',
   'editProfile': 'Editar perfil',
   'editProfileNoteTitle': 'Nota',
-  'editProfileTipCurrency':
-      '• La moneda preferida se usa como predeterminada',
+  'editProfileTipCurrency': '• La moneda preferida se usa como predeterminada',
   'editProfileTipDisplayName':
       '• Tu nombre visible se muestra a otros miembros',
-  'editProfileTipLanguage':
-      '• Los cambios de idioma se aplican a toda la app',
+  'editProfileTipLanguage': '• Los cambios de idioma se aplican a toda la app',
   'emailSentCheckInbox': '¡Correo enviado! Revisa tu bandeja.',
   'emailVerifiedSuccessfully': 'Tu correo se ha verificado exitosamente',
   'enterEmailForReset':
@@ -144,8 +141,7 @@ const _es = <String, String>{
   'orContinueWith': 'o',
   'passwordRequirements':
       'Al menos 8 caracteres con mayúsculas, minúsculas y números',
-  'passwordResetSuccessfully':
-      'Tu contraseña se ha restablecido exitosamente',
+  'passwordResetSuccessfully': 'Tu contraseña se ha restablecido exitosamente',
   'passwordsDoNotMatch': 'Las contraseñas no coinciden',
   'pleaseWaitSeconds': 'Por favor espera {seconds} segundos',
   'profileFullTitle': 'Tu perfil',
@@ -172,7 +168,8 @@ const _es = <String, String>{
       'Tienes cambios sin guardar. ¿Seguro que quieres cancelar?',
   'uploadPhoto': 'Subir foto',
   'verificationEmailSent': 'Hemos enviado un correo de verificación a:',
-  'verifyEmailAddress': '• Asegúrate de que la dirección de correo sea correcta',
+  'verifyEmailAddress':
+      '• Asegúrate de que la dirección de correo sea correcta',
   'verifyYourEmail': 'Verifica tu correo',
   'waitFewMinutes': '• Espera unos minutos e intenta de nuevo',
   'weeksAgo': 'hace {count} semanas',
@@ -182,8 +179,9 @@ const _es = <String, String>{
 };
 
 void main() {
-  final en = json.decode(File('lib/l10n/app_en.arb').readAsStringSync())
-      as Map<String, dynamic>;
+  final en =
+      json.decode(File('lib/l10n/app_en.arb').readAsStringSync())
+          as Map<String, dynamic>;
 
   for (final locale in ['ar', 'es']) {
     final path = 'lib/l10n/app_$locale.arb';

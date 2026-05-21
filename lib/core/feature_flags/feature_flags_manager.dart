@@ -46,8 +46,7 @@ class FeatureFlagsManager {
     final flagKeys = keys.map((k) => k.value).toList();
     final result = await _repository.getFlags(flagKeys);
     return result.when(
-      success: (flags) =>
-          flags.map((k, v) => MapEntry(k, v.value)),
+      success: (flags) => flags.map((k, v) => MapEntry(k, v.value)),
       failureCallback: (_) => <String, bool>{},
     );
   }
