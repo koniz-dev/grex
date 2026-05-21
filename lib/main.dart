@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -31,13 +32,26 @@ void main() async {
   // Load environment configuration first (required for Supabase)
   await EnvConfig.load();
 
-  // Run initialization tasks in parallel where possible
-  await Future.wait([
-    // Initialize Supabase with environment configuration
-    SupabaseConfig.initialize(),
-    // Initialize image cache settings for better performance
-    _initializeImageCache(),
-  ]);
+  // Initialize Firebase if native config files are present. Degrades silently
+  // when google-services.json / GoogleService-Info.plist is missing so the app
+  // still boots; feature flags + performance monitoring fall back to no-ops.
+  try {
+    await Firebase.initializeApp();
+  } on Object catch (_) {
+    // Firebase optional — continue without it.
+  }
+
+  // Initialize Supabase. If credentials are missing, show a clear error screen
+  // instead of crashing the engine before runApp().
+  try {
+    await Future.wait([
+      SupabaseConfig.initialize(),
+      _initializeImageCache(),
+    ]);
+  } on Object catch (error, stackTrace) {
+    runApp(_ConfigErrorApp(error: error, stackTrace: stackTrace));
+    return;
+  }
 
   // Initialize dependency injection after Supabase is ready
   await configureDependencies();
@@ -146,6 +160,58 @@ Future<void> _initializeImageCache() async {
   // These values can be adjusted based on app requirements
   imageCache.maximumSize = 100; // Maximum number of images
   imageCache.maximumSizeBytes = 100 << 20; // 100 MB
+}
+
+/// Minimal fallback app shown when boot-time configuration is missing.
+/// Renders without DI / Supabase / l10n so it survives any init failure.
+class _ConfigErrorApp extends StatelessWidget {
+  const _ConfigErrorApp({required this.error, required this.stackTrace});
+
+  final Object error;
+  final StackTrace stackTrace;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                const SizedBox(height: 16),
+                const Text(
+                  'Configuration error',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'The app could not start because required configuration is '
+                  'missing. Set SUPABASE_URL and SUPABASE_ANON_KEY in your '
+                  '.env file (or pass them via --dart-define) and restart.',
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: SelectableText(
+                      '$error\n\n$stackTrace',
+                      style: const TextStyle(
+                        fontFamily: 'monospace',
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// Root application widget
