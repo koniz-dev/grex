@@ -19,6 +19,7 @@ import 'package:grex/shared/theme/app_elevation.dart';
 import 'package:grex/shared/theme/app_radius.dart';
 import 'package:grex/shared/theme/app_spacing.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
+import 'package:intl/intl.dart';
 
 /// Page displaying the list of payments for a group, with filter / sort and
 /// pull-to-refresh.
@@ -289,7 +290,7 @@ class _PaymentListPageState extends State<PaymentListPage> {
               ),
               if (payment.description != null)
                 Text(l10n.description(payment.description!)),
-              Text(l10n.date(_formatDate(payment.paymentDate))),
+              Text(l10n.date(_formatDate(context, payment.paymentDate))),
             ],
           ),
           actions: [
@@ -355,8 +356,9 @@ class _PaymentListPageState extends State<PaymentListPage> {
     );
   }
 
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
+  String _formatDate(BuildContext context, DateTime date) {
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    return DateFormat.yMd(locale).format(date);
   }
 }
 

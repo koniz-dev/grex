@@ -554,10 +554,6 @@
       }
     }
   },
-  "noPaymentsMatchCriteria": "Ningún pago coincide con tus criterios.",
-  "@noPaymentsMatchCriteria": {
-    "description": "Message when no payments match filter criteria"
-  },
   "noPaymentsMatchSearch": "Ningún pago coincide con tus criterios de búsqueda. Intenta ajustar los filtros.",
   "@noPaymentsMatchSearch": {
     "description": "Message when no payments match search filters"

@@ -423,9 +423,6 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get noPaymentsMatchCriteria => 'لا توجد مدفوعات تطابق معاييرك.';
-
-  @override
   String get noPaymentsMatchSearch =>
       'لا توجد مدفوعات تطابق معايير البحث. حاول تعديل الفلاتر.';
 

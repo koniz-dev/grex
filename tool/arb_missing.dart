@@ -1,6 +1,7 @@
 // One-shot helper: prints non-metadata keys present in app_en.arb but
 // missing from app_ar.arb / app_es.arb. Used while backfilling the
 // ar/es ARB files to re-enable the synchronization test.
+// ignore_for_file: avoid_print
 import 'dart:convert';
 import 'dart:io';
 

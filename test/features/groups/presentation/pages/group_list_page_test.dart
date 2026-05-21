@@ -81,7 +81,8 @@ void main() {
       expect(find.text('Chưa có nhóm nào'), findsOneWidget);
       expect(
         find.text(
-          'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và gia đình.',
+          'Tạo nhóm đầu tiên để bắt đầu chia sẻ chi phí với bạn bè và '
+          'gia đình.',
         ),
         findsOneWidget,
       );

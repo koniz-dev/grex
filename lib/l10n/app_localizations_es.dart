@@ -436,10 +436,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get noPaymentsMatchCriteria =>
-      'Ningún pago coincide con tus criterios.';
-
-  @override
   String get noPaymentsMatchSearch =>
       'Ningún pago coincide con tus criterios de búsqueda. Intenta ajustar los filtros.';
 

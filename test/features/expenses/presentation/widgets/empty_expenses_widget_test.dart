@@ -17,7 +17,8 @@ void main() {
       // Default description (VI, no active filters)
       expect(
         find.text(
-          'Bắt đầu theo dõi chi tiêu của nhóm bằng cách thêm chi tiêu đầu tiên.',
+          'Bắt đầu theo dõi chi tiêu của nhóm bằng cách thêm chi tiêu '
+          'đầu tiên.',
         ),
         findsOneWidget,
       );

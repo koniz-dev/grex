@@ -554,10 +554,6 @@
       }
     }
   },
-  "noPaymentsMatchCriteria": "لا توجد مدفوعات تطابق معاييرك.",
-  "@noPaymentsMatchCriteria": {
-    "description": "Message when no payments match filter criteria"
-  },
   "noPaymentsMatchSearch": "لا توجد مدفوعات تطابق معايير البحث. حاول تعديل الفلاتر.",
   "@noPaymentsMatchSearch": {
     "description": "Message when no payments match search filters"

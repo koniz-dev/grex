@@ -3,6 +3,7 @@
 // app_es.arb, copies their `@<key>` metadata from app_en.arb, and
 // writes both files back as formatted JSON. Run once with `dart run`,
 // then verify with the ARB synchronization test.
+// ignore_for_file: avoid_print, lines_longer_than_80_chars
 import 'dart:convert';
 import 'dart:io';
 

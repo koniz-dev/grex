@@ -228,7 +228,7 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
-  /// Language selector label
+  /// Language selection dialog title
   ///
   /// In en, this message translates to:
   /// **'Select Language'**
@@ -846,12 +846,6 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to delete this payment from {payer} to {recipient}?'**
   String confirmDeletePaymentFrom(String payer, String recipient);
 
-  /// Message when no payments match filter criteria
-  ///
-  /// In en, this message translates to:
-  /// **'No payments match your criteria.'**
-  String get noPaymentsMatchCriteria;
-
   /// Message when no payments match search filters
   ///
   /// In en, this message translates to:
@@ -906,13 +900,13 @@ abstract class AppLocalizations {
   /// **'or'**
   String get orContinueWith;
 
-  /// Google sign-in button text
+  /// Google sign-in button
   ///
   /// In en, this message translates to:
   /// **'Continue with Google'**
   String get continueWithGoogle;
 
-  /// Apple sign-in button text
+  /// Apple sign-in button
   ///
   /// In en, this message translates to:
   /// **'Continue with Apple'**
@@ -1110,7 +1104,7 @@ abstract class AppLocalizations {
   /// **'Passwords do not match'**
   String get passwordsDoNotMatch;
 
-  /// Profile setup screen title for new social login users
+  /// Profile setup screen title
   ///
   /// In en, this message translates to:
   /// **'Complete Your Profile'**

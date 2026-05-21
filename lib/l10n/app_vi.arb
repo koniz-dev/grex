@@ -554,10 +554,6 @@
       }
     }
   },
-  "noPaymentsMatchCriteria": "Không có thanh toán nào phù hợp với tiêu chí của bạn.",
-  "@noPaymentsMatchCriteria": {
-    "description": "Message when no payments match filter criteria"
-  },
   "noPaymentsMatchSearch": "Không có thanh toán nào phù hợp với tiêu chí tìm kiếm. Hãy thử điều chỉnh bộ lọc.",
   "@noPaymentsMatchSearch": {
     "description": "Message when no payments match search filters"
@@ -628,10 +624,7 @@
   "continueButton": "Tiếp tục",
   "getStarted": "Bắt đầu",
   "back": "Quay lại",
-  "continueWithGoogle": "Tiếp tục với Google",
-  "continueWithApple": "Tiếp tục với Apple",
   "or": "hoặc",
-  "completeYourProfile": "Hoàn thiện hồ sơ của bạn",
   "profileSetupDescription": "Vui lòng hoàn thiện hồ sơ để bắt đầu sử dụng Grex",
   "linkYourAccount": "Liên kết tài khoản của bạn",
   "accountExistsMessage": "Một tài khoản với email {email} đã tồn tại.",

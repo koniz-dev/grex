@@ -427,9 +427,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get noPaymentsMatchCriteria => 'No payments match your criteria.';
-
-  @override
   String get noPaymentsMatchSearch =>
       'No payments match your search criteria. Try adjusting your filters.';
 

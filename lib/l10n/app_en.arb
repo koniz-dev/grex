@@ -554,10 +554,6 @@
       }
     }
   },
-  "noPaymentsMatchCriteria": "No payments match your criteria.",
-  "@noPaymentsMatchCriteria": {
-    "description": "Message when no payments match filter criteria"
-  },
   "noPaymentsMatchSearch": "No payments match your search criteria. Try adjusting your filters.",
   "@noPaymentsMatchSearch": {
     "description": "Message when no payments match search filters"
@@ -747,10 +743,6 @@
   "@uploadPhoto": {
     "description": "Avatar upload button"
   },
-  "selectLanguage": "Select Language",
-  "@selectLanguage": {
-    "description": "Language selector label"
-  },
   "completeSetup": "Complete Setup",
   "@completeSetup": {
     "description": "Complete setup button"
@@ -827,18 +819,6 @@
   "@or": {
     "description": "Divider text between authentication options"
   },
-  "continueWithGoogle": "Continue with Google",
-  "@continueWithGoogle": {
-    "description": "Google sign-in button text"
-  },
-  "continueWithApple": "Continue with Apple",
-  "@continueWithApple": {
-    "description": "Apple sign-in button text"
-  },
-  "completeYourProfile": "Complete Your Profile",
-  "@completeYourProfile": {
-    "description": "Profile setup screen title for new social login users"
-  },
   "profileSetupDescription": "Please complete your profile to get started with Grex",
   "@profileSetupDescription": {
     "description": "Description text on profile setup screen"
@@ -877,22 +857,6 @@
   "@createNewAccount": {
     "description": "Button to decline linking and create new account"
   },
-  "socialAuthFailed": "Authentication failed. Please try again.",
-  "@socialAuthFailed": {
-    "description": "Generic social authentication failure message"
-  },
-  "socialAuthNetworkError": "Network connection failed. Please check your internet connection and try again.",
-  "@socialAuthNetworkError": {
-    "description": "Network error during social authentication"
-  },
-  "socialAuthTimeout": "Authentication timed out. Please try again.",
-  "@socialAuthTimeout": {
-    "description": "Timeout error during social authentication"
-  },
-  "accountLinkingError": "Failed to link your account. Please try again or contact support.",
-  "@accountLinkingError": {
-    "description": "Account linking failure message"
-  },
   "cancelProfileSetup": "Cancel Setup",
   "@cancelProfileSetup": {
     "description": "Button to cancel profile setup"
@@ -904,10 +868,6 @@
   "continueSetup": "Continue Setup",
   "@continueSetup": {
     "description": "Button to continue with profile setup"
-  },
-  "signInWithEmail": "Sign in with email",
-  "@signInWithEmail": {
-    "description": "Fallback button to use email authentication"
   },
   "signingIn": "Signing in...",
   "@signingIn": {

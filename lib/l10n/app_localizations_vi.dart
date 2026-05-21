@@ -429,10 +429,6 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get noPaymentsMatchCriteria =>
-      'Không có thanh toán nào phù hợp với tiêu chí của bạn.';
-
-  @override
   String get noPaymentsMatchSearch =>
       'Không có thanh toán nào phù hợp với tiêu chí tìm kiếm. Hãy thử điều chỉnh bộ lọc.';
 
