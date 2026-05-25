@@ -4,6 +4,10 @@
   "@appTitle": {
     "description": "The application title"
   },
+  "appTagline": "Chia sẻ chi phí dễ dàng",
+  "@appTagline": {
+    "description": "App tagline shown below logo"
+  },
   "welcome": "Chào mừng đến với Grex với Clean Architecture!",
   "@welcome": {
     "description": "Welcome message on home screen"
@@ -70,7 +74,7 @@
       }
     }
   },
-  "dontHaveAccount": "Chưa có tài khoản? Đăng ký",
+  "dontHaveAccount": "Chưa có tài khoản?",
   "@dontHaveAccount": {
     "description": "Link to registration screen"
   },
@@ -588,6 +592,10 @@
   "enterYourPassword": "Nhập mật khẩu của bạn",
   "selectCurrency": "Chọn tiền tệ",
   "passwordRequirements": "Ít nhất 8 ký tự với chữ hoa, chữ thường và số",
+  "pwdReqLength": "Ít nhất 8 ký tự",
+  "pwdReqUppercase": "Ít nhất 1 chữ hoa",
+  "pwdReqNumber": "Ít nhất 1 chữ số",
+  "pwdReqSpecial": "Ít nhất 1 ký tự đặc biệt (@, #, $, ...)",
   "alreadyHaveAccountSignIn": "Đã có tài khoản? Đăng nhập",
   "forgotPasswordQuestion": "Quên mật khẩu?",
   "enterEmailForReset": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn liên kết để đặt lại mật khẩu",

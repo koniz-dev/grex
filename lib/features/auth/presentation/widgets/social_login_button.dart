@@ -83,7 +83,7 @@ class SocialLoginButton extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: 48,
+      height: 56,
       child: OutlinedButton(
         onPressed: isDisabled ? null : onPressed,
         style: OutlinedButton.styleFrom(
@@ -101,7 +101,7 @@ class SocialLoginButton extends StatelessWidget {
                 : (isApple ? Colors.black : const Color(0xFFE4E4E7)),
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
           ),
           elevation: 0,
         ),
@@ -131,7 +131,9 @@ class SocialLoginButton extends StatelessWidget {
                             : Colors.grey.shade400,
                         BlendMode.srcIn,
                       )
-                    : null,
+                    : (isApple
+                        ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                        : null),
               ),
             const SizedBox(width: 12),
             Text(

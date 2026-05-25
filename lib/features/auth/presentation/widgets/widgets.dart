@@ -5,6 +5,7 @@ export 'auth_text_field.dart';
 export 'error_banner.dart';
 export 'loading_overlay.dart';
 export 'or_divider.dart';
+export 'password_requirement_indicator.dart';
 export 'primary_button.dart';
 export 'social_auth_error_widget.dart';
 export 'social_login_button.dart';

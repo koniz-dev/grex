@@ -12,6 +12,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appTitle => 'Grex';
 
   @override
+  String get appTagline => 'Chia sẻ chi phí dễ dàng';
+
+  @override
   String get welcome => 'Chào mừng đến với Grex với Clean Architecture!';
 
   @override
@@ -59,7 +62,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get dontHaveAccount => 'Chưa có tài khoản? Đăng ký';
+  String get dontHaveAccount => 'Chưa có tài khoản?';
 
   @override
   String get alreadyHaveAccount => 'Đã có tài khoản? Đăng nhập';
@@ -487,6 +490,18 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get passwordRequirements =>
       'Ít nhất 8 ký tự với chữ hoa, chữ thường và số';
+
+  @override
+  String get pwdReqLength => 'Ít nhất 8 ký tự';
+
+  @override
+  String get pwdReqUppercase => 'Ít nhất 1 chữ hoa';
+
+  @override
+  String get pwdReqNumber => 'Ít nhất 1 chữ số';
+
+  @override
+  String get pwdReqSpecial => 'Ít nhất 1 ký tự đặc biệt (@, #, \$, ...)';
 
   @override
   String get alreadyHaveAccountSignIn => 'Đã có tài khoản? Đăng nhập';

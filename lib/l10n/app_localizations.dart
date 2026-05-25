@@ -108,6 +108,12 @@ abstract class AppLocalizations {
   /// **'Grex'**
   String get appTitle;
 
+  /// App tagline shown below logo
+  ///
+  /// In en, this message translates to:
+  /// **'Split expenses with ease'**
+  String get appTagline;
+
   /// Welcome message on home screen
   ///
   /// In en, this message translates to:
@@ -195,7 +201,7 @@ abstract class AppLocalizations {
   /// Link to registration screen
   ///
   /// In en, this message translates to:
-  /// **'Don\'t have an account? Register'**
+  /// **'Don\'t have an account?'**
   String get dontHaveAccount;
 
   /// Link to login screen
@@ -959,6 +965,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'At least 8 characters with uppercase, lowercase, and numbers'**
   String get passwordRequirements;
+
+  /// Password requirement: length
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get pwdReqLength;
+
+  /// Password requirement: uppercase
+  ///
+  /// In en, this message translates to:
+  /// **'At least 1 uppercase letter'**
+  String get pwdReqUppercase;
+
+  /// Password requirement: number
+  ///
+  /// In en, this message translates to:
+  /// **'At least 1 number'**
+  String get pwdReqNumber;
+
+  /// Password requirement: special character
+  ///
+  /// In en, this message translates to:
+  /// **'At least 1 special character'**
+  String get pwdReqSpecial;
 
   /// Link to login from register
   ///

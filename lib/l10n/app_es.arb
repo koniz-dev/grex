@@ -4,6 +4,10 @@
   "@appTitle": {
     "description": "The application title"
   },
+  "appTagline": "Divide gastos con facilidad",
+  "@appTagline": {
+    "description": "App tagline shown below logo"
+  },
   "welcome": "¡Bienvenido a Grex con Arquitectura Limpia!",
   "@welcome": {
     "description": "Welcome message on home screen"
@@ -70,7 +74,7 @@
       }
     }
   },
-  "dontHaveAccount": "¿No tienes una cuenta? Regístrate",
+  "dontHaveAccount": "¿No tienes una cuenta?",
   "@dontHaveAccount": {
     "description": "Link to registration screen"
   },

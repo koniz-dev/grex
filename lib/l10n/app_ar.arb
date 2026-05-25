@@ -4,6 +4,10 @@
   "@appTitle": {
     "description": "The application title"
   },
+  "appTagline": "قسّم النفقات بسهولة",
+  "@appTagline": {
+    "description": "App tagline shown below logo"
+  },
   "welcome": "مرحباً بك في Grex مع Clean Architecture!",
   "@welcome": {
     "description": "Welcome message on home screen"
@@ -70,7 +74,7 @@
       }
     }
   },
-  "dontHaveAccount": "ليس لديك حساب؟ سجل",
+  "dontHaveAccount": "ليس لديك حساب؟",
   "@dontHaveAccount": {
     "description": "Link to registration screen"
   },

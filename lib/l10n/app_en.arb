@@ -4,6 +4,10 @@
   "@appTitle": {
     "description": "The application title"
   },
+  "appTagline": "Split expenses with ease",
+  "@appTagline": {
+    "description": "App tagline shown below logo"
+  },
   "welcome": "Welcome to Grex with Clean Architecture!",
   "@welcome": {
     "description": "Welcome message on home screen"
@@ -70,7 +74,7 @@
       }
     }
   },
-  "dontHaveAccount": "Don't have an account? Register",
+  "dontHaveAccount": "Don't have an account?",
   "@dontHaveAccount": {
     "description": "Link to registration screen"
   },
@@ -629,6 +633,22 @@
   "passwordRequirements": "At least 8 characters with uppercase, lowercase, and numbers",
   "@passwordRequirements": {
     "description": "Password requirements hint"
+  },
+  "pwdReqLength": "At least 8 characters",
+  "@pwdReqLength": {
+    "description": "Password requirement: length"
+  },
+  "pwdReqUppercase": "At least 1 uppercase letter",
+  "@pwdReqUppercase": {
+    "description": "Password requirement: uppercase"
+  },
+  "pwdReqNumber": "At least 1 number",
+  "@pwdReqNumber": {
+    "description": "Password requirement: number"
+  },
+  "pwdReqSpecial": "At least 1 special character",
+  "@pwdReqSpecial": {
+    "description": "Password requirement: special character"
   },
   "alreadyHaveAccountSignIn": "Already have an account? Sign in",
   "@alreadyHaveAccountSignIn": {

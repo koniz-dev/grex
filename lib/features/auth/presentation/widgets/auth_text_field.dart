@@ -17,6 +17,7 @@ class AuthTextField extends StatefulWidget {
     this.fieldKey,
     this.visibilityToggleKey,
     this.controller,
+    this.focusNode,
     this.validator,
     this.obscureText = false,
     this.showVisibilityToggle = false,
@@ -43,6 +44,9 @@ class AuthTextField extends StatefulWidget {
 
   /// The controller for the text field.
   final TextEditingController? controller;
+
+  /// Optional focus node for the text field.
+  final FocusNode? focusNode;
 
   /// The validator function for form validation.
   final String? Function(String?)? validator;
@@ -99,25 +103,11 @@ class _AuthTextFieldState extends State<AuthTextField> {
   @override
   Widget build(BuildContext context) {
     final showToggle = widget.obscureText && widget.showVisibilityToggle;
-    return TextFormField(
-      key: widget.fieldKey,
-      controller: widget.controller,
-      validator: widget.validator,
-      obscureText: _obscure,
-      keyboardType: widget.keyboardType,
-      textInputAction: widget.textInputAction,
-      onChanged: widget.onChanged,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      enabled: widget.enabled,
-      readOnly: widget.readOnly,
-      style: const TextStyle(
-        fontFamily: 'Inter',
-        fontSize: 14,
-        fontWeight: FontWeight.normal,
-        color: Colors.black,
-      ),
-      decoration: InputDecoration(
-        label: Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
           widget.label,
           style: const TextStyle(
             fontFamily: 'Inter',
@@ -126,58 +116,79 @@ class _AuthTextFieldState extends State<AuthTextField> {
             color: Colors.black,
           ),
         ),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        hintText: widget.placeholder,
-        hintStyle: const TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: Color(0xFFA1A1AA),
-        ),
-        filled: true,
-        fillColor: const Color(0xFFF4F4F5),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
-        ),
-        suffixIcon: showToggle
-            ? IconButton(
-                key: widget.visibilityToggleKey,
-                icon: Icon(
-                  _obscure ? Icons.visibility_off : Icons.visibility,
-                  color: const Color(0xFF71717A),
-                  size: 20,
-                ),
-                onPressed: () => setState(() => _obscure = !_obscure),
-              )
-            : null,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: Color(0xFFDC2626),
-            width: 2,
+        const SizedBox(height: 8),
+        TextFormField(
+          key: widget.fieldKey,
+          controller: widget.controller,
+          focusNode: widget.focusNode,
+          validator: widget.validator,
+          obscureText: _obscure,
+          keyboardType: widget.keyboardType,
+          textInputAction: widget.textInputAction,
+          onChanged: widget.onChanged,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          enabled: widget.enabled,
+          readOnly: widget.readOnly,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: Colors.black,
+          ),
+          decoration: InputDecoration(
+            hintText: widget.placeholder,
+            hintStyle: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: Color(0xFFA1A1AA),
+            ),
+            filled: true,
+            fillColor: const Color(0xFFF4F4F5),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
+            suffixIcon: showToggle
+                ? IconButton(
+                    key: widget.visibilityToggleKey,
+                    icon: Icon(
+                      _obscure ? Icons.visibility_off : Icons.visibility,
+                      color: const Color(0xFF71717A),
+                      size: 20,
+                    ),
+                    onPressed: () => setState(() => _obscure = !_obscure),
+                  )
+                : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(
+                color: Color(0xFFDC2626),
+                width: 2,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(
+                color: Color(0xFFDC2626),
+                width: 2,
+              ),
+            ),
           ),
         ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: Color(0xFFDC2626),
-            width: 2,
-          ),
-        ),
-      ),
+      ],
     );
   }
 }

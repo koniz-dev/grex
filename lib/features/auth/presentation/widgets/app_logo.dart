@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grex/shared/extensions/context_extensions.dart';
 
 /// App logo widget with branding
 ///
@@ -9,17 +10,17 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         // Wallet icon (48px)
-        Icon(
+        const Icon(
           Icons.account_balance_wallet,
           size: 48,
           color: Colors.black,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         // App name (Outfit, 32px, 800 weight)
-        Text(
+        const Text(
           'Grex',
           style: TextStyle(
             fontFamily: 'Outfit',
@@ -28,11 +29,11 @@ class AppLogo extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         // Tagline (Inter, 14px, normal)
         Text(
-          'Split expenses with ease',
-          style: TextStyle(
+          context.l10n.appTagline,
+          style: const TextStyle(
             fontFamily: 'Inter',
             fontSize: 14,
             fontWeight: FontWeight.normal,

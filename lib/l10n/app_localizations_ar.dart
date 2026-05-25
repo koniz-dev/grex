@@ -12,6 +12,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'Grex';
 
   @override
+  String get appTagline => 'قسّم النفقات بسهولة';
+
+  @override
   String get welcome => 'مرحباً بك في Grex مع Clean Architecture!';
 
   @override
@@ -59,7 +62,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get dontHaveAccount => 'ليس لديك حساب؟ سجل';
+  String get dontHaveAccount => 'ليس لديك حساب؟';
 
   @override
   String get alreadyHaveAccount => 'هل لديك حساب بالفعل؟ سجل الدخول';
@@ -480,6 +483,18 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get passwordRequirements =>
       'على الأقل 8 أحرف مع أحرف كبيرة وصغيرة وأرقام';
+
+  @override
+  String get pwdReqLength => 'At least 8 characters';
+
+  @override
+  String get pwdReqUppercase => 'At least 1 uppercase letter';
+
+  @override
+  String get pwdReqNumber => 'At least 1 number';
+
+  @override
+  String get pwdReqSpecial => 'At least 1 special character';
 
   @override
   String get alreadyHaveAccountSignIn => 'هل لديك حساب بالفعل؟ سجل الدخول';

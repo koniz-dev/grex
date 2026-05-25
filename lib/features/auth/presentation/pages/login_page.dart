@@ -112,7 +112,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Scaffold(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
@@ -153,9 +155,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 60),
-                  const AppLogo(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
                   Text(
                     l10n.welcomeBack,
                     style: const TextStyle(
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Color(0xFF71717A),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   AuthTextField(
                     label: l10n.email,
                     placeholder: l10n.enterYourEmail,
@@ -186,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                     textInputAction: TextInputAction.next,
                     validator: (value) => _validateEmail(l10n, value),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   AuthTextField(
                     label: l10n.password,
                     placeholder: l10n.enterYourPassword,
@@ -201,20 +201,23 @@ class _LoginPageState extends State<LoginPage> {
                     validator: (value) => _validatePassword(l10n, value),
                     onFieldSubmitted: (_) => _onLoginPressed(),
                   ),
-                  const SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () => context.goToForgotPassword(),
-                    child: Text(
-                      l10n.forgotPassword,
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF71717A),
+                  const SizedBox(height: 12),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () => context.goToForgotPassword(),
+                      child: Text(
+                        l10n.forgotPassword,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF71717A),
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading =
@@ -228,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     },
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   const OrDivider(),
                   const SizedBox(height: 12),
                   BlocBuilder<AuthBloc, AuthState>(
@@ -266,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     },
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthError) {
@@ -302,13 +305,28 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       GestureDetector(
                         onTap: () => context.goToRegister(),
-                        child: Text(
-                          l10n.dontHaveAccount,
-                          style: const TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: '${l10n.dontHaveAccount} ',
+                                style: const TextStyle(
+                                  color: Color(0xFF71717A),
+                                ),
+                              ),
+                              TextSpan(
+                                text: l10n.register,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -318,6 +336,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+        ),
         ),
       ),
     );
