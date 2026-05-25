@@ -8,6 +8,7 @@ import 'package:grex/features/auth/domain/entities/profile_setup_data.dart';
 import 'package:grex/features/auth/domain/repositories/social_auth_repository.dart';
 import 'package:grex/features/auth/domain/repositories/user_repository.dart';
 import 'package:grex/features/auth/domain/services/native_apple_sign_in_service.dart';
+import 'package:grex/features/auth/domain/services/native_google_sign_in_service.dart';
 import 'package:grex/features/auth/domain/services/nonce_generator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
@@ -24,31 +25,67 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
     required PerformanceService performanceService,
     required NonceGenerator nonceGenerator,
     required NativeAppleSignInService nativeAppleSignInService,
+    NativeGoogleSignInService? nativeGoogleSignInService,
   }) : _supabaseClient = supabaseClient,
        _userRepository = userRepository,
        _performanceService = performanceService,
        _nonceGenerator = nonceGenerator,
-       _nativeAppleSignInService = nativeAppleSignInService;
+       _nativeAppleSignInService = nativeAppleSignInService,
+       _nativeGoogleSignInService = nativeGoogleSignInService;
 
   final supabase.SupabaseClient _supabaseClient;
   final UserRepository _userRepository;
   final PerformanceService _performanceService;
   final NonceGenerator _nonceGenerator;
   final NativeAppleSignInService _nativeAppleSignInService;
+  final NativeGoogleSignInService? _nativeGoogleSignInService;
 
   static const String _redirectUrl = 'io.supabase.grex://login-callback/';
   static const Duration _authUserTimeout = Duration(seconds: 10);
 
   @override
   Future<Either<AuthFailure, User>> signInWithGoogle() {
+    final nativeService = _nativeGoogleSignInService;
     return _performanceService.measureOperation(
       name: 'oauth_google_signin',
-      attributes: {'provider': 'google'},
-      operation: () => _performWebOAuth(
-        provider: supabase.OAuthProvider.google,
-        providerName: 'Google',
-      ),
+      attributes: {
+        'provider': 'google',
+        'native_flow': (nativeService?.isAvailable() ?? false).toString(),
+      },
+      operation: () async {
+        if (nativeService != null && nativeService.isAvailable()) {
+          return _performNativeGoogleSignIn(nativeService);
+        }
+        return _performWebOAuth(
+          provider: supabase.OAuthProvider.google,
+          providerName: 'Google',
+        );
+      },
     );
+  }
+
+  Future<Either<AuthFailure, User>> _performNativeGoogleSignIn(
+    NativeGoogleSignInService service,
+  ) async {
+    try {
+      final signInResult = await service.signIn();
+      return signInResult.fold(
+        Left.new,
+        (tokens) => service.handleGoogleCredential(
+          idToken: tokens.idToken,
+          accessToken: tokens.accessToken,
+          displayName: tokens.displayName,
+          photoUrl: tokens.photoUrl,
+        ),
+      );
+    } on supabase.AuthException catch (e) {
+      return Left(_mapAuthException(e));
+    } on TimeoutException catch (_) {
+      return const Left(SocialAuthTimeoutFailure());
+    } on Object catch (e) {
+      debugPrint('Google native sign-in failed: $e');
+      return Left(SocialAuthFailure(e.toString()));
+    }
   }
 
   @override

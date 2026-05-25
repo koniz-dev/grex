@@ -64,6 +64,9 @@ dependencies:
   # Routing - Declarative routing for Flutter with deep linking support
   go_router: ^17.0.0
 
+  # Native Google Sign In - Google Identity SDK for iOS/Android
+  google_sign_in: ^6.2.1
+
   # Utilities - Internationalization and localization support
   # Used in date_formatter.dart for date formatting and currency formatting
   intl: ^0.20.2

@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:grex/core/config/env_config.dart';
 import 'package:grex/core/di/main_app_injection.dart';
 import 'package:grex/core/performance/performance_service.dart';
 import 'package:grex/core/services/export_service.dart';
@@ -11,6 +12,7 @@ import 'package:grex/features/auth/data/repositories/supabase_auth_repository.da
 import 'package:grex/features/auth/data/repositories/supabase_social_auth_repository.dart';
 import 'package:grex/features/auth/data/repositories/supabase_user_repository.dart';
 import 'package:grex/features/auth/data/services/native_apple_sign_in_service_impl.dart';
+import 'package:grex/features/auth/data/services/native_google_sign_in_service_impl.dart';
 import 'package:grex/features/auth/data/services/nonce_generator_impl.dart';
 import 'package:grex/features/auth/data/services/secure_session_service.dart';
 import 'package:grex/features/auth/data/services/supabase_email_verification_service.dart';
@@ -19,6 +21,7 @@ import 'package:grex/features/auth/domain/repositories/social_auth_repository.da
 import 'package:grex/features/auth/domain/repositories/user_repository.dart';
 import 'package:grex/features/auth/domain/services/email_verification_service.dart';
 import 'package:grex/features/auth/domain/services/native_apple_sign_in_service.dart';
+import 'package:grex/features/auth/domain/services/native_google_sign_in_service.dart';
 import 'package:grex/features/auth/domain/services/nonce_generator.dart';
 import 'package:grex/features/auth/domain/services/session_manager.dart';
 import 'package:grex/features/auth/domain/services/session_service.dart';
@@ -31,6 +34,20 @@ final GetIt getIt = GetIt.instance;
 
 /// Initialize dependency injection
 Future<void> configureDependencies() async {
+  // Native Google Sign-In is only registered when the Web client ID is
+  // configured. Without it the social auth repository falls back to web OAuth.
+  final googleWebClientId = EnvConfig.get('GOOGLE_WEB_CLIENT_ID');
+  if (googleWebClientId.isNotEmpty) {
+    final googleIosClientId = EnvConfig.get('GOOGLE_IOS_CLIENT_ID');
+    getIt.registerLazySingleton<NativeGoogleSignInService>(
+      () => NativeGoogleSignInServiceImpl(
+        supabaseClient: getIt<SupabaseClient>(),
+        serverClientId: googleWebClientId,
+        iosClientId: googleIosClientId.isEmpty ? null : googleIosClientId,
+      ),
+    );
+  }
+
   // External dependencies
   getIt
     ..registerLazySingleton<SupabaseClient>(
@@ -74,6 +91,10 @@ Future<void> configureDependencies() async {
         performanceService: getIt<PerformanceService>(),
         nonceGenerator: getIt<NonceGenerator>(),
         nativeAppleSignInService: getIt<NativeAppleSignInService>(),
+        nativeGoogleSignInService:
+            getIt.isRegistered<NativeGoogleSignInService>()
+            ? getIt<NativeGoogleSignInService>()
+            : null,
       ),
     )
     // Services
