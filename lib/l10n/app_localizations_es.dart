@@ -1094,4 +1094,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get useDifferentAccount => 'Usar otra cuenta';
+
+  @override
+  String get currencyHelper =>
+      'Se usará como moneda predeterminada para nuevos grupos.';
+
+  @override
+  String get termsOfService => 'Términos del Servicio';
+
+  @override
+  String get privacyPolicy => 'Política de Privacidad';
+
+  @override
+  String agreeToTermsAndPrivacy(String tos, String privacy) {
+    return 'Acepto los $tos y la $privacy.';
+  }
 }

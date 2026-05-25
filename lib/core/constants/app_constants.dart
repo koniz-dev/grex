@@ -38,4 +38,14 @@ class AppConstants {
   /// Configuration → Redirect URLs. Path must contain /auth/confirm for
   /// SupabaseEmailVerificationService to parse token, email, type.
   static const String authEmailConfirmRedirectUrl = 'grex://app/auth/confirm';
+
+  /// Public URL of the Terms of Service page shown during profile setup.
+  /// Placeholder until the legal pages are hosted — replace before
+  /// production launch.
+  static const String termsOfServiceUrl = 'https://grex.app/terms';
+
+  /// Public URL of the Privacy Policy page shown during profile setup.
+  /// Placeholder until the legal pages are hosted — replace before
+  /// production launch.
+  static const String privacyPolicyUrl = 'https://grex.app/privacy';
 }

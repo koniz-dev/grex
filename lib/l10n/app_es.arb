@@ -1254,5 +1254,25 @@
   "useDifferentAccount": "Usar otra cuenta",
   "@useDifferentAccount": {
     "description": "Footer link on profile setup that signs out and returns to login"
+  },
+  "currencyHelper": "Se usará como moneda predeterminada para nuevos grupos.",
+  "@currencyHelper": {
+    "description": "Helper text under the Currency tile on profile setup"
+  },
+  "termsOfService": "Términos del Servicio",
+  "@termsOfService": {
+    "description": "Inline link label for Terms of Service"
+  },
+  "privacyPolicy": "Política de Privacidad",
+  "@privacyPolicy": {
+    "description": "Inline link label for Privacy Policy"
+  },
+  "agreeToTermsAndPrivacy": "Acepto los {tos} y la {privacy}.",
+  "@agreeToTermsAndPrivacy": {
+    "description": "Sentence next to the consent checkbox; {tos} and {privacy} are inline link labels",
+    "placeholders": {
+      "tos": {"type": "String", "example": "Términos del Servicio"},
+      "privacy": {"type": "String", "example": "Política de Privacidad"}
+    }
   }
 }

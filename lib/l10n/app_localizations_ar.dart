@@ -1071,4 +1071,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get useDifferentAccount => 'استخدام حساب آخر';
+
+  @override
+  String get currencyHelper => 'ستُستخدم كعملة افتراضية للمجموعات الجديدة.';
+
+  @override
+  String get termsOfService => 'شروط الخدمة';
+
+  @override
+  String get privacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String agreeToTermsAndPrivacy(String tos, String privacy) {
+    return 'أوافق على $tos و$privacy.';
+  }
 }

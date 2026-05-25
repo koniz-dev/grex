@@ -1254,5 +1254,25 @@
   "useDifferentAccount": "استخدام حساب آخر",
   "@useDifferentAccount": {
     "description": "Footer link on profile setup that signs out and returns to login"
+  },
+  "currencyHelper": "ستُستخدم كعملة افتراضية للمجموعات الجديدة.",
+  "@currencyHelper": {
+    "description": "Helper text under the Currency tile on profile setup"
+  },
+  "termsOfService": "شروط الخدمة",
+  "@termsOfService": {
+    "description": "Inline link label for Terms of Service"
+  },
+  "privacyPolicy": "سياسة الخصوصية",
+  "@privacyPolicy": {
+    "description": "Inline link label for Privacy Policy"
+  },
+  "agreeToTermsAndPrivacy": "أوافق على {tos} و{privacy}.",
+  "@agreeToTermsAndPrivacy": {
+    "description": "Sentence next to the consent checkbox; {tos} and {privacy} are inline link labels",
+    "placeholders": {
+      "tos": {"type": "String", "example": "شروط الخدمة"},
+      "privacy": {"type": "String", "example": "سياسة الخصوصية"}
+    }
   }
 }

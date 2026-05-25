@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grex/core/constants/app_constants.dart';
+import 'package:grex/core/localization/localization_providers.dart';
 import 'package:grex/core/routing/app_routes.dart';
 import 'package:grex/features/auth/domain/entities/entities.dart';
 import 'package:grex/features/auth/domain/entities/profile_setup_data.dart';
@@ -20,6 +23,7 @@ import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:grex/shared/utils/locale_defaults.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Profile setup page for new social-login users.
 ///
@@ -55,12 +59,22 @@ class ProfileSetupPage extends StatefulWidget {
 
 class _ProfileSetupPageState extends State<ProfileSetupPage> {
   final _formKey = GlobalKey<FormState>();
+  final _scrollController = ScrollController();
+  final GlobalKey _nameFieldKey = GlobalKey();
   late final TextEditingController _displayNameController;
 
   late String _selectedCurrency;
   late String _selectedLanguage;
   bool _currencyTouched = false;
   bool _isLoading = false;
+  bool _consentAccepted = false;
+
+  // Sentinel tokens substituted into `agreeToTermsAndPrivacy` so we can
+  // split the localised string back into plain text and tappable spans
+  // without grepping the user-facing labels (which may collide with the
+  // surrounding sentence in some languages).
+  static const String _tosToken = '\u{E001}TOS\u{E001}';
+  static const String _privacyToken = '\u{E001}PRIVACY\u{E001}';
 
   static const Map<String, String> _languageToCurrency = {
     'vi': 'VND',
@@ -105,8 +119,17 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   @override
   void dispose() {
     _displayNameController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
+
+  bool _isNameValid() {
+    final value = _displayNameController.text.trim();
+    return value.length >= 2 && value.length <= 50;
+  }
+
+  bool _canSubmit() =>
+      !_isLoading && _isNameValid() && _consentAccepted;
 
   String? _photoUrl() {
     final meta = widget.user.userMetadata;
@@ -218,24 +241,66 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
               _languageToCurrency[selected] ?? _selectedCurrency;
         }
       });
+      await _applyLocaleImmediately(selected);
+    }
+  }
+
+  /// Switches the app's live locale so the surrounding chrome (section
+  /// headers, button labels, helper text, etc.) updates as soon as the user
+  /// picks a new language — matching the LanguageSwitcher pattern used
+  /// elsewhere in the app. Persists the preference too; if the user later
+  /// cancels setup they've explicitly chosen this locale anyway.
+  Future<void> _applyLocaleImmediately(String languageCode) async {
+    try {
+      final container = ProviderScope.containerOf(context, listen: false);
+      final newLocale = Locale(languageCode);
+      final service = container.read(localizationServiceProvider);
+      await service.setCurrentLocale(newLocale);
+      container.read(localeStateProvider.notifier).locale = newLocale;
+    } on Object {
+      // No ProviderScope (legacy widget tests) — skip, the chosen locale
+      // will still be persisted via the profile when the user continues.
     }
   }
 
   void _onContinuePressed() {
-    if (_formKey.currentState?.validate() ?? false) {
-      final data = ProfileSetupData(
-        displayName: _displayNameController.text.trim(),
-        preferredCurrency: _selectedCurrency,
-        languageCode: _selectedLanguage,
-        socialProvider: widget.provider,
-      );
-      context.read<AuthBloc>().add(
-        AuthProfileSetupCompleted(
-          displayName: data.displayName,
-          preferredCurrency: data.preferredCurrency,
-          languageCode: data.languageCode,
-        ),
-      );
+    final valid = _formKey.currentState?.validate() ?? false;
+    if (!valid) {
+      _scrollToFirstError();
+      return;
+    }
+    final data = ProfileSetupData(
+      displayName: _displayNameController.text.trim(),
+      preferredCurrency: _selectedCurrency,
+      languageCode: _selectedLanguage,
+      socialProvider: widget.provider,
+    );
+    context.read<AuthBloc>().add(
+      AuthProfileSetupCompleted(
+        displayName: data.displayName,
+        preferredCurrency: data.preferredCurrency,
+        languageCode: data.languageCode,
+      ),
+    );
+  }
+
+  void _scrollToFirstError() {
+    final ctx = _nameFieldKey.currentContext;
+    if (ctx == null) return;
+    unawaited(
+      Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+        alignment: 0.2,
+      ),
+    );
+  }
+
+  Future<void> _openUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
@@ -271,13 +336,39 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          automaticallyImplyLeading: false,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Center(
+                child: _LanguagePill(
+                  language: _languages.firstWhere(
+                    (l) => l.code == _selectedLanguage,
+                    orElse: () => _languages.first,
+                  ),
+                  enabled: !_isLoading,
+                  onTap: _pickLanguage,
+                ),
+              ),
+            ),
+          ],
+        ),
         body: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-              children: [
-                _HeroHeader(
+          top: false,
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 440),
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+                  children: [
+                    _HeroHeader(
                   photoUrl: _photoUrl(),
                   fallbackInitials: _initials(
                     _displayNameController.text.isEmpty
@@ -305,13 +396,16 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 const SizedBox(height: 28),
                 _SectionLabel(text: l10n.yourNameSectionTitle),
                 const SizedBox(height: 8),
-                AuthTextField(
-                  controller: _displayNameController,
-                  label: l10n.displayName,
-                  placeholder: l10n.enterYourName,
-                  validator: (value) => _validateDisplayName(l10n, value),
-                  enabled: !_isLoading,
-                  onChanged: (_) => setState(() {}),
+                Container(
+                  key: _nameFieldKey,
+                  child: AuthTextField(
+                    controller: _displayNameController,
+                    label: '',
+                    placeholder: l10n.enterYourName,
+                    validator: (value) => _validateDisplayName(l10n, value),
+                    enabled: !_isLoading,
+                    onChanged: (_) => setState(() {}),
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -330,20 +424,27 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                   enabled: !_isLoading,
                   onTap: _pickCurrency,
                 ),
-                const SizedBox(height: 8),
-                _PreferenceTile(
-                  icon: Icons.language_rounded,
-                  label: l10n.selectLanguage,
-                  value: _languageSummary(),
-                  enabled: !_isLoading,
-                  onTap: _pickLanguage,
+                const SizedBox(height: 6),
+                Text(
+                  l10n.currencyHelper,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
+                _ConsentRow(
+                  accepted: _consentAccepted,
+                  enabled: !_isLoading,
+                  onChanged: (value) =>
+                      setState(() => _consentAccepted = value),
+                  textSpan: _buildConsentTextSpan(l10n, colorScheme),
+                ),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _onContinuePressed,
+                    onPressed: _canSubmit() ? _onContinuePressed : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorScheme.onSurface,
                       foregroundColor: colorScheme.surface,
@@ -398,8 +499,68 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
             ),
           ),
         ),
+          ),
+        ),
       ),
     );
+  }
+
+  TextSpan _buildConsentTextSpan(
+    AppLocalizations l10n,
+    ColorScheme colorScheme,
+  ) {
+    final sentence = l10n.agreeToTermsAndPrivacy(_tosToken, _privacyToken);
+    final linkStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+      color: colorScheme.primary,
+      decoration: TextDecoration.underline,
+    );
+    final baseStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 13,
+      color: colorScheme.onSurfaceVariant,
+      height: 1.4,
+    );
+
+    final children = <InlineSpan>[];
+    var remaining = sentence;
+
+    while (remaining.isNotEmpty) {
+      final tosIndex = remaining.indexOf(_tosToken);
+      final privacyIndex = remaining.indexOf(_privacyToken);
+      final hasTos = tosIndex != -1;
+      final hasPrivacy = privacyIndex != -1;
+
+      if (!hasTos && !hasPrivacy) {
+        children.add(TextSpan(text: remaining));
+        break;
+      }
+      final nextIndex = (hasTos && hasPrivacy)
+          ? (tosIndex < privacyIndex ? tosIndex : privacyIndex)
+          : (hasTos ? tosIndex : privacyIndex);
+      final isTos = hasTos && nextIndex == tosIndex;
+      final token = isTos ? _tosToken : _privacyToken;
+      final label = isTos ? l10n.termsOfService : l10n.privacyPolicy;
+      final url = isTos
+          ? AppConstants.termsOfServiceUrl
+          : AppConstants.privacyPolicyUrl;
+
+      if (nextIndex > 0) {
+        children.add(TextSpan(text: remaining.substring(0, nextIndex)));
+      }
+      children.add(
+        TextSpan(
+          text: label,
+          style: linkStyle,
+          recognizer: TapGestureRecognizer()..onTap = () => _openUrl(url),
+        ),
+      );
+      remaining = remaining.substring(nextIndex + token.length);
+    }
+
+    return TextSpan(style: baseStyle, children: children);
   }
 
   String _currencySummary() {
@@ -410,13 +571,6 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     return '${option.flag}  ${option.code} · ${option.symbol}';
   }
 
-  String _languageSummary() {
-    final option = _languages.firstWhere(
-      (l) => l.code == _selectedLanguage,
-      orElse: () => _languages.first,
-    );
-    return '${option.flag}  ${option.nativeName}';
-  }
 }
 
 class _CurrencyOption {
@@ -553,6 +707,105 @@ class _SectionLabel extends StatelessWidget {
         fontWeight: FontWeight.w600,
         letterSpacing: 1.2,
         color: colorScheme.onSurfaceVariant,
+      ),
+    );
+  }
+}
+
+class _ConsentRow extends StatelessWidget {
+  const _ConsentRow({
+    required this.accepted,
+    required this.textSpan,
+    required this.onChanged,
+    this.enabled = true,
+  });
+
+  final bool accepted;
+  final TextSpan textSpan;
+  final ValueChanged<bool> onChanged;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: enabled ? () => onChanged(!accepted) : null,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 28,
+              height: 28,
+              child: Checkbox(
+                value: accepted,
+                onChanged: enabled
+                    ? (value) => onChanged(value ?? false)
+                    : null,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text.rich(textSpan),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LanguagePill extends StatelessWidget {
+  const _LanguagePill({
+    required this.language,
+    required this.onTap,
+    this.enabled = true,
+  });
+
+  final _LanguageOption language;
+  final VoidCallback onTap;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      color: colorScheme.surfaceContainerHighest,
+      borderRadius: BorderRadius.circular(999),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(999),
+        onTap: enabled ? onTap : null,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(language.flag, style: const TextStyle(fontSize: 16)),
+              const SizedBox(width: 6),
+              Text(
+                language.code.toUpperCase(),
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(width: 2),
+              Icon(
+                Icons.expand_more_rounded,
+                size: 16,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

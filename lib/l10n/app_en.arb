@@ -1400,6 +1400,26 @@
   "useDifferentAccount": "Use a different account",
   "@useDifferentAccount": {
     "description": "Footer link on profile setup that signs out and returns to login"
+  },
+  "currencyHelper": "Used as the default currency for new groups.",
+  "@currencyHelper": {
+    "description": "Helper text under the Currency tile on profile setup"
+  },
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Inline link label for Terms of Service"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Inline link label for Privacy Policy"
+  },
+  "agreeToTermsAndPrivacy": "I agree to the {tos} and {privacy}.",
+  "@agreeToTermsAndPrivacy": {
+    "description": "Sentence next to the consent checkbox; {tos} and {privacy} are inline link labels",
+    "placeholders": {
+      "tos": {"type": "String", "example": "Terms of Service"},
+      "privacy": {"type": "String", "example": "Privacy Policy"}
+    }
   }
 }
 

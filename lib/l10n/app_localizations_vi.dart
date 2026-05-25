@@ -1080,4 +1080,18 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get useDifferentAccount => 'Dùng tài khoản khác';
+
+  @override
+  String get currencyHelper => 'Sẽ là tiền tệ mặc định khi tạo nhóm mới.';
+
+  @override
+  String get termsOfService => 'Điều khoản dịch vụ';
+
+  @override
+  String get privacyPolicy => 'Chính sách bảo mật';
+
+  @override
+  String agreeToTermsAndPrivacy(String tos, String privacy) {
+    return 'Tôi đồng ý với $tos và $privacy.';
+  }
 }

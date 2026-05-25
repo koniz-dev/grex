@@ -1108,6 +1108,26 @@
   "useDifferentAccount": "Dùng tài khoản khác",
   "@useDifferentAccount": {
     "description": "Footer link on profile setup that signs out and returns to login"
+  },
+  "currencyHelper": "Sẽ là tiền tệ mặc định khi tạo nhóm mới.",
+  "@currencyHelper": {
+    "description": "Helper text under the Currency tile on profile setup"
+  },
+  "termsOfService": "Điều khoản dịch vụ",
+  "@termsOfService": {
+    "description": "Inline link label for Terms of Service"
+  },
+  "privacyPolicy": "Chính sách bảo mật",
+  "@privacyPolicy": {
+    "description": "Inline link label for Privacy Policy"
+  },
+  "agreeToTermsAndPrivacy": "Tôi đồng ý với {tos} và {privacy}.",
+  "@agreeToTermsAndPrivacy": {
+    "description": "Sentence next to the consent checkbox; {tos} and {privacy} are inline link labels",
+    "placeholders": {
+      "tos": {"type": "String", "example": "Điều khoản dịch vụ"},
+      "privacy": {"type": "String", "example": "Chính sách bảo mật"}
+    }
   }
 }
 

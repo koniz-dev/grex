@@ -1985,6 +1985,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use a different account'**
   String get useDifferentAccount;
+
+  /// Helper text under the Currency tile on profile setup
+  ///
+  /// In en, this message translates to:
+  /// **'Used as the default currency for new groups.'**
+  String get currencyHelper;
+
+  /// Inline link label for Terms of Service
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// Inline link label for Privacy Policy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// Sentence next to the consent checkbox; {tos} and {privacy} are inline link labels
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the {tos} and {privacy}.'**
+  String agreeToTermsAndPrivacy(String tos, String privacy);
 }
 
 class _AppLocalizationsDelegate
