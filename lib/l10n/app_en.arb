@@ -1380,6 +1380,26 @@
   "deletePaymentTooltip": "Delete payment",
   "@deletePaymentTooltip": {
     "description": "Tooltip on the delete-payment icon button"
+  },
+  "yourNameSectionTitle": "Your name",
+  "@yourNameSectionTitle": {
+    "description": "Section header on profile setup for the display name field"
+  },
+  "preferencesSectionTitle": "Preferences",
+  "@preferencesSectionTitle": {
+    "description": "Section header on profile setup for currency + language"
+  },
+  "displayNameHelper": "This is how others will see you in groups.",
+  "@displayNameHelper": {
+    "description": "Helper text under the display name field on profile setup"
+  },
+  "searchHint": "Search",
+  "@searchHint": {
+    "description": "Generic placeholder for search input fields"
+  },
+  "useDifferentAccount": "Use a different account",
+  "@useDifferentAccount": {
+    "description": "Footer link on profile setup that signs out and returns to login"
   }
 }
 

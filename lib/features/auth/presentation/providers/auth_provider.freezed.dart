@@ -17,7 +17,13 @@ mixin _$AuthState {
 /// Currently authenticated user, null if not logged in
  User? get user;/// Whether an authentication operation is in progress
  bool get isLoading;/// Error message if authentication failed, null otherwise
- String? get error;
+ String? get error;/// Tri-state profile existence flag. `null` = not checked yet (or no
+/// user); `true` = a row exists in `public.users` for this user;
+/// `false` = no profile row yet (social-login users who haven't
+/// completed setup). GoRouter uses this to redirect orphan sessions
+/// to /profile-setup instead of the home screen, where RLS-guarded
+/// queries would otherwise surface as "something went wrong".
+ bool? get hasProfile;
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +34,16 @@ $AuthStateCopyWith<AuthState> get copyWith => _$AuthStateCopyWithImpl<AuthState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.user, user) || other.user == user)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.user, user) || other.user == user)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error)&&(identical(other.hasProfile, hasProfile) || other.hasProfile == hasProfile));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,isLoading,error);
+int get hashCode => Object.hash(runtimeType,user,isLoading,error,hasProfile);
 
 @override
 String toString() {
-  return 'AuthState(user: $user, isLoading: $isLoading, error: $error)';
+  return 'AuthState(user: $user, isLoading: $isLoading, error: $error, hasProfile: $hasProfile)';
 }
 
 
@@ -48,7 +54,7 @@ abstract mixin class $AuthStateCopyWith<$Res>  {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) = _$AuthStateCopyWithImpl;
 @useResult
 $Res call({
- User? user, bool isLoading, String? error
+ User? user, bool isLoading, String? error, bool? hasProfile
 });
 
 
@@ -65,12 +71,13 @@ class _$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? user = freezed,Object? isLoading = null,Object? error = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? user = freezed,Object? isLoading = null,Object? error = freezed,Object? hasProfile = freezed,}) {
   return _then(_self.copyWith(
 user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,hasProfile: freezed == hasProfile ? _self.hasProfile : hasProfile // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 
@@ -155,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( User? user,  bool isLoading,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( User? user,  bool isLoading,  String? error,  bool? hasProfile)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.user,_that.isLoading,_that.error);case _:
+return $default(_that.user,_that.isLoading,_that.error,_that.hasProfile);case _:
   return orElse();
 
 }
@@ -176,10 +183,10 @@ return $default(_that.user,_that.isLoading,_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( User? user,  bool isLoading,  String? error)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( User? user,  bool isLoading,  String? error,  bool? hasProfile)  $default,) {final _that = this;
 switch (_that) {
 case _AuthState():
-return $default(_that.user,_that.isLoading,_that.error);case _:
+return $default(_that.user,_that.isLoading,_that.error,_that.hasProfile);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +203,10 @@ return $default(_that.user,_that.isLoading,_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( User? user,  bool isLoading,  String? error)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( User? user,  bool isLoading,  String? error,  bool? hasProfile)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.user,_that.isLoading,_that.error);case _:
+return $default(_that.user,_that.isLoading,_that.error,_that.hasProfile);case _:
   return null;
 
 }
@@ -211,7 +218,7 @@ return $default(_that.user,_that.isLoading,_that.error);case _:
 
 
 class _AuthState implements AuthState {
-  const _AuthState({this.user, this.isLoading = false, this.error});
+  const _AuthState({this.user, this.isLoading = false, this.error, this.hasProfile});
   
 
 /// Currently authenticated user, null if not logged in
@@ -220,6 +227,13 @@ class _AuthState implements AuthState {
 @override@JsonKey() final  bool isLoading;
 /// Error message if authentication failed, null otherwise
 @override final  String? error;
+/// Tri-state profile existence flag. `null` = not checked yet (or no
+/// user); `true` = a row exists in `public.users` for this user;
+/// `false` = no profile row yet (social-login users who haven't
+/// completed setup). GoRouter uses this to redirect orphan sessions
+/// to /profile-setup instead of the home screen, where RLS-guarded
+/// queries would otherwise surface as "something went wrong".
+@override final  bool? hasProfile;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +245,16 @@ _$AuthStateCopyWith<_AuthState> get copyWith => __$AuthStateCopyWithImpl<_AuthSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.user, user) || other.user == user)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.user, user) || other.user == user)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.error, error) || other.error == error)&&(identical(other.hasProfile, hasProfile) || other.hasProfile == hasProfile));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,isLoading,error);
+int get hashCode => Object.hash(runtimeType,user,isLoading,error,hasProfile);
 
 @override
 String toString() {
-  return 'AuthState(user: $user, isLoading: $isLoading, error: $error)';
+  return 'AuthState(user: $user, isLoading: $isLoading, error: $error, hasProfile: $hasProfile)';
 }
 
 
@@ -251,7 +265,7 @@ abstract mixin class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Re
   factory _$AuthStateCopyWith(_AuthState value, $Res Function(_AuthState) _then) = __$AuthStateCopyWithImpl;
 @override @useResult
 $Res call({
- User? user, bool isLoading, String? error
+ User? user, bool isLoading, String? error, bool? hasProfile
 });
 
 
@@ -268,12 +282,13 @@ class __$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? user = freezed,Object? isLoading = null,Object? error = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? user = freezed,Object? isLoading = null,Object? error = freezed,Object? hasProfile = freezed,}) {
   return _then(_AuthState(
 user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,hasProfile: freezed == hasProfile ? _self.hasProfile : hasProfile // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 

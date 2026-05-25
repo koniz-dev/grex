@@ -1078,4 +1078,20 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get deletePaymentTooltip => 'Eliminar pago';
+
+  @override
+  String get yourNameSectionTitle => 'Tu nombre';
+
+  @override
+  String get preferencesSectionTitle => 'Preferencias';
+
+  @override
+  String get displayNameHelper =>
+      'Así es como los demás te verán en los grupos.';
+
+  @override
+  String get searchHint => 'Buscar';
+
+  @override
+  String get useDifferentAccount => 'Usar otra cuenta';
 }

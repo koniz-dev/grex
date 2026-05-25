@@ -15,9 +15,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
   // Use ref.listen to update the refresh notifier when auth state changes
   ref.listen(authNotifierProvider, (previous, next) {
-    // Only refresh when user actually changes (login/logout/register success)
-    // Don't refresh on loading or error state changes
-    if (previous?.user != next.user) {
+    // Refresh on user changes (login/logout/register) and on hasProfile
+    // transitions so the orphan-session redirect kicks in once the
+    // async profile-existence check resolves.
+    if (previous?.user != next.user ||
+        previous?.hasProfile != next.hasProfile) {
       refreshNotifier.value = !refreshNotifier.value;
     }
   });
@@ -33,11 +35,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       final isAuthenticated = authState.user != null;
       final isEmailVerified = authState.user?.emailConfirmed ?? false;
+      // `hasProfile` is `null` while the existence check is still in flight,
+      // `true` if a public.users row exists, `false` if the user is an
+      // orphan (e.g. social-login user who never finished setup).
+      final needsProfileSetup =
+          isAuthenticated && authState.hasProfile == false;
 
       final isLoggingIn = state.uri.path == AppRoutes.login;
       final isRegistering = state.uri.path == AppRoutes.register;
       final isForgotPassword = state.uri.path == AppRoutes.forgotPassword;
       final isEmailVerification = state.uri.path == AppRoutes.emailVerification;
+      final isProfileSetup = state.uri.path == AppRoutes.profileSetup;
 
       final isAuthRoute =
           isLoggingIn ||
@@ -65,7 +73,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         return null;
       }
 
-      // 3. If authenticated AND verified, and on an auth route,
+      // 3. Authenticated + verified but no profile row yet: park them on
+      // the profile-setup page until they complete it. Skip this redirect
+      // while on auth routes (login flow already routes via BlocListener
+      // with the right `extra` payload).
+      if (needsProfileSetup && !isProfileSetup && !isAuthRoute) {
+        return AppRoutes.profileSetup;
+      }
+
+      // 4. If authenticated AND verified, and on an auth route,
       // redirect to home
       if (isAuthenticated && isEmailVerified && isAuthRoute) {
         return AppRoutes.groups;

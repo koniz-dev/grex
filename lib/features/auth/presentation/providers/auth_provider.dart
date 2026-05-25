@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/utils/result.dart';
 import 'package:grex/features/auth/domain/entities/user.dart';
+import 'package:grex/features/auth/domain/repositories/user_repository.dart';
 
 part 'auth_provider.freezed.dart';
 
@@ -12,7 +14,7 @@ part 'auth_provider.freezed.dart';
 /// restore. It is NOT used by auth UI pages (which use AuthBloc instead).
 @freezed
 abstract class AuthState with _$AuthState {
-  /// Creates an [AuthState] with the given [user], [isLoading], and [error]
+  /// Creates an [AuthState].
   const factory AuthState({
     /// Currently authenticated user, null if not logged in
     User? user,
@@ -22,6 +24,14 @@ abstract class AuthState with _$AuthState {
 
     /// Error message if authentication failed, null otherwise
     String? error,
+
+    /// Tri-state profile existence flag. `null` = not checked yet (or no
+    /// user); `true` = a row exists in `public.users` for this user;
+    /// `false` = no profile row yet (social-login users who haven't
+    /// completed setup). GoRouter uses this to redirect orphan sessions
+    /// to /profile-setup instead of the home screen, where RLS-guarded
+    /// queries would otherwise surface as "something went wrong".
+    bool? hasProfile,
   }) = _AuthState;
 }
 
@@ -49,7 +59,17 @@ class AuthNotifier extends Notifier<AuthState> {
     // with any auth operations (e.g. from BLoC or direct repo calls)
     final subscription = repository.authStateChanges.listen((user) {
       if (state.user != user) {
-        state = state.copyWith(user: user, isLoading: false, error: null);
+        state = state.copyWith(
+          user: user,
+          isLoading: false,
+          error: null,
+          hasProfile: user == null ? null : state.hasProfile,
+        );
+        if (user != null) {
+          // Fire-and-forget: state update happens inside the async helper.
+          // ignore: discarded_futures
+          _refreshProfileExistence(user.id);
+        }
       }
     });
 
@@ -68,21 +88,43 @@ class AuthNotifier extends Notifier<AuthState> {
     final getCurrentUserUseCase = ref.read(getCurrentUserUseCaseProvider);
     final result = await getCurrentUserUseCase();
 
-    result.when(
-      success: (user) {
+    await result.when(
+      success: (user) async {
         state = state.copyWith(
           user: user,
           isLoading: false,
           error: null,
         );
+        if (user != null) {
+          await _refreshProfileExistence(user.id);
+        }
       },
-      failureCallback: (failure) {
+      failureCallback: (failure) async {
         state = state.copyWith(
           isLoading: false,
           error: failure.message,
         );
       },
     );
+  }
+
+  /// Checks whether the authenticated user has a `public.users` row and
+  /// reflects the result in [AuthState.hasProfile] for the router to read.
+  Future<void> _refreshProfileExistence(String userId) async {
+    final userRepository = GetIt.instance<UserRepository>();
+    final result = await userRepository.getUserProfile(userId);
+    if (state.user?.id != userId) return;
+    state = state.copyWith(hasProfile: result.isRight());
+  }
+
+  /// Re-runs the profile existence check for the current user.
+  ///
+  /// Call after creating the user's profile (e.g. from ProfileSetupPage
+  /// success) so the router can stop redirecting them to /profile-setup.
+  Future<void> refreshProfileExistence() async {
+    final user = state.user;
+    if (user == null) return;
+    await _refreshProfileExistence(user.id);
   }
 
   /// Checks if the user is authenticated.

@@ -1088,6 +1088,26 @@
   "deletePaymentTooltip": "Xoá thanh toán",
   "@deletePaymentTooltip": {
     "description": "Tooltip on the delete-payment icon button"
+  },
+  "yourNameSectionTitle": "Tên của bạn",
+  "@yourNameSectionTitle": {
+    "description": "Section header on profile setup for the display name field"
+  },
+  "preferencesSectionTitle": "Tuỳ chọn",
+  "@preferencesSectionTitle": {
+    "description": "Section header on profile setup for currency + language"
+  },
+  "displayNameHelper": "Đây là tên người khác sẽ thấy trong các nhóm.",
+  "@displayNameHelper": {
+    "description": "Helper text under the display name field on profile setup"
+  },
+  "searchHint": "Tìm kiếm",
+  "@searchHint": {
+    "description": "Generic placeholder for search input fields"
+  },
+  "useDifferentAccount": "Dùng tài khoản khác",
+  "@useDifferentAccount": {
+    "description": "Footer link on profile setup that signs out and returns to login"
   }
 }
 

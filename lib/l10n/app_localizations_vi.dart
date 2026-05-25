@@ -1064,4 +1064,20 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get deletePaymentTooltip => 'Xoá thanh toán';
+
+  @override
+  String get yourNameSectionTitle => 'Tên của bạn';
+
+  @override
+  String get preferencesSectionTitle => 'Tuỳ chọn';
+
+  @override
+  String get displayNameHelper =>
+      'Đây là tên người khác sẽ thấy trong các nhóm.';
+
+  @override
+  String get searchHint => 'Tìm kiếm';
+
+  @override
+  String get useDifferentAccount => 'Dùng tài khoản khác';
 }

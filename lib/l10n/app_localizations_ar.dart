@@ -1056,4 +1056,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get deletePaymentTooltip => 'حذف الدفعة';
+
+  @override
+  String get yourNameSectionTitle => 'اسمك';
+
+  @override
+  String get preferencesSectionTitle => 'التفضيلات';
+
+  @override
+  String get displayNameHelper => 'هكذا سيراك الآخرون في المجموعات.';
+
+  @override
+  String get searchHint => 'بحث';
+
+  @override
+  String get useDifferentAccount => 'استخدام حساب آخر';
 }

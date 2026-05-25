@@ -355,7 +355,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final profileResult = await _userRepository.getUserProfile(currentUser.id);
 
     profileResult.fold(
-      (failure) => emit(AuthAuthenticated(user: currentUser)),
+      (failure) {
+        // Same routing logic as _onAuthStateChanged: social-login users
+        // without a profile must complete setup, not be sent to the home
+        // screen where RLS-guarded queries would error.
+        final provider = currentUser.socialProvider;
+        if (provider != null) {
+          emit(
+            AuthProfileSetupRequired(
+              user: currentUser,
+              provider: provider,
+              displayName: currentUser.oauthDisplayName,
+              email: currentUser.email,
+            ),
+          );
+        } else {
+          emit(AuthAuthenticated(user: currentUser));
+        }
+      },
       (profile) => emit(AuthAuthenticated(user: currentUser, profile: profile)),
     );
   }
@@ -433,7 +450,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final profileResult = await _userRepository.getUserProfile(user.id);
 
       profileResult.fold(
-        (failure) => emit(AuthAuthenticated(user: user)),
+        (failure) {
+          // No profile yet: a social-login user needs to complete setup
+          // before we route them into the app, otherwise group queries hit
+          // RLS with no public.users row and surface as "something went
+          // wrong". Email/password users keep the legacy AuthAuthenticated
+          // path so existing verification flows are unaffected.
+          final provider = user.socialProvider;
+          if (provider != null) {
+            emit(
+              AuthProfileSetupRequired(
+                user: user,
+                provider: provider,
+                displayName: user.oauthDisplayName,
+                email: user.email,
+              ),
+            );
+          } else {
+            emit(AuthAuthenticated(user: user));
+          }
+        },
         (profile) => emit(AuthAuthenticated(user: user, profile: profile)),
       );
     }

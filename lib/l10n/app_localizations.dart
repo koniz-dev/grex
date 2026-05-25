@@ -1955,6 +1955,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete payment'**
   String get deletePaymentTooltip;
+
+  /// Section header on profile setup for the display name field
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get yourNameSectionTitle;
+
+  /// Section header on profile setup for currency + language
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get preferencesSectionTitle;
+
+  /// Helper text under the display name field on profile setup
+  ///
+  /// In en, this message translates to:
+  /// **'This is how others will see you in groups.'**
+  String get displayNameHelper;
+
+  /// Generic placeholder for search input fields
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchHint;
+
+  /// Footer link on profile setup that signs out and returns to login
+  ///
+  /// In en, this message translates to:
+  /// **'Use a different account'**
+  String get useDifferentAccount;
 }
 
 class _AppLocalizationsDelegate

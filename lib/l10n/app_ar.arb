@@ -1234,5 +1234,25 @@
   "deletePaymentTooltip": "حذف الدفعة",
   "@deletePaymentTooltip": {
     "description": "Tooltip on the delete-payment icon button"
+  },
+  "yourNameSectionTitle": "اسمك",
+  "@yourNameSectionTitle": {
+    "description": "Section header on profile setup for the display name field"
+  },
+  "preferencesSectionTitle": "التفضيلات",
+  "@preferencesSectionTitle": {
+    "description": "Section header on profile setup for currency + language"
+  },
+  "displayNameHelper": "هكذا سيراك الآخرون في المجموعات.",
+  "@displayNameHelper": {
+    "description": "Helper text under the display name field on profile setup"
+  },
+  "searchHint": "بحث",
+  "@searchHint": {
+    "description": "Generic placeholder for search input fields"
+  },
+  "useDifferentAccount": "استخدام حساب آخر",
+  "@useDifferentAccount": {
+    "description": "Footer link on profile setup that signs out and returns to login"
   }
 }

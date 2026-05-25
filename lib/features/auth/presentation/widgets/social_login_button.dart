@@ -80,6 +80,24 @@ class SocialLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isApple = provider == SocialAuthProvider.apple;
     final isDisabled = isLoading || onPressed == null;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Both Apple HIG ("Sign in with Apple") and Google Branding Guidelines
+    // sanction an inverted variant for dark mode: in dark theme the Apple
+    // button flips to white-on-black-text, the Google button flips to
+    // black-on-white-text. Foreground (text + icon) is the opposite.
+    final Color foreground;
+    final Color background;
+    final Color borderColor;
+    if (isApple) {
+      background = isDark ? Colors.white : Colors.black;
+      foreground = isDark ? Colors.black : Colors.white;
+      borderColor = background;
+    } else {
+      background = isDark ? Colors.black : Colors.white;
+      foreground = isDark ? Colors.white : Colors.black87;
+      borderColor = isDark ? Colors.white24 : const Color(0xFFE4E4E7);
+    }
 
     return SizedBox(
       width: double.infinity,
@@ -87,18 +105,14 @@ class SocialLoginButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: isDisabled ? null : onPressed,
         style: OutlinedButton.styleFrom(
-          backgroundColor: isApple ? Colors.black : Colors.white,
-          foregroundColor: isApple ? Colors.white : Colors.black87,
-          disabledBackgroundColor: isApple
-              ? Colors.black.withValues(alpha: 0.6)
-              : Colors.grey.shade100,
-          disabledForegroundColor: isApple
-              ? Colors.white.withValues(alpha: 0.6)
-              : Colors.grey.shade400,
+          backgroundColor: background,
+          foregroundColor: foreground,
+          disabledBackgroundColor: background.withValues(alpha: 0.6),
+          disabledForegroundColor: foreground.withValues(alpha: 0.6),
           side: BorderSide(
             color: isDisabled
-                ? Colors.grey.shade300
-                : (isApple ? Colors.black : const Color(0xFFE4E4E7)),
+                ? borderColor.withValues(alpha: 0.4)
+                : borderColor,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -114,9 +128,7 @@ class SocialLoginButton extends StatelessWidget {
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    isApple ? Colors.white : Colors.black87,
-                  ),
+                  valueColor: AlwaysStoppedAnimation<Color>(foreground),
                 ),
               )
             else
@@ -124,19 +136,16 @@ class SocialLoginButton extends StatelessWidget {
                 provider.iconAsset,
                 width: 20,
                 height: 20,
-                colorFilter: isDisabled
+                // Apple logo is monochrome — tint with the foreground.
+                // Google's "G" is multi-colour brand mark — leave intact.
+                colorFilter: isApple
                     ? ColorFilter.mode(
-                        isApple
-                            ? Colors.white.withValues(alpha: 0.6)
-                            : Colors.grey.shade400,
+                        isDisabled
+                            ? foreground.withValues(alpha: 0.6)
+                            : foreground,
                         BlendMode.srcIn,
                       )
-                    : (isApple
-                          ? const ColorFilter.mode(
-                              Colors.white,
-                              BlendMode.srcIn,
-                            )
-                          : null),
+                    : null,
               ),
             const SizedBox(width: 12),
             Text(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grex/core/routing/app_routes.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
+import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
+import 'package:grex/features/auth/domain/entities/user.dart';
 import 'package:grex/features/auth/presentation/pages/profile_setup_page.dart';
 import 'package:grex/features/auth/presentation/screens/auth_screen_wrappers.dart';
 import 'package:grex/features/balances/presentation/pages/balance_page.dart';
@@ -18,6 +20,7 @@ import 'package:grex/features/groups/presentation/pages/group_settings_page.dart
 import 'package:grex/features/payments/presentation/pages/create_payment_page.dart';
 import 'package:grex/features/payments/presentation/pages/payment_list_page.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 /// Main app router configuration using GoRouter
 class AppRouter {
@@ -48,7 +51,13 @@ class AppRouter {
       path: AppRoutes.profileSetup,
       name: AppRoutes.profileSetupName,
       builder: (context, state) {
-        final args = state.extra! as ProfileSetupArgs;
+        // Normal entry: BlocListener-driven navigation supplies extra.
+        // Fallback entry: router redirect for orphan sessions has no extra,
+        // so synthesise args from the current Supabase user.
+        final args = state.extra as ProfileSetupArgs? ?? _argsFromSession();
+        if (args == null) {
+          return _missingSessionScaffold();
+        }
         return ProfileSetupPage(
           user: args.user,
           provider: args.provider,
@@ -217,6 +226,25 @@ class AppRouter {
       ],
     ),
   ];
+
+  static ProfileSetupArgs? _argsFromSession() {
+    final supabaseUser = supabase.Supabase.instance.client.auth.currentUser;
+    if (supabaseUser == null) return null;
+    final user = User.fromSupabaseUser(supabaseUser);
+    final provider = user.socialProvider ?? SocialAuthProvider.google;
+    return ProfileSetupArgs(
+      user: user,
+      provider: provider,
+      email: user.email,
+      displayName: user.oauthDisplayName,
+    );
+  }
+
+  static Widget _missingSessionScaffold() {
+    return const Scaffold(
+      body: Center(child: Text('Session expired. Please sign in again.')),
+    );
+  }
 
   /// Error builder for GoRouter
   static Widget errorBuilder(BuildContext context, GoRouterState state) {
