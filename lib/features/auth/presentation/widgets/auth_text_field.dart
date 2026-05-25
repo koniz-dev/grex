@@ -103,17 +103,18 @@ class _AuthTextFieldState extends State<AuthTextField> {
   @override
   Widget build(BuildContext context) {
     final showToggle = widget.obscureText && widget.showVisibilityToggle;
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           widget.label,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -129,22 +130,22 @@ class _AuthTextFieldState extends State<AuthTextField> {
           onFieldSubmitted: widget.onFieldSubmitted,
           enabled: widget.enabled,
           readOnly: widget.readOnly,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 14,
             fontWeight: FontWeight.normal,
-            color: Colors.black,
+            color: colorScheme.onSurface,
           ),
           decoration: InputDecoration(
             hintText: widget.placeholder,
-            hintStyle: const TextStyle(
+            hintStyle: TextStyle(
               fontFamily: 'Inter',
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: Color(0xFFA1A1AA),
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
             ),
             filled: true,
-            fillColor: const Color(0xFFF4F4F5),
+            fillColor: colorScheme.surfaceContainerHighest,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 14,
@@ -154,7 +155,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
                     key: widget.visibilityToggleKey,
                     icon: Icon(
                       _obscure ? Icons.visibility_off : Icons.visibility,
-                      color: const Color(0xFF71717A),
+                      color: colorScheme.onSurfaceVariant,
                       size: 20,
                     ),
                     onPressed: () => setState(() => _obscure = !_obscure),
@@ -174,15 +175,15 @@ class _AuthTextFieldState extends State<AuthTextField> {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(
-                color: Color(0xFFDC2626),
+              borderSide: BorderSide(
+                color: colorScheme.error,
                 width: 2,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(
-                color: Color(0xFFDC2626),
+              borderSide: BorderSide(
+                color: colorScheme.error,
                 width: 2,
               ),
             ),

@@ -10,34 +10,35 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
         // Wallet icon (48px)
-        const Icon(
+        Icon(
           Icons.account_balance_wallet,
           size: 48,
-          color: Colors.black,
+          color: colorScheme.onSurface,
         ),
         const SizedBox(height: 8),
         // App name (Outfit, 32px, 800 weight)
-        const Text(
+        Text(
           'Grex',
           style: TextStyle(
             fontFamily: 'Outfit',
             fontSize: 32,
             fontWeight: FontWeight.w800,
-            color: Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
         // Tagline (Inter, 14px, normal)
         Text(
           context.l10n.appTagline,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 14,
             fontWeight: FontWeight.normal,
-            color: Color(0xFF71717A),
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
       ],

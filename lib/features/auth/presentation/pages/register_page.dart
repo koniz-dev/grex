@@ -135,10 +135,10 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: SafeArea(
           child: BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
@@ -182,22 +182,22 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SizedBox(height: 20),
                       Text(
                         l10n.registerAccount,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Outfit',
                           fontSize: 40,
                           fontWeight: FontWeight.w800,
                           letterSpacing: -1,
-                          color: Colors.black,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         l10n.joinGrexExpenseShare,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
-                          color: Color(0xFF71717A),
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -341,14 +341,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                 children: [
                                   TextSpan(
                                     text: l10n.alreadyHaveAccountPrefix,
-                                    style: const TextStyle(
-                                      color: Color(0xFF71717A),
+                                    style: TextStyle(
+                                      color: colorScheme.onSurfaceVariant,
                                     ),
                                   ),
                                   TextSpan(
                                     text: l10n.signIn,
-                                    style: const TextStyle(
-                                      color: Colors.black,
+                                    style: TextStyle(
+                                      color: colorScheme.onSurface,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

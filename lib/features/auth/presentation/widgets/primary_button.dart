@@ -33,15 +33,19 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: double.infinity,
       height: 56,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
-          disabledBackgroundColor: const Color(0xFF71717A),
+          backgroundColor: colorScheme.onSurface,
+          foregroundColor: colorScheme.surface,
+          disabledBackgroundColor: colorScheme.onSurface.withValues(
+            alpha: 0.38,
+          ),
+          disabledForegroundColor: colorScheme.surface.withValues(alpha: 0.7),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -51,12 +55,14 @@ class PrimaryButton extends StatelessWidget {
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        colorScheme.surface,
+                      ),
                     ),
                   ),
                   if (loadingText != null) ...[

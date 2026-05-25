@@ -41,8 +41,8 @@ class SuccessScreen extends StatelessWidget {
       });
     }
 
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -71,12 +71,12 @@ class SuccessScreen extends StatelessWidget {
               // Title
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 32,
                   fontWeight: FontWeight.w800,
                   letterSpacing: -1,
-                  color: Colors.black,
+                  color: colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -85,11 +85,11 @@ class SuccessScreen extends StatelessWidget {
               // Message
               Text(
                 message,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
-                  color: Color(0xFF71717A),
+                  color: colorScheme.onSurfaceVariant,
                   height: 1.4,
                 ),
                 textAlign: TextAlign.center,
@@ -101,8 +101,8 @@ class SuccessScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: onButtonPressed,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
+                    backgroundColor: colorScheme.onSurface,
+                    foregroundColor: colorScheme.surface,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),

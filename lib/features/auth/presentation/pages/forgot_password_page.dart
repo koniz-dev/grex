@@ -51,8 +51,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
@@ -70,13 +70,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF4F4F5),
+                        color: colorScheme.surfaceContainerHighest,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.arrow_back,
                         size: 20,
-                        color: Colors.black,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                   ),
@@ -112,11 +112,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     onTap: () => context.goToLogin(),
                     child: Text(
                       l10n.backToSignIn,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                   ),
@@ -145,38 +145,39 @@ class _FormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           l10n.forgotPasswordTitle,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Outfit',
             fontSize: 40,
             fontWeight: FontWeight.w800,
             letterSpacing: -1,
-            color: Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
         Text(
           l10n.enterEmailForResetShort,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 14,
             fontWeight: FontWeight.normal,
-            color: Color(0xFF71717A),
+            color: colorScheme.onSurfaceVariant,
             height: 1.4,
           ),
         ),
         const SizedBox(height: 12),
         Text(
           l10n.weWillSendLink,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 13,
             fontWeight: FontWeight.normal,
-            color: Color(0xFFA1A1AA),
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
             height: 1.4,
           ),
         ),
@@ -215,6 +216,7 @@ class _SuccessView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -223,22 +225,22 @@ class _SuccessView extends StatelessWidget {
         Text(
           l10n.resetEmailSent,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Outfit',
             fontSize: 24,
             fontWeight: FontWeight.w700,
-            color: Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 12),
         Text(
           l10n.pleaseCheckEmailAt(email),
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 14,
             fontWeight: FontWeight.normal,
-            color: Color(0xFF71717A),
+            color: colorScheme.onSurfaceVariant,
             height: 1.4,
           ),
         ),
@@ -257,11 +259,11 @@ class _SuccessView extends StatelessWidget {
           ),
           child: Text(
             l10n.resend,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Outfit',
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: Colors.black,
+              color: colorScheme.onSurface,
             ),
           ),
         ),

@@ -254,13 +254,13 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _onContinuePressed,
                       child: _isLoading
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
+                                  Theme.of(context).colorScheme.onPrimary,
                                 ),
                               ),
                             )

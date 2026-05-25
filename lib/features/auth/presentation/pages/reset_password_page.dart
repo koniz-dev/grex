@@ -66,8 +66,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
@@ -100,13 +100,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF4F4F5),
+                          color: colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back,
                           size: 20,
-                          color: Colors.black,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                     ),
@@ -116,22 +116,22 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   // Title section
                   Text(
                     l10n.resetPassword,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Outfit',
                       fontSize: 40,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -1,
-                      color: Colors.black,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     l10n.enterNewPassword,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
-                      color: Color(0xFF71717A),
+                      color: colorScheme.onSurfaceVariant,
                       height: 1.4,
                     ),
                   ),
@@ -151,11 +151,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   // Password hint
                   Text(
                     l10n.passwordHint,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
-                      color: Color(0xFFA1A1AA),
+                      color: colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.7,
+                      ),
                       height: 1.4,
                     ),
                   ),

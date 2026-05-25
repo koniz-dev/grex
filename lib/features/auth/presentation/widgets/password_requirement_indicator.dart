@@ -13,7 +13,7 @@ class PasswordRequirementIndicator extends StatefulWidget {
 
   /// The controller of the password text field to listen to.
   final TextEditingController controller;
-  
+
   /// The focus node of the password text field to determine visibility.
   final FocusNode focusNode;
 
@@ -83,8 +83,10 @@ class _PasswordRequirementIndicatorState
     }
   }
 
-  Widget _buildRequirementRow(String text, bool isMet) {
-    final color = isMet ? const Color(0xFF10B981) : const Color(0xFFA1A1AA);
+  Widget _buildRequirementRow(BuildContext context, String text, bool isMet) {
+    final color = isMet
+        ? const Color(0xFF10B981)
+        : Theme.of(context).colorScheme.onSurfaceVariant;
     final icon = isMet ? Icons.check_circle : Icons.circle_outlined;
 
     return Padding(
@@ -110,10 +112,11 @@ class _PasswordRequirementIndicatorState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    
+
     final isAllMet = _hasLength && _hasUppercase && _hasNumber && _hasSpecial;
     // Show if focused, or if user typed something but hasn't met all conditions
-    final isVisible = widget.focusNode.hasFocus ||
+    final isVisible =
+        widget.focusNode.hasFocus ||
         (widget.controller.text.isNotEmpty && !isAllMet);
 
     return AnimatedSize(
@@ -127,10 +130,18 @@ class _PasswordRequirementIndicatorState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildRequirementRow(l10n.pwdReqLength, _hasLength),
-                  _buildRequirementRow(l10n.pwdReqUppercase, _hasUppercase),
-                  _buildRequirementRow(l10n.pwdReqNumber, _hasNumber),
-                  _buildRequirementRow(l10n.pwdReqSpecial, _hasSpecial),
+                  _buildRequirementRow(context, l10n.pwdReqLength, _hasLength),
+                  _buildRequirementRow(
+                    context,
+                    l10n.pwdReqUppercase,
+                    _hasUppercase,
+                  ),
+                  _buildRequirementRow(context, l10n.pwdReqNumber, _hasNumber),
+                  _buildRequirementRow(
+                    context,
+                    l10n.pwdReqSpecial,
+                    _hasSpecial,
+                  ),
                 ],
               ),
             ),

@@ -107,8 +107,8 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
@@ -153,27 +153,27 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF4F4F5),
+                      color: colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(40),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.mail_outline,
                       size: 40,
-                      color: Colors.black,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ),
                 const SizedBox(height: 32),
 
                 // Title
-                const Text(
+                Text(
                   'Verify Your Email',
                   style: TextStyle(
                     fontFamily: 'Outfit',
                     fontSize: 40,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -1,
-                    color: Colors.black,
+                    color: colorScheme.onSurface,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -190,11 +190,11 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     return Text(
                       'We sent a verification link to $email. '
                       'Click the link to verify your account.',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
-                        color: Color(0xFF71717A),
+                        color: colorScheme.onSurfaceVariant,
                         height: 1.4,
                       ),
                       textAlign: TextAlign.center,
@@ -222,18 +222,18 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                   onPressed: _openEmailApp,
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: const BorderSide(color: Color(0xFFE4E4E7)),
+                    side: BorderSide(color: colorScheme.outlineVariant),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Open Email App',
                     style: TextStyle(
                       fontFamily: 'Outfit',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ),
@@ -256,32 +256,32 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF4F4F5),
+                    color: colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           Icon(
                             Icons.help_outline,
-                            color: Color(0xFF71717A),
+                            color: colorScheme.onSurfaceVariant,
                             size: 20,
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Text(
                             "Didn't receive the email?",
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                              color: colorScheme.onSurface,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         '• Check your spam folder\n'
                         '• Make sure the email address is correct\n'
@@ -290,7 +290,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                           fontFamily: 'Inter',
                           fontSize: 12,
                           fontWeight: FontWeight.normal,
-                          color: Color(0xFF71717A),
+                          color: colorScheme.onSurfaceVariant,
                           height: 1.4,
                         ),
                       ),
@@ -303,24 +303,24 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       'Wrong email? ',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
-                        color: Color(0xFF71717A),
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                     GestureDetector(
                       onTap: _onBackToLoginPressed,
-                      child: const Text(
+                      child: Text(
                         'Sign Out',
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                     ),

@@ -132,8 +132,11 @@ class SocialLoginButton extends StatelessWidget {
                         BlendMode.srcIn,
                       )
                     : (isApple
-                        ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-                        : null),
+                          ? const ColorFilter.mode(
+                              Colors.white,
+                              BlendMode.srcIn,
+                            )
+                          : null),
               ),
             const SizedBox(width: 12),
             Text(
