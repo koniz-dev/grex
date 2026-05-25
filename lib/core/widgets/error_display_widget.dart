@@ -46,8 +46,8 @@ class ErrorDisplayWidget extends StatelessWidget {
     final errorInfo = _getErrorInfo(error);
 
     return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: EdgeInsets.zero, // Rely on SnackBar's or parent's margin
       decoration: BoxDecoration(
         color: errorInfo.backgroundColor,
         border: Border.all(color: errorInfo.borderColor),
@@ -59,66 +59,84 @@ class ErrorDisplayWidget extends StatelessWidget {
         children: [
           // Error header with icon
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                errorInfo.icon,
-                color: errorInfo.iconColor,
-                size: 24,
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Icon(
+                  errorInfo.icon,
+                  color: errorInfo.iconColor,
+                  size: 20,
+                ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  errorInfo.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: errorInfo.textColor,
-                    fontSize: 16,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      errorInfo.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: errorInfo.textColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      customMessage ?? errorInfo.message,
+                      style: TextStyle(
+                        color: errorInfo.textColor,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               if (showDismiss && onDismiss != null)
-                IconButton(
-                  onPressed: onDismiss,
-                  icon: Icon(
-                    Icons.close,
-                    color: errorInfo.textColor,
-                    size: 20,
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: IconButton(
+                    onPressed: onDismiss,
+                    icon: Icon(
+                      Icons.close,
+                      color: errorInfo.textColor,
+                      size: 18,
+                    ),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                   ),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
                 ),
             ],
-          ),
-          const SizedBox(height: 8),
-
-          // Error message
-          Text(
-            customMessage ?? errorInfo.message,
-            style: TextStyle(
-              color: errorInfo.textColor,
-              fontSize: 14,
-            ),
           ),
 
           // Action buttons
           if (showRetry && onRetry != null) ...[
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton.icon(
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: SizedBox(
+                height: 32,
+                child: TextButton.icon(
                   onPressed: onRetry,
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    minimumSize: Size.zero,
+                  ),
                   icon: Icon(
                     Icons.refresh,
                     color: errorInfo.actionColor,
-                    size: 18,
+                    size: 16,
                   ),
                   label: Text(
                     'Thử lại',
-                    style: TextStyle(color: errorInfo.actionColor),
+                    style: TextStyle(
+                      color: errorInfo.actionColor,
+                      fontSize: 13,
+                    ),
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ],

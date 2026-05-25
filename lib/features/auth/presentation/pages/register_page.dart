@@ -171,190 +171,195 @@ class _RegisterPageState extends State<RegisterPage> {
                 );
               }
             },
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 20),
-                    Text(
-                      l10n.registerAccount,
-                      style: const TextStyle(
-                        fontFamily: 'Outfit',
-                        fontSize: 40,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -1,
-                        color: Colors.black,
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        l10n.registerAccount,
+                        style: const TextStyle(
+                          fontFamily: 'Outfit',
+                          fontSize: 40,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -1,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      l10n.joinGrexExpenseShare,
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        color: Color(0xFF71717A),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.joinGrexExpenseShare,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFF71717A),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    AuthTextField(
-                      label: l10n.displayName,
-                      placeholder: l10n.yourNameHint,
-                      fieldKey: const Key('display_name_field'),
-                      controller: _displayNameController,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) => _validateDisplayName(l10n, value),
-                    ),
-                    const SizedBox(height: 12),
-                    AuthTextField(
-                      label: l10n.email,
-                      placeholder: l10n.enterYourEmail,
-                      fieldKey: const Key('email_field'),
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) => _validateEmail(l10n, value),
-                    ),
-                    const SizedBox(height: 12),
-                    AuthTextField(
-                      label: l10n.password,
-                      placeholder: l10n.passwordHintShort,
-                      fieldKey: const Key('password_field'),
-                      visibilityToggleKey: const Key(
-                        'password_visibility_toggle',
+                      const SizedBox(height: 16),
+                      AuthTextField(
+                        label: l10n.displayName,
+                        placeholder: l10n.yourNameHint,
+                        fieldKey: const Key('display_name_field'),
+                        controller: _displayNameController,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) => _validateDisplayName(l10n, value),
                       ),
-                      controller: _passwordController,
-                      focusNode: _passwordFocusNode,
-                      obscureText: true,
-                      showVisibilityToggle: true,
-                      textInputAction: TextInputAction.done,
-                      validator: (value) => _validatePassword(l10n, value),
-                      onFieldSubmitted: (_) => _onRegisterPressed(),
-                    ),
-                    PasswordRequirementIndicator(
-                      controller: _passwordController,
-                      focusNode: _passwordFocusNode,
-                    ),
+                      const SizedBox(height: 12),
+                      AuthTextField(
+                        label: l10n.email,
+                        placeholder: l10n.enterYourEmail,
+                        fieldKey: const Key('email_field'),
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) => _validateEmail(l10n, value),
+                      ),
+                      const SizedBox(height: 12),
+                      AuthTextField(
+                        label: l10n.password,
+                        placeholder: l10n.passwordHintShort,
+                        fieldKey: const Key('password_field'),
+                        visibilityToggleKey: const Key(
+                          'password_visibility_toggle',
+                        ),
+                        controller: _passwordController,
+                        focusNode: _passwordFocusNode,
+                        obscureText: true,
+                        showVisibilityToggle: true,
+                        textInputAction: TextInputAction.done,
+                        validator: (value) => _validatePassword(l10n, value),
+                        onFieldSubmitted: (_) => _onRegisterPressed(),
+                      ),
+                      PasswordRequirementIndicator(
+                        controller: _passwordController,
+                        focusNode: _passwordFocusNode,
+                      ),
 
-                    const SizedBox(height: 16),
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        final isLoading =
-                            state is AuthLoading ||
-                            state is AuthSocialLoginInProgress;
-                        return PrimaryButton(
-                          text: l10n.register,
-                          isLoading: state is AuthLoading,
-                          loadingText: l10n.registering,
-                          onPressed: isLoading ? null : _onRegisterPressed,
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    const OrDivider(),
-                    const SizedBox(height: 12),
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        final isLoading =
-                            state is AuthLoading ||
-                            state is AuthSocialLoginInProgress;
-                        final isGoogleLoading =
-                            state is AuthSocialLoginInProgress &&
-                            state.provider == SocialAuthProvider.google;
-                        return SocialLoginButton(
-                          provider: SocialAuthProvider.google,
-                          onPressed: isLoading
-                              ? null
-                              : () => _onSocialLogin(SocialAuthProvider.google),
-                          isLoading: isGoogleLoading,
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        final isLoading =
-                            state is AuthLoading ||
-                            state is AuthSocialLoginInProgress;
-                        final isAppleLoading =
-                            state is AuthSocialLoginInProgress &&
-                            state.provider == SocialAuthProvider.apple;
-                        return SocialLoginButton(
-                          provider: SocialAuthProvider.apple,
-                          onPressed: isLoading
-                              ? null
-                              : () => _onSocialLogin(SocialAuthProvider.apple),
-                          isLoading: isAppleLoading,
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        if (state is AuthError) {
-                          if (state.failure != null &&
-                              (state.failure is SocialAuthFailure ||
-                                  state.failure is SocialAuthCancelledFailure ||
-                                  state.failure is SocialAuthNetworkFailure ||
-                                  state.failure is SocialAuthTimeoutFailure ||
-                                  state.failure is AccountLinkingFailure)) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 24),
-                              child: SocialAuthErrorWidget(
-                                failure: state.failure!,
-                                errorMessage: state.message,
-                                onRetry: () {},
-                                onFallback: () {
-                                  FocusScope.of(context).requestFocus();
-                                },
-                              ),
-                            );
-                          } else {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 24),
-                              child: ErrorBanner(message: state.message),
-                            );
+                      const SizedBox(height: 16),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          final isLoading =
+                              state is AuthLoading ||
+                              state is AuthSocialLoginInProgress;
+                          return PrimaryButton(
+                            text: l10n.register,
+                            isLoading: state is AuthLoading,
+                            loadingText: l10n.registering,
+                            onPressed: isLoading ? null : _onRegisterPressed,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      const OrDivider(),
+                      const SizedBox(height: 12),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          final isLoading =
+                              state is AuthLoading ||
+                              state is AuthSocialLoginInProgress;
+                          final isGoogleLoading =
+                              state is AuthSocialLoginInProgress &&
+                              state.provider == SocialAuthProvider.google;
+                          return SocialLoginButton(
+                            provider: SocialAuthProvider.google,
+                            onPressed: isLoading
+                                ? null
+                                : () =>
+                                      _onSocialLogin(SocialAuthProvider.google),
+                            isLoading: isGoogleLoading,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          final isLoading =
+                              state is AuthLoading ||
+                              state is AuthSocialLoginInProgress;
+                          final isAppleLoading =
+                              state is AuthSocialLoginInProgress &&
+                              state.provider == SocialAuthProvider.apple;
+                          return SocialLoginButton(
+                            provider: SocialAuthProvider.apple,
+                            onPressed: isLoading
+                                ? null
+                                : () =>
+                                      _onSocialLogin(SocialAuthProvider.apple),
+                            isLoading: isAppleLoading,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          if (state is AuthError) {
+                            if (state.failure != null &&
+                                (state.failure is SocialAuthFailure ||
+                                    state.failure
+                                        is SocialAuthCancelledFailure ||
+                                    state.failure is SocialAuthNetworkFailure ||
+                                    state.failure is SocialAuthTimeoutFailure ||
+                                    state.failure is AccountLinkingFailure)) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 24),
+                                child: SocialAuthErrorWidget(
+                                  failure: state.failure!,
+                                  errorMessage: state.message,
+                                  onRetry: () {},
+                                  onFallback: () {
+                                    FocusScope.of(context).requestFocus();
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 24),
+                                child: ErrorBanner(message: state.message),
+                              );
+                            }
                           }
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () => context.goToLogin(),
-                          child: RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () => context.goToLogin(),
+                            child: RichText(
+                              text: TextSpan(
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: l10n.alreadyHaveAccountPrefix,
+                                    style: const TextStyle(
+                                      color: Color(0xFF71717A),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: l10n.signIn,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              children: [
-                                TextSpan(
-                                  text: l10n.alreadyHaveAccountPrefix,
-                                  style: const TextStyle(
-                                    color: Color(0xFF71717A),
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: l10n.signIn,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

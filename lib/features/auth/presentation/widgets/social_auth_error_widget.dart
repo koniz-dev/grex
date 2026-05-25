@@ -70,8 +70,7 @@ class SocialAuthErrorWidget extends StatelessWidget {
     );
 
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: errorColor.withValues(alpha: 0.1),
         border: Border.all(color: errorColor.withValues(alpha: 0.3)),

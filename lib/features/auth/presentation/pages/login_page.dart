@@ -115,228 +115,233 @@ class _LoginPageState extends State<LoginPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthAuthenticated) {
-              context.replaceWithHome();
-            } else if (state is AuthEmailVerificationRequired) {
-              context.goToEmailVerification();
-            } else if (state is AuthProfileSetupRequired) {
-              context.goToProfileSetup(
-                user: state.user,
-                provider: state.provider,
-                displayName: state.displayName,
-                email: state.email,
-              );
-            } else if (state is AuthAccountLinkingRequired) {
-              showAccountLinkingDialog(
-                context: context,
-                email: state.existingProfile.email,
-                provider: state.provider,
-                onLink: () {
-                  context.read<AuthBloc>().add(
-                    AuthAccountLinkingConfirmed(state.existingProfile.id),
-                  );
-                },
-                onCreateNew: () {
-                  context.read<AuthBloc>().add(
-                    const AuthAccountLinkingDeclined(),
-                  );
-                },
-              );
-            }
-          },
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    l10n.welcomeBack,
-                    style: const TextStyle(
-                      fontFamily: 'Outfit',
-                      fontSize: 40,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -1,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    l10n.signInToContinue,
-                    style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: Color(0xFF71717A),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  AuthTextField(
-                    label: l10n.email,
-                    placeholder: l10n.enterYourEmail,
-                    fieldKey: const Key('email_field'),
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    validator: (value) => _validateEmail(l10n, value),
-                  ),
-                  const SizedBox(height: 12),
-                  AuthTextField(
-                    label: l10n.password,
-                    placeholder: l10n.enterYourPassword,
-                    fieldKey: const Key('password_field'),
-                    visibilityToggleKey: const Key(
-                      'password_visibility_toggle',
-                    ),
-                    controller: _passwordController,
-                    obscureText: true,
-                    showVisibilityToggle: true,
-                    textInputAction: TextInputAction.done,
-                    validator: (value) => _validatePassword(l10n, value),
-                    onFieldSubmitted: (_) => _onLoginPressed(),
-                  ),
-                  const SizedBox(height: 12),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () => context.goToForgotPassword(),
-                      child: Text(
-                        l10n.forgotPassword,
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthAuthenticated) {
+                context.replaceWithHome();
+              } else if (state is AuthEmailVerificationRequired) {
+                context.goToEmailVerification();
+              } else if (state is AuthProfileSetupRequired) {
+                context.goToProfileSetup(
+                  user: state.user,
+                  provider: state.provider,
+                  displayName: state.displayName,
+                  email: state.email,
+                );
+              } else if (state is AuthAccountLinkingRequired) {
+                showAccountLinkingDialog(
+                  context: context,
+                  email: state.existingProfile.email,
+                  provider: state.provider,
+                  onLink: () {
+                    context.read<AuthBloc>().add(
+                      AuthAccountLinkingConfirmed(state.existingProfile.id),
+                    );
+                  },
+                  onCreateNew: () {
+                    context.read<AuthBloc>().add(
+                      const AuthAccountLinkingDeclined(),
+                    );
+                  },
+                );
+              }
+            },
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        l10n.welcomeBack,
+                        style: const TextStyle(
+                          fontFamily: 'Outfit',
+                          fontSize: 40,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -1,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.signInToContinue,
                         style: const TextStyle(
                           fontFamily: 'Inter',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
                           color: Color(0xFF71717A),
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      final isLoading =
-                          state is AuthLoading ||
-                          state is AuthSocialLoginInProgress;
-                      return PrimaryButton(
-                        text: l10n.login,
-                        isLoading: state is AuthLoading,
-                        loadingText: l10n.signingIn,
-                        onPressed: isLoading ? null : _onLoginPressed,
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  const OrDivider(),
-                  const SizedBox(height: 12),
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      final isLoading =
-                          state is AuthLoading ||
-                          state is AuthSocialLoginInProgress;
-                      final isGoogleLoading =
-                          state is AuthSocialLoginInProgress &&
-                          state.provider == SocialAuthProvider.google;
-                      return SocialLoginButton(
-                        provider: SocialAuthProvider.google,
-                        onPressed: isLoading
-                            ? null
-                            : () => _onSocialLogin(SocialAuthProvider.google),
-                        isLoading: isGoogleLoading,
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      final isLoading =
-                          state is AuthLoading ||
-                          state is AuthSocialLoginInProgress;
-                      final isAppleLoading =
-                          state is AuthSocialLoginInProgress &&
-                          state.provider == SocialAuthProvider.apple;
-                      return SocialLoginButton(
-                        provider: SocialAuthProvider.apple,
-                        onPressed: isLoading
-                            ? null
-                            : () => _onSocialLogin(SocialAuthProvider.apple),
-                        isLoading: isAppleLoading,
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      if (state is AuthError) {
-                        if (state.failure != null &&
-                            (state.failure is SocialAuthFailure ||
-                                state.failure is SocialAuthCancelledFailure ||
-                                state.failure is SocialAuthNetworkFailure ||
-                                state.failure is SocialAuthTimeoutFailure ||
-                                state.failure is AccountLinkingFailure)) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 24),
-                            child: SocialAuthErrorWidget(
-                              failure: state.failure!,
-                              errorMessage: state.message,
-                              onRetry: () {},
-                              onFallback: () {
-                                FocusScope.of(context).requestFocus();
-                              },
-                            ),
-                          );
-                        } else {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 24),
-                            child: ErrorBanner(message: state.message),
-                          );
-                        }
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () => context.goToRegister(),
-                        child: RichText(
-                          text: TextSpan(
+                      const SizedBox(height: 16),
+                      AuthTextField(
+                        label: l10n.email,
+                        placeholder: l10n.enterYourEmail,
+                        fieldKey: const Key('email_field'),
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) => _validateEmail(l10n, value),
+                      ),
+                      const SizedBox(height: 12),
+                      AuthTextField(
+                        label: l10n.password,
+                        placeholder: l10n.enterYourPassword,
+                        fieldKey: const Key('password_field'),
+                        visibilityToggleKey: const Key(
+                          'password_visibility_toggle',
+                        ),
+                        controller: _passwordController,
+                        obscureText: true,
+                        showVisibilityToggle: true,
+                        textInputAction: TextInputAction.done,
+                        validator: (value) => _validatePassword(l10n, value),
+                        onFieldSubmitted: (_) => _onLoginPressed(),
+                      ),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () => context.goToForgotPassword(),
+                          child: Text(
+                            l10n.forgotPassword,
                             style: const TextStyle(
                               fontFamily: 'Inter',
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w500,
+                              color: Color(0xFF71717A),
                             ),
-                            children: [
-                              TextSpan(
-                                text: '${l10n.dontHaveAccount} ',
-                                style: const TextStyle(
-                                  color: Color(0xFF71717A),
-                                ),
-                              ),
-                              TextSpan(
-                                text: l10n.register,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ),
+                      const SizedBox(height: 16),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          final isLoading =
+                              state is AuthLoading ||
+                              state is AuthSocialLoginInProgress;
+                          return PrimaryButton(
+                            text: l10n.login,
+                            isLoading: state is AuthLoading,
+                            loadingText: l10n.signingIn,
+                            onPressed: isLoading ? null : _onLoginPressed,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      const OrDivider(),
+                      const SizedBox(height: 12),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          final isLoading =
+                              state is AuthLoading ||
+                              state is AuthSocialLoginInProgress;
+                          final isGoogleLoading =
+                              state is AuthSocialLoginInProgress &&
+                              state.provider == SocialAuthProvider.google;
+                          return SocialLoginButton(
+                            provider: SocialAuthProvider.google,
+                            onPressed: isLoading
+                                ? null
+                                : () =>
+                                      _onSocialLogin(SocialAuthProvider.google),
+                            isLoading: isGoogleLoading,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          final isLoading =
+                              state is AuthLoading ||
+                              state is AuthSocialLoginInProgress;
+                          final isAppleLoading =
+                              state is AuthSocialLoginInProgress &&
+                              state.provider == SocialAuthProvider.apple;
+                          return SocialLoginButton(
+                            provider: SocialAuthProvider.apple,
+                            onPressed: isLoading
+                                ? null
+                                : () =>
+                                      _onSocialLogin(SocialAuthProvider.apple),
+                            isLoading: isAppleLoading,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          if (state is AuthError) {
+                            if (state.failure != null &&
+                                (state.failure is SocialAuthFailure ||
+                                    state.failure
+                                        is SocialAuthCancelledFailure ||
+                                    state.failure is SocialAuthNetworkFailure ||
+                                    state.failure is SocialAuthTimeoutFailure ||
+                                    state.failure is AccountLinkingFailure)) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 24),
+                                child: SocialAuthErrorWidget(
+                                  failure: state.failure!,
+                                  errorMessage: state.message,
+                                  onRetry: () {},
+                                  onFallback: () {
+                                    FocusScope.of(context).requestFocus();
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 24),
+                                child: ErrorBanner(message: state.message),
+                              );
+                            }
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () => context.goToRegister(),
+                            child: RichText(
+                              text: TextSpan(
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: '${l10n.dontHaveAccount} ',
+                                    style: const TextStyle(
+                                      color: Color(0xFF71717A),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: l10n.register,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
         ),
       ),
     );
