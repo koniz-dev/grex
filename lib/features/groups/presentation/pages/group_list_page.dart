@@ -97,12 +97,9 @@ class _GroupListBody extends StatelessWidget {
       // empty / friendly error illustration.
       GroupError(:final groups) when groups != null && groups.isNotEmpty =>
         _GroupsList(groups: groups),
-      GroupError(:final message, :final failure) => GroupListErrorWidget(
+      GroupError() => GroupListErrorWidget(
         onRetry: () =>
             context.read<GroupBloc>().add(const GroupsLoadRequested()),
-        debugMessage:
-            '$message\n'
-            '${failure.runtimeType}: ${failure.message}',
       ),
       _ => const GroupListSkeleton(),
     };

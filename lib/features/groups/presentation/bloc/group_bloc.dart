@@ -26,10 +26,13 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   }
   final GroupRepository _groupRepository;
   StreamSubscription<List<Group>>? _groupsSubscription;
+  StreamSubscription<Set<String>>? _membershipsSubscription;
+  Set<String>? _lastMemberships;
 
   @override
   Future<void> close() async {
     await _groupsSubscription?.cancel();
+    await _membershipsSubscription?.cancel();
     return super.close();
   }
 
@@ -79,6 +82,10 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   // Pushes stream updates through the bloc event loop so emits happen
   // inside a handler's lifecycle (avoids the emit-after-complete assertion).
   void _setupRealTimeSubscription() {
+    unawaited(_groupsSubscription?.cancel());
+    unawaited(_membershipsSubscription?.cancel());
+    _lastMemberships = null;
+
     _groupsSubscription = _groupRepository.watchUserGroups().listen(
       (groups) {
         if (!isClosed) add(GroupsStreamReceived(groups));
@@ -87,6 +94,34 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         if (!isClosed) add(GroupsStreamErrored(error));
       },
     );
+
+    // Membership stream detects "user added to / removed from a group" events
+    // that watchUserGroups can't see — the groups row itself doesn't change,
+    // only the group_members link table does. On each change after the first
+    // emission, re-fetch the groups list so the user sees the new/removed
+    // group without a manual pull-to-refresh.
+    _membershipsSubscription = _groupRepository.watchUserGroupIds().listen(
+      (ids) {
+        final previous = _lastMemberships;
+        _lastMemberships = ids;
+        if (previous == null) {
+          // First emission is the current state — already covered by the
+          // initial getUserGroups call.
+          return;
+        }
+        if (!_setsEqual(previous, ids)) {
+          if (!isClosed) add(const GroupsLoadRequested());
+        }
+      },
+      // Membership stream is auxiliary — its failure shouldn't blank the
+      // page. The groups stream already surfaces the user-facing error.
+      onError: (Object _) {},
+    );
+  }
+
+  static bool _setsEqual(Set<String> a, Set<String> b) {
+    if (a.length != b.length) return false;
+    return a.containsAll(b);
   }
 
   void _onGroupsStreamReceived(

@@ -213,6 +213,14 @@ class MockGroupRepository extends _i1.Mock implements _i3.GroupRepository {
           as _i4.Stream<List<_i6.Group>>);
 
   @override
+  _i4.Stream<Set<String>> watchUserGroupIds() =>
+      (super.noSuchMethod(
+            Invocation.method(#watchUserGroupIds, []),
+            returnValue: _i4.Stream<Set<String>>.empty(),
+          )
+          as _i4.Stream<Set<String>>);
+
+  @override
   _i4.Stream<_i6.Group> watchGroup(String? groupId) =>
       (super.noSuchMethod(
             Invocation.method(#watchGroup, [groupId]),

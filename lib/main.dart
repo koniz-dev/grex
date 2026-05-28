@@ -23,6 +23,7 @@ import 'package:grex/features/feature_flags/presentation/providers/feature_flags
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/theme/app_theme.dart';
 import 'package:grex/shared/utils/locale_defaults.dart';
+import 'package:grex/shared/widgets/dev_logout_overlay.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 void main() async {
@@ -245,7 +246,9 @@ class MyApp extends ConsumerWidget {
         return Directionality(
           textDirection: textDirection,
           child: RepaintBoundary(
-            child: child ?? const SizedBox.shrink(),
+            child: DevLogoutOverlay(
+              child: child ?? const SizedBox.shrink(),
+            ),
           ),
         );
       },

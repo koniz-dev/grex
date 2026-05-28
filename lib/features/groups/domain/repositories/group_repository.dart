@@ -51,6 +51,14 @@ abstract class GroupRepository {
   /// Watch user's groups for real-time updates
   Stream<List<Group>> watchUserGroups();
 
+  /// Watch the set of group IDs the current user is a member of.
+  ///
+  /// Emits the latest set whenever the user is added to or removed from a
+  /// group. Used to detect membership changes that the [watchUserGroups]
+  /// stream cannot see on its own (its row-level events only fire for INSERT/
+  /// UPDATE/DELETE on the `groups` table itself, not on `group_members`).
+  Stream<Set<String>> watchUserGroupIds();
+
   /// Watch a specific group for real-time updates
   Stream<Group> watchGroup(String groupId);
 

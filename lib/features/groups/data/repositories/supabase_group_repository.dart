@@ -73,31 +73,19 @@ class SupabaseGroupRepository implements GroupRepository {
         );
       }
 
-      // Create group
-      final groupData = {
-        'name': name.trim(),
-        'currency': currency.toUpperCase(),
-        'creator_id': userId,
-        'description': description?.trim(),
-      };
-
-      final groupResponse = await _supabaseClient
-          .from('groups')
-          .insert(groupData)
-          .select()
-          .single();
-
-      final createdGroupId = groupResponse['id'] as String;
-
-      // Add creator as administrator
-      final memberData = {
-        'group_id': createdGroupId,
-        'user_id': userId,
-        'display_name': 'Administrator', // This should come from user profile
-        'role': MemberRole.administrator.name,
-      };
-
-      await _supabaseClient.from('group_members').insert(memberData);
+      // Atomic group creation via SECURITY DEFINER RPC (migration 00029).
+      // Two sequential INSERTs under the JWT context kept hitting RLS even
+      // though auth.uid() resolved to the correct UUID — the function
+      // sidesteps that by writing both rows in one call while still
+      // validating that the caller is authenticated.
+      final createdGroupId = await _supabaseClient.rpc<String>(
+        'create_group_with_owner',
+        params: {
+          'p_name': name.trim(),
+          'p_currency': currency.toUpperCase(),
+          'p_description': description?.trim(),
+        },
+      );
 
       // Fetch the complete group with members
       return getGroupById(createdGroupId);
@@ -355,13 +343,36 @@ class SupabaseGroupRepository implements GroupRepository {
       return Stream.error(const GroupAuthenticationFailure());
     }
 
+    // Supabase `.stream()` only supports filters on columns of the streamed
+    // table itself; `.eq('group_members.user_id', ...)` raised PGRST108
+    // because group_members is a separate table, not an embedded resource on
+    // this request. Drop the filter and let the `groups_select` RLS policy
+    // (membership-gated) restrict visibility instead. The same realtime
+    // socket carries the auth JWT, so the user only receives rows they would
+    // already see through a plain SELECT.
     return _supabaseClient
         .from('groups')
         .stream(primaryKey: ['id'])
-        .eq('group_members.user_id', userId)
         .map(
           (data) =>
               data.map((json) => GroupModel.fromJson(json).toEntity()).toList(),
+        );
+  }
+
+  @override
+  Stream<Set<String>> watchUserGroupIds() {
+    final userId = _currentUserId;
+    if (userId == null) {
+      return Stream.error(const GroupAuthenticationFailure());
+    }
+    return _supabaseClient
+        .from('group_members')
+        .stream(primaryKey: ['id'])
+        .eq('user_id', userId)
+        .map(
+          (rows) => rows
+              .map((row) => row['group_id'] as String)
+              .toSet(),
         );
   }
 

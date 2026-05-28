@@ -34,6 +34,9 @@ void main() {
       when(
         mockRepository.watchUserGroups(),
       ).thenAnswer((_) => const Stream.empty());
+      when(
+        mockRepository.watchUserGroupIds(),
+      ).thenAnswer((_) => const Stream.empty());
       groupBloc = GroupBloc(mockRepository);
     });
 

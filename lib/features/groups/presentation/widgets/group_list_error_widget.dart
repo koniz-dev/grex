@@ -18,17 +18,10 @@ class GroupListErrorWidget extends StatelessWidget {
   const GroupListErrorWidget({
     required this.onRetry,
     super.key,
-    this.debugMessage,
   });
 
   /// Callback invoked when the user taps the retry CTA.
   final VoidCallback onRetry;
-
-  /// Raw failure message surfaced for development. Rendered as a small
-  /// monospaced caption under the friendly explanation when non-null.
-  /// Remove the parameter (and its source in GroupListPage) before
-  /// shipping — it leaks server-side details to end users.
-  final String? debugMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -81,25 +74,6 @@ class GroupListErrorWidget extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  if (debugMessage != null && debugMessage!.isNotEmpty) ...[
-                    const SizedBox(height: AppSpacing.md),
-                    Container(
-                      padding: const EdgeInsets.all(AppSpacing.md),
-                      decoration: BoxDecoration(
-                        color: scheme.errorContainer.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: SelectableText(
-                        debugMessage!,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: scheme.onSurfaceVariant,
-                          fontFamily: 'monospace',
-                          height: 1.4,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ],
                   const SizedBox(height: AppSpacing.xxxl),
                   ElevatedButton.icon(
                     onPressed: () {

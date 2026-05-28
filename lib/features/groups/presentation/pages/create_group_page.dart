@@ -68,18 +68,14 @@ class _CreateGroupViewState extends State<CreateGroupView> {
           }
 
           if (state is GroupOperationSuccess) {
-            // Show success message
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
                 backgroundColor: Colors.green,
               ),
             );
-
-            // Navigate back to group list
             context.goToGroups();
           } else if (state is GroupError) {
-            // Show error message
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.userFriendlyMessage),
@@ -187,6 +183,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                     return DropdownMenuItem<String>(
                       value: currency,
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             CurrencyFormatter.getCurrencySymbol(currency),
@@ -195,7 +192,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                           const SizedBox(width: 8),
                           Text(currency),
                           const SizedBox(width: 8),
-                          Expanded(
+                          Flexible(
                             child: Text(
                               CurrencyFormatter.getCurrencyDisplayName(
                                 currency,

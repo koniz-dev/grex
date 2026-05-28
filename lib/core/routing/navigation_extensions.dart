@@ -9,57 +9,65 @@ extension NavigationExtensions on BuildContext {
   /// Navigates to the groups list page.
   void goToGroups() => go(AppRoutes.groups);
 
-  /// Navigates to the group creation page.
-  void goToCreateGroup() => go(AppRoutes.createGroup);
+  /// Pushes the group creation page onto the stack so the system back
+  /// gesture returns to the previous list. On successful create the
+  /// success handler calls [goToGroups] which replaces the stack to a
+  /// clean `/groups` root, so the pushed entry is dropped along with it.
+  void goToCreateGroup() => push(AppRoutes.createGroup);
 
-  /// Navigates to the details page for a specific group.
+  // Drill-down routes use `push` so the system back gesture + AppBar
+  // leading arrow pop back to the previous page. `go` would replace the
+  // stack and leave nothing to pop. Top-level destinations (login,
+  // /groups list) keep `go` so they reset the stack cleanly.
+
+  /// Pushes the details page for a specific group.
   void goToGroupDetails(String groupId) =>
-      go(AppRoutes.groupDetailsPath(groupId));
+      push(AppRoutes.groupDetailsPath(groupId));
 
-  /// Navigates to the settings page for a specific group.
+  /// Pushes the settings page for a specific group.
   void goToGroupSettings(String groupId) =>
-      go(AppRoutes.groupSettingsPath(groupId));
+      push(AppRoutes.groupSettingsPath(groupId));
 
   // Expense navigation
 
-  /// Navigates to the expenses list page for a specific group.
-  void goToExpenses(String groupId) => go(AppRoutes.expensesPath(groupId));
+  /// Pushes the expenses list page for a specific group.
+  void goToExpenses(String groupId) => push(AppRoutes.expensesPath(groupId));
 
-  /// Navigates to the expense creation page for a specific group.
+  /// Pushes the expense creation page for a specific group.
   void goToCreateExpense(String groupId) =>
-      go(AppRoutes.createExpensePath(groupId));
+      push(AppRoutes.createExpensePath(groupId));
 
-  /// Navigates to the details page for a specific expense.
+  /// Pushes the details page for a specific expense.
   void goToExpenseDetails(String groupId, String expenseId) =>
-      go(AppRoutes.expenseDetailsPath(groupId, expenseId));
+      push(AppRoutes.expenseDetailsPath(groupId, expenseId));
 
-  /// Navigates to the expense editing page for a specific expense.
+  /// Pushes the expense editing page for a specific expense.
   void goToEditExpense(String groupId, String expenseId) =>
-      go(AppRoutes.editExpensePath(groupId, expenseId));
+      push(AppRoutes.editExpensePath(groupId, expenseId));
 
   // Payment navigation
 
-  /// Navigates to the payments list page for a specific group.
-  void goToPayments(String groupId) => go(AppRoutes.paymentsPath(groupId));
+  /// Pushes the payments list page for a specific group.
+  void goToPayments(String groupId) => push(AppRoutes.paymentsPath(groupId));
 
-  /// Navigates to the payment creation page for a specific group.
+  /// Pushes the payment creation page for a specific group.
   void goToCreatePayment(String groupId) =>
-      go(AppRoutes.createPaymentPath(groupId));
+      push(AppRoutes.createPaymentPath(groupId));
 
   // Balance navigation
 
-  /// Navigates to the balances list page for a specific group.
-  void goToBalances(String groupId) => go(AppRoutes.balancesPath(groupId));
+  /// Pushes the balances list page for a specific group.
+  void goToBalances(String groupId) => push(AppRoutes.balancesPath(groupId));
 
-  /// Navigates to the settlement plan page for a specific group.
+  /// Pushes the settlement plan page for a specific group.
   void goToSettlementPlan(String groupId) =>
-      go(AppRoutes.settlementPlanPath(groupId));
+      push(AppRoutes.settlementPlanPath(groupId));
 
   // Export navigation
 
-  /// Navigates to the export page for a specific group.
+  /// Pushes the export page for a specific group.
   void goToExport(String groupId, {String? groupName}) =>
-      go(AppRoutes.exportPath(groupId, groupName: groupName));
+      push(AppRoutes.exportPath(groupId, groupName: groupName));
 
   // Push navigation (for modal-like behavior)
 

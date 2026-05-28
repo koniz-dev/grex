@@ -45,6 +45,16 @@ void main() {
 
       setUp(() {
         mockRepository = MockGroupRepository();
+        // Provide safe defaults for the auxiliary realtime streams so
+        // success-path tests don't need to stub them individually. Specific
+        // tests still override via `when(...).thenAnswer(...)` when they
+        // need to assert stream behaviour.
+        when(
+          mockRepository.watchUserGroups(),
+        ).thenAnswer((_) => const Stream.empty());
+        when(
+          mockRepository.watchUserGroupIds(),
+        ).thenAnswer((_) => const Stream.empty());
         groupBloc = GroupBloc(mockRepository);
       });
 
