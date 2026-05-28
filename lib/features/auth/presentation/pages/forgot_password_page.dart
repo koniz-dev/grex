@@ -5,6 +5,7 @@ import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// Forgot password page for password reset.
 class ForgotPasswordPage extends StatefulWidget {
@@ -113,7 +114,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: Text(
                       l10n.backToSignIn,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: AppFonts.body,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: colorScheme.onSurface,
@@ -152,7 +153,7 @@ class _FormView extends StatelessWidget {
         Text(
           l10n.forgotPasswordTitle,
           style: TextStyle(
-            fontFamily: 'Outfit',
+            fontFamily: AppFonts.heading,
             fontSize: 40,
             fontWeight: FontWeight.w800,
             letterSpacing: -1,
@@ -163,7 +164,7 @@ class _FormView extends StatelessWidget {
         Text(
           l10n.enterEmailForResetShort,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: AppFonts.body,
             fontSize: 14,
             fontWeight: FontWeight.normal,
             color: colorScheme.onSurfaceVariant,
@@ -174,7 +175,7 @@ class _FormView extends StatelessWidget {
         Text(
           l10n.weWillSendLink,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: AppFonts.body,
             fontSize: 13,
             fontWeight: FontWeight.normal,
             color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
@@ -226,7 +227,7 @@ class _SuccessView extends StatelessWidget {
           l10n.resetEmailSent,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Outfit',
+            fontFamily: AppFonts.heading,
             fontSize: 24,
             fontWeight: FontWeight.w700,
             color: colorScheme.onSurface,
@@ -237,7 +238,7 @@ class _SuccessView extends StatelessWidget {
           l10n.pleaseCheckEmailAt(email),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: AppFonts.body,
             fontSize: 14,
             fontWeight: FontWeight.normal,
             color: colorScheme.onSurfaceVariant,
@@ -260,7 +261,7 @@ class _SuccessView extends StatelessWidget {
           child: Text(
             l10n.resend,
             style: TextStyle(
-              fontFamily: 'Outfit',
+              fontFamily: AppFonts.heading,
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: colorScheme.onSurface,

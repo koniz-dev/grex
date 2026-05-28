@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// Custom text field for authentication forms.
 ///
@@ -115,7 +116,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
           Text(
             widget.label,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: AppFonts.body,
               fontSize: 13,
               fontWeight: FontWeight.w500,
               color: colorScheme.onSurface,
@@ -136,7 +137,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
           enabled: widget.enabled,
           readOnly: widget.readOnly,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: AppFonts.body,
             fontSize: 14,
             fontWeight: FontWeight.normal,
             color: colorScheme.onSurface,
@@ -144,7 +145,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
           decoration: InputDecoration(
             hintText: widget.placeholder,
             hintStyle: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: AppFonts.body,
               fontSize: 14,
               fontWeight: FontWeight.normal,
               color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),

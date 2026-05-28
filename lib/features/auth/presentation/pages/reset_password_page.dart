@@ -5,6 +5,7 @@ import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// Reset password page for setting new password.
 ///
@@ -117,7 +118,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   Text(
                     l10n.resetPassword,
                     style: TextStyle(
-                      fontFamily: 'Outfit',
+                      fontFamily: AppFonts.heading,
                       fontSize: 40,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -1,
@@ -128,7 +129,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   Text(
                     l10n.enterNewPassword,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: AppFonts.body,
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                       color: colorScheme.onSurfaceVariant,
@@ -152,7 +153,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   Text(
                     l10n.passwordHint,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: AppFonts.body,
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
                       color: colorScheme.onSurfaceVariant.withValues(

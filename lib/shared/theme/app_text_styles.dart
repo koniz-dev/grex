@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// Application text styles
 class AppTextStyles {
@@ -6,6 +7,7 @@ class AppTextStyles {
 
   /// Heading 1 style - largest heading
   static const TextStyle h1 = TextStyle(
+    fontFamily: AppFonts.heading,
     fontSize: 32,
     fontWeight: FontWeight.bold,
     letterSpacing: -0.5,
@@ -13,6 +15,7 @@ class AppTextStyles {
 
   /// Heading 2 style - second largest heading
   static const TextStyle h2 = TextStyle(
+    fontFamily: AppFonts.heading,
     fontSize: 24,
     fontWeight: FontWeight.bold,
     letterSpacing: -0.5,
@@ -20,6 +23,7 @@ class AppTextStyles {
 
   /// Heading 3 style - medium heading
   static const TextStyle h3 = TextStyle(
+    fontFamily: AppFonts.heading,
     fontSize: 20,
     fontWeight: FontWeight.w600,
     letterSpacing: 0,
@@ -27,6 +31,7 @@ class AppTextStyles {
 
   /// Heading 4 style - small heading
   static const TextStyle h4 = TextStyle(
+    fontFamily: AppFonts.heading,
     fontSize: 18,
     fontWeight: FontWeight.w600,
     letterSpacing: 0.15,
@@ -34,6 +39,7 @@ class AppTextStyles {
 
   /// Body large text style
   static const TextStyle bodyLarge = TextStyle(
+    fontFamily: AppFonts.body,
     fontSize: 16,
     fontWeight: FontWeight.normal,
     letterSpacing: 0.5,
@@ -41,6 +47,7 @@ class AppTextStyles {
 
   /// Body medium text style
   static const TextStyle bodyMedium = TextStyle(
+    fontFamily: AppFonts.body,
     fontSize: 14,
     fontWeight: FontWeight.normal,
     letterSpacing: 0.25,
@@ -48,6 +55,7 @@ class AppTextStyles {
 
   /// Body small text style
   static const TextStyle bodySmall = TextStyle(
+    fontFamily: AppFonts.body,
     fontSize: 12,
     fontWeight: FontWeight.normal,
     letterSpacing: 0.4,
@@ -55,6 +63,7 @@ class AppTextStyles {
 
   /// Button text style
   static const TextStyle button = TextStyle(
+    fontFamily: AppFonts.heading,
     fontSize: 14,
     fontWeight: FontWeight.w600,
     letterSpacing: 1.25,
@@ -62,6 +71,7 @@ class AppTextStyles {
 
   /// Caption text style for small labels
   static const TextStyle caption = TextStyle(
+    fontFamily: AppFonts.body,
     fontSize: 12,
     fontWeight: FontWeight.normal,
     letterSpacing: 0.4,
@@ -69,6 +79,7 @@ class AppTextStyles {
 
   /// Overline text style for very small labels
   static const TextStyle overline = TextStyle(
+    fontFamily: AppFonts.body,
     fontSize: 10,
     fontWeight: FontWeight.normal,
     letterSpacing: 1.5,

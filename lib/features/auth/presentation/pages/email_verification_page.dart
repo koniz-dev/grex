@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/routing/auth_navigation_extensions.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Email verification page for unverified users.
@@ -169,7 +170,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                 Text(
                   'Verify Your Email',
                   style: TextStyle(
-                    fontFamily: 'Outfit',
+                    fontFamily: AppFonts.heading,
                     fontSize: 40,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -1,
@@ -191,7 +192,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                       'We sent a verification link to $email. '
                       'Click the link to verify your account.',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: AppFonts.body,
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         color: colorScheme.onSurfaceVariant,
@@ -230,7 +231,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                   child: Text(
                     'Open Email App',
                     style: TextStyle(
-                      fontFamily: 'Outfit',
+                      fontFamily: AppFonts.heading,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: colorScheme.onSurface,
@@ -273,7 +274,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                           Text(
                             "Didn't receive the email?",
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: AppFonts.body,
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: colorScheme.onSurface,
@@ -287,7 +288,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                         '• Make sure the email address is correct\n'
                         '• Wait a few minutes for the email to arrive',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: AppFonts.body,
                           fontSize: 12,
                           fontWeight: FontWeight.normal,
                           color: colorScheme.onSurfaceVariant,
@@ -306,7 +307,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     Text(
                       'Wrong email? ',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: AppFonts.body,
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         color: colorScheme.onSurfaceVariant,
@@ -317,7 +318,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                       child: Text(
                         'Sign Out',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: AppFonts.body,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: colorScheme.onSurface,

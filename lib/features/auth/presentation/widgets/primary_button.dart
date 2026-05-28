@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// Primary button widget
 ///
@@ -70,7 +71,7 @@ class PrimaryButton extends StatelessWidget {
                     Text(
                       loadingText!,
                       style: const TextStyle(
-                        fontFamily: 'Outfit',
+                        fontFamily: AppFonts.heading,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -81,7 +82,7 @@ class PrimaryButton extends StatelessWidget {
             : Text(
                 text,
                 style: const TextStyle(
-                  fontFamily: 'Outfit',
+                  fontFamily: AppFonts.heading,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),

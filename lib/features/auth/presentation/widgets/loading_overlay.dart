@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// Loading overlay widget for showing loading states.
 ///
@@ -38,7 +39,7 @@ class LoadingOverlay extends StatelessWidget {
                 Text(
                   message!,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: AppFonts.body,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: colorScheme.onSurface,

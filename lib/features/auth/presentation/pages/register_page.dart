@@ -10,6 +10,7 @@ import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 import 'package:grex/shared/utils/locale_defaults.dart';
 
 /// Registration page for new user sign up.
@@ -183,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Text(
                         l10n.registerAccount,
                         style: TextStyle(
-                          fontFamily: 'Outfit',
+                          fontFamily: AppFonts.heading,
                           fontSize: 40,
                           fontWeight: FontWeight.w800,
                           letterSpacing: -1,
@@ -194,7 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Text(
                         l10n.joinGrexExpenseShare,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: AppFonts.body,
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                           color: colorScheme.onSurfaceVariant,
@@ -334,7 +335,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: RichText(
                               text: TextSpan(
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: AppFonts.body,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                 ),

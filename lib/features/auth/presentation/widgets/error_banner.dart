@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// Error banner widget
 ///
@@ -36,7 +37,7 @@ class ErrorBanner extends StatelessWidget {
             child: Text(
               message,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: AppFonts.body,
                 fontSize: 13,
                 fontWeight: FontWeight.normal,
                 color: colorScheme.onErrorContainer,

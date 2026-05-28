@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// Success screen widget for showing success states.
 ///
@@ -72,7 +73,7 @@ class SuccessScreen extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontFamily: 'Outfit',
+                  fontFamily: AppFonts.heading,
                   fontSize: 32,
                   fontWeight: FontWeight.w800,
                   letterSpacing: -1,
@@ -86,7 +87,7 @@ class SuccessScreen extends StatelessWidget {
               Text(
                 message,
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: AppFonts.body,
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
                   color: colorScheme.onSurfaceVariant,
@@ -112,7 +113,7 @@ class SuccessScreen extends StatelessWidget {
                   child: Text(
                     buttonText!,
                     style: const TextStyle(
-                      fontFamily: 'Outfit',
+                      fontFamily: AppFonts.heading,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),

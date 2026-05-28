@@ -370,9 +370,7 @@ class SupabaseGroupRepository implements GroupRepository {
         .stream(primaryKey: ['id'])
         .eq('user_id', userId)
         .map(
-          (rows) => rows
-              .map((row) => row['group_id'] as String)
-              .toSet(),
+          (rows) => rows.map((row) => row['group_id'] as String).toSet(),
         );
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// App logo widget with branding
 ///
@@ -24,7 +25,7 @@ class AppLogo extends StatelessWidget {
         Text(
           'Grex',
           style: TextStyle(
-            fontFamily: 'Outfit',
+            fontFamily: AppFonts.heading,
             fontSize: 32,
             fontWeight: FontWeight.w800,
             color: colorScheme.onSurface,
@@ -35,7 +36,7 @@ class AppLogo extends StatelessWidget {
         Text(
           context.l10n.appTagline,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: AppFonts.body,
             fontSize: 14,
             fontWeight: FontWeight.normal,
             color: colorScheme.onSurfaceVariant,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 
 /// A widget that displays a list of password requirements and updates
 /// their state (met or not met) in real-time as the user types.
@@ -98,7 +99,7 @@ class _PasswordRequirementIndicatorState
           Text(
             text,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: AppFonts.body,
               fontSize: 12,
               fontWeight: FontWeight.normal,
               color: color,

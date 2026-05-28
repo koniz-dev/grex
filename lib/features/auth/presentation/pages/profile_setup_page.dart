@@ -22,6 +22,7 @@ import 'package:grex/features/auth/presentation/providers/auth_provider.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
+import 'package:grex/shared/theme/app_fonts.dart';
 import 'package:grex/shared/utils/locale_defaults.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -128,8 +129,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     return value.length >= 2 && value.length <= 50;
   }
 
-  bool _canSubmit() =>
-      !_isLoading && _isNameValid() && _consentAccepted;
+  bool _canSubmit() => !_isLoading && _isNameValid() && _consentAccepted;
 
   String? _photoUrl() {
     final meta = widget.user.userMetadata;
@@ -369,136 +369,138 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                   padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
                   children: [
                     _HeroHeader(
-                  photoUrl: _photoUrl(),
-                  fallbackInitials: _initials(
-                    _displayNameController.text.isEmpty
-                        ? widget.email
-                        : _displayNameController.text,
-                  ),
-                  email: widget.email,
-                  provider: widget.provider,
-                ),
-                const SizedBox(height: 32),
-                Text(
-                  l10n.completeYourProfile,
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  l10n.profileSetupDescription,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 28),
-                _SectionLabel(text: l10n.yourNameSectionTitle),
-                const SizedBox(height: 8),
-                Container(
-                  key: _nameFieldKey,
-                  child: AuthTextField(
-                    controller: _displayNameController,
-                    label: '',
-                    placeholder: l10n.enterYourName,
-                    validator: (value) => _validateDisplayName(l10n, value),
-                    enabled: !_isLoading,
-                    onChanged: (_) => setState(() {}),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  l10n.displayNameHelper,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 28),
-                _SectionLabel(text: l10n.preferencesSectionTitle),
-                const SizedBox(height: 8),
-                _PreferenceTile(
-                  icon: Icons.attach_money_rounded,
-                  label: l10n.selectCurrency,
-                  value: _currencySummary(),
-                  enabled: !_isLoading,
-                  onTap: _pickCurrency,
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  l10n.currencyHelper,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 28),
-                _ConsentRow(
-                  accepted: _consentAccepted,
-                  enabled: !_isLoading,
-                  onChanged: (value) =>
-                      setState(() => _consentAccepted = value),
-                  textSpan: _buildConsentTextSpan(l10n, colorScheme),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: _canSubmit() ? _onContinuePressed : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorScheme.onSurface,
-                      foregroundColor: colorScheme.surface,
-                      disabledBackgroundColor: colorScheme.onSurface.withValues(
-                        alpha: 0.38,
+                      photoUrl: _photoUrl(),
+                      fallbackInitials: _initials(
+                        _displayNameController.text.isEmpty
+                            ? widget.email
+                            : _displayNameController.text,
                       ),
-                      disabledForegroundColor: colorScheme.surface.withValues(
-                        alpha: 0.7,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 0,
+                      email: widget.email,
+                      provider: widget.provider,
                     ),
-                    child: _isLoading
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                colorScheme.surface,
-                              ),
-                            ),
-                          )
-                        : Text(
-                            l10n.continueButton,
-                            style: const TextStyle(
-                              fontFamily: 'Outfit',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Center(
-                  child: TextButton(
-                    onPressed: _isLoading ? null : _onUseDifferentAccount,
-                    child: Text(
-                      l10n.useDifferentAccount,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                    const SizedBox(height: 32),
+                    Text(
+                      l10n.completeYourProfile,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n.profileSetupDescription,
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 28),
+                    _SectionLabel(text: l10n.yourNameSectionTitle),
+                    const SizedBox(height: 8),
+                    Container(
+                      key: _nameFieldKey,
+                      child: AuthTextField(
+                        controller: _displayNameController,
+                        label: '',
+                        placeholder: l10n.enterYourName,
+                        validator: (value) => _validateDisplayName(l10n, value),
+                        enabled: !_isLoading,
+                        onChanged: (_) => setState(() {}),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n.displayNameHelper,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    _SectionLabel(text: l10n.preferencesSectionTitle),
+                    const SizedBox(height: 8),
+                    _PreferenceTile(
+                      icon: Icons.attach_money_rounded,
+                      label: l10n.selectCurrency,
+                      value: _currencySummary(),
+                      enabled: !_isLoading,
+                      onTap: _pickCurrency,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n.currencyHelper,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    _ConsentRow(
+                      accepted: _consentAccepted,
+                      enabled: !_isLoading,
+                      onChanged: (value) =>
+                          setState(() => _consentAccepted = value),
+                      textSpan: _buildConsentTextSpan(l10n, colorScheme),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: _canSubmit() ? _onContinuePressed : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.onSurface,
+                          foregroundColor: colorScheme.surface,
+                          disabledBackgroundColor: colorScheme.onSurface
+                              .withValues(
+                                alpha: 0.38,
+                              ),
+                          disabledForegroundColor: colorScheme.surface
+                              .withValues(
+                                alpha: 0.7,
+                              ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: _isLoading
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    colorScheme.surface,
+                                  ),
+                                ),
+                              )
+                            : Text(
+                                l10n.continueButton,
+                                style: const TextStyle(
+                                  fontFamily: AppFonts.heading,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Center(
+                      child: TextButton(
+                        onPressed: _isLoading ? null : _onUseDifferentAccount,
+                        child: Text(
+                          l10n.useDifferentAccount,
+                          style: TextStyle(
+                            fontFamily: AppFonts.body,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
           ),
         ),
       ),
@@ -511,14 +513,14 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   ) {
     final sentence = l10n.agreeToTermsAndPrivacy(_tosToken, _privacyToken);
     final linkStyle = TextStyle(
-      fontFamily: 'Inter',
+      fontFamily: AppFonts.body,
       fontSize: 13,
       fontWeight: FontWeight.w600,
       color: colorScheme.primary,
       decoration: TextDecoration.underline,
     );
     final baseStyle = TextStyle(
-      fontFamily: 'Inter',
+      fontFamily: AppFonts.body,
       fontSize: 13,
       color: colorScheme.onSurfaceVariant,
       height: 1.4,
@@ -570,7 +572,6 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     );
     return '${option.flag}  ${option.code} · ${option.symbol}';
   }
-
 }
 
 class _CurrencyOption {
@@ -626,7 +627,7 @@ class _HeroHeader extends StatelessWidget {
                     ? Text(
                         fallbackInitials,
                         style: TextStyle(
-                          fontFamily: 'Outfit',
+                          fontFamily: AppFonts.heading,
                           fontSize: 32,
                           fontWeight: FontWeight.w700,
                           color: colorScheme.primary,
@@ -677,7 +678,7 @@ class _HeroHeader extends StatelessWidget {
                 Text(
                   email,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: AppFonts.body,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                     color: colorScheme.onSurfaceVariant,
@@ -702,7 +703,7 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       text.toUpperCase(),
       style: TextStyle(
-        fontFamily: 'Inter',
+        fontFamily: AppFonts.body,
         fontSize: 12,
         fontWeight: FontWeight.w600,
         letterSpacing: 1.2,
@@ -791,7 +792,7 @@ class _LanguagePill extends StatelessWidget {
               Text(
                 language.code.toUpperCase(),
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: AppFonts.body,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: colorScheme.onSurface,
@@ -848,7 +849,7 @@ class _PreferenceTile extends StatelessWidget {
                     Text(
                       label,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: AppFonts.body,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: colorScheme.onSurfaceVariant,
@@ -858,7 +859,7 @@ class _PreferenceTile extends StatelessWidget {
                     Text(
                       value,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: AppFonts.body,
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: colorScheme.onSurface,
@@ -953,7 +954,7 @@ class _PickerSheetState extends State<_PickerSheet> {
                   child: Text(
                     widget.title,
                     style: TextStyle(
-                      fontFamily: 'Outfit',
+                      fontFamily: AppFonts.heading,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: colorScheme.onSurface,
@@ -1032,7 +1033,7 @@ class _PickerSheetState extends State<_PickerSheet> {
                                 Text(
                                   item.primary,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: AppFonts.body,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     color: colorScheme.onSurface,
@@ -1042,7 +1043,7 @@ class _PickerSheetState extends State<_PickerSheet> {
                                 Text(
                                   item.secondary,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: AppFonts.body,
                                     fontSize: 13,
                                     color: colorScheme.onSurfaceVariant,
                                   ),
