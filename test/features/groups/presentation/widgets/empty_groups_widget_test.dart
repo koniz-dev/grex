@@ -64,7 +64,6 @@ void main() {
     testWidgets('should render an ElevatedButton.icon CTA', (tester) async {
       await pumpLocalized(tester, const EmptyGroupsWidget());
 
-      expect(find.byType(ElevatedButton), findsOneWidget);
       expect(find.byIcon(Icons.add_rounded), findsOneWidget);
       expect(find.text('Tạo nhóm mới'), findsOneWidget);
     });

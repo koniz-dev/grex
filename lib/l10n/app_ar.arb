@@ -1274,5 +1274,21 @@
       "tos": {"type": "String", "example": "شروط الخدمة"},
       "privacy": {"type": "String", "example": "سياسة الخصوصية"}
     }
+  },
+  "pwdReqLength": "8 أحرف على الأقل",
+  "@pwdReqLength": {
+    "description": "Password requirement: length"
+  },
+  "pwdReqUppercase": "حرف كبير واحد على الأقل",
+  "@pwdReqUppercase": {
+    "description": "Password requirement: uppercase"
+  },
+  "pwdReqNumber": "رقم واحد على الأقل",
+  "@pwdReqNumber": {
+    "description": "Password requirement: number"
+  },
+  "pwdReqSpecial": "حرف خاص واحد على الأقل",
+  "@pwdReqSpecial": {
+    "description": "Password requirement: special character"
   }
 }

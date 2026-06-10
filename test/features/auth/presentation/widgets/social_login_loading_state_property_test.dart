@@ -12,7 +12,7 @@ import 'package:grex/l10n/app_localizations.dart';
 /// `context.l10n` calls resolve in this property-test environment.
 MaterialApp _wrap(Widget home) {
   return MaterialApp(
-    // English — assertions in this property test use the English strings
+    // English â€” assertions in this property test use the English strings
     // ("Continue with Google", "Continue with Apple") rendered by
     // SocialLoginButton via context.l10n.
     locale: const Locale('en'),
@@ -263,8 +263,8 @@ void main() {
         // Property: Button should maintain required dimensions
         expect(
           loadingSize.height,
-          equals(48.0),
-          reason: 'Iteration $iteration: Button height should be 48px',
+          equals(56.0),
+          reason: 'Iteration $iteration: Button height should be 56px',
         );
         expect(
           loadingSize.width,
@@ -362,3 +362,4 @@ void main() {
     });
   });
 }
+

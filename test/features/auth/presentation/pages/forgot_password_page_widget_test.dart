@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/pages/forgot_password_page.dart';
+import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 
 import '../../../../helpers/test_helpers.mocks.dart';
 import '../../../../helpers/widget_test_helpers.dart';
@@ -39,7 +40,7 @@ void main() {
         // Assert
         expect(find.text('Quên mật khẩu'), findsOneWidget);
         expect(find.text('Nhập email để đặt lại mật khẩu'), findsOneWidget);
-        expect(find.byType(TextFormField), findsOneWidget); // Email field
+        expect(find.byType(AuthTextField), findsOneWidget); // Email field
         expect(find.text('Email'), findsOneWidget);
         expect(find.text('Gửi link đặt lại'), findsOneWidget);
         expect(find.text('Quay lại đăng nhập'), findsOneWidget);
@@ -58,10 +59,7 @@ void main() {
       );
 
       // Act - Try to submit form with empty email
-      final resetButton = find.widgetWithText(
-        ElevatedButton,
-        'Gửi link đặt lại',
-      );
+      final resetButton = find.text('Gửi link đặt lại');
       await tester.tap(resetButton);
       await tester.pump();
 
@@ -81,14 +79,11 @@ void main() {
       );
 
       // Act - Enter invalid email
-      final emailField = find.widgetWithText(TextFormField, 'Email');
+      final emailField = find.byType(AuthTextField);
       await tester.enterText(emailField, 'invalid-email');
       await tester.pump();
 
-      final resetButton = find.widgetWithText(
-        ElevatedButton,
-        'Gửi link đặt lại',
-      );
+      final resetButton = find.text('Gửi link đặt lại');
       await tester.tap(resetButton);
       await tester.pump();
 
@@ -108,15 +103,12 @@ void main() {
       );
 
       // Act - Enter valid email
-      final emailField = find.widgetWithText(TextFormField, 'Email');
+      final emailField = find.byType(AuthTextField);
       await tester.enterText(emailField, 'test@example.com');
       await tester.pump();
 
       // Tap reset button
-      final resetButton = find.widgetWithText(
-        ElevatedButton,
-        'Gửi link đặt lại',
-      );
+      final resetButton = find.text('Gửi link đặt lại');
       await tester.tap(resetButton);
       await tester.pump();
 
@@ -228,7 +220,7 @@ void main() {
       );
 
       // Act - Enter email and press Enter
-      final emailField = find.widgetWithText(TextFormField, 'Email');
+      final emailField = find.byType(AuthTextField);
       await tester.enterText(emailField, 'test@example.com');
 
       // Focus email field and press Enter
@@ -237,7 +229,7 @@ void main() {
       await tester.pump();
 
       // Assert - Form should be submitted
-      expect(find.byType(TextFormField), findsOneWidget);
+      expect(find.byType(AuthTextField), findsOneWidget);
     });
 
     testWidgets('should clear error message when user starts typing', (
@@ -258,7 +250,7 @@ void main() {
       expect(find.text('Email không tồn tại trong hệ thống'), findsOneWidget);
 
       // Act - Start typing in email field
-      final emailField = find.widgetWithText(TextFormField, 'Email');
+      final emailField = find.byType(AuthTextField);
       await tester.enterText(emailField, 'new@example.com');
       await tester.pump();
 
@@ -278,10 +270,10 @@ void main() {
       );
 
       // Assert - Button should be disabled during loading
-      final resetButton = find.widgetWithText(ElevatedButton, 'Đang gửi...');
+      final resetButton = find.text('Đang gửi...');
       expect(resetButton, findsOneWidget);
 
-      final buttonWidget = tester.widget<ElevatedButton>(resetButton);
+      final buttonWidget = tester.widget<PrimaryButton>(find.byType(PrimaryButton));
       expect(buttonWidget.onPressed, isNull); // Button is disabled
     });
 
@@ -351,10 +343,7 @@ void main() {
       // TextFormField in tests
       // The label text is verified through the widget's visual appearance
 
-      final resetButton = find.widgetWithText(
-        ElevatedButton,
-        'Gửi link đặt lại',
-      );
+      final resetButton = find.text('Gửi link đặt lại');
       expect(resetButton, findsOneWidget);
     });
   });

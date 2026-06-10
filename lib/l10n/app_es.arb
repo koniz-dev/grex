@@ -1274,5 +1274,21 @@
       "tos": {"type": "String", "example": "Términos del Servicio"},
       "privacy": {"type": "String", "example": "Política de Privacidad"}
     }
+  },
+  "pwdReqLength": "Al menos 8 caracteres",
+  "@pwdReqLength": {
+    "description": "Password requirement: length"
+  },
+  "pwdReqUppercase": "Al menos 1 letra mayúscula",
+  "@pwdReqUppercase": {
+    "description": "Password requirement: uppercase"
+  },
+  "pwdReqNumber": "Al menos 1 número",
+  "@pwdReqNumber": {
+    "description": "Password requirement: number"
+  },
+  "pwdReqSpecial": "Al menos 1 carácter especial",
+  "@pwdReqSpecial": {
+    "description": "Password requirement: special character"
   }
 }

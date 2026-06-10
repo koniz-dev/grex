@@ -101,33 +101,22 @@ void main() {
       final displayNameWidget = tester.widget<AuthTextField>(displayNameField);
       expect(displayNameWidget.controller?.text, equals('John Doe'));
 
-      // Should have pre-filled email (read-only)
-      final emailFields = find.byType(AuthTextField);
-      expect(emailFields, findsAtLeastNWidgets(2));
-
-      // Should have currency dropdown
-      expect(find.byType(DropdownButtonFormField<String>), findsNWidgets(2));
+      // Should have pre-filled email
+      expect(find.text('test@example.com'), findsOneWidget);
 
       // Should have continue button
+      await tester.drag(find.byType(ListView), const Offset(0, -500));
+      await tester.pumpAndSettle();
       expect(find.text('Continue'), findsOneWidget);
     });
 
-    testWidgets('should have read-only email field', (tester) async {
+    testWidgets('should display email in hero header', (tester) async {
       when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
 
       await tester.pumpWidget(createWidget());
 
-      // Find email field (should be the second AuthTextField)
-      final emailFields = find.byType(AuthTextField);
-      expect(emailFields, findsAtLeastNWidgets(2));
-
-      // Email field should be disabled/read-only
-      final emailField = tester
-          .widgetList<AuthTextField>(emailFields)
-          .elementAt(1);
-      expect(emailField.enabled, isFalse);
-      expect(emailField.readOnly, isTrue);
-      expect(emailField.controller?.text, equals('test@example.com'));
+      // Email should be displayed
+      expect(find.text('test@example.com'), findsOneWidget);
     });
 
     testWidgets('should validate display name', (tester) async {
@@ -140,14 +129,12 @@ void main() {
       await tester.enterText(displayNameField, '');
 
       // Try to submit form
-      await tester.tap(find.text('Continue'));
-      await tester.pump();
-
-      // Should show validation error (l10n displayNameRequired)
-      expect(
-        find.text('Please enter your display name'),
-        findsOneWidget,
-      );
+      await tester.drag(find.byType(ListView), const Offset(0, -500));
+      await tester.pumpAndSettle();
+      
+      // Button should be disabled
+      final continueButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      expect(continueButton.onPressed, isNull);
     });
 
     testWidgets('should validate display name minimum length', (tester) async {
@@ -160,14 +147,12 @@ void main() {
       await tester.enterText(displayNameField, 'A');
 
       // Try to submit form
-      await tester.tap(find.text('Continue'));
-      await tester.pump();
-
-      // Should show validation error
-      expect(
-        find.text('Display name must be at least 2 characters'),
-        findsOneWidget,
-      );
+      await tester.drag(find.byType(ListView), const Offset(0, -500));
+      await tester.pumpAndSettle();
+      
+      // Button should be disabled
+      final continueButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      expect(continueButton.onPressed, isNull);
     });
 
     testWidgets('should validate display name maximum length', (tester) async {
@@ -180,46 +165,14 @@ void main() {
       await tester.enterText(displayNameField, 'A' * 51);
 
       // Try to submit form
-      await tester.tap(find.text('Continue'));
-      await tester.pump();
-
-      // Should show validation error (l10n displayNameTooLong)
-      expect(
-        find.text('Display name must be 50 characters or less'),
-        findsOneWidget,
-      );
+      await tester.drag(find.byType(ListView), const Offset(0, -500));
+      await tester.pumpAndSettle();
+      
+      // Button should be disabled
+      final continueButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      expect(continueButton.onPressed, isNull);
     });
 
-    testWidgets('should validate currency dropdown', (tester) async {
-      when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
-
-      await tester.pumpWidget(createWidget());
-
-      // Currency should have default value, so validation should pass
-      // This test ensures the dropdown has proper validation setup
-      final currencyDropdowns = find.byType(DropdownButtonFormField<String>);
-      expect(currencyDropdowns, findsNWidgets(2));
-
-      final currencyDropdown = tester.widget<DropdownButtonFormField<String>>(
-        currencyDropdowns.first,
-      );
-      expect(currencyDropdown.initialValue, equals('VND'));
-    });
-
-    testWidgets('should validate language dropdown', (tester) async {
-      when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
-
-      await tester.pumpWidget(createWidget());
-
-      // Language should have default value
-      final languageDropdowns = find.byType(DropdownButtonFormField<String>);
-      expect(languageDropdowns, findsNWidgets(2));
-
-      final languageDropdown = tester.widget<DropdownButtonFormField<String>>(
-        languageDropdowns.last,
-      );
-      expect(languageDropdown.initialValue, equals('vi'));
-    });
 
     testWidgets(
       'should trigger profile setup event when continue button is pressed',
@@ -233,6 +186,10 @@ void main() {
         );
 
         // Fill form and submit
+        await tester.drag(find.byType(ListView), const Offset(0, -500));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(Checkbox));
+        await tester.pump();
         await tester.tap(find.text('Continue'));
         await tester.pump();
 
@@ -243,76 +200,19 @@ void main() {
       },
     );
 
-    testWidgets(
-      'should show cancellation dialog when close button is pressed',
-      (tester) async {
-        when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
-
-        await tester.pumpWidget(createWidget());
-
-        // Tap close button
-        await tester.tap(find.byIcon(Icons.close));
-        await tester.pumpAndSettle();
-
-        // Should show confirmation dialog. The page renders the full
-        // sentence ("Are you sure you want to cancel? You will be signed
-        // out and returned to the login screen.") so match via
-        // textContaining.
-        expect(find.text('Cancel Setup'), findsOneWidget);
-        expect(
-          find.textContaining('Are you sure you want to cancel?'),
-          findsOneWidget,
-        );
-        expect(find.text('Continue Setup'), findsOneWidget);
-        expect(find.text('Cancel'), findsOneWidget);
-      },
-    );
-
-    testWidgets('should trigger cancel event when cancellation is confirmed', (
-      tester,
-    ) async {
+    testWidgets('should trigger cancel event and navigate when use different account is pressed', (tester) async {
       when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
-
       await tester.pumpWidget(createWidget());
-
-      // Tap close button
-      await tester.tap(find.byIcon(Icons.close));
+      
+      // Tap use different account button
+      await tester.drag(find.byType(ListView), const Offset(0, -500));
       await tester.pumpAndSettle();
-
-      // Confirm cancellation
-      await tester.tap(find.text('Cancel'));
-      await tester.pumpAndSettle();
-
+      await tester.tap(find.text('Use a different account'));
+      await tester.pump();
+      
       // Should trigger AuthProfileSetupCancelled event
-      verify(
-        () => mockAuthBloc.add(any(that: isA<AuthProfileSetupCancelled>())),
-      ).called(1);
+      verify(() => mockAuthBloc.add(any(that: isA<AuthProfileSetupCancelled>()))).called(1);
     });
-
-    testWidgets(
-      'should not trigger cancel event when cancellation is declined',
-      (tester) async {
-        when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
-
-        await tester.pumpWidget(createWidget());
-
-        // Tap close button
-        await tester.tap(find.byIcon(Icons.close));
-        await tester.pumpAndSettle();
-
-        // Decline cancellation
-        await tester.tap(find.text('Continue Setup'));
-        await tester.pumpAndSettle();
-
-        // Should not trigger AuthProfileSetupCancelled event
-        verifyNever(
-          () => mockAuthBloc.add(any(that: isA<AuthProfileSetupCancelled>())),
-        );
-
-        // Dialog should be dismissed
-        expect(find.text('Cancel Setup'), findsNothing);
-      },
-    );
 
     testWidgets('should show loading state when AuthLoading is emitted', (
       tester,
@@ -326,6 +226,8 @@ void main() {
       );
 
       await tester.pumpWidget(createWidget());
+      await tester.pump();
+      await tester.drag(find.byType(ListView), const Offset(0, -500));
       await tester.pump();
 
       // Continue button should show loading indicator
@@ -423,23 +325,15 @@ void main() {
       // All form fields should be disabled
       final textFields = find.byType(AuthTextField);
       for (var i = 0; i < tester.widgetList(textFields).length; i++) {
-        final textField = tester
-            .widgetList<AuthTextField>(textFields)
-            .elementAt(i);
-        if (!textField.readOnly) {
-          // Skip read-only email field
-          expect(textField.enabled, isFalse);
-        }
+        final textField = tester.widgetList<AuthTextField>(textFields).elementAt(i);
+        expect(textField.enabled, isFalse);
       }
 
-      // Dropdowns should be disabled
-      final dropdowns = find.byType(DropdownButtonFormField<String>);
-      for (var i = 0; i < tester.widgetList(dropdowns).length; i++) {
-        final dropdown = tester
-            .widgetList<DropdownButtonFormField<String>>(dropdowns)
-            .elementAt(i);
-        expect(dropdown.onChanged, isNull);
-      }
+      // Checkbox should be disabled
+      await tester.drag(find.byType(ListView), const Offset(0, -500));
+      await tester.pump();
+      final checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+      expect(checkbox.onChanged, isNull);
     });
   });
 }

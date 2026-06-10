@@ -50,7 +50,10 @@ void main() {
       expect(find.text('Email'), findsOneWidget);
       expect(find.text('Mật khẩu'), findsOneWidget);
       expect(find.text('Đăng ký'), findsAtLeastNWidgets(1)); // Title and button
-      expect(find.text('Đã có tài khoản? Đăng nhập'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate((widget) => widget is RichText && widget.text.toPlainText().contains('Đã có tài khoản?')),
+        findsOneWidget,
+      );
     });
 
     testWidgets('should show validation errors for empty fields', (
@@ -87,12 +90,10 @@ void main() {
       );
 
       // Act - Enter invalid email
-      final displayNameField = find.widgetWithText(
-        TextFormField,
-        'Tên hiển thị',
-      );
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final fields = find.byType(TextFormField);
+      final displayNameField = fields.at(0);
+      final emailField = fields.at(1);
+      final passwordField = fields.at(2);
 
       await tester.enterText(displayNameField, 'Test User');
       await tester.enterText(emailField, 'invalid-email');
@@ -119,12 +120,10 @@ void main() {
       );
 
       // Act - Enter weak password
-      final displayNameField = find.widgetWithText(
-        TextFormField,
-        'Tên hiển thị',
-      );
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final fields = find.byType(TextFormField);
+      final displayNameField = fields.at(0);
+      final emailField = fields.at(1);
+      final passwordField = fields.at(2);
 
       await tester.enterText(displayNameField, 'Test User');
       await tester.enterText(emailField, 'test@example.com');
@@ -151,12 +150,10 @@ void main() {
       );
 
       // Act - Enter empty display name
-      final displayNameField = find.widgetWithText(
-        TextFormField,
-        'Tên hiển thị',
-      );
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final fields = find.byType(TextFormField);
+      final displayNameField = fields.at(0);
+      final emailField = fields.at(1);
+      final passwordField = fields.at(2);
 
       await tester.enterText(displayNameField, '   '); // Only whitespace
       await tester.enterText(emailField, 'test@example.com');
@@ -213,12 +210,10 @@ void main() {
       );
 
       // Act - Enter valid credentials
-      final displayNameField = find.widgetWithText(
-        TextFormField,
-        'Tên hiển thị',
-      );
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final fields = find.byType(TextFormField);
+      final displayNameField = fields.at(0);
+      final emailField = fields.at(1);
+      final passwordField = fields.at(2);
 
       await tester.enterText(displayNameField, 'Test User');
       await tester.enterText(emailField, 'test@example.com');
@@ -247,7 +242,9 @@ void main() {
       );
 
       // Act
-      final loginLink = find.text('Đã có tài khoản? Đăng nhập');
+      final loginLink = find.byWidgetPredicate(
+        (widget) => widget is RichText && widget.text.toPlainText().contains('Đã có tài khoản?')
+      );
       await tester.tap(loginLink);
       await tester.pumpAndSettle();
 
@@ -365,12 +362,10 @@ void main() {
       );
 
       // Act - Enter very long display name
-      final displayNameField = find.widgetWithText(
-        TextFormField,
-        'Tên hiển thị',
-      );
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final fields = find.byType(TextFormField);
+      final displayNameField = fields.at(0);
+      final emailField = fields.at(1);
+      final passwordField = fields.at(2);
 
       await tester.enterText(displayNameField, 'A' * 100); // Very long name
       await tester.enterText(emailField, 'test@example.com');
@@ -395,7 +390,8 @@ void main() {
       );
 
       // Act - Enter different password strengths
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final fields = find.byType(TextFormField);
+      final passwordField = fields.at(2);
 
       // Weak password
       await tester.enterText(passwordField, '123');
@@ -424,12 +420,10 @@ void main() {
       );
 
       // Act - Enter credentials and press Enter
-      final displayNameField = find.widgetWithText(
-        TextFormField,
-        'Tên hiển thị',
-      );
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final fields = find.byType(TextFormField);
+      final displayNameField = fields.at(0);
+      final emailField = fields.at(1);
+      final passwordField = fields.at(2);
 
       await tester.enterText(displayNameField, 'Test User');
       await tester.enterText(emailField, 'test@example.com');

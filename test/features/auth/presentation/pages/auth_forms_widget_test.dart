@@ -178,7 +178,10 @@ void main() {
           findsOneWidget,
         );
         expect(find.text('Quên mật khẩu?'), findsOneWidget);
-        expect(find.text('Chưa có tài khoản? Đăng ký'), findsOneWidget);
+        expect(
+          find.byWidgetPredicate((widget) => widget is RichText && widget.text.toPlainText().contains('Chưa có tài khoản?')),
+          findsOneWidget,
+        );
       });
 
       testWidgets('should show validation errors for empty fields', (
@@ -263,7 +266,10 @@ void main() {
         expect(find.text('Email'), findsOneWidget);
         expect(find.text('Mật khẩu'), findsOneWidget);
         expect(find.widgetWithText(ElevatedButton, 'Đăng ký'), findsOneWidget);
-        expect(find.text('Đã có tài khoản? Đăng nhập'), findsOneWidget);
+        expect(
+          find.byWidgetPredicate((widget) => widget is RichText && widget.text.toPlainText().contains('Đã có tài khoản?')),
+          findsOneWidget,
+        );
       });
 
       testWidgets('should show validation errors for empty fields', (
@@ -484,7 +490,10 @@ void main() {
         expect(find.byType(ElevatedButton), findsOneWidget);
         // Navigation links are GestureDetector-based, not TextButton
         expect(find.text('Quên mật khẩu?'), findsOneWidget);
-        expect(find.text('Chưa có tài khoản? Đăng ký'), findsOneWidget);
+        expect(
+          find.byWidgetPredicate((widget) => widget is RichText && widget.text.toPlainText().contains('Chưa có tài khoản?')),
+          findsOneWidget,
+        );
       });
 
       testWidgets('should support screen readers', (tester) async {

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
@@ -215,7 +215,7 @@ void main() {
       final buttonSizedBox = sizedBoxes.first;
 
       // Should have correct height and full width
-      expect(buttonSizedBox.height, equals(48.0));
+      expect(buttonSizedBox.height, equals(56.0));
       expect(buttonSizedBox.width, equals(double.infinity));
     });
 
@@ -346,3 +346,4 @@ void main() {
     });
   });
 }
+

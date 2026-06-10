@@ -8,6 +8,7 @@ import 'package:grex/features/auth/presentation/pages/login_page.dart';
 import 'package:grex/features/auth/presentation/widgets/or_divider.dart';
 import 'package:grex/features/auth/presentation/widgets/social_auth_error_widget.dart';
 import 'package:grex/features/auth/presentation/widgets/social_login_button.dart';
+import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 
 import '../../../../helpers/test_helpers.mocks.dart';
 import '../../../../helpers/widget_test_helpers.dart';
@@ -44,7 +45,7 @@ void main() {
       // Assert
       expect(find.text('Đăng nhập'), findsOneWidget);
       expect(
-        find.byType(TextFormField),
+        find.byType(AuthTextField),
         findsNWidgets(2),
       ); // Email and password fields
       expect(find.text('Email'), findsOneWidget);
@@ -54,7 +55,12 @@ void main() {
         findsAtLeastNWidgets(1),
       ); // Title and button
       expect(find.text('Quên mật khẩu?'), findsOneWidget);
-      expect(find.text('Chưa có tài khoản? Đăng ký'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w is RichText && w.text.toPlainText() == 'Chưa có tài khoản? Đăng ký',
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('should show validation errors for empty fields', (
@@ -69,7 +75,7 @@ void main() {
       );
 
       // Act - Try to submit form with empty fields
-      final loginButton = find.widgetWithText(ElevatedButton, 'Đăng nhập');
+      final loginButton = find.byType(PrimaryButton);
       await tester.tap(loginButton);
       await tester.pump();
 
@@ -90,11 +96,11 @@ void main() {
       );
 
       // Act - Enter invalid email
-      final emailField = find.widgetWithText(TextFormField, 'Email');
+      final emailField = find.byKey(const Key('email_field'));
       await tester.enterText(emailField, 'invalid-email');
       await tester.pump();
 
-      final loginButton = find.widgetWithText(ElevatedButton, 'Đăng nhập');
+      final loginButton = find.byType(PrimaryButton);
       await tester.tap(loginButton);
       await tester.pump();
 
@@ -114,14 +120,14 @@ void main() {
       );
 
       // Act - Enter weak password
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final emailField = find.byKey(const Key('email_field'));
+      final passwordField = find.byKey(const Key('password_field'));
 
       await tester.enterText(emailField, 'test@example.com');
       await tester.enterText(passwordField, '123'); // Too short
       await tester.pump();
 
-      final loginButton = find.widgetWithText(ElevatedButton, 'Đăng nhập');
+      final loginButton = find.byType(PrimaryButton);
       await tester.tap(loginButton);
       await tester.pump();
 
@@ -176,15 +182,15 @@ void main() {
       );
 
       // Act - Enter valid credentials
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final emailField = find.byKey(const Key('email_field'));
+      final passwordField = find.byKey(const Key('password_field'));
 
       await tester.enterText(emailField, 'test@example.com');
       await tester.enterText(passwordField, 'SecurePass123!');
       await tester.pump();
 
       // Tap login button
-      final loginButton = find.widgetWithText(ElevatedButton, 'Đăng nhập');
+      final loginButton = find.byType(PrimaryButton);
       await tester.tap(loginButton);
       await tester.pump();
 
@@ -207,7 +213,9 @@ void main() {
         );
 
         // Act
-        final registerLink = find.text('Chưa có tài khoản? Đăng ký');
+        final registerLink = find.byWidgetPredicate(
+          (w) => w is RichText && w.text.toPlainText() == 'Chưa có tài khoản? Đăng ký',
+        );
         await tester.tap(registerLink);
         await tester.pumpAndSettle();
 
@@ -293,7 +301,7 @@ void main() {
       expect(find.text('Email hoặc mật khẩu không đúng'), findsOneWidget);
 
       // Act - Start typing in email field
-      final emailField = find.widgetWithText(TextFormField, 'Email');
+      final emailField = find.byKey(const Key('email_field'));
       await tester.enterText(emailField, 'new@example.com');
       await tester.pump();
 
@@ -314,13 +322,13 @@ void main() {
       );
 
       // Act - Leave fields empty
-      final loginButton = find.widgetWithText(ElevatedButton, 'Đăng nhập');
+      final loginButton = find.byType(PrimaryButton);
 
       // Assert - Button should be enabled (validation happens on submit)
       // In a more sophisticated implementation, the button might be disabled
       expect(loginButton, findsOneWidget);
 
-      final buttonWidget = tester.widget<ElevatedButton>(loginButton);
+      final buttonWidget = tester.widget<PrimaryButton>(loginButton);
       expect(buttonWidget.onPressed, isNotNull); // Button is enabled
     });
 
@@ -339,7 +347,7 @@ void main() {
 
       // Assert - Focus should move between fields
       // Note: This would require proper focus management in the implementation
-      expect(find.byType(TextFormField), findsNWidgets(2));
+      expect(find.byType(AuthTextField), findsNWidgets(2));
     });
 
     testWidgets('should show appropriate keyboard types for fields', (
@@ -373,8 +381,8 @@ void main() {
       );
 
       // Act - Enter credentials and press Enter
-      final emailField = find.widgetWithText(TextFormField, 'Email');
-      final passwordField = find.widgetWithText(TextFormField, 'Mật khẩu');
+      final emailField = find.byKey(const Key('email_field'));
+      final passwordField = find.byKey(const Key('password_field'));
 
       await tester.enterText(emailField, 'test@example.com');
       await tester.enterText(passwordField, 'SecurePass123!');
@@ -387,7 +395,7 @@ void main() {
       // Assert - Form should be submitted
       // Note: This would require the implementation to handle Enter key
       // submission
-      expect(find.byType(TextFormField), findsNWidgets(2));
+      expect(find.byType(AuthTextField), findsNWidgets(2));
     });
 
     // Social Login Tests
@@ -439,7 +447,7 @@ void main() {
 
         // Verify divider is positioned correctly between login button and
         // social buttons
-        final loginButton = find.widgetWithText(ElevatedButton, 'Đăng nhập');
+        final loginButton = find.byType(PrimaryButton);
         final orDivider = find.byType(OrDivider);
         final socialButtons = find.byType(SocialLoginButton);
 
@@ -514,7 +522,7 @@ void main() {
         );
 
         // Assert
-        final loginButton = find.widgetWithText(ElevatedButton, 'Đăng nhập');
+        final loginButton = find.byType(PrimaryButton);
         final googleButton = find.byWidgetPredicate(
           (widget) =>
               widget is SocialLoginButton &&
@@ -527,7 +535,7 @@ void main() {
         );
 
         // Verify login button is disabled
-        final loginButtonWidget = tester.widget<ElevatedButton>(loginButton);
+        final loginButtonWidget = tester.widget<PrimaryButton>(loginButton);
         expect(loginButtonWidget.onPressed, isNull);
 
         // Verify social buttons show loading state
