@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
@@ -346,4 +346,3 @@ void main() {
     });
   });
 }
-

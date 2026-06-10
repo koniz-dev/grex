@@ -57,7 +57,9 @@ void main() {
       expect(find.text('Quên mật khẩu?'), findsOneWidget);
       expect(
         find.byWidgetPredicate(
-          (w) => w is RichText && w.text.toPlainText() == 'Chưa có tài khoản? Đăng ký',
+          (w) =>
+              w is RichText &&
+              w.text.toPlainText() == 'Chưa có tài khoản? Đăng ký',
         ),
         findsOneWidget,
       );
@@ -214,7 +216,9 @@ void main() {
 
         // Act
         final registerLink = find.byWidgetPredicate(
-          (w) => w is RichText && w.text.toPlainText() == 'Chưa có tài khoản? Đăng ký',
+          (w) =>
+              w is RichText &&
+              w.text.toPlainText() == 'Chưa có tài khoản? Đăng ký',
         );
         await tester.tap(registerLink);
         await tester.pumpAndSettle();

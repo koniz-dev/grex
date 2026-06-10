@@ -131,9 +131,11 @@ void main() {
       // Try to submit form
       await tester.drag(find.byType(ListView), const Offset(0, -500));
       await tester.pumpAndSettle();
-      
+
       // Button should be disabled
-      final continueButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      final continueButton = tester.widget<ElevatedButton>(
+        find.byType(ElevatedButton),
+      );
       expect(continueButton.onPressed, isNull);
     });
 
@@ -149,9 +151,11 @@ void main() {
       // Try to submit form
       await tester.drag(find.byType(ListView), const Offset(0, -500));
       await tester.pumpAndSettle();
-      
+
       // Button should be disabled
-      final continueButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      final continueButton = tester.widget<ElevatedButton>(
+        find.byType(ElevatedButton),
+      );
       expect(continueButton.onPressed, isNull);
     });
 
@@ -167,12 +171,13 @@ void main() {
       // Try to submit form
       await tester.drag(find.byType(ListView), const Offset(0, -500));
       await tester.pumpAndSettle();
-      
+
       // Button should be disabled
-      final continueButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      final continueButton = tester.widget<ElevatedButton>(
+        find.byType(ElevatedButton),
+      );
       expect(continueButton.onPressed, isNull);
     });
-
 
     testWidgets(
       'should trigger profile setup event when continue button is pressed',
@@ -200,19 +205,24 @@ void main() {
       },
     );
 
-    testWidgets('should trigger cancel event and navigate when use different account is pressed', (tester) async {
-      when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
-      await tester.pumpWidget(createWidget());
-      
-      // Tap use different account button
-      await tester.drag(find.byType(ListView), const Offset(0, -500));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Use a different account'));
-      await tester.pump();
-      
-      // Should trigger AuthProfileSetupCancelled event
-      verify(() => mockAuthBloc.add(any(that: isA<AuthProfileSetupCancelled>()))).called(1);
-    });
+    testWidgets(
+      'should trigger cancel event and navigate when use different account is pressed',
+      (tester) async {
+        when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
+        await tester.pumpWidget(createWidget());
+
+        // Tap use different account button
+        await tester.drag(find.byType(ListView), const Offset(0, -500));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Use a different account'));
+        await tester.pump();
+
+        // Should trigger AuthProfileSetupCancelled event
+        verify(
+          () => mockAuthBloc.add(any(that: isA<AuthProfileSetupCancelled>())),
+        ).called(1);
+      },
+    );
 
     testWidgets('should show loading state when AuthLoading is emitted', (
       tester,
@@ -325,7 +335,9 @@ void main() {
       // All form fields should be disabled
       final textFields = find.byType(AuthTextField);
       for (var i = 0; i < tester.widgetList(textFields).length; i++) {
-        final textField = tester.widgetList<AuthTextField>(textFields).elementAt(i);
+        final textField = tester
+            .widgetList<AuthTextField>(textFields)
+            .elementAt(i);
         expect(textField.enabled, isFalse);
       }
 

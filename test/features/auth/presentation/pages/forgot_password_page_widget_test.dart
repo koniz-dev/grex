@@ -273,7 +273,9 @@ void main() {
       final resetButton = find.text('Đang gửi...');
       expect(resetButton, findsOneWidget);
 
-      final buttonWidget = tester.widget<PrimaryButton>(find.byType(PrimaryButton));
+      final buttonWidget = tester.widget<PrimaryButton>(
+        find.byType(PrimaryButton),
+      );
       expect(buttonWidget.onPressed, isNull); // Button is disabled
     });
 

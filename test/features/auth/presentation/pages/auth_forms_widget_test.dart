@@ -179,7 +179,11 @@ void main() {
         );
         expect(find.text('Quên mật khẩu?'), findsOneWidget);
         expect(
-          find.byWidgetPredicate((widget) => widget is RichText && widget.text.toPlainText().contains('Chưa có tài khoản?')),
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is RichText &&
+                widget.text.toPlainText().contains('Chưa có tài khoản?'),
+          ),
           findsOneWidget,
         );
       });
@@ -267,7 +271,11 @@ void main() {
         expect(find.text('Mật khẩu'), findsOneWidget);
         expect(find.widgetWithText(ElevatedButton, 'Đăng ký'), findsOneWidget);
         expect(
-          find.byWidgetPredicate((widget) => widget is RichText && widget.text.toPlainText().contains('Đã có tài khoản?')),
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is RichText &&
+                widget.text.toPlainText().contains('Đã có tài khoản?'),
+          ),
           findsOneWidget,
         );
       });
@@ -491,7 +499,11 @@ void main() {
         // Navigation links are GestureDetector-based, not TextButton
         expect(find.text('Quên mật khẩu?'), findsOneWidget);
         expect(
-          find.byWidgetPredicate((widget) => widget is RichText && widget.text.toPlainText().contains('Chưa có tài khoản?')),
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is RichText &&
+                widget.text.toPlainText().contains('Chưa có tài khoản?'),
+          ),
           findsOneWidget,
         );
       });

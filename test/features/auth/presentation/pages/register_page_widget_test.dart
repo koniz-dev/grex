@@ -51,7 +51,11 @@ void main() {
       expect(find.text('Mật khẩu'), findsOneWidget);
       expect(find.text('Đăng ký'), findsAtLeastNWidgets(1)); // Title and button
       expect(
-        find.byWidgetPredicate((widget) => widget is RichText && widget.text.toPlainText().contains('Đã có tài khoản?')),
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is RichText &&
+              widget.text.toPlainText().contains('Đã có tài khoản?'),
+        ),
         findsOneWidget,
       );
     });
@@ -243,7 +247,9 @@ void main() {
 
       // Act
       final loginLink = find.byWidgetPredicate(
-        (widget) => widget is RichText && widget.text.toPlainText().contains('Đã có tài khoản?')
+        (widget) =>
+            widget is RichText &&
+            widget.text.toPlainText().contains('Đã có tài khoản?'),
       );
       await tester.tap(loginLink);
       await tester.pumpAndSettle();

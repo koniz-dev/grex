@@ -227,11 +227,13 @@ extension WidgetTesterExtensions on WidgetTester {
 
     // Create mock dependencies for social login
     final mockSocialAuthRepository = MockSocialAuthRepository();
-    when(mockSocialAuthRepository.signInWithGoogle())
-        .thenAnswer((_) => pendingUserResult());
-    when(mockSocialAuthRepository.signInWithApple())
-        .thenAnswer((_) => pendingUserResult());
-        
+    when(
+      mockSocialAuthRepository.signInWithGoogle(),
+    ).thenAnswer((_) => pendingUserResult());
+    when(
+      mockSocialAuthRepository.signInWithApple(),
+    ).thenAnswer((_) => pendingUserResult());
+
     final mockAuthDeepLinkHandler = MockAuthDeepLinkHandler();
     final mockSocialLoginAnalytics = MockSocialLoginAnalytics();
     when(
