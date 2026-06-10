@@ -206,7 +206,8 @@ void main() {
     );
 
     testWidgets(
-      'should trigger cancel event and navigate when use different account is pressed',
+      'should trigger cancel event and navigate when use different account '
+      'is pressed',
       (tester) async {
         when(() => mockAuthBloc.state).thenReturn(const AuthInitial());
         await tester.pumpWidget(createWidget());

@@ -5,9 +5,6 @@ import 'package:grex/features/auth/domain/entities/failures.dart';
 import 'package:grex/features/auth/domain/entities/social_auth_provider.dart';
 import 'package:grex/features/auth/presentation/bloc/bloc.dart';
 import 'package:grex/features/auth/presentation/pages/login_page.dart';
-import 'package:grex/features/auth/presentation/widgets/or_divider.dart';
-import 'package:grex/features/auth/presentation/widgets/social_auth_error_widget.dart';
-import 'package:grex/features/auth/presentation/widgets/social_login_button.dart';
 import 'package:grex/features/auth/presentation/widgets/widgets.dart';
 
 import '../../../../helpers/test_helpers.mocks.dart';
