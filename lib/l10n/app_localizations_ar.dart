@@ -485,16 +485,16 @@ class AppLocalizationsAr extends AppLocalizations {
       'على الأقل 8 أحرف مع أحرف كبيرة وصغيرة وأرقام';
 
   @override
-  String get pwdReqLength => 'At least 8 characters';
+  String get pwdReqLength => '8 أحرف على الأقل';
 
   @override
-  String get pwdReqUppercase => 'At least 1 uppercase letter';
+  String get pwdReqUppercase => 'حرف كبير واحد على الأقل';
 
   @override
-  String get pwdReqNumber => 'At least 1 number';
+  String get pwdReqNumber => 'رقم واحد على الأقل';
 
   @override
-  String get pwdReqSpecial => 'At least 1 special character';
+  String get pwdReqSpecial => 'حرف خاص واحد على الأقل';
 
   @override
   String get alreadyHaveAccountSignIn => 'هل لديك حساب بالفعل؟ سجل الدخول';

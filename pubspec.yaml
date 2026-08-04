@@ -173,9 +173,14 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   # Environment configuration files
-  # Note: Only .env.example is included (it's committed to git)
-  # Users should copy .env.example to .env for local development
-  # The .env file is optional - the app works with --dart-define flags too
+  # IMPORTANT: `.env` is gitignored but declared below, so the file MUST exist
+  # or `flutter build`/`flutter run` fails with
+  # "No file or variants found for asset: .env" before any Dart code runs.
+  # Run `cp .env.example .env` on a fresh clone. An empty file is enough if you
+  # pass values via --dart-define (EnvConfig falls back to those).
+  # WARNING: everything in `.env` is shipped inside the app bundle and served
+  # publicly on web. Never put SUPABASE_SERVICE_ROLE_KEY here.
+  # See docs/audit/2026-08-04-code-audit.md (F4, F5).
   assets:
     - .env.example
     - .env

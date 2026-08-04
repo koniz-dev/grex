@@ -11,17 +11,31 @@ Welcome to the comprehensive documentation for the Grex expense splitting applic
 - ✅ Main App Features: Groups, expenses, payments, balances, export
 - ✅ Localization: 4 languages (EN, VI, ES, AR) — auth flow fully
   translated; some Profile / EditProfile pages still pending i18n wiring
-- ✅ Testing: 1250+ tests pass, ~632 skipped (placeholders for future
-  i18n / mock-rewrite work)
+- ✅ Static analysis: `flutter analyze` reports 0 issues
+- ✅ Testing: 1308 tests pass, 572 skipped, 0 failing across 160 test files
+  (verified 2026-08-04; skips are placeholders for future i18n / mock-rewrite work)
+- ⚠️ **Expense split math has critical defects** — equal splits do not always
+  sum to the expense total, and `SplitMethod.exact` throws on any amount with
+  cents. Do not treat expense creation as production-ready until fixed. See
+  [audit/2026-08-04-code-audit.md](./audit/2026-08-04-code-audit.md)
 - ❌ Store readiness: package name, Firebase config, signing material,
   and CI secrets all still need work — see
   [deployment/pre-deployment-checklist.md](./deployment/pre-deployment-checklist.md)
+
+### Known issues
+
+The [2026-08-04 code audit](./audit/2026-08-04-code-audit.md) lists 13 findings
+with reproductions. The blocking ones: money-math defects in
+`ExpenseCalculator` (F1–F3), the service-role key footgun in the bundled `.env`
+(F4), and a fresh clone being unable to build without `.env` (F5).
 
 ## Documentation Structure
 
 ```
 docs/
 ├── README.md                    # This file - main documentation index
+├── audit/                       # Code audits
+│   └── 2026-08-04-code-audit.md # Latest audit: findings, severity, repros
 ├── database/                    # Database documentation
 │   ├── README.md               # Database documentation overview
 │   ├── schema/                 # Database schema documentation
@@ -50,6 +64,8 @@ docs/
 
 ### For Developers
 - **New to the project?** Start with [Database Schema Overview](database/schema/overview.md)
+- **Confused by BLoC + Riverpod + GetIt?** Read [State Management & DI](architecture/state-management.md) — it explains which system owns what
+- **About to touch expense splits?** Read the [code audit](audit/2026-08-04-code-audit.md) first
 - **Need database queries?** Check [Common Queries](database/examples/queries.md)
 - **Working with business logic?** See [Workflow Examples](database/examples/workflows.md)
 - **Security questions?** Review [RLS Policies](database/security/rls-policies.md)

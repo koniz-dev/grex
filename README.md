@@ -5,7 +5,7 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 [![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?logo=flutter)](https://flutter.dev)
 [![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?logo=dart)](https://dart.dev)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-66%20files-success)](test/)
+[![Tests](https://img.shields.io/badge/tests-160%20files-success)](test/)
 [![Architecture](https://img.shields.io/badge/architecture-Clean%20Architecture-blue)](docs/architecture/)
 [![codecov](https://codecov.io/gh/koniz-dev/grex/graph/badge.svg?token=WJ4JJ4D20V)](https://codecov.io/gh/koniz-dev/grex)
 
@@ -13,10 +13,12 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 
 ### 🏗️ Architecture & Code Quality
 - ✅ **Clean Architecture** - Separation of concerns with Domain, Data, and Presentation layers
-- ✅ **State Management** - BLoC pattern for reactive state management
+- ✅ **State Management** - BLoC for feature logic, Riverpod for infrastructure and
+  routing, GetIt for repositories — see
+  [docs/architecture/state-management.md](docs/architecture/state-management.md)
 - ✅ **Code Generation** - Freezed for immutable classes and JSON serialization
-- ✅ **Linting** - Very Good Analysis for comprehensive code quality checks
-- ✅ **Testing** - Comprehensive test coverage with 87 property-based tests (100+ iterations each)
+- ✅ **Linting** - Very Good Analysis (`flutter analyze` is clean)
+- ✅ **Testing** - 160 test files including property-based tests (100+ iterations each)
 
 ### ⚙️ Configuration & Environment
 - ✅ **Multi-Environment Support** - Development, Staging, Production
@@ -54,12 +56,16 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 - ✅ **Data Export** - Export group data in CSV/PDF formats
 - ✅ **Search & Filter** - Advanced search and filtering across expenses
 
-### 🌐 Network Layer
-- ✅ **HTTP Client** - Dio with interceptors support
-- ✅ **Configurable Timeouts** - Environment-based timeout configuration
-- ✅ **Request/Response Logging** - Debug-friendly HTTP logging
-- ✅ **Error Interceptors** - Automatic error handling and conversion
-- ✅ **Auth Interceptors** - Automatic token injection and refresh
+### 🌐 Network Layer — ⚠️ scaffolding, not wired up
+All data access goes through the Supabase client directly. The Dio layer below
+is built but **not referenced by any repository** (`apiClientProvider` has no
+callers). Keep it only if you plan to call non-Supabase APIs; see
+[F7 in the code audit](docs/audit/2026-08-04-code-audit.md#f7--the-dio-network-layer-is-dead-code-medium).
+- 🚧 **HTTP Client** - Dio with interceptors support
+- 🚧 **Configurable Timeouts** - Environment-based timeout configuration
+- 🚧 **Request/Response Logging** - Debug-friendly HTTP logging
+- 🚧 **Error Interceptors** - Automatic error handling and conversion
+- 🚧 **Auth Interceptors** - Automatic token injection and refresh
 
 ### 🎨 UI & UX
 - ✅ **Material Design** - Material 3 theme support
@@ -94,7 +100,7 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 - ✅ **Example Features** - Complete features demonstrating Clean Architecture (Auth, Groups, Expenses, Balances, etc.)
 
 ### 🧪 Testing
-- ✅ **66 Test Files** - Comprehensive test coverage
+- ✅ **160 Test Files** - 1308 passing, 572 skipped, 0 failing (2026-08-04)
 - ✅ **Unit Tests** - Domain and data layer testing
 - ✅ **Widget Tests** - UI component testing
 - ✅ **Integration Tests** - End-to-end flow testing
@@ -104,8 +110,11 @@ A production-ready Grex project with **Clean Architecture**, enterprise-grade co
 
 ### Core Dependencies
 - **Flutter** - UI framework
-- **Riverpod** - State management
-- **Dio** - HTTP client
+- **flutter_bloc** - State management for all feature logic (auth, groups, expenses, payments, balances)
+- **Riverpod** - Infrastructure providers, routing, and the auth→router bridge
+- **GetIt** - Service locator for repositories and BLoC construction
+- **Supabase** - PostgreSQL, Auth, and Realtime backend (all data access goes through it)
+- **Dio** - HTTP client (scaffolding only — currently unused, see Network Layer above)
 - **Freezed** - Code generation for immutable classes
 - **Equatable** - Value equality comparison
 
@@ -141,7 +150,7 @@ lib/
 ├── core/                    # Core infrastructure
 │   ├── config/             # Configuration system
 │   ├── constants/          # App constants
-│   ├── di/                 # Dependency injection (Riverpod providers)
+│   ├── di/                 # Dependency injection (Riverpod providers + GetIt)
 │   ├── errors/             # Error handling
 │   ├── feature_flags/      # Feature flags infrastructure
 │   ├── localization/       # Localization service
@@ -263,14 +272,25 @@ For fully offline development using a local Supabase instance:
    flutter pub run build_runner build --delete-conflicting-outputs
    ```
 
-4. **Set up environment configuration**
+4. **Set up environment configuration** — **required, the build fails without it**
    ```bash
    # Copy the example environment file
    cp .env.example .env
    
-   # Edit .env with your configuration
-   # See Configuration System section below
+   # Edit .env with your configuration — at minimum SUPABASE_URL and
+   # SUPABASE_ANON_KEY. See Configuration System section below.
    ```
+
+   `.env` is gitignored but declared as a Flutter asset in `pubspec.yaml`, so a
+   fresh clone without it fails at bundle time with
+   `No file or variants found for asset: .env` — before any Dart code runs.
+   Creating the file (even empty) is mandatory; `--dart-define` alone is not
+   enough. See [SETUP.md](SETUP.md).
+
+   > ⚠️ Do **not** put `SUPABASE_SERVICE_ROLE_KEY` in `.env`. Because `.env`
+   > ships as an app asset, that key would be extractable from any release
+   > build and bypasses all RLS. See
+   > [F4 in the code audit](docs/audit/2026-08-04-code-audit.md#f4--env-is-bundled-into-the-app-while-documenting-a-service-role-key-high).
 
 5. **Set up Git hooks** (optional but recommended)
    
@@ -601,7 +621,7 @@ flutter test test/features/auth/domain/usecases/login_test.dart
 ### Test Structure
 
 Tests follow the same structure as the source code:
-- **66 test files** with comprehensive coverage
+- **160 test files** — 1308 passing, 572 skipped, 0 failing (2026-08-04)
 - Unit tests for use cases and utilities
 - Widget tests for UI components
 - Integration tests for end-to-end flows

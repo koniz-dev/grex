@@ -16,7 +16,8 @@ This section covers:
 ### Core Architecture
 
 - **[Architecture Overview](overview.md)** - Why Clean Architecture, benefits, trade-offs, when to use, and learning resources
-- **[Design Decisions](design-decisions.md)** - Detailed rationale for routing, state management, error handling, logging, storage, and HTTP client choices
+- **[State Management & Dependency Injection](state-management.md)** - How BLoC, Riverpod, and GetIt divide responsibility, the rules for adding code, and known defects in the seam **(read this first)**
+- **[Design Decisions](design-decisions.md)** - Original rationale for routing, state management, error handling, logging, storage, and HTTP client choices. ⚠️ Its state-management and HTTP-client sections are outdated — see the two docs above
 
 ### Related Documentation
 
@@ -30,7 +31,8 @@ This section covers:
 New to the architecture? Start here:
 
 1. Read [Architecture Overview](overview.md) to understand why Clean Architecture
-2. Review [Design Decisions](design-decisions.md) to understand technical choices
+2. Read [State Management & DI](state-management.md) — three systems run side by side; this says which owns what
+3. Review [Design Decisions](design-decisions.md) to understand technical choices
 3. Check [Understanding the Codebase](../guides/onboarding/understanding-codebase.md) for code organization
 4. Follow [Common Tasks](../guides/features/common-tasks.md) to add your first feature
 
@@ -39,8 +41,8 @@ New to the architecture? Start here:
 ```
 ┌─────────────────────────────────────┐
 │   Presentation Layer (UI)           │
-│  - Screens, Widgets, Providers     │
-│  - State Management (Riverpod)      │
+│  - Screens, Widgets, BLoCs          │
+│  - State: BLoC + Riverpod + GetIt   │
 └──────────────┬──────────────────────┘
                │
 ┌──────────────▼──────────────────────┐

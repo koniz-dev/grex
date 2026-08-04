@@ -228,7 +228,17 @@ Flutter apps need a way to manage state across the widget tree. State management
 
 ### Chosen Solution
 
-**Riverpod** is used for state management in this template.
+> ⚠️ **Outdated as of 2026-08-04.** The code does **not** follow the
+> Riverpod-only design described in this section. The app now uses **BLoC** for
+> all feature logic, **Riverpod** for infrastructure providers and the
+> auth→router bridge, and **GetIt** for repositories and BLoC construction. The
+> `AuthNotifier.login()` example below does not exist — login lives in
+> `AuthBloc`. For the actual ownership rules, read
+> **[State Management & Dependency Injection](state-management.md)**.
+>
+> The rationale below is kept as a record of the original decision.
+
+**Riverpod** was originally chosen for state management in this template.
 
 **Rationale:**
 1. **Compile-time Safety**: Catches errors at compile time, not runtime
@@ -702,6 +712,13 @@ Consider alternatives if:
 ---
 
 ## HTTP Client: Dio
+
+> ⚠️ **Not in use as of 2026-08-04.** Every repository talks to the Supabase
+> client directly; `apiClientProvider` has no callers, and neither does any of
+> the six Dio interceptors. This section documents scaffolding, not a live
+> layer. Before building on it, read
+> [F7 in the code audit](../audit/2026-08-04-code-audit.md#f7--the-dio-network-layer-is-dead-code-medium) —
+> the layer should either be adopted for non-Supabase APIs or deleted.
 
 ### Problem Statement
 

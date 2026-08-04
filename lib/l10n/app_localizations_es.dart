@@ -499,16 +499,16 @@ class AppLocalizationsEs extends AppLocalizations {
       'Al menos 8 caracteres con mayúsculas, minúsculas y números';
 
   @override
-  String get pwdReqLength => 'At least 8 characters';
+  String get pwdReqLength => 'Al menos 8 caracteres';
 
   @override
-  String get pwdReqUppercase => 'At least 1 uppercase letter';
+  String get pwdReqUppercase => 'Al menos 1 letra mayúscula';
 
   @override
-  String get pwdReqNumber => 'At least 1 number';
+  String get pwdReqNumber => 'Al menos 1 número';
 
   @override
-  String get pwdReqSpecial => 'At least 1 special character';
+  String get pwdReqSpecial => 'Al menos 1 carácter especial';
 
   @override
   String get alreadyHaveAccountSignIn => '¿Ya tienes una cuenta? Inicia sesión';
