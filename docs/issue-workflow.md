@@ -323,8 +323,22 @@ every change stays small and revertible.
    wait for CI, squash-merge. See section 4.
 
 9. **Verify and close, or hand off.** Run every non-`(human)` acceptance
-   criterion against the merged artifact. Commit evidence under
-   `docs/verification/issue-<N>/`. Then either:
+   criterion and commit evidence under `docs/verification/issue-<N>/`.
+
+   Ordering matters here, and it is not the obvious one. "Commit evidence on the
+   issue branch" and "verify against the merged state" cannot both happen in a
+   single pass, so do this:
+
+   a. After CI is green but **before** merging, run the criteria against the
+      branch tip and commit the evidence there. A squash-merge produces a tree
+      identical to that tip, so the evidence describes what lands.
+   b. Merge.
+   c. Re-run the criteria against `main` as confirmation. Record the merged SHA.
+      If any output differs from the committed evidence — it should not, but
+      check rather than assume — open a follow-up PR that replaces the stale
+      artifacts before closing. Do not close on evidence you know is stale.
+
+   Then either:
    - All criteria pass and none were `(human)`: comment the PASS summary with
      links to the evidence, and close.
    - Some criteria are `(human)` or could not be driven: move to

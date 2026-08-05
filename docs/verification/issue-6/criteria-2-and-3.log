@@ -1,0 +1,13 @@
+
+$ flutter test test/helpers/golden_helpers_test.dart --update-goldens   # criterion 2
+00:02 +4: All tests passed!
+$ git status --short test/helpers/goldens   # regenerated PNGs identical to committed ones
+(no output above = byte-identical regeneration)
+
+$ flutter test test/helpers/golden_helpers_test.dart   # criterion 3, no --update-goldens
+00:00 +0: loading /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart
+00:00 +0: loadAppFonts renders text as real glyphs in a golden
+00:01 +1: loadAppFonts font assets exist on disk
+00:01 +2: loadAppFonts font assets match the pubspec.yaml font declarations
+00:01 +3: golden failure modes a crashed widget still produces a golden PNG
+00:01 +4: All tests passed!
