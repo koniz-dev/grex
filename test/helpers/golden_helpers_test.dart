@@ -20,7 +20,12 @@ class _ThrowingWidget extends StatelessWidget {
 
 void main() {
   group('loadAppFonts', () {
-    testWidgets('renders text as real glyphs in a golden', (tester) async {
+    // Tagged `golden` so CI can exclude it: pixel output depends on the host
+    // renderer, and the committed PNGs are generated on macOS. The two
+    // untagged tests below still guard against asset drift on every CI run.
+    testWidgets('renders text as real glyphs in a golden', tags: ['golden'], (
+      tester,
+    ) async {
       await loadAppFonts();
 
       await tester.pumpWidget(
@@ -113,25 +118,29 @@ void main() {
   });
 
   group('golden failure modes', () {
-    testWidgets('a crashed widget still produces a golden PNG', (tester) async {
-      await loadAppFonts();
+    testWidgets(
+      'a crashed widget still produces a golden PNG',
+      tags: ['golden'],
+      (tester) async {
+        await loadAppFonts();
 
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: AppTheme.lightTheme,
-          home: const Scaffold(body: _ThrowingWidget()),
-        ),
-      );
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.lightTheme,
+            home: const Scaffold(body: _ThrowingWidget()),
+          ),
+        );
 
-      // The framework swallows the build error and substitutes ErrorWidget, so
-      // the render tree is valid and a golden gets written regardless.
-      expect(tester.takeException(), isA<StateError>());
-      expect(find.byType(ErrorWidget), findsOneWidget);
+        // The framework swallows the build error and substitutes ErrorWidget,
+        // so the render tree is valid and a golden gets written regardless.
+        expect(tester.takeException(), isA<StateError>());
+        expect(find.byType(ErrorWidget), findsOneWidget);
 
-      await expectLater(
-        find.byType(MaterialApp),
-        matchesGoldenFile('goldens/golden_harness_error_screen.png'),
-      );
-    });
+        await expectLater(
+          find.byType(MaterialApp),
+          matchesGoldenFile('goldens/golden_harness_error_screen.png'),
+        );
+      },
+    );
   });
 }

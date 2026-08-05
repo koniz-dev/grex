@@ -106,7 +106,17 @@ committed PNG matches a fresh render. Commit the PNG. Copy it into
 `docs/verification/issue-<N>/` when it is the evidence for an issue.
 
 `test/helpers/golden_helpers_test.dart` is the worked example, and it pins both
-failure modes in the suite. Two mechanical notes learned the hard way:
+failure modes in the suite. Three notes learned the hard way:
+
+- **Goldens are local-only and CI does not check them.** Pixel output depends on
+  the host renderer: PNGs generated on macOS differ from a Linux runner by about
+  0.2 percent of pixels in text antialiasing, which is enough to fail
+  `LocalFileComparator`. Golden tests carry `tags: ['golden']` (declared in
+  `dart_test.yaml`) and `test.yml` runs `--exclude-tags golden`. Consequences to
+  hold in mind: a stale golden will not be caught by CI, so regenerate and open
+  the PNG whenever you touch the widget it covers, and never loosen the pixel
+  comparison to make a golden pass on both platforms — a tolerant golden proves
+  nothing. The untagged asset-drift tests in the same file do run in CI.
 
 - Font bytes are read synchronously on purpose. `testWidgets` bodies run in a
   fake-async zone where real file I/O never completes, so awaiting

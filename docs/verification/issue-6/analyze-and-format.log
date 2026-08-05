@@ -1,6 +1,0 @@
-$ dart format --set-exit-if-changed .
-Formatted 494 files (0 changed) in 2.41 seconds.
-format exit=0
-
-$ flutter analyze
-No issues found! (ran in 3.9s)
