@@ -76,7 +76,21 @@ existed.
 | Golden screenshots | `flutter test <path> --update-goldens` then `flutter test <path>` | Real PNG files on disk — the only automated visual evidence here |
 | Build verification | `flutter build web --debug`, `flutter build macos` | Proves the target compiles |
 | Coverage | `flutter test --coverage` + `scripts/linux/testing/calculate_layer_coverage.sh` | Per-layer coverage numbers |
-| Real app, eyeballed | `flutter run -d macos` / `-d chrome`, then macOS `screencapture` | A screenshot of the actually-running app |
+| Real app, eyeballed | `flutter run -d macos` / `-d chrome`, then a bounded `screencapture` (see below) | A screenshot of the actually-running app |
+
+Capturing the running app: bring its window to the front and capture a bounded
+region or that window only, never the whole screen.
+
+```bash
+screencapture -x -R 0,0,1280,800 docs/verification/issue-<N>/app.png   # region
+screencapture -x -l <window-id>  docs/verification/issue-<N>/app.png   # one window
+```
+
+A bare `screencapture -x out.png` grabs the **entire desktop** — every unrelated
+window, notification, and browser tab the maintainer has open. Committing that to
+this public repository would publish someone's screen. Never commit a
+full-desktop capture, and open any capture with the Read tool to confirm what is
+actually in the frame before committing it.
 
 Golden screenshots are the workhorse for visual criteria. Use
 `loadAppFonts()` from

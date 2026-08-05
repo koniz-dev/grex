@@ -1,0 +1,18 @@
+=== criteria 1 and 2, at 7e10738 + working tree ===
+
+$ grep -n screencapture CLAUDE.md
+79:| Real app, eyeballed | `flutter run -d macos` / `-d chrome`, then a bounded `screencapture` (see below) | A screenshot of the actually-running app |
+85:screencapture -x -R 0,0,1280,800 docs/verification/issue-<N>/app.png   # region
+86:screencapture -x -l <window-id>  docs/verification/issue-<N>/app.png   # one window
+89:A bare `screencapture -x out.png` grabs the **entire desktop** — every unrelated
+
+$ grep -n 'entire desktop\|Never commit a' CLAUDE.md
+89:A bare `screencapture -x out.png` grabs the **entire desktop** — every unrelated
+91:this public repository would publish someone's screen. Never commit a
+
+$ dart format --set-exit-if-changed .    # criterion 3
+Formatted 494 files (0 changed) in 2.27 seconds.
+exit=0
+
+$ flutter analyze
+No issues found! (ran in 5.8s)

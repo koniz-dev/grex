@@ -1,0 +1,6 @@
+=== criterion 4, full suite ===
+02:56 +1311 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: golden failure modes a crashed widget still produces a golden PNG
+02:57 +1312 ~572: All tests passed!
+
+$ grep -rn 'skip:' test integration_test | wc -l   # baseline 48
+      48
