@@ -1,0 +1,14 @@
+=== Verification against merged main e261a00 ===
+
+$ test -f test/helpers/golden_helpers.dart && grep -n 'Future<void> loadAppFonts' test/helpers/golden_helpers.dart   # criterion 1
+36:Future<void> loadAppFonts() async {
+
+$ grep -n 'golden_helpers.dart\|loadAppFonts\|not evidence' CLAUDE.md | head   # criterion 7
+82:`loadAppFonts()` from
+83:[test/helpers/golden_helpers.dart](test/helpers/golden_helpers.dart):
+86:import '../helpers/golden_helpers.dart';
+89:  await loadAppFonts();                     // MANDATORY, see below
+98:`loadAppFonts()` registers the real Inter and Outfit families from
+136:- **Text in golden PNGs without `loadAppFonts()`.** Verified firsthand: the
+140:  `loadAppFonts()` first. Without it, do not claim a screenshot verifies text.
+146:  passing golden test, is **not** evidence that the UI works. You must open it.

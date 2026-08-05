@@ -1,0 +1,11 @@
+=== criterion 6, against merged main e261a00 ===
+
+$ dart format --set-exit-if-changed .
+Formatted 494 files (0 changed) in 2.31 seconds.
+exit=0
+
+$ flutter analyze
+No issues found! (ran in 8.4s)
+
+$ grep -c 'skip:' across suite (baseline was unchanged by this issue)
+      48

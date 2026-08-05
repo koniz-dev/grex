@@ -1,26 +1,7 @@
-$ flutter test
-03:03 +1291 ~571: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should build MaterialApp with correct title
-03:03 +1291 ~571: /Users/nguyenanhkiet/Playground/grex/test/performance/device_performance_test.dart: Device Performance Tests Memory Usage Tests OAuth flow should not cause memory leaks
-  Skip: TODO(perf): device-class performance probes (Galaxy S24, Pixel 5, low-end Android, iPhone 12) take ~10 minutes total and rely on flaky wall-clock budgets. Run these out of band when validating device performance, not on every CI run.
-03:03 +1291 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should build MaterialApp with correct title
-03:03 +1292 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should use light theme by default
-03:03 +1293 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should have dark theme configured
-03:03 +1294 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should configure router correctly
-03:03 +1295 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should configure localization delegates
-03:03 +1296 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should configure supported locales
-03:03 +1297 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should use locale from provider
-03:03 +1298 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should configure text direction from provider
-03:03 +1299 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: MyApp should wrap content in RepaintBoundary
-03:03 +1300 ~572: /Users/nguyenanhkiet/Playground/grex/test/main_test.dart: GroupListPage should create GroupListPage widget
-03:04 +1301 ~572: /Users/nguyenanhkiet/Playground/grex/test/infrastructure/mock_completeness_test.dart: Mock Class Completeness Property Tests MockAuthRepository should implement AuthRepository interface
-03:04 +1302 ~572: /Users/nguyenanhkiet/Playground/grex/test/infrastructure/mock_completeness_test.dart: Mock Class Completeness Property Tests MockUserRepository should implement UserRepository interface
-03:04 +1303 ~572: /Users/nguyenanhkiet/Playground/grex/test/infrastructure/mock_completeness_test.dart: Mock Class Completeness Property Tests MockSessionService should implement SessionService interface
-03:04 +1304 ~572: /Users/nguyenanhkiet/Playground/grex/test/infrastructure/mock_completeness_test.dart: Mock Class Completeness Property Tests MockSessionManager should implement SessionManager interface
-03:04 +1305 ~572: /Users/nguyenanhkiet/Playground/grex/test/infrastructure/mock_completeness_test.dart: Mock Class Completeness Property Tests MockEmailVerificationService should implement EmailVerificationService interface
-03:04 +1306 ~572: /Users/nguyenanhkiet/Playground/grex/test/infrastructure/mock_completeness_test.dart: Mock Class Completeness Property Tests All mock classes should be instantiable without errors
-03:04 +1307 ~572: /Users/nguyenanhkiet/Playground/grex/test/infrastructure/mock_completeness_test.dart: Mock Class Completeness Property Tests Mock classes should support method stubbing
-03:04 +1308 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: loadAppFonts renders text as real glyphs in a golden
-03:05 +1309 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: loadAppFonts font assets exist on disk
-03:06 +1310 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: loadAppFonts font assets match the pubspec.yaml font declarations
-03:06 +1311 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: golden failure modes a crashed widget still produces a golden PNG
-03:06 +1312 ~572: All tests passed!
+$ git rev-parse --short HEAD
+e261a00
+
+$ flutter test   # full suite, goldens included, against merged main
+03:12 +1310 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: loadAppFonts font assets match the pubspec.yaml font declarations
+03:12 +1311 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: golden failure modes a crashed widget still produces a golden PNG
+03:12 +1312 ~572: All tests passed!
