@@ -1,6 +1,11 @@
 # Miscellaneous
 *.class
 *.log
+# Acceptance-criteria evidence must be committable despite the *.log rule above.
+# Invariant 4 of docs/issue-workflow.md requires evidence to be a retrievable
+# file in the repository; without this negation the logs are silently dropped at
+# `git add` time and an issue can be closed with no evidence behind it.
+!docs/verification/**/*.log
 *.pyc
 *.swp
 .DS_Store

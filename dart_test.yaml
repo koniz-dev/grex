@@ -1,0 +1,12 @@
+# Test tag declarations. Declaring a tag here keeps `flutter test` from warning
+# about unrecognised tags.
+tags:
+  golden:
+    # Golden (screenshot) tests. Pixel output depends on the host renderer:
+    # PNGs generated on macOS differ from a Linux run by roughly 0.2 percent of
+    # pixels in text antialiasing, which is enough to fail LocalFileComparator.
+    #
+    # CI therefore runs with `--exclude-tags golden` and these tests are
+    # verified locally, where acceptance evidence is produced. Do not loosen the
+    # pixel comparison to make them pass everywhere - a tolerant golden proves
+    # nothing. See CLAUDE.md, "Acceptance verification".

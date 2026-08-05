@@ -79,7 +79,8 @@ existed.
 | Real app, eyeballed | `flutter run -d macos` / `-d chrome`, then macOS `screencapture` | A screenshot of the actually-running app |
 
 Golden screenshots are the workhorse for visual criteria. Use
-`test/helpers/golden_helpers.dart`:
+`loadAppFonts()` from
+[test/helpers/golden_helpers.dart](test/helpers/golden_helpers.dart):
 
 ```dart
 import '../helpers/golden_helpers.dart';
@@ -94,9 +95,38 @@ testWidgets('expense split summary renders', (tester) async {
 });
 ```
 
+`loadAppFonts()` registers the real Inter and Outfit families from
+`assets/fonts/`. **It is mandatory before any golden assertion whose expected
+outcome involves text.** Without it every glyph renders as a filled rectangle,
+so the PNG proves layout and nothing else — do not claim such a screenshot
+verifies copy, a currency format, or a number.
+
 Generate with `--update-goldens`, then re-run **without** the flag to prove the
-committed PNG matches. Commit the PNG. Copy it into
+committed PNG matches a fresh render. Commit the PNG. Copy it into
 `docs/verification/issue-<N>/` when it is the evidence for an issue.
+
+`test/helpers/golden_helpers_test.dart` is the worked example, and it pins both
+failure modes in the suite. Three notes learned the hard way:
+
+- **Goldens are local-only and CI does not check them.** Pixel output depends on
+  the host renderer: PNGs generated on macOS differ from a Linux runner by about
+  0.2 percent of pixels in text antialiasing, which is enough to fail
+  `LocalFileComparator`. Golden tests carry `tags: ['golden']` (declared in
+  `dart_test.yaml`) and `test.yml` runs `--exclude-tags golden`. Consequences to
+  hold in mind: a stale golden will not be caught by CI, so regenerate and open
+  the PNG whenever you touch the widget it covers, and never loosen the pixel
+  comparison to make a golden pass on both platforms — a tolerant golden proves
+  nothing. The untagged asset-drift tests in the same file do run in CI.
+
+- Font bytes are read synchronously on purpose. `testWidgets` bodies run in a
+  fake-async zone where real file I/O never completes, so awaiting
+  `File.readAsBytes()` inside a test makes `FontLoader.load()` hang forever
+  rather than fail. If you add font loading elsewhere, keep it synchronous or
+  wrap it in `tester.runAsync`.
+- `.gitignore` ignores `*.log` globally, with a negation for
+  `docs/verification/**/*.log`. Evidence logs belong under that path; anywhere
+  else they are silently dropped at `git add` time and the issue closes with
+  nothing behind it.
 
 ### What this tooling cannot verify
 
@@ -108,9 +138,12 @@ Be blunt about these when writing criteria; anything in this list is
   a screenshot proves layout but not a single character of copy. Any criterion
   about wording, currency formatting, or numbers shown on screen requires
   `loadAppFonts()` first. Without it, do not claim a screenshot verifies text.
-- **Nothing.** A widget that throws still produces a golden PNG — of Flutter's
-  red error screen. Also verified firsthand. The existence of a PNG, and even a
-  passing golden test, is not evidence that the UI works. You must open it.
+- **A crash.** A widget that throws still produces a golden PNG — of Flutter's
+  red error screen — and `--update-goldens` will happily save that red screen as
+  the new baseline, after which the golden test passes forever. Verified
+  firsthand; pinned by the second case in
+  `test/helpers/golden_helpers_test.dart`. The existence of a PNG, and even a
+  passing golden test, is **not** evidence that the UI works. You must open it.
 - **Real end-to-end flows.** `chromedriver` is not installed, so `flutter drive`
   is unavailable. The files in `integration_test/` are misleadingly named: they
   run under the headless `flutter_test` harness against a mock Supabase client,

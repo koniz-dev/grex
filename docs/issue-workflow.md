@@ -266,11 +266,16 @@ Feature branch plus PR, merged by the session that opened it:
 5. Squash-merge once CI is green.
 6. Verify against the merged state, attach evidence, then close.
 
-Why PRs rather than direct pushes: `test.yml` has a PR-only coverage comment and
-codecov path that direct pushes never exercise, `main` is unprotected so a
-session can merge its own PR without human intervention, and a squashed PR is a
-single revertible commit. Evidence is committed on the same branch, so it lands
-with the change.
+Why PRs rather than direct pushes: `test.yml` posts a per-layer coverage table
+only on pull requests (the "Comment PR with coverage" step is gated on
+`github.event_name == 'pull_request'`), `main` is unprotected so a session can
+merge its own PR without human intervention, and a squashed PR is a single
+revertible commit. Evidence is committed on the same branch, so it lands with the
+change.
+
+The `Tests` workflow takes roughly seven minutes end to end. Budget for that:
+`gh pr checks --watch` blocks until it finishes, and merging before it completes
+defeats the gate.
 
 ---
 
@@ -466,10 +471,16 @@ git log origin/main..HEAD --format=%B | grep -Ei '\b(fix(es|ed)?|close[sd]?|reso
 
 ### Close with evidence
 
+`.gitignore` ignores `*.log` repository-wide and negates
+`docs/verification/**/*.log`. Evidence logs must live under that path; anywhere
+else `git add` silently drops them and the issue closes with nothing behind it.
+
 ```bash
 mkdir -p docs/verification/issue-12
 flutter test test/features/expenses/domain/utils/expense_calculator_test.dart \
   2>&1 | tee docs/verification/issue-12/flutter-test.log
+git add -f docs/verification/issue-12   # -f is belt-and-braces; verify with:
+git status --short docs/verification/issue-12
 # copy any golden PNGs / screenshots into the same directory, then commit them
 # on the issue branch so they land with the change.
 
