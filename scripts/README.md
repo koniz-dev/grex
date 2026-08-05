@@ -51,6 +51,23 @@ scripts/
     └── utilities/             # General utility scripts
 ```
 
+## Platform-independent scripts
+
+`bootstrap-issue-labels.sh` sits at the top level rather than under
+`linux/` or `windows/` because it only drives the GitHub CLI and has no
+platform-specific counterpart.
+
+```bash
+./scripts/bootstrap-issue-labels.sh                   # this repo
+REPO=owner/name ./scripts/bootstrap-issue-labels.sh    # another repo
+DRY_RUN=1 ./scripts/bootstrap-issue-labels.sh          # preview only
+```
+
+It creates the `type:*`, `epic:*`, `priority:*`, and `status:*` label families
+used by the issue-driven workflow, and is idempotent. It is also the **canonical
+source for the epic list** — add an epic there and re-run it, never anywhere
+else. See [docs/issue-workflow.md](../docs/issue-workflow.md).
+
 ## Quick Reference
 
 ### Build & Deployment
