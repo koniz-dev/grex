@@ -1,0 +1,9 @@
+$ dart format --set-exit-if-changed .
+Formatted 494 files (0 changed) in 2.76 seconds.
+exit=0
+
+$ flutter analyze
+Try `flutter pub outdated` for more information.
+Analyzing grex...                                               
+No issues found! (ran in 5.9s)
+exit=0

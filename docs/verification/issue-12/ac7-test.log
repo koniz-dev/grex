@@ -1,0 +1,6 @@
+$ flutter test --coverage --exclude-tags golden
+04:46 +1307 ~572: /Users/nguyenanhkiet/Playground/grex/test/infrastructure/mock_completeness_test.dart: Mock Class Completeness Property Tests Mock classes should support method stubbing
+04:47 +1308 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: loadAppFonts font assets exist on disk
+04:47 +1309 ~572: /Users/nguyenanhkiet/Playground/grex/test/helpers/golden_helpers_test.dart: loadAppFonts font assets match the pubspec.yaml font declarations
+04:48 +1310 ~572: All tests passed!
+exit=0

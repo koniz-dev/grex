@@ -89,69 +89,36 @@ jobs:
         run: |
           genhtml coverage/lcov.info -o coverage/html --no-function-coverage
       
-      - name: Calculate coverage
-        id: coverage
+      # Measures coverage, enforces the baseline, and renders the PR table --
+      # all three from one script so the number in the comment and the number
+      # the gate judges can never disagree. Thresholds live in
+      # scripts/linux/testing/coverage_baseline.env.
+      #
+      # The gate is deliberately not `run:`-fails-the-step: the PR comment must
+      # post even on a failure, so the verdict is captured here and enforced in
+      # the last step of the job.
+      - name: Coverage gate
+        id: gate
+        shell: bash
         run: |
-          COVERAGE=$(lcov --summary coverage/lcov.info 2>&1 | grep "lines.*:" | head -1 | grep -oP '\d+\.\d+%' | head -1 | sed 's/%//' || echo "0")
-          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
-          echo "Coverage: ${COVERAGE}%"
-      
-      - name: Calculate coverage by layer
-        id: layer_coverage
-        run: |
-          chmod +x scripts/linux/testing/calculate_layer_coverage.sh
-          ./scripts/linux/testing/calculate_layer_coverage.sh coverage/lcov.info > /tmp/layer_coverage.txt
-          
-          # Read key=value pairs and write to GITHUB_OUTPUT
-          while IFS='=' read -r key value; do
-            echo "${key}=${value}" >> $GITHUB_OUTPUT
-          done < /tmp/layer_coverage.txt
-          
-          cat /tmp/layer_coverage.txt
-      
-      # Coverage thresholds are disabled while the app is still in active
-      # development (features land faster than tests right now). The job
-      # below still measures coverage and reports it on PRs — re-enable the
-      # gate once feature work stabilises by uncommenting this step.
-      #
-      # Targets when re-enabled: total 80%, domain 100%, data 90%,
-      # presentation 80%, core 80%.
-      #
-      # - name: Check coverage threshold
-      #   run: |
-      #     COVERAGE=${{ steps.coverage.outputs.coverage }}
-      #     DOMAIN_COV=${{ steps.layer_coverage.outputs.domain }}
-      #     DATA_COV=${{ steps.layer_coverage.outputs.data }}
-      #     PRESENTATION_COV=${{ steps.layer_coverage.outputs.presentation }}
-      #     CORE_COV=${{ steps.layer_coverage.outputs.core }}
-      #
-      #     echo "Checking thresholds..."
-      #     FAILED=0
-      #
-      #     check_threshold() {
-      #       local name=$1
-      #       local current=$2
-      #       local target=$3
-      #       if (( $(echo "$current < $target" | bc -l) )); then
-      #         echo "❌ $name: ${current}% < ${target}%"
-      #         return 1
-      #       else
-      #         echo "✅ $name: ${current}% >= ${target}%"
-      #         return 0
-      #       fi
-      #     }
-      #
-      #     check_threshold "Total Coverage" "$COVERAGE" 80 || exit 1
-      #     check_threshold "Domain Layer" "$DOMAIN_COV" 100 || FAILED=1
-      #     check_threshold "Data Layer" "$DATA_COV" 90 || FAILED=1
-      #     check_threshold "Presentation Layer" "$PRESENTATION_COV" 80 || FAILED=1
-      #     check_threshold "Core Layer" "$CORE_COV" 80 || FAILED=1
-      #
-      #     if [ $FAILED -eq 1 ]; then
-      #       echo "⚠️ One or more architectural layers did not meet coverage targets."
-      #       exit 1
-      #     fi
+          chmod +x scripts/linux/testing/calculate_layer_coverage.sh \
+                   scripts/linux/testing/check_coverage_thresholds.sh
 
+          if ./scripts/linux/testing/check_coverage_thresholds.sh \
+               coverage/lcov.info > /tmp/coverage-report.md; then
+            echo "passed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "passed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          cat /tmp/coverage-report.md
+
+          {
+            echo 'report<<COVERAGE_REPORT_EOF'
+            cat /tmp/coverage-report.md
+            echo 'COVERAGE_REPORT_EOF'
+          } >> "$GITHUB_OUTPUT"
+      
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
@@ -175,16 +142,16 @@ jobs:
           recreate: true
           message: |
             ## 📊 Test Coverage Report
-            
-            **Coverage:** ${{ steps.coverage.outputs.coverage }}%
-            **Status:** ${{ steps.coverage.outputs.coverage >= 80 && '✅ Passing' || '❌ Failing' }}
-            
-            Coverage report is available in the [workflow artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
-            
-            ### Coverage by Layer
-            | Layer | Coverage | Target | Status |
-            |-------|----------|--------|--------|
-            | **Domain** | ${{ steps.layer_coverage.outputs.domain_display }} | 100% | ${{ steps.layer_coverage.outputs.domain >= 100 && '✅' || '❌' }} |
-            | **Data** | ${{ steps.layer_coverage.outputs.data_display }} | 90% | ${{ steps.layer_coverage.outputs.data >= 90 && '✅' || '❌' }} |
-            | **Presentation** | ${{ steps.layer_coverage.outputs.presentation_display }} | 80% | ${{ steps.layer_coverage.outputs.presentation >= 80 && '✅' || '❌' }} |
-            | **Core** | ${{ steps.layer_coverage.outputs.core_display }} | 80% | ${{ steps.layer_coverage.outputs.core >= 80 && '✅' || '❌' }} |
+
+            ${{ steps.gate.outputs.report }}
+
+            Full HTML report in the [workflow artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+      # Last, so the comment above is always posted before the job goes red.
+      - name: Enforce coverage baseline
+        if: steps.gate.outputs.passed != 'true'
+        run: |
+          echo "Coverage fell below the baseline in" \
+               "scripts/linux/testing/coverage_baseline.env."
+          echo "Add tests for the layer flagged above. Do not lower the baseline."
+          exit 1

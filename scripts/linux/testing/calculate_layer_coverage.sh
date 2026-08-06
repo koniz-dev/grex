@@ -1,8 +1,26 @@
 #!/bin/bash
-# Calculate coverage by layer from lcov.info file
-# This script extracts coverage percentages for different architectural layers
+# Calculate total and per-layer line coverage from an lcov.info file.
+#
+# Output is strictly `key=value` lines, one per line, so a caller can pipe it
+# straight into $GITHUB_OUTPUT or `eval` it. Anything human-readable belongs in
+# the caller, not here -- this script used to print banner lines that the
+# workflow then fed into $GITHUB_OUTPUT as malformed keys.
+#
+# Every coverage-eligible line is attributed to exactly one bucket, and the
+# bucket line counts sum to total_lines. `unclassified_lines` is the escape
+# hatch: a non-zero value means a new top-level directory appeared under lib/
+# that no bucket claims, and the threshold gate treats that as a failure rather
+# than letting the layer table quietly stop reconciling with the total.
+#
+# The generated-file exclusions below duplicate the `lcov --remove` filter in
+# .github/workflows/test.yml on purpose. CI needs that lcov pass anyway to feed
+# genhtml and Codecov, but lcov is not installed on a typical dev machine, so
+# applying the same filter here is what lets a developer reproduce the exact CI
+# numbers with nothing but awk. Applying it to an already-filtered file is a
+# no-op, so running it after CI's lcov pass changes nothing. Keep the two lists
+# in sync.
 
-set -e
+set -euo pipefail
 
 LCOV_FILE="${1:-coverage/lcov.info}"
 
@@ -11,82 +29,66 @@ if [ ! -f "$LCOV_FILE" ]; then
   exit 1
 fi
 
-# Function to calculate coverage for a path pattern
-calculate_layer_coverage() {
-  local pattern=$1
+awk '
+  function excluded(f) {
+    return (f ~ /\.g\.dart$/       ||
+            f ~ /\.freezed\.dart$/ ||
+            f ~ /\.config\.dart$/  ||
+            f ~ /\/generated\//    ||
+            f ~ /\/l10n\//         ||
+            f ~ /(^|\/)main\.dart$/          ||
+            f ~ /_test\.dart$/               ||
+            f ~ /(^|\/)test_helpers\.dart$/  ||
+            f ~ /(^|\/)test_fixtures\.dart$/ ||
+            f ~ /(^|\/)test\//)
+  }
 
-  # Use awk to extract coverage for files matching the pattern
-  # Track current file and accumulate coverage data
-  awk -v pattern="$pattern" '
-    BEGIN {
-      total=0
-      covered=0
-      current_file=""
-      file_matches=0
+  function bucket(f) {
+    if (f ~ /\/features\/[^\/]+\/domain\//)       return "domain"
+    if (f ~ /\/features\/[^\/]+\/data\//)         return "data"
+    if (f ~ /\/features\/[^\/]+\/presentation\//) return "presentation"
+    if (f ~ /\/core\//)                           return "core"
+    if (f ~ /\/shared\//)                         return "shared"
+    return "unclassified"
+  }
+
+  function pct(c, t) { return t > 0 ? sprintf("%.1f", c / t * 100) : "0.0" }
+
+  function emit(key, c, t) {
+    printf "%s=%s\n",           key, pct(c, t)
+    printf "%s_display=%s%%\n", key, pct(c, t)
+    printf "%s_lines=%d\n",     key, t
+    printf "%s_covered=%d\n",   key, c
+  }
+
+  /^SF:/ {
+    file = substr($0, 4)
+    skip = excluded(file)
+    b    = bucket(file)
+    next
+  }
+
+  /^DA:/ {
+    if (skip) next
+    split($0, parts, ",")
+    lines[b]++
+    lines["total"]++
+    if (parts[2] != "0" && parts[2] != "") {
+      hits[b]++
+      hits["total"]++
     }
+    next
+  }
 
-    /^SF:/ {
-      # Extract file path (remove SF: prefix)
-      current_file = substr($0, 4)
-      # Check if file matches pattern
-      file_matches = (current_file ~ pattern) ? 1 : 0
-      next
+  # Guard against a malformed record leaking DA lines into the previous file s
+  # bucket: until the next SF: line, attribute nothing.
+  /^end_of_record/ { skip = 1; next }
+
+  END {
+    n = split("total domain data presentation core shared unclassified", order, " ")
+    for (i = 1; i <= n; i++) {
+      k = order[i]
+      emit(k, hits[k] + 0, lines[k] + 0)
     }
-
-    /^DA:/ {
-      # Only count if current file matches pattern
-      if (file_matches) {
-        total++
-        # DA format: DA:line_number,execution_count
-        split($0, parts, ",")
-        if (parts[2] != "0" && parts[2] != "") {
-          covered++
-        }
-      }
-      next
-    }
-
-    /^end_of_record/ {
-      # Reset for next file
-      current_file=""
-      file_matches=0
-      next
-    }
-
-    END {
-      if (total > 0) {
-        printf "%.1f", (covered / total) * 100
-      } else {
-        printf "0"
-      }
-    }
-  ' "$LCOV_FILE"
-}
-
-# Calculate coverage for each layer
-# Patterns match file paths containing these segments
-DOMAIN_COV=$(calculate_layer_coverage "/features/.*/domain/")
-DATA_COV=$(calculate_layer_coverage "/features/.*/data/")
-PRESENTATION_COV=$(calculate_layer_coverage "/features/.*/presentation/")
-CORE_COV=$(calculate_layer_coverage "/core/")
-
-# Output values with % suffix for display
-echo "Output values with % suffix for display"
-echo "domain_display=$DOMAIN_COV%"
-echo "data_display=$DATA_COV%"
-echo "presentation_display=$PRESENTATION_COV%"
-echo "core_display=$CORE_COV%"
-
-# Output numeric values for comparison
-echo "Output numeric values for comparison"
-echo "domain=$DOMAIN_COV"
-echo "data=$DATA_COV"
-echo "presentation=$PRESENTATION_COV"
-echo "core=$CORE_COV"
-
-# Print to console for visibility
-echo "Summary of coverage by layer"
-echo "Domain Layer: ${DOMAIN_COV}%"
-echo "Data Layer: ${DATA_COV}%"
-echo "Presentation Layer: ${PRESENTATION_COV}%"
-echo "Core Layer: ${CORE_COV}%"
+  }
+' "$LCOV_FILE"
