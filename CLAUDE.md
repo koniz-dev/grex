@@ -76,6 +76,7 @@ existed.
 | Golden screenshots | `flutter test <path> --update-goldens` then `flutter test <path>` | Real PNG files on disk — the only automated visual evidence here |
 | Build verification | `flutter build web --debug`, `flutter build macos` | Proves the target compiles |
 | Coverage | `flutter test --coverage` + `scripts/linux/testing/calculate_layer_coverage.sh` | Per-layer coverage numbers |
+| Coverage gate | `scripts/linux/testing/check_coverage_thresholds.sh coverage/lcov.info` | Same pass/fail CI enforces, plus the PR table. Baselines: `coverage_baseline.env` |
 | Real app, eyeballed | `flutter run -d macos` / `-d chrome`, then a bounded `screencapture` (see below) | A screenshot of the actually-running app |
 
 Capturing the running app: bring its window to the front and capture a bounded
@@ -141,6 +142,29 @@ failure modes in the suite. Three notes learned the hard way:
   `docs/verification/**/*.log`. Evidence logs belong under that path; anywhere
   else they are silently dropped at `git add` time and the issue closes with
   nothing behind it.
+
+### Coverage gate
+
+CI enforces the **baseline** in
+`scripts/linux/testing/coverage_baseline.env`, not the long-term target. The
+baseline is set to the coverage the repo actually has, so the gate is green
+today and goes red the moment a change drops coverage. Both numbers show in the
+PR table.
+
+Reproduce CI's verdict locally — no `lcov` needed, the layer script applies the
+same exclusions itself:
+
+```bash
+flutter test --coverage --exclude-tags golden
+scripts/linux/testing/check_coverage_thresholds.sh coverage/lcov.info
+```
+
+When new tests raise a layer, raise its `BASELINE_*` in that one file.
+**Never lower a baseline to turn a red build green** — that is the exact
+regression the gate exists to catch. Every coverage-eligible line must belong
+to a layer bucket; if you add a top-level directory under `lib/`, give it a
+bucket in `calculate_layer_coverage.sh` or the gate fails on the unclassified
+remainder.
 
 ### What this tooling cannot verify
 

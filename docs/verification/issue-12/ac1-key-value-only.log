@@ -1,0 +1,32 @@
+$ ./scripts/linux/testing/calculate_layer_coverage.sh coverage/lcov.info
+total=32.4
+total_display=32.4%
+total_lines=15685
+total_covered=5088
+domain=54.0
+domain_display=54.0%
+domain_lines=1549
+domain_covered=836
+data=18.9
+data_display=18.9%
+data_lines=2338
+data_covered=442
+presentation=37.0
+presentation_display=37.0%
+presentation_lines=8665
+presentation_covered=3209
+core=14.0
+core_display=14.0%
+core_lines=2656
+core_covered=373
+shared=47.8
+shared_display=47.8%
+shared_lines=477
+shared_covered=228
+unclassified=0.0
+unclassified_display=0.0%
+unclassified_lines=0
+unclassified_covered=0
+
+$ ... | grep -cvE '^[a-z_]+='   # count of non key=value lines
+0
