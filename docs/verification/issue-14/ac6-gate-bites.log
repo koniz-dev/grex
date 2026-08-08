@@ -1,0 +1,16 @@
+$ BASELINE_PRESENTATION=99 ./scripts/linux/testing/check_coverage_thresholds.sh coverage/lcov.info
+FAIL: Presentation coverage 37.0% is below the 99% baseline
+**Coverage:** 32.3%
+**Status:** ❌ Failing
+
+| Layer | Coverage | Baseline | Target | Status |
+|-------|----------|----------|--------|--------|
+| **Total** | 32.3% | 31% | 80% | ✅ |
+| **Domain** | 53.1% | 52% | 100% | ✅ |
+| **Data** | 18.9% | 17% | 90% | ✅ |
+| **Presentation** | 37.0% | 99% | 80% | ❌ |
+| **Core** | 14.0% | 13% | 80% | ✅ |
+| **Shared** | 47.8% | 46% | 80% | ✅ |
+
+<sub>Baseline is the enforced gate and lives in `scripts/linux/testing/coverage_baseline.env`. Target is the long-term goal and is not enforced. 5069 of 15685 lines covered.</sub>
+exit=1

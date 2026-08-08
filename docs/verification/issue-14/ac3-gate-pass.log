@@ -1,0 +1,15 @@
+$ ./scripts/linux/testing/check_coverage_thresholds.sh coverage/lcov.info   # re-run on the lcov this suite just produced
+**Coverage:** 32.4%
+**Status:** ✅ Passing
+
+| Layer | Coverage | Baseline | Target | Status |
+|-------|----------|----------|--------|--------|
+| **Total** | 32.4% | 31% | 80% | ✅ |
+| **Domain** | 54.0% | 52% | 100% | ✅ |
+| **Data** | 18.9% | 17% | 90% | ✅ |
+| **Presentation** | 37.0% | 36% | 80% | ✅ |
+| **Core** | 14.0% | 13% | 80% | ✅ |
+| **Shared** | 47.8% | 46% | 80% | ✅ |
+
+<sub>Baseline is the enforced gate and lives in `scripts/linux/testing/coverage_baseline.env`. Target is the long-term goal and is not enforced. 5088 of 15685 lines covered.</sub>
+exit=0
