@@ -1,0 +1,5 @@
+CRITERION 3: splitEqually(100.00, 7 ids) = {user1: 14.29, user2: 14.29, user3: 14.29, user4: 14.29, user5: 14.28, user6: 14.28, user7: 14.28}
+CRITERION 3: sum in cents = 10000 (expected 10000)
+CRITERION 4: splitByExactAmounts(10.00, {a:5.50, b:4.50}) = {a: 5.5, b: 4.5}
+CRITERION 5: validateSplit(10.00, {3.34,3.33,3.33}) = true
+00:00 +1: All tests passed!
