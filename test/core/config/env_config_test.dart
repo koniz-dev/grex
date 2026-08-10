@@ -53,7 +53,12 @@ void main() {
       });
     });
 
-    group('with the committed .env placeholder', () {
+    group('with the committed .env asset', () {
+      // Deliberately asserts nothing about what is *in* `.env`. The file ships
+      // empty but developers fill it in, so any assertion on its contents would
+      // pass on a fresh clone and fail on every configured machine. What has to
+      // hold in both states is that the asset exists and loads — that is the
+      // build failure this file was committed to fix.
       setUp(() async {
         await EnvConfig.load();
       });
@@ -62,20 +67,11 @@ void main() {
         expect(EnvConfig.isInitialized, isTrue);
       });
 
-      test('carries no keys, so it cannot shadow anything', () {
-        // The placeholder is comments-only on purpose. A key with an empty
-        // value would be read as a real empty value by dotenv's typed getters
-        // and could override an environment-aware default.
-        expect(EnvConfig.getAll(), isEmpty);
-      });
-
-      test('every lookup still falls through to its default', () {
+      test('a key absent from it falls through to its default', () {
         expect(
-          EnvConfig.get('SUPABASE_URL', defaultValue: 'https://fallback.test'),
-          equals('https://fallback.test'),
+          EnvConfig.get('NOT_IN_ANY_FILE', defaultValue: 'fallback'),
+          equals('fallback'),
         );
-        expect(EnvConfig.getInt('API_TIMEOUT', defaultValue: 30), equals(30));
-        expect(EnvConfig.has('SUPABASE_ANON_KEY'), isFalse);
       });
     });
 
