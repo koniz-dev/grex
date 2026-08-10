@@ -1,0 +1,13 @@
+**Coverage:** 30.6%
+**Status:** ✅ Passing
+
+| Layer | Coverage | Baseline | Target | Status |
+|-------|----------|----------|--------|--------|
+| **Total** | 30.6% | 29% | 80% | ✅ |
+| **Domain** | 54.0% | 53% | 100% | ✅ |
+| **Data** | 18.6% | 17% | 90% | ✅ |
+| **Presentation** | 36.7% | 35% | 80% | ✅ |
+| **Core** | 11.7% | 10% | 80% | ✅ |
+| **Shared** | 35.5% | 34% | 80% | ✅ |
+
+<sub>Baseline is the enforced gate and lives in `scripts/linux/testing/coverage_baseline.env`. Target is the long-term goal and is not enforced. 5108 of 16696 lines covered.</sub>
