@@ -52,8 +52,13 @@ app.*.map.json
 /android/app/release
 
 # Environment configuration files
-# .env.example should be committed as a template
-.env
+# `.env` is intentionally NOT ignored: it is declared under `flutter: assets:`
+# in pubspec.yaml, and a declared asset that does not exist fails the build
+# before any Dart runs. It is committed empty so a fresh clone builds.
+# After filling in your own values, run
+#   git update-index --skip-worktree .env
+# so your keys are never staged. See SETUP.md.
+# `.env.example` is committed as the template of available settings.
 .env.local
 .env.*.local
 

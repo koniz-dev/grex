@@ -20,30 +20,31 @@ For deeper background see `docs/guides/onboarding/getting-started.md` and
 
 ## ❗ You still need to provide
 
-### 1. `.env` (REQUIRED — the app won't even *build* without this)
+### 1. `.env` values (the repo builds without this; the app won't *log in*)
 
-```bash
-cp .env.example .env
-```
-
-Then edit `.env` and fill at minimum:
+`.env` is already in the repo, committed empty, so a fresh clone builds as-is.
+You do **not** need to create it. Open it and fill at minimum:
 
 ```
 SUPABASE_URL=https://<your-project-id>.supabase.co
 SUPABASE_ANON_KEY=<anon-key>
 ```
 
-Get both from **Supabase dashboard → Project Settings → API**.
+Get both from **Supabase dashboard → Project Settings → API**. `.env.example`
+lists every setting the app understands; copy across whatever else you need.
 
-`.env` is gitignored but listed under `flutter: assets:` in `pubspec.yaml`, so
-without the file the asset bundling step fails before Dart runs:
+Then stop git from tracking your edits:
 
+```bash
+git update-index --skip-worktree .env
 ```
-Error detected in pubspec.yaml:
-No file or variants found for asset: .env.
-```
 
-The file must exist even if you supply values via `--dart-define`.
+This matters. `.env` is a **tracked** file, so without this your keys show up in
+`git status` and a stray `git add -A` would publish them. Run it once, right
+after you fill in your values.
+
+To pull an upstream change to `.env` later, undo it with
+`git update-index --no-skip-worktree .env`.
 
 > ⚠️ Leave `SUPABASE_SERVICE_ROLE_KEY` **empty**. Anything in `.env` is shipped
 > inside the app bundle (and served publicly on web), and the service-role key
@@ -51,6 +52,10 @@ The file must exist even if you supply values via `--dart-define`.
 > `scripts/windows/database/utils/rotate-api-keys.ps1` writes the rotated
 > service-role key into `.env` — clear it afterwards. See
 > [F4 in the code audit](docs/audit/2026-08-04-code-audit.md#f4--env-is-bundled-into-the-app-while-documenting-a-service-role-key-high).
+
+> ⚠️ `--dart-define` is not an alternative. `EnvConfig` looks defines up with a
+> runtime key, which never resolves, so every `--dart-define` you pass is
+> silently ignored. `.env` is the only configuration path that works today.
 
 After editing run:
 
