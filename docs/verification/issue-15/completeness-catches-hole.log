@@ -1,0 +1,5 @@
+FAIL: these files under lib/ are missing from /private/tmp/claude-501/-Users-nguyenanhkiet-Playground-grex/a36ae2f6-8b27-4943-96f9-f06fc01e246d/scratchpad/lcov_holed.info:
+        lib/shared/widgets/language_switcher.dart
+      They are not being measured at all, so every layer percentage
+      above is optimistic. Regenerate the coverage aggregator:
+        dart run tool/generate_coverage_aggregator.dart

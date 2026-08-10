@@ -79,6 +79,15 @@ if [ "$sum" -ne "$total_lines" ]; then
   echo "FAIL: layer lines ($sum) do not sum to total lines ($total_lines)." >&2
 fi
 
+# A percentage is only meaningful if everything is in the denominator. A file no
+# test loads is absent from lcov rather than reported as 0%, which inflates
+# every row above, so the gate fails on that too rather than reporting a number
+# it cannot stand behind.
+if ! completeness="$("$SCRIPT_DIR/check_coverage_completeness.sh" "$LCOV_FILE" 2>&1)"; then
+  failed=1
+  echo "$completeness" >&2
+fi
+
 if [ "$failed" -eq 0 ]; then
   status="✅ Passing"
 else

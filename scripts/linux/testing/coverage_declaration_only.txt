@@ -1,0 +1,45 @@
+# Files under lib/ that produce no coverage records because they hold
+# no executable lines: barrel files that only re-export, abstract
+# interfaces with no method bodies, and static-const-only classes.
+#
+# GENERATED -- regenerate with:
+#   scripts/linux/testing/check_coverage_completeness.sh coverage/lcov.info --update
+#
+# Anything absent from lcov and NOT listed here is a measurement hole
+# and fails the gate.
+lib/core/performance/performance.dart
+lib/core/storage/storage_version.dart
+lib/features/auth/data/repositories/repositories.dart
+lib/features/auth/domain/auth_domain.dart
+lib/features/auth/domain/entities/entities.dart
+lib/features/auth/domain/repositories/auth_repository.dart
+lib/features/auth/domain/repositories/repositories.dart
+lib/features/auth/domain/repositories/social_auth_repository.dart
+lib/features/auth/domain/repositories/user_repository.dart
+lib/features/auth/domain/validators/validators.dart
+lib/features/auth/presentation/bloc/bloc.dart
+lib/features/auth/presentation/pages/pages.dart
+lib/features/auth/presentation/widgets/widgets.dart
+lib/features/balances/data/models/models.dart
+lib/features/balances/data/repositories/repositories.dart
+lib/features/balances/domain/entities/entities.dart
+lib/features/balances/domain/failures/failures.dart
+lib/features/balances/domain/repositories/balance_repository.dart
+lib/features/expenses/data/models/models.dart
+lib/features/expenses/data/repositories/repositories.dart
+lib/features/expenses/domain/entities/entities.dart
+lib/features/expenses/domain/failures/failures.dart
+lib/features/expenses/domain/repositories/expense_repository.dart
+lib/features/feature_flags/domain/repositories/feature_flags_repository.dart
+lib/features/groups/data/models/models.dart
+lib/features/groups/data/repositories/repositories.dart
+lib/features/groups/domain/entities/entities.dart
+lib/features/groups/domain/failures/failures.dart
+lib/features/groups/domain/repositories/group_repository.dart
+lib/features/payments/data/models/models.dart
+lib/features/payments/data/repositories/repositories.dart
+lib/features/payments/domain/entities/entities.dart
+lib/features/payments/domain/failures/failures.dart
+lib/features/payments/domain/repositories/payment_repository.dart
+lib/shared/extensions/extensions.dart
+lib/shared/theme/design_tokens.dart
