@@ -1,0 +1,31 @@
+$ flutter test --dart-define=SUPABASE_URL=https://define.test --dart-define=API_TIMEOUT=77 --dart-define=ENABLE_LOGGING=true --dart-define=ENVIRONMENT=staging test/core/config/
+  xml 6.6.1 (7.0.1 available)
+  yet_another_json_isolate 2.1.0 (2.1.1 available)
+Got dependencies!
+88 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart
+00:00 +0: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart: EnvConfig with no env file present load reports itself uninitialized instead of throwing
+00:00 +1: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart: EnvConfig with no env file present get falls back to the supplied default
+00:00 +2: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart: EnvConfig with no env file present get returns empty string when no default is supplied
+00:00 +3: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart: EnvConfig with no env file present typed getters fall back to their defaults
+00:00 +4: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart: EnvConfig with no env file present has reports the key as absent
+00:00 +5: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart: EnvConfig with no env file present getAll is empty
+00:00 +6: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart: EnvConfig with the committed .env asset loads successfully, so a fresh clone boots
+00:00 +7: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_test.dart: EnvConfig with the committed .env asset a key absent from it falls through to its default
+00:00 +8: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution get returns a value passed with --dart-define
+00:00 +9: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution get returns a value passed with --dart-define
+00:00 +10: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution get returns a value passed with --dart-define
+00:00 +11: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution get returns a value passed with --dart-define
+00:00 +12: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution get returns a value passed with --dart-define
+00:00 +13: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution get returns a value passed with --dart-define
+00:00 +14: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution get prefers the define over the supplied default
+00:00 +15: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution getInt reads the define
+00:00 +16: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution getBool reads the define
+00:00 +17: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution has reports a key supplied only by --dart-define
+00:00 +18: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution a file value wins over a define of the same key
+00:00 +19: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution getAll never exposes a define
+00:00 +20: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: --dart-define resolution an unsupported key resolves to the default, not a define
+00:00 +21: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: supported define keys cover every key documented in .env.example
+00:00 +22: /Users/nguyenanhkiet/Playground/grex/test/core/config/env_config_dart_define_test.dart: supported define keys contain no key that .env.example does not document
+00:00 +23: All tests passed!

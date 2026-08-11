@@ -56,6 +56,21 @@ jobs:
         timeout-minutes: 15
         run: flutter test --coverage --timeout=5m --exclude-tags golden
         continue-on-error: false
+
+      # --dart-define values are compile-time, so the only way to assert they
+      # resolve is to compile a run with them set. The tests concerned skip
+      # themselves when the defines are absent -- deliberately, because a test
+      # asserting "the define is absent" would have passed against the bug it
+      # exists to catch (issue #23). This step is what actually exercises them.
+      - name: Verify --dart-define resolution
+        timeout-minutes: 5
+        run: |
+          flutter test \
+            --dart-define=SUPABASE_URL=https://define.test \
+            --dart-define=API_TIMEOUT=77 \
+            --dart-define=ENABLE_LOGGING=true \
+            --dart-define=ENVIRONMENT=staging \
+            test/core/config/env_config_dart_define_test.dart
       
       # ========================================================================
       # Coverage Processing - Critical Step

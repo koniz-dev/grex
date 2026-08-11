@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Environment configuration loader with fallback chain:
@@ -15,6 +14,56 @@ class EnvConfig {
   EnvConfig._();
 
   static bool _isInitialized = false;
+
+  /// Values supplied with `--dart-define`, keyed by name.
+  ///
+  /// This table exists because `String.fromEnvironment` only resolves when the
+  /// call **and** its key are constant. `String.fromEnvironment(key)` with a
+  /// runtime `key` silently returns the default, so the old lookup meant every
+  /// `--dart-define` passed to this app was ignored without a word. Proven
+  /// under `--dart-define=PROBE_KEY=hello`: the const form returned `hello`,
+  /// the runtime-key form returned `''`.
+  ///
+  /// The consequence of the fix is that the supported set is finite and
+  /// explicit. A define whose name is not listed here cannot be read. Keep this
+  /// in step with `.env.example`; `env_config_dart_define_test.dart` fails if
+  /// they drift apart.
+  static const Map<String, String> _dartDefines = <String, String>{
+    'ENVIRONMENT': String.fromEnvironment('ENVIRONMENT'),
+    'BASE_URL': String.fromEnvironment('BASE_URL'),
+    'API_TIMEOUT': String.fromEnvironment('API_TIMEOUT'),
+    'API_CONNECT_TIMEOUT': String.fromEnvironment('API_CONNECT_TIMEOUT'),
+    'API_RECEIVE_TIMEOUT': String.fromEnvironment('API_RECEIVE_TIMEOUT'),
+    'API_SEND_TIMEOUT': String.fromEnvironment('API_SEND_TIMEOUT'),
+    'ENABLE_LOGGING': String.fromEnvironment('ENABLE_LOGGING'),
+    'ENABLE_ANALYTICS': String.fromEnvironment('ENABLE_ANALYTICS'),
+    'ENABLE_CRASH_REPORTING': String.fromEnvironment('ENABLE_CRASH_REPORTING'),
+    'ENABLE_PERFORMANCE_MONITORING': String.fromEnvironment(
+      'ENABLE_PERFORMANCE_MONITORING',
+    ),
+    'ENABLE_DEBUG_FEATURES': String.fromEnvironment('ENABLE_DEBUG_FEATURES'),
+    'ENABLE_HTTP_LOGGING': String.fromEnvironment('ENABLE_HTTP_LOGGING'),
+    'APP_VERSION': String.fromEnvironment('APP_VERSION'),
+    'APP_BUILD_NUMBER': String.fromEnvironment('APP_BUILD_NUMBER'),
+    'SUPABASE_URL': String.fromEnvironment('SUPABASE_URL'),
+    'SUPABASE_ANON_KEY': String.fromEnvironment('SUPABASE_ANON_KEY'),
+    'SUPABASE_SERVICE_ROLE_KEY': String.fromEnvironment(
+      'SUPABASE_SERVICE_ROLE_KEY',
+    ),
+    'SUPABASE_LOCAL_URL': String.fromEnvironment('SUPABASE_LOCAL_URL'),
+    'SUPABASE_LOCAL_ANON_KEY': String.fromEnvironment(
+      'SUPABASE_LOCAL_ANON_KEY',
+    ),
+    'GOOGLE_WEB_CLIENT_ID': String.fromEnvironment('GOOGLE_WEB_CLIENT_ID'),
+    'GOOGLE_IOS_CLIENT_ID': String.fromEnvironment('GOOGLE_IOS_CLIENT_ID'),
+  };
+
+  /// Every key that can be supplied with `--dart-define`.
+  static Set<String> get dartDefineKeys => _dartDefines.keys.toSet();
+
+  /// The `--dart-define` value for [key], or an empty string if unset or
+  /// unsupported.
+  static String _dartDefine(String key) => _dartDefines[key] ?? '';
 
   /// Load environment variables from .env file
   ///
@@ -83,12 +132,10 @@ class EnvConfig {
       }
     }
 
-    // Priority 2: Check --dart-define flags (native only)
-    if (!kIsWeb) {
-      final dartDefineValue = String.fromEnvironment(key);
-      if (dartDefineValue.isNotEmpty) {
-        return dartDefineValue;
-      }
+    // Priority 2: Check --dart-define flags
+    final dartDefineValue = _dartDefine(key);
+    if (dartDefineValue.isNotEmpty) {
+      return dartDefineValue;
     }
 
     // Priority 3: Return default value
@@ -109,16 +156,14 @@ class EnvConfig {
       }
     }
 
-    // Priority 2: Check --dart-define flags (native only)
-    if (!kIsWeb) {
-      final dartDefineValue = String.fromEnvironment(key);
-      if (dartDefineValue.isNotEmpty) {
-        final lowerValue = dartDefineValue.toLowerCase().trim();
-        return lowerValue == 'true' ||
-            lowerValue == '1' ||
-            lowerValue == 'yes' ||
-            lowerValue == 'on';
-      }
+    // Priority 2: Check --dart-define flags
+    final dartDefineValue = _dartDefine(key);
+    if (dartDefineValue.isNotEmpty) {
+      final lowerValue = dartDefineValue.toLowerCase().trim();
+      return lowerValue == 'true' ||
+          lowerValue == '1' ||
+          lowerValue == 'yes' ||
+          lowerValue == 'on';
     }
 
     // Priority 3: Return default value
@@ -138,12 +183,10 @@ class EnvConfig {
       }
     }
 
-    // Priority 2: Check --dart-define flags (native only)
-    if (!kIsWeb) {
-      final dartDefineValue = String.fromEnvironment(key);
-      if (dartDefineValue.isNotEmpty) {
-        return int.tryParse(dartDefineValue) ?? defaultValue;
-      }
+    // Priority 2: Check --dart-define flags
+    final dartDefineValue = _dartDefine(key);
+    if (dartDefineValue.isNotEmpty) {
+      return int.tryParse(dartDefineValue) ?? defaultValue;
     }
 
     // Priority 3: Return default value
@@ -163,12 +206,10 @@ class EnvConfig {
       }
     }
 
-    // Priority 2: Check --dart-define flags (native only)
-    if (!kIsWeb) {
-      final dartDefineValue = String.fromEnvironment(key);
-      if (dartDefineValue.isNotEmpty) {
-        return double.tryParse(dartDefineValue) ?? defaultValue;
-      }
+    // Priority 2: Check --dart-define flags
+    final dartDefineValue = _dartDefine(key);
+    if (dartDefineValue.isNotEmpty) {
+      return double.tryParse(dartDefineValue) ?? defaultValue;
     }
 
     // Priority 3: Return default value
@@ -190,12 +231,8 @@ class EnvConfig {
         // Variable not found in .env
       }
     }
-    // Check --dart-define flags (native only)
-    if (!kIsWeb) {
-      return String.fromEnvironment(key).isNotEmpty;
-    }
-
-    return false;
+    // Check --dart-define flags
+    return _dartDefine(key).isNotEmpty;
   }
 
   /// Get all environment variables as a map
