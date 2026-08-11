@@ -1,0 +1,4 @@
+$ flutter test test/features/balances/
+00:06 +71 ~32: /Users/nguyenanhkiet/Playground/grex/test/features/balances/presentation/widgets/balance_list_item_test.dart: BalanceListItem Widget Tests handles large amounts and decimals without crashing
+00:06 +72 ~32: /Users/nguyenanhkiet/Playground/grex/test/features/balances/presentation/widgets/balance_list_item_test.dart: BalanceListItem Widget Tests renders in a dark theme
+00:07 +73 ~32: All tests passed!

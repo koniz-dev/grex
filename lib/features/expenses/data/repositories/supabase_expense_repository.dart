@@ -84,6 +84,12 @@ class SupabaseExpenseRepository implements ExpenseRepository {
         );
       }
 
+      // Reject a currency the balance engine would silently ignore
+      final currencyError = await _checkCurrencyMatchesGroup(expense);
+      if (currencyError != null) {
+        return Left(currencyError);
+      }
+
       // Create expense
       final expenseModel = ExpenseModel.fromEntity(expense);
       final expenseResponse = await _supabaseClient
@@ -150,6 +156,12 @@ class SupabaseExpenseRepository implements ExpenseRepository {
       final splitValidationError = _validateSplitTotals(expense);
       if (splitValidationError != null) {
         return Left(splitValidationError);
+      }
+
+      // Reject a currency the balance engine would silently ignore
+      final currencyError = await _checkCurrencyMatchesGroup(expense);
+      if (currencyError != null) {
+        return Left(currencyError);
       }
 
       // Update expense
@@ -608,6 +620,39 @@ class SupabaseExpenseRepository implements ExpenseRepository {
         .maybeSingle();
 
     return response != null;
+  }
+
+  /// Reject an expense whose currency is not the owning group's.
+  ///
+  /// `calculate_group_balances` filters every CTE on
+  /// `e.currency = group_currency`, so an expense in another currency is
+  /// stored, listed and exported while contributing to no balance at all. The
+  /// UI no longer offers the choice, but this is the layer that has to hold:
+  /// the form is not the only way a row reaches the table.
+  ///
+  /// Returns `null` when the currencies agree, or when the group's currency
+  /// cannot be read -- a missing group is the membership check's failure to
+  /// report, not this one's.
+  Future<ExpenseFailure?> _checkCurrencyMatchesGroup(Expense expense) async {
+    final response = await _supabaseClient
+        .from('groups')
+        .select('currency')
+        .eq('id', expense.groupId)
+        .maybeSingle();
+
+    final groupCurrency = response?['currency'] as String?;
+    if (groupCurrency == null || groupCurrency.isEmpty) {
+      return null;
+    }
+
+    if (groupCurrency != expense.currency) {
+      return ExpenseCurrencyMismatchFailure(
+        expenseCurrency: expense.currency,
+        groupCurrency: groupCurrency,
+      );
+    }
+
+    return null;
   }
 
   bool _checkPermission(String role, String action) {

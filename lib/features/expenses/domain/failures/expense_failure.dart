@@ -61,6 +61,23 @@ class InvalidExpenseCurrencyFailure extends ExpenseFailure {
     : super('Invalid currency: $currency');
 }
 
+/// Failure when an expense's currency is not the owning group's currency.
+///
+/// `calculate_group_balances` filters on `e.currency = group_currency`, so an
+/// expense in any other currency is recorded and listed but contributes to no
+/// balance. Rejecting it is what stops it being silently dropped. See #18.
+class ExpenseCurrencyMismatchFailure extends ExpenseFailure {
+  /// Creates an [ExpenseCurrencyMismatchFailure] instance
+  const ExpenseCurrencyMismatchFailure({
+    required String expenseCurrency,
+    required String groupCurrency,
+  }) : super(
+         'Expense currency $expenseCurrency does not match the group '
+         'currency $groupCurrency. Expenses must be recorded in the '
+         "group's currency.",
+       );
+}
+
 /// Failure when expense date is invalid
 class InvalidExpenseDateFailure extends ExpenseFailure {
   /// Creates an [InvalidExpenseDateFailure] instance

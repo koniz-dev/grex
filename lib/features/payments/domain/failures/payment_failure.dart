@@ -46,6 +46,23 @@ class InvalidPaymentCurrencyFailure extends PaymentFailure {
     : super('Invalid currency: $currency');
 }
 
+/// Failure when a payment's currency is not the owning group's currency.
+///
+/// `calculate_group_balances` filters payments on the group currency exactly as
+/// it filters expenses, so a payment in another currency settles nothing. See
+/// #18.
+class PaymentCurrencyMismatchFailure extends PaymentFailure {
+  /// Creates a [PaymentCurrencyMismatchFailure] instance
+  const PaymentCurrencyMismatchFailure({
+    required String paymentCurrency,
+    required String groupCurrency,
+  }) : super(
+         'Payment currency $paymentCurrency does not match the group '
+         'currency $groupCurrency. Payments must be recorded in the '
+         "group's currency.",
+       );
+}
+
 /// Failure when payment date is invalid
 class InvalidPaymentDateFailure extends PaymentFailure {
   /// Creates an [InvalidPaymentDateFailure] instance

@@ -68,6 +68,12 @@ class SupabasePaymentRepository implements PaymentRepository {
         );
       }
 
+      // Reject a currency the balance engine would silently ignore
+      final currencyError = await _checkCurrencyMatchesGroup(payment);
+      if (currencyError != null) {
+        return Left(currencyError);
+      }
+
       // Validate payment constraints
       final constraintValidation = await validatePayment(payment);
       if (constraintValidation.isLeft()) {
@@ -444,6 +450,37 @@ class SupabasePaymentRepository implements PaymentRepository {
 
     if (payment.payerId == payment.recipientId) {
       return const SelfPaymentFailure();
+    }
+
+    return null;
+  }
+
+  /// Reject a payment whose currency is not the owning group's.
+  ///
+  /// `calculate_group_balances` filters payments on the group currency exactly
+  /// as it filters expenses, so a payment in another currency settles nothing
+  /// while appearing in the payment list as though it had. See #18.
+  ///
+  /// Returns `null` when the currencies agree, or when the group's currency
+  /// cannot be read -- a missing group is the membership check's failure to
+  /// report, not this one's.
+  Future<PaymentFailure?> _checkCurrencyMatchesGroup(Payment payment) async {
+    final response = await _supabaseClient
+        .from('groups')
+        .select('currency')
+        .eq('id', payment.groupId)
+        .maybeSingle();
+
+    final groupCurrency = response?['currency'] as String?;
+    if (groupCurrency == null || groupCurrency.isEmpty) {
+      return null;
+    }
+
+    if (groupCurrency != payment.currency) {
+      return PaymentCurrencyMismatchFailure(
+        paymentCurrency: payment.currency,
+        groupCurrency: groupCurrency,
+      );
     }
 
     return null;

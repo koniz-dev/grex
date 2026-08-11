@@ -15,6 +15,7 @@ import 'package:grex/features/groups/presentation/bloc/group_bloc.dart';
 import 'package:grex/features/groups/presentation/bloc/group_event.dart';
 import 'package:grex/features/groups/presentation/bloc/group_state.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
+import 'package:grex/shared/widgets/group_currency_field.dart';
 
 /// Page for creating a new expense with form validation and split configuration
 class CreateExpensePage extends StatefulWidget {
@@ -241,32 +242,10 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: DropdownButtonFormField<String>(
-                    initialValue: _selectedCurrency,
-                    decoration: const InputDecoration(
-                      labelText: 'Currency',
-                      border: OutlineInputBorder(),
-                    ),
-                    items: CurrencyFormatter.getSupportedCurrencies()
-                        .map(
-                          (currency) => DropdownMenuItem(
-                            value: currency,
-                            child: Text(
-                              '$currency ${CurrencyFormatter.getCurrencySymbol(
-                                currency,
-                              )}',
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedCurrency = value;
-                        });
-                        _updateSplitCalculation();
-                      }
-                    },
+                  child: GroupCurrencyField(
+                    currency: _selectedCurrency,
+                    label: 'Currency',
+                    helperText: "Fixed to the group's currency",
                   ),
                 ),
               ],
