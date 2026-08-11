@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:grex/features/expenses/domain/entities/expense_participant.dart';
 import 'package:grex/features/expenses/domain/entities/split_method.dart';
 
@@ -333,47 +332,96 @@ class ExpenseCalculator {
     return null; // No validation errors
   }
 
-  /// Recalculate split when expense amount changes
+  /// Recalculate a split when the expense amount changes.
+  ///
+  /// [ExpenseParticipant] records only the amount and percentage each person
+  /// ended up with -- not the share counts or exact amounts that produced them
+  /// -- so the original configuration cannot be recovered after the fact. What
+  /// is recoverable, and is what actually matters, is each participant's
+  /// proportion of the total, so every method except [SplitMethod.equal]
+  /// rescales the existing shares to the new total in integer minor units.
+  ///
+  /// This replaces a reconstruction that inferred share counts from rounded
+  /// percentages against `currentParticipants.length * 1` -- i.e. it assumed
+  /// one share each -- which silently turned a 3:1 split into 2:1 on the first
+  /// amount change, and which threw for [SplitMethod.exact] because it fed the
+  /// old amounts against the new total. See #25.
   static List<ExpenseParticipant> recalculateSplit({
     required double newTotalAmount,
     required List<ExpenseParticipant> currentParticipants,
     required SplitMethod splitMethod,
   }) {
-    // Convert current participants back to participant data format
-    final participantData = currentParticipants.map((participant) {
-      final data = <String, dynamic>{
-        'userId': participant.userId,
-        'displayName': participant.displayName,
-      };
+    if (currentParticipants.isEmpty) {
+      throw ArgumentError('Participant list cannot be empty');
+    }
 
-      // Add method-specific data based on split method
-      switch (splitMethod) {
-        case SplitMethod.equal:
-          // No additional data needed
-          break;
-        case SplitMethod.percentage:
-          data['percentage'] = participant.sharePercentage;
-        case SplitMethod.exact:
-          // For exact amounts, we need to scale proportionally
-          data['amount'] = participant.shareAmount;
-        case SplitMethod.shares:
-          // Calculate shares based on current percentage
-          final totalShares =
-              currentParticipants.length * 1; // Default to 1 share each
-          data['shares'] = max(
-            1,
-            (participant.sharePercentage / 100 * totalShares).round(),
+    final splitAmounts = splitMethod == SplitMethod.equal
+        ? splitEqually(
+            totalAmount: newTotalAmount,
+            participantIds: currentParticipants
+                .map((participant) => participant.userId)
+                .toList(),
+          )
+        : _rescaleToTotal(
+            participants: currentParticipants,
+            newTotalCents: _toCents(newTotalAmount),
           );
-      }
 
-      return data;
-    }).toList();
-
-    return calculateSplit(
+    final percentages = calculatePercentages(
       totalAmount: newTotalAmount,
-      splitMethod: splitMethod,
-      participantData: participantData,
+      splitAmounts: splitAmounts,
     );
+
+    return currentParticipants
+        .map(
+          (participant) => ExpenseParticipant(
+            userId: participant.userId,
+            displayName: participant.displayName,
+            shareAmount: splitAmounts[participant.userId]!,
+            sharePercentage: percentages[participant.userId]!,
+          ),
+        )
+        .toList();
+  }
+
+  /// Scale existing shares to [newTotalCents], preserving each participant's
+  /// proportion and conserving the total exactly.
+  static Map<String, double> _rescaleToTotal({
+    required List<ExpenseParticipant> participants,
+    required int newTotalCents,
+  }) {
+    final oldCents = [
+      for (final participant in participants) _toCents(participant.shareAmount),
+    ];
+    final oldTotalCents = oldCents.fold<int>(0, (sum, cents) => sum + cents);
+
+    // A split that currently totals nothing carries no proportions to
+    // preserve, so fall back to an equal division rather than dividing by zero.
+    if (oldTotalCents == 0) {
+      return splitEqually(
+        totalAmount: _fromCents(newTotalCents),
+        participantIds: participants
+            .map((participant) => participant.userId)
+            .toList(),
+      );
+    }
+
+    final result = <String, double>{};
+    var assignedCents = 0;
+
+    for (var i = 0; i < participants.length - 1; i++) {
+      final cents = (newTotalCents * oldCents[i] / oldTotalCents).round();
+      result[participants[i].userId] = _fromCents(cents);
+      assignedCents += cents;
+    }
+
+    // The last participant absorbs the rounding remainder, so the shares sum
+    // back to the new total exactly.
+    result[participants.last.userId] = _fromCents(
+      newTotalCents - assignedCents,
+    );
+
+    return result;
   }
 
   /// Check if split method supports adding/removing participants
