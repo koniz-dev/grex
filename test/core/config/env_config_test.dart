@@ -13,6 +13,15 @@ void main() {
 
   group('EnvConfig', () {
     group('with no env file present', () {
+      // These assert the "absent everywhere" fallback, so they deliberately use
+      // keys that no `--dart-define` can supply. A real key such as
+      // SUPABASE_URL would resolve from a define when the suite is run with
+      // one, and the assertion would be about the runner's flags rather than
+      // about EnvConfig. See issue #23.
+      const absentKey = 'KEY_NO_DEFINE_CAN_SUPPLY';
+      const absentIntKey = 'INT_KEY_NO_DEFINE_CAN_SUPPLY';
+      const absentBoolKey = 'BOOL_KEY_NO_DEFINE_CAN_SUPPLY';
+
       setUp(() async {
         await EnvConfig.load(fileName: '.env.does-not-exist');
       });
@@ -23,19 +32,19 @@ void main() {
 
       test('get falls back to the supplied default', () {
         expect(
-          EnvConfig.get('SUPABASE_URL', defaultValue: 'https://fallback.test'),
+          EnvConfig.get(absentKey, defaultValue: 'https://fallback.test'),
           equals('https://fallback.test'),
         );
       });
 
       test('get returns empty string when no default is supplied', () {
-        expect(EnvConfig.get('SUPABASE_URL'), isEmpty);
+        expect(EnvConfig.get(absentKey), isEmpty);
       });
 
       test('typed getters fall back to their defaults', () {
-        expect(EnvConfig.getInt('API_TIMEOUT', defaultValue: 30), equals(30));
+        expect(EnvConfig.getInt(absentIntKey, defaultValue: 30), equals(30));
         expect(
-          EnvConfig.getBool('ENABLE_LOGGING', defaultValue: true),
+          EnvConfig.getBool(absentBoolKey, defaultValue: true),
           isTrue,
         );
         expect(
@@ -45,7 +54,7 @@ void main() {
       });
 
       test('has reports the key as absent', () {
-        expect(EnvConfig.has('SUPABASE_URL'), isFalse);
+        expect(EnvConfig.has(absentKey), isFalse);
       });
 
       test('getAll is empty', () {

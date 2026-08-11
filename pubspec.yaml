@@ -177,9 +177,10 @@ flutter:
   # "No file or variants found for asset: .env" before any Dart code runs, so
   # `.env` MUST exist. It is therefore committed (empty) rather than gitignored,
   # which is what lets a fresh clone build. See SETUP.md before editing it.
-  # `--dart-define` is NOT a substitute: EnvConfig reads defines through
-  # `String.fromEnvironment(key)` with a runtime key, which never sees a define,
-  # so the only configuration path that works today is this file.
+  # `.env` must exist regardless of how values are supplied: the asset is
+  # declared, so a missing file fails the build even when every value comes
+  # from `--dart-define`. Defines do work (see EnvConfig._dartDefines), but
+  # they cannot make this file optional.
   # WARNING: everything in `.env` is shipped inside the app bundle and served
   # publicly on web. Never put SUPABASE_SERVICE_ROLE_KEY here.
   # See docs/audit/2026-08-04-code-audit.md (F4, F5).

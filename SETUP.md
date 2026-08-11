@@ -53,9 +53,16 @@ To pull an upstream change to `.env` later, undo it with
 > service-role key into `.env` — clear it afterwards. See
 > [F4 in the code audit](docs/audit/2026-08-04-code-audit.md#f4--env-is-bundled-into-the-app-while-documenting-a-service-role-key-high).
 
-> ⚠️ `--dart-define` is not an alternative. `EnvConfig` looks defines up with a
-> runtime key, which never resolves, so every `--dart-define` you pass is
-> silently ignored. `.env` is the only configuration path that works today.
+> `--dart-define` also works, and is what CI and the deploy workflows should
+> prefer over writing secrets to a file. `.env` wins over a define of the same
+> key, and a define wins over the built-in default. Only the keys listed in
+> `.env.example` can be supplied this way — a define with any other name is
+> ignored, because only constant keys resolve at compile time.
+>
+> ```bash
+> flutter run --dart-define=SUPABASE_URL=https://your-project.supabase.co \
+>             --dart-define=SUPABASE_ANON_KEY=<anon-key>
+> ```
 
 After editing run:
 
