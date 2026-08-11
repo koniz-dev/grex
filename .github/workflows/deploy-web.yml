@@ -32,7 +32,7 @@ name: Deploy Web
 #
 # Activation order (per chosen platform):
 #   1. Populate SUPABASE_URL_PROD / SUPABASE_ANON_KEY_PROD secrets so the
-#      "Write .env from secrets" step has real values to interpolate.
+#      "Write assets/env/env from secrets" step has real values to interpolate.
 #   2. Uncomment "Build Web" inside the chosen job.
 #   3. Uncomment the platform-specific deploy step.
 #   4. (Optional) Switch trigger to `push: branches: [main]` or
@@ -99,16 +99,17 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
-      # Writes `.env` from GitHub Secrets at runtime. Required secrets:
+      # Writes `assets/env/env` from GitHub Secrets at runtime. Required secrets:
       # SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD. Until those are set in
       # the repo, the interpolated values resolve to empty strings — still
       # safer than shipping the placeholder values from `.env.example`.
-      - name: Write .env from secrets
+      - name: Write assets/env/env from secrets
         env:
           ENV_INPUT: ${{ github.event.inputs.environment }}
         run: |
           ENV="${ENV_INPUT:-production}"
-          cat > .env <<EOF
+          mkdir -p assets/env
+          cat > assets/env/env <<EOF
           ENVIRONMENT=$ENV
           SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
           SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}
@@ -128,7 +129,7 @@ jobs:
             echo "environment=production" >> $GITHUB_OUTPUT
           fi
 
-      # Builds the web bundle into build/web. Depends on signed `.env`
+      # Builds the web bundle into build/web. Depends on signed `assets/env/env`
       # (FIXME above). Required secrets: BASE_URL_STAGING, BASE_URL_PRODUCTION.
       # - name: Build Web
       #   env:
@@ -174,16 +175,17 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
-      # Writes `.env` from GitHub Secrets at runtime. Required secrets:
+      # Writes `assets/env/env` from GitHub Secrets at runtime. Required secrets:
       # SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD. Until those are set in
       # the repo, the interpolated values resolve to empty strings — still
       # safer than shipping the placeholder values from `.env.example`.
-      - name: Write .env from secrets
+      - name: Write assets/env/env from secrets
         env:
           ENV_INPUT: ${{ github.event.inputs.environment }}
         run: |
           ENV="${ENV_INPUT:-production}"
-          cat > .env <<EOF
+          mkdir -p assets/env
+          cat > assets/env/env <<EOF
           ENVIRONMENT=$ENV
           SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
           SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}
@@ -197,7 +199,7 @@ jobs:
         run: |
           echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
 
-      # Builds the web bundle into build/web. Depends on signed `.env`
+      # Builds the web bundle into build/web. Depends on signed `assets/env/env`
       # (FIXME above). Required secrets: BASE_URL_STAGING, BASE_URL_PRODUCTION.
       # - name: Build Web
       #   env:
@@ -244,16 +246,17 @@ jobs:
           flutter-version: 'stable'
           channel: 'stable'
 
-      # Writes `.env` from GitHub Secrets at runtime. Required secrets:
+      # Writes `assets/env/env` from GitHub Secrets at runtime. Required secrets:
       # SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD. Until those are set in
       # the repo, the interpolated values resolve to empty strings — still
       # safer than shipping the placeholder values from `.env.example`.
-      - name: Write .env from secrets
+      - name: Write assets/env/env from secrets
         env:
           ENV_INPUT: ${{ github.event.inputs.environment }}
         run: |
           ENV="${ENV_INPUT:-production}"
-          cat > .env <<EOF
+          mkdir -p assets/env
+          cat > assets/env/env <<EOF
           ENVIRONMENT=$ENV
           SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
           SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}
@@ -267,7 +270,7 @@ jobs:
         run: |
           echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
 
-      # Builds the web bundle into build/web. Depends on signed `.env`
+      # Builds the web bundle into build/web. Depends on signed `assets/env/env`
       # (FIXME above). Required secrets: BASE_URL_STAGING, BASE_URL_PRODUCTION.
       # - name: Build Web
       #   env:

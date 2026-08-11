@@ -20,44 +20,42 @@ For deeper background see `docs/guides/onboarding/getting-started.md` and
 
 ## ❗ You still need to provide
 
-### 1. `.env` values (the repo builds without this; the app won't *log in*)
+### 1. Your environment settings (the repo builds without this)
 
-`.env` is already in the repo, committed empty, so a fresh clone builds as-is.
-You do **not** need to create it. Open it and fill at minimum:
+A fresh clone builds as-is. To actually log in, create **`assets/env/env`** —
+no dot, no extension:
 
-```
+```bash
+cat > assets/env/env <<'EOF'
 SUPABASE_URL=https://<your-project-id>.supabase.co
 SUPABASE_ANON_KEY=<anon-key>
+EOF
 ```
 
 Get both from **Supabase dashboard → Project Settings → API**. `.env.example`
-lists every setting the app understands; copy across whatever else you need.
+at the repository root lists every setting the app understands; copy across
+whatever else you need.
 
-Then stop git from tracking your edits:
+That file is **gitignored**, so your keys can never be committed. Nothing else
+to do — no `skip-worktree`, no template copying.
 
-```bash
-git update-index --skip-worktree .env
-```
+Why this path: `pubspec.yaml` declares the *directory* `assets/env/`, not a file
+inside it. A declared asset file that does not exist fails the build before any
+Dart runs; a declared directory only has to exist, and it does, because
+`assets/env/README.md` is committed. That is what lets your real file stay
+ignored.
 
-This matters. `.env` is a **tracked** file, so without this your keys show up in
-`git status` and a stray `git add -A` would publish them. Run it once, right
-after you fill in your values.
-
-To pull an upstream change to `.env` later, undo it with
-`git update-index --no-skip-worktree .env`.
-
-> ⚠️ Leave `SUPABASE_SERVICE_ROLE_KEY` **empty**. Anything in `.env` is shipped
-> inside the app bundle (and served publicly on web), and the service-role key
-> bypasses every RLS policy. Note that
+> ⚠️ Leave `SUPABASE_SERVICE_ROLE_KEY` **empty**. Everything in `assets/env/` is
+> shipped inside the app bundle (and served publicly on web), and the
+> service-role key bypasses every RLS policy. Note that
 > `scripts/windows/database/utils/rotate-api-keys.ps1` writes the rotated
 > service-role key into `.env` — clear it afterwards. See
 > [F4 in the code audit](docs/audit/2026-08-04-code-audit.md#f4--env-is-bundled-into-the-app-while-documenting-a-service-role-key-high).
 
 > `--dart-define` also works, and is what CI and the deploy workflows should
-> prefer over writing secrets to a file. `.env` wins over a define of the same
-> key, and a define wins over the built-in default. Only the keys listed in
-> `.env.example` can be supplied this way — a define with any other name is
-> ignored, because only constant keys resolve at compile time.
+> prefer over writing secrets to a file. The env file wins over a define of the
+> same key, and a define wins over the built-in default. Only the keys listed in
+> `.env.example` can be supplied this way.
 >
 > ```bash
 > flutter run --dart-define=SUPABASE_URL=https://your-project.supabase.co \
@@ -70,7 +68,7 @@ After editing run:
 flutter clean && flutter pub get && flutter run
 ```
 
-(`.env` is bundled as an asset, so `flutter clean` is needed.)
+(the env file is bundled as an asset, so `flutter clean` is needed.)
 
 ### 2. `ios/Runner/GoogleService-Info.plist` (optional)
 
@@ -111,7 +109,7 @@ config.
 
 ## 🔎 Verifying the setup
 
-After editing `.env`:
+After editing `assets/env/env`:
 
 ```bash
 flutter clean
@@ -119,7 +117,7 @@ flutter pub get
 flutter run
 ```
 
-- If you see "Configuration error" screen → `.env` is empty or wrong; check
-  `SUPABASE_URL` / `SUPABASE_ANON_KEY`.
+- If you see "Configuration error" screen → `assets/env/env` is missing or
+  wrong; check `SUPABASE_URL` / `SUPABASE_ANON_KEY`.
 - If you see the login screen → boot is fine. Try email login first (least
   external config). Then social providers (require steps 4 / 5 above).

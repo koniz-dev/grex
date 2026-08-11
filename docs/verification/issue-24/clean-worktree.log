@@ -1,0 +1,12 @@
+$ ls assets/env/   # fresh clone
+README.md
+env
+
+$ flutter build web --debug   # no dev env file present
+Use --no-wasm-dry-run to disable these warnings.
+Compiling lib/main.dart for the Web...                             60.2s
+✓ Built build/web
+
+$ flutter test test/core/config/
+00:00 +17 ~6: /private/tmp/grex-env-check/test/core/config/env_config_test.dart: EnvConfig with a file that does have values an absent key still falls through to the default
+00:00 +18 ~6: All tests passed!

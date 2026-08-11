@@ -25,7 +25,7 @@ name: Deploy Android
 #
 # Activation order (do these in sequence as each piece becomes ready):
 #   1. Populate SUPABASE_URL_PROD / SUPABASE_ANON_KEY_PROD secrets so the
-#      "Write .env from secrets" step has real values to interpolate.
+#      "Write assets/env/env from secrets" step has real values to interpolate.
 #   2. Uncomment "Setup Android keystore".
 #   3. Uncomment "Build App Bundle".
 #   4. Uncomment "Setup Google Play" — OR leave commented and rely on
@@ -90,16 +90,17 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Writes `.env` from GitHub Secrets at runtime. Required secrets:
+      # Writes `assets/env/env` from GitHub Secrets at runtime. Required secrets:
       # SUPABASE_URL_PROD, SUPABASE_ANON_KEY_PROD. Until those are set in
       # the repo, the interpolated values resolve to empty strings — still
       # safer than shipping the placeholder values from `.env.example`.
-      - name: Write .env from secrets
+      - name: Write assets/env/env from secrets
         env:
           ENV_INPUT: ${{ github.event.inputs.environment }}
         run: |
           ENV="${ENV_INPUT:-production}"
-          cat > .env <<EOF
+          mkdir -p assets/env
+          cat > assets/env/env <<EOF
           ENVIRONMENT=$ENV
           SUPABASE_URL=${{ secrets.SUPABASE_URL_PROD }}
           SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_PROD }}

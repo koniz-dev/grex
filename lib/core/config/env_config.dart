@@ -13,6 +13,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class EnvConfig {
   EnvConfig._();
 
+  /// Path of the developer's environment file, as a bundled asset.
+  ///
+  /// `pubspec.yaml` declares the directory `assets/env/`, not this file, so the
+  /// file is optional: a fresh clone has no `assets/env/env` and still builds
+  /// and boots, falling back to `--dart-define` and then to defaults. See #24.
+  static const defaultEnvFile = 'assets/env/env';
+
   static bool _isInitialized = false;
 
   /// Values supplied with `--dart-define`, keyed by name.
@@ -83,7 +90,7 @@ class EnvConfig {
   ///   runApp(MyApp());
   /// }
   /// ```
-  static Future<void> load({String fileName = '.env'}) async {
+  static Future<void> load({String fileName = defaultEnvFile}) async {
     try {
       await dotenv.load(fileName: fileName);
       _isInitialized = true;

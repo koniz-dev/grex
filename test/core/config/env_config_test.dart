@@ -62,18 +62,18 @@ void main() {
       });
     });
 
-    group('with the committed .env asset', () {
-      // Deliberately asserts nothing about what is *in* `.env`. The file ships
-      // empty but developers fill it in, so any assertion on its contents would
-      // pass on a fresh clone and fail on every configured machine. What has to
-      // hold in both states is that the asset exists and loads — that is the
-      // build failure this file was committed to fix.
+    group('with the default env asset path', () {
+      // Deliberately asserts nothing about whether `assets/env/env` exists or
+      // what is in it. It is gitignored, so it is absent on a fresh clone and
+      // present-and-populated on a configured machine; an assertion either way
+      // would pass in one state and fail in the other. What has to hold in both
+      // is that loading it never throws and lookups still resolve.
       setUp(() async {
         await EnvConfig.load();
       });
 
-      test('loads successfully, so a fresh clone boots', () {
-        expect(EnvConfig.isInitialized, isTrue);
+      test('loading the default path never throws', () async {
+        await expectLater(EnvConfig.load(), completes);
       });
 
       test('a key absent from it falls through to its default', () {
@@ -81,6 +81,12 @@ void main() {
           EnvConfig.get('NOT_IN_ANY_FILE', defaultValue: 'fallback'),
           equals('fallback'),
         );
+      });
+
+      test('the default path is the directory-backed asset', () {
+        // The directory is declared, not the file, which is what lets the file
+        // be gitignored without breaking the build. See #24.
+        expect(EnvConfig.defaultEnvFile, equals('assets/env/env'));
       });
     });
 
