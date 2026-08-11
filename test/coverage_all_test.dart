@@ -298,6 +298,7 @@ import 'package:grex/shared/theme/design_tokens.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
 import 'package:grex/shared/utils/locale_defaults.dart';
 import 'package:grex/shared/widgets/dev_logout_overlay.dart';
+import 'package:grex/shared/widgets/group_currency_field.dart';
 import 'package:grex/shared/widgets/language_switcher.dart';
 import 'package:grex/shared/widgets/loading_indicator.dart';
 import 'package:grex/shared/widgets/optimized_image.dart';

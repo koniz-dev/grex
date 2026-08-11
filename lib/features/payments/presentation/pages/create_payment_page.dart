@@ -10,6 +10,7 @@ import 'package:grex/features/payments/presentation/bloc/payment_event.dart';
 import 'package:grex/features/payments/presentation/bloc/payment_state.dart';
 import 'package:grex/shared/extensions/context_extensions.dart';
 import 'package:grex/shared/utils/currency_formatter.dart';
+import 'package:grex/shared/widgets/group_currency_field.dart';
 
 /// Page for creating a new payment with form validation
 class CreatePaymentPage extends StatefulWidget {
@@ -241,31 +242,10 @@ class _CreatePaymentPageState extends State<CreatePaymentPage> {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: DropdownButtonFormField<String>(
-                    initialValue: _selectedCurrency,
-                    decoration: InputDecoration(
-                      labelText: l10n.currency,
-                      border: const OutlineInputBorder(),
-                    ),
-                    items: CurrencyFormatter.getSupportedCurrencies()
-                        .map(
-                          (currency) => DropdownMenuItem(
-                            value: currency,
-                            child: Text(
-                              '$currency ${CurrencyFormatter.getCurrencySymbol(
-                                currency,
-                              )}',
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedCurrency = value;
-                        });
-                      }
-                    },
+                  child: GroupCurrencyField(
+                    currency: _selectedCurrency,
+                    label: l10n.currency,
+                    helperText: "Fixed to the group's currency",
                   ),
                 ),
               ],

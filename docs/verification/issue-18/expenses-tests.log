@@ -1,0 +1,4 @@
+$ flutter test test/features/expenses/
+00:14 +77 ~186: /Users/nguyenanhkiet/Playground/grex/test/features/expenses/presentation/bloc/expense_bloc_property_test.dart: ExpenseBloc Property-Based Tests Property 11: Expense details completeness should show complete expense information with 200 iterations
+00:14 +78 ~186: /Users/nguyenanhkiet/Playground/grex/test/features/expenses/presentation/bloc/expense_bloc_property_test.dart: ExpenseBloc Property-Based Tests Property 11: Expense details completeness should handle different split methods correctly with 200 iterations
+00:14 +79 ~186: All tests passed!

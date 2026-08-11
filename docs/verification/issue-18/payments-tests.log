@@ -1,0 +1,4 @@
+$ flutter test test/features/payments/
+00:05 +36 ~72: /Users/nguyenanhkiet/Playground/grex/test/features/payments/presentation/bloc/payment_bloc_test.dart: PaymentBloc State Transitions PaymentFilter matches method works correctly
+00:05 +37 ~72: /Users/nguyenanhkiet/Playground/grex/test/features/payments/presentation/bloc/payment_bloc_test.dart: PaymentBloc State Transitions PaymentFilter description works correctly
+00:05 +38 ~72: All tests passed!
