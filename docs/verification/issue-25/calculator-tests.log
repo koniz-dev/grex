@@ -1,0 +1,41 @@
+$ flutter test test/features/expenses/domain/utils/expense_calculator_test.dart
+88 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/nguyenanhkiet/Playground/grex/test/features/expenses/domain/utils/expense_calculator_test.dart
+00:00 +0: ExpenseCalculator splitEqually should split amount equally among participants
+00:00 +1: ExpenseCalculator splitEqually should conserve the total exactly when it does not divide
+00:00 +2: ExpenseCalculator splitEqually should hand out leftover cents deterministically
+00:00 +3: ExpenseCalculator splitEqually should conserve the total for the counts that used to fail
+00:00 +4: ExpenseCalculator splitEqually should throw error for empty participants
+00:00 +5: ExpenseCalculator splitByPercentage should split amount by percentage correctly
+00:00 +6: ExpenseCalculator splitByPercentage should handle rounding in percentage splits
+00:00 +7: ExpenseCalculator splitByPercentage should throw error for invalid percentage total
+00:00 +8: ExpenseCalculator splitByExactAmounts should split by exact amounts correctly
+00:00 +9: ExpenseCalculator splitByExactAmounts should accept amounts with cents in them
+00:00 +10: ExpenseCalculator splitByExactAmounts should throw error for invalid total
+00:00 +11: ExpenseCalculator splitByShares should split by shares correctly
+00:00 +12: ExpenseCalculator splitByShares should handle rounding in share splits
+00:00 +13: ExpenseCalculator validateSplit should validate correct split
+00:00 +14: ExpenseCalculator validateSplit should validate a split whose shares carry cents
+00:00 +15: ExpenseCalculator validateSplit should reject a split that is off by a single cent
+00:00 +16: ExpenseCalculator validateSplit should reject incorrect split
+00:00 +17: ExpenseCalculator calculateSplit with domain entities should calculate equal split with participants
+00:00 +18: ExpenseCalculator calculateSplit with domain entities should calculate percentage split with participants
+00:00 +19: ExpenseCalculator validateSplitConfiguration should validate equal split configuration
+00:00 +20: ExpenseCalculator validateSplitConfiguration should reject invalid percentage configuration
+00:00 +21: ExpenseCalculator validateSplitConfiguration should reject duplicate participants
+00:00 +22: ExpenseCalculator recalculateSplit should preserve share ratios when the amount changes
+00:00 +23: ExpenseCalculator recalculateSplit should survive repeated recalculation without drifting
+00:00 +24: ExpenseCalculator recalculateSplit should scale exact amounts instead of throwing
+00:00 +25: ExpenseCalculator recalculateSplit should keep percentage splits proportional
+00:00 +26: ExpenseCalculator recalculateSplit should throw for an empty participant list
+00:00 +27: ExpenseCalculator recalculateSplit should recalculate split when amount changes
+00:00 +28: ExpenseCalculator utility methods canModifyParticipants should return correct values
+00:00 +29: ExpenseCalculator utility methods getDefaultParticipantData should return appropriate defaults
+00:00 +30: ExpenseCalculator conservation sweep splitEqually conserves the total for every total and count
+00:01 +31: ExpenseCalculator conservation sweep splitByPercentage conserves the total for every total
+00:02 +32: ExpenseCalculator conservation sweep splitByShares conserves the total for every total
+00:04 +33: ExpenseCalculator conservation sweep splitByExactAmounts round-trips an equal split
+00:08 +34: ExpenseCalculator conservation sweep recalculateSplit conserves the new total for every method
+00:18 +35: ExpenseCalculator conservation sweep validateSplit accepts every conserving split
+00:19 +36: All tests passed!

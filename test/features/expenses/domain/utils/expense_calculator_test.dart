@@ -362,6 +362,117 @@ void main() {
     });
 
     group('recalculateSplit', () {
+      test('should preserve share ratios when the amount changes', () {
+        // Regression: share counts were reconstructed from rounded percentages
+        // against `currentParticipants.length * 1` -- one share each -- so a
+        // 3:1 split silently became 2:1 and 100 -> 200 produced 133.33/66.67
+        // instead of 150.00/50.00.
+        final original = ExpenseCalculator.calculateSplit(
+          totalAmount: 100,
+          splitMethod: SplitMethod.shares,
+          participantData: <Map<String, dynamic>>[
+            {'userId': 'a', 'displayName': 'A', 'shares': 3},
+            {'userId': 'b', 'displayName': 'B', 'shares': 1},
+          ],
+        );
+        expect(original[0].shareAmount, equals(75.0));
+        expect(original[1].shareAmount, equals(25.0));
+
+        final doubled = ExpenseCalculator.recalculateSplit(
+          newTotalAmount: 200,
+          currentParticipants: original,
+          splitMethod: SplitMethod.shares,
+        );
+
+        expect(doubled[0].shareAmount, equals(150.0));
+        expect(doubled[1].shareAmount, equals(50.0));
+        expect(_sumParticipantCents(doubled), equals(_cents(200)));
+      });
+
+      test('should survive repeated recalculation without drifting', () {
+        var participants = ExpenseCalculator.calculateSplit(
+          totalAmount: 100,
+          splitMethod: SplitMethod.shares,
+          participantData: <Map<String, dynamic>>[
+            {'userId': 'a', 'displayName': 'A', 'shares': 3},
+            {'userId': 'b', 'displayName': 'B', 'shares': 1},
+          ],
+        );
+
+        for (final total in const [200.0, 50.0, 100.0]) {
+          participants = ExpenseCalculator.recalculateSplit(
+            newTotalAmount: total,
+            currentParticipants: participants,
+            splitMethod: SplitMethod.shares,
+          );
+          expect(
+            _sumParticipantCents(participants),
+            equals(_cents(total)),
+            reason: 'recalculating to $total must conserve the total',
+          );
+        }
+
+        // Back where it started, to the cent.
+        expect(participants[0].shareAmount, equals(75.0));
+        expect(participants[1].shareAmount, equals(25.0));
+      });
+
+      test('should scale exact amounts instead of throwing', () {
+        // Regression: the old code fed the OLD amounts against the NEW total,
+        // which cannot sum correctly by construction, so it threw
+        // ArgumentError out of calculateSplit.
+        final original = ExpenseCalculator.calculateSplit(
+          totalAmount: 100,
+          splitMethod: SplitMethod.exact,
+          participantData: <Map<String, dynamic>>[
+            {'userId': 'a', 'displayName': 'A', 'amount': 60.0},
+            {'userId': 'b', 'displayName': 'B', 'amount': 40.0},
+          ],
+        );
+
+        final rescaled = ExpenseCalculator.recalculateSplit(
+          newTotalAmount: 200,
+          currentParticipants: original,
+          splitMethod: SplitMethod.exact,
+        );
+
+        expect(rescaled[0].shareAmount, equals(120.0));
+        expect(rescaled[1].shareAmount, equals(80.0));
+        expect(_sumParticipantCents(rescaled), equals(_cents(200)));
+      });
+
+      test('should keep percentage splits proportional', () {
+        final original = ExpenseCalculator.calculateSplit(
+          totalAmount: 100,
+          splitMethod: SplitMethod.percentage,
+          participantData: <Map<String, dynamic>>[
+            {'userId': 'a', 'displayName': 'A', 'percentage': 70.0},
+            {'userId': 'b', 'displayName': 'B', 'percentage': 30.0},
+          ],
+        );
+
+        final rescaled = ExpenseCalculator.recalculateSplit(
+          newTotalAmount: 250,
+          currentParticipants: original,
+          splitMethod: SplitMethod.percentage,
+        );
+
+        expect(rescaled[0].shareAmount, equals(175.0));
+        expect(rescaled[1].shareAmount, equals(75.0));
+        expect(_sumParticipantCents(rescaled), equals(_cents(250)));
+      });
+
+      test('should throw for an empty participant list', () {
+        expect(
+          () => ExpenseCalculator.recalculateSplit(
+            newTotalAmount: 100,
+            currentParticipants: const [],
+            splitMethod: SplitMethod.equal,
+          ),
+          throwsArgumentError,
+        );
+      });
+
       test('should recalculate split when amount changes', () {
         final currentParticipants = [
           const ExpenseParticipant(
@@ -535,6 +646,53 @@ void main() {
         }
       });
 
+      test('recalculateSplit conserves the new total for every method', () {
+        // The methods that rescale (percentage, exact, shares) all go through
+        // the same proportional path, so the sweep covers the branch for each
+        // of them as well as the equal-split branch.
+        // Start from an uneven split so the proportions being preserved are
+        // not all identical. It depends only on the participant count, so it
+        // is built once per count rather than per total.
+        final seedByCount = <int, List<ExpenseParticipant>>{
+          for (var n = 1; n <= maxParticipants; n++)
+            n: ExpenseCalculator.calculateSplit(
+              totalAmount: 100,
+              splitMethod: SplitMethod.shares,
+              participantData: <Map<String, dynamic>>[
+                for (var i = 0; i < n; i++)
+                  {
+                    'userId': 'user$i',
+                    'displayName': 'User $i',
+                    'shares': i + 1,
+                  },
+              ],
+            ),
+        };
+
+        for (final method in SplitMethod.values) {
+          for (var cents = 1; cents <= maxCents; cents++) {
+            final total = cents / 100;
+            for (var n = 1; n <= maxParticipants; n++) {
+              final seed = seedByCount[n]!;
+
+              final rescaled = ExpenseCalculator.recalculateSplit(
+                newTotalAmount: total,
+                currentParticipants: seed,
+                splitMethod: method,
+              );
+
+              expect(
+                _sumParticipantCents(rescaled),
+                equals(cents),
+                reason:
+                    'recalculateSplit(${method.name}, $total, n=$n) must sum '
+                    'to $total',
+              );
+            }
+          }
+        }
+      });
+
       test('validateSplit accepts every conserving split', () {
         for (var cents = 1; cents <= maxCents; cents++) {
           final total = cents / 100;
@@ -568,3 +726,10 @@ int _cents(double amount) => (amount * 100).round();
 /// Sum a split's shares in integer minor units.
 int _sumCents(Map<String, double> split) =>
     split.values.fold<int>(0, (sum, amount) => sum + _cents(amount));
+
+/// Sum recalculated participants' shares in integer minor units.
+int _sumParticipantCents(List<ExpenseParticipant> participants) =>
+    participants.fold<int>(
+      0,
+      (sum, participant) => sum + _cents(participant.shareAmount),
+    );
