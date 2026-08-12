@@ -1,3 +1,14 @@
+// UNUSED SCAFFOLDING: nothing in this app consumes this file.
+//
+// Every repository talks to SupabaseClient directly, and `apiClientProvider`
+// has no consumer outside its own definition. The Dio layer is kept
+// deliberately -- as a starting point for a future non-Supabase API -- not
+// because it is in the request path today. See issue #7.
+//
+// test/core/network/network_scaffolding_test.dart fails if this notice is
+// missing, and fails if `apiClientProvider` ever gains a consumer. When that
+// happens, this notice is what needs deleting.
+
 import 'package:dio/dio.dart';
 import 'package:grex/core/config/app_config.dart';
 import 'package:grex/core/constants/api_endpoints.dart';

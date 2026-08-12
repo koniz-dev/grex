@@ -65,7 +65,9 @@ class SecureSessionService implements SessionService {
         value: now.toIso8601String(),
       );
 
-      // Sync tokens to keys used by AuthInterceptor
+      // Mirror the tokens to the shared keys. Their only reader is
+      // AuthInterceptor, which is unused scaffolding (issue #7), so nothing
+      // consumes these today. See issue #35.
       await _secureStorage.write(
         key: AppConstants.tokenKey,
         value: accessToken,

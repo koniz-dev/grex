@@ -1,0 +1,6 @@
+00:00 +0: loading /Users/nguyenanhkiet/Playground/grex/test/core/network/network_scaffolding_test.dart
+00:00 +0: scaffolding notices every file under lib/core/network/ carries one
+00:00 +1: scaffolding notices api_endpoints.dart carries one
+00:00 +2: scaffolding notices the apiClientProvider definition carries one
+00:00 +3: the layer really has no consumer apiClientProvider is referenced only where it is defined
+00:00 +4: All tests passed!

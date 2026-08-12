@@ -717,8 +717,14 @@ Consider alternatives if:
 > client directly; `apiClientProvider` has no callers, and neither does any of
 > the six Dio interceptors. This section documents scaffolding, not a live
 > layer. Before building on it, read
-> [F7 in the code audit](../audit/2026-08-04-code-audit.md#f7--the-dio-network-layer-is-dead-code-medium) —
-> the layer should either be adopted for non-Supabase APIs or deleted.
+> [F7 in the code audit](../audit/2026-08-04-code-audit.md#f7--the-dio-network-layer-is-dead-code-medium).
+>
+> **Decided in [#7](https://github.com/koniz-dev/grex/issues/7) (2026-08-12): kept
+> deliberately**, as a starting point for a future non-Supabase API, rather than
+> deleted. Every file in `lib/core/network/` opens with an `UNUSED SCAFFOLDING`
+> notice, and `test/core/network/network_scaffolding_test.dart` fails if those
+> notices go missing or if `apiClientProvider` gains a consumer — so wiring the
+> layer up forces this section to be updated too.
 
 ### Problem Statement
 
