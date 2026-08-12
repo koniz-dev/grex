@@ -52,15 +52,17 @@ app.*.map.json
 /android/app/release
 
 # Environment configuration files
-# `.env` is intentionally NOT ignored: it is declared under `flutter: assets:`
-# in pubspec.yaml, and a declared asset that does not exist fails the build
-# before any Dart runs. It is committed empty so a fresh clone builds.
-# After filling in your own values, run
-#   git update-index --skip-worktree .env
-# so your keys are never staged. See SETUP.md.
+# The developer's real settings live in `assets/env/env`, which is ignored.
+# `pubspec.yaml` declares the *directory* `assets/env/`, so the file's absence
+# is not a build error and the secrets never become a tracked file (#24).
 # `.env.example` is committed as the template of available settings.
-.env.local
-.env.*.local
+assets/env/env
+# Every .env* variant is ignored except the committed template. This covers
+# `.env.<environment>`, which scripts/windows/database/utils/rotate-api-keys.ps1
+# writes a rotated SERVICE ROLE key into -- previously matched by nothing here.
+.env
+.env.*
+!.env.example
 
 # Firebase configuration files
 # Note: According to Firebase docs, API keys are not secret but should have restrictions applied.

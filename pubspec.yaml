@@ -173,20 +173,20 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   # Environment configuration files
-  # IMPORTANT: a declared asset that does not exist fails the build with
-  # "No file or variants found for asset: .env" before any Dart code runs, so
-  # `.env` MUST exist. It is therefore committed (empty) rather than gitignored,
-  # which is what lets a fresh clone build. See SETUP.md before editing it.
-  # `.env` must exist regardless of how values are supplied: the asset is
-  # declared, so a missing file fails the build even when every value comes
-  # from `--dart-define`. Defines do work (see EnvConfig._dartDefines), but
-  # they cannot make this file optional.
-  # WARNING: everything in `.env` is shipped inside the app bundle and served
-  # publicly on web. Never put SUPABASE_SERVICE_ROLE_KEY here.
+  # `assets/env/` is declared as a DIRECTORY, deliberately. A declared asset
+  # *file* that does not exist fails the build during bundling, before any Dart
+  # runs -- that is what made a fresh clone unbuildable in #5. A declared
+  # directory only has to exist; the files inside it are enumerated, so the
+  # developer's `assets/env/env` can stay gitignored and its absence is not an
+  # error. assets/env/README.md is committed to keep the directory present.
+  # `.env.example` stays declared because tests load it as the stand-in for a
+  # populated env file.
+  # WARNING: everything in these files is shipped inside the app bundle and
+  # served publicly on web. Never put SUPABASE_SERVICE_ROLE_KEY in them.
   # See docs/audit/2026-08-04-code-audit.md (F4, F5).
   assets:
     - .env.example
-    - .env
+    - assets/env/
     - assets/images/
     - assets/icons/
 
