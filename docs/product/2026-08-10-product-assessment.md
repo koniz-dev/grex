@@ -93,14 +93,14 @@ that works without signing in. Requiring six people to install an app and
 register is the number one reason products in this category die inside a friend
 group. Only the person who cares needs an account.
 
-### Wedge 3 — Do currency properly (only if trips are the chosen segment)
+### Wedge 3 — Do currency properly — **CHOSEN**, see the segment decision below
 
 Store the FX rate at the moment of the expense, hold balances in one functional
 currency, and display both. This subsumes the defect above. It is a real
 feature, not a fix — it needs a rate source, a rate-staleness policy, and a
 decision about who absorbs FX drift between spend and settlement.
 
-### Wedge 4 — Recurring + reminders (only if shared households are the segment)
+### Wedge 4 — Recurring + reminders — **NOT CHOSEN**, kept for the record only
 
 Monthly rent, utilities, internet: define once, generate automatically, notify.
 Different product shape from trips — steadier, lower engagement, higher
@@ -109,8 +109,60 @@ retention.
 Wedges 3 and 4 are alternatives, not a sequence. They serve different segments
 and pull the product in different directions; choosing both is choosing neither.
 
-## Open question for the maintainer
+## Segment decision — trips (2026-08-12)
 
-Which segment is Grex for — trips, or shared households? Nearly every roadmap
-decision below the wedge level depends on that answer, and it has not been
-written down anywhere in this repository.
+**Grex is for trips.** Decided by the maintainer. Wedge 3 is in; wedge 4 is out.
+
+This was against the recommendation recorded above, which favoured shared
+households on retention grounds. The maintainer knows who will actually use the
+app and this document does not, so the decision stands and the reasoning below
+follows from it rather than relitigating it.
+
+### What the decision changes
+
+**Wedge 4 is out of scope.** Recurring expenses and reminders are not on the
+roadmap. Do not file them.
+
+**The interim fix for #18 is now temporary by design.** `fcb3e43` (PR #27)
+constrained expense and payment currency to the group's `primary_currency` and
+replaced the currency dropdown with `GroupCurrencyField` — "Fixed to the group's
+currency". That was the right call to stop silent data loss, but it blocks the
+exact behaviour the chosen segment needs. Wedge 3 will reopen it. This is not
+wasted work; it is the correct state to sit in while FX is built. Anyone
+adding a hard database `CHECK` for #18's remaining `(human)` criterion should
+know it is scheduled for removal.
+
+**Foundation item A is promoted from a bug to a prerequisite.**
+`ExpenseCalculator._toCents` hardcodes `× 100` and takes no currency argument
+([expense_calculator.dart:163](../../lib/features/expenses/domain/utils/expense_calculator.dart#L163)).
+The database already knows better — `get_currency_decimal_places` returns 0 for
+`VND`, `JPY`, `KRW` — but only the SQL test suite calls it. Measured against the
+merged tree: splitting 100,000 VND three ways stores `33333.34 / 33333.33 /
+33333.33`, which the formatter renders as three amounts totalling 99,999 ₫
+against an expense of 100,000 ₫.
+
+A trip-focused product means Japan, Korea, Thailand and Vietnam — three of those
+four use zero-decimal currencies. Applying an FX rate on top of a hardcoded
+1/100 minor unit compounds the error rather than exposing it. **Fix A before
+building wedge 3**, not after.
+
+**Foundation item B moves from a risk to close to a requirement.** Travellers
+abroad turn data roaming off. Recording an expense at the moment of paying for
+it — the core interaction — happens on no connection. Every data path goes
+straight to the Supabase client today and `hive` is commented out at
+[pubspec.yaml:104](../../pubspec.yaml#L104). Household users are on home wifi
+and would have tolerated online-only; trip users will not.
+
+### Consequent order of work
+
+1. **A** — make split arithmetic currency-aware (minor units per ISO 4217).
+   Prerequisite for wedge 3.
+2. **B** — decide offline-first, and decide it before the data layer grows.
+   Not necessarily build it; commit to a direction and record it in
+   [design-decisions.md](../architecture/design-decisions.md).
+3. **Wedge 3** — FX rate at time of expense, balances in a functional currency.
+4. **Wedge 1** — one-tap settlement ([#20](https://github.com/koniz-dev/grex/issues/20)).
+   Unchanged by the segment decision, and still the strongest single wedge.
+5. **Wedge 2 + C** — non-account members ([#21](https://github.com/koniz-dev/grex/issues/21)).
+   Trips make this sharper: a trip group is more likely to contain someone who
+   will never install the app.
