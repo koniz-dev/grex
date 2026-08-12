@@ -93,14 +93,19 @@ final authInterceptorProvider = Provider<AuthInterceptor>((ref) {
   );
 });
 
-/// Provider for [ApiClient] instance with full auth support
+/// UNUSED SCAFFOLDING: this provider has no consumer.
 ///
-/// This is the main API client used throughout the application for
-/// non-auth API calls (groups, expenses, payments, etc.).
-/// It includes AuthInterceptor for automatic token injection and refresh.
+/// It was documented as "the main API client used throughout the application".
+/// It is not: every repository -- groups, expenses, payments, auth -- talks to
+/// `SupabaseClient` directly, and this definition is the only reference to
+/// `apiClientProvider` anywhere in `lib/`.
 ///
-/// Note: Auth operations use Supabase SDK directly via
-/// [SupabaseAuthRepository].
+/// The Dio layer is kept deliberately, as a starting point for a future
+/// non-Supabase API. Wiring it up means deleting this notice and the matching
+/// ones in `lib/core/network/`, which
+/// `test/core/network/network_scaffolding_test.dart` will demand.
+///
+/// See issue #7.
 final apiClientProvider = Provider<ApiClient>((ref) {
   final storageService = ref.watch(storageServiceProvider);
   final authInterceptor = ref.watch(authInterceptorProvider);

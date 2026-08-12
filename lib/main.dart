@@ -64,8 +64,7 @@ void main() async {
 
   // Create ProviderContainer with overrides so secure storage shares the same
   // FlutterSecureStorage instance as GetIt (used by SecureSessionService for
-  // token keys), ensuring AuthInterceptor and session service see the same
-  // tokens.
+  // token keys), so every writer of those keys uses one store.
   final container = ProviderContainer(
     overrides: [
       secureStorageServiceProvider.overrideWith(
@@ -95,15 +94,23 @@ void main() async {
   container.read(localeStateProvider.notifier).locale = savedLocale;
   LocaleDefaults.appLocale = savedLocale;
 
-  // Restore user session if existing and sync tokens for AuthInterceptor
+  // Restore the user session, then mirror its tokens into secure storage.
+  //
+  // NOTE: nothing reads those tokens today. AuthInterceptor is their only
+  // reader and it is unused scaffolding (issue #7), so this write currently
+  // feeds no one. It is kept rather than removed because #7 chose to keep the
+  // Dio layer, and dropping the write would have to be undone the moment the
+  // layer is wired up. See issue #35 for the open question of whether an
+  // unread copy of the credentials should be persisted at all.
   try {
     await container
         .read(authNotifierProvider.notifier)
         .getCurrentUser()
         .timeout(const Duration(seconds: 5));
 
-    // If user is restored from Supabase, write current session tokens to
-    // secure storage so AuthInterceptor can attach Bearer token to API requests
+    // If the user is restored from Supabase, mirror the session tokens to the
+    // shared secure-storage keys. Supabase holds its own copy of the session;
+    // this is the second one, and it has no reader today.
     final authState = container.read(authNotifierProvider);
     if (authState.user != null) {
       final authRepository = container.read(authRepositoryProvider);

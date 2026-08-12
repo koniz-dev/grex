@@ -155,7 +155,7 @@ lib/
 │   ├── feature_flags/      # Feature flags infrastructure
 │   ├── localization/       # Localization service
 │   ├── logging/            # Logging service
-│   ├── network/            # Network layer (Dio setup)
+│   ├── network/            # Dio setup — scaffolding, nothing uses it
 │   ├── performance/        # Performance monitoring
 │   ├── routing/            # Routing system (go_router)
 │   ├── storage/            # Storage services (with migration)
@@ -503,6 +503,11 @@ if (AppConfig.enableAnalytics) {
 ```
 
 #### Network Configuration
+
+> ⚠️ Illustrative only. Nothing in the app builds a `Dio` client — every
+> repository uses `SupabaseClient` directly. This shows how the `AppConfig`
+> timeout values *would* be consumed if the network layer were wired up.
+> See [Network Layer](#-network-layer--️-scaffolding-not-wired-up).
 
 ```dart
 import 'package:grex/core/config/app_config.dart';

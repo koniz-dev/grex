@@ -102,6 +102,9 @@ class OptimizedSessionService implements SessionService {
           key: _lastValidationKey,
           value: now.toIso8601String(),
         ),
+        // Mirror the tokens to the shared keys. Their only reader is
+        // AuthInterceptor, which is unused scaffolding (issue #7), so nothing
+        // consumes these today. See issue #35.
         _secureStorage.write(
           key: AppConstants.tokenKey,
           value: accessToken,
