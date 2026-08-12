@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grex/core/di/injection.dart';
 import 'package:grex/features/expenses/domain/entities/expense.dart';
+import 'package:grex/features/expenses/domain/entities/expense_participant.dart';
 import 'package:grex/features/expenses/domain/entities/split_method.dart';
 import 'package:grex/features/expenses/domain/utils/expense_calculator.dart';
 import 'package:grex/features/expenses/presentation/bloc/expense_bloc.dart';
@@ -411,7 +412,7 @@ class _EditExpensePageState extends State<EditExpensePage> {
                       return null;
                     },
                     onChanged: (value) {
-                      _updateSplitCalculation();
+                      _rescaleSplitToAmount();
                       _onFormChanged();
                     },
                   ),
@@ -599,6 +600,58 @@ class _EditExpensePageState extends State<EditExpensePage> {
 
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
+  }
+
+  /// Rescale the existing split to a newly-typed amount.
+  ///
+  /// Changing only the amount must not touch how the expense is divided.
+  /// `_updateSplitCalculation` rebuilds from
+  /// `ExpenseCalculator.getDefaultParticipantData`, whose defaults are one
+  /// share each / 0.00 exact / an even percentage -- correct when the split
+  /// method or the participants change, and wrong here. On an unevenly split
+  /// expense it reset every exact amount to 0.00, so the form failed its own
+  /// validation ("Exact amounts must sum to total amount (0.00 != 200.00)")
+  /// and the expense could not be saved at all until every share was retyped.
+  /// See issue #29.
+  void _rescaleSplitToAmount() {
+    final amount = double.tryParse(_amountController.text);
+    if (amount == null || amount <= 0 || _participantSplitData.isEmpty) {
+      return;
+    }
+
+    final current = _participantSplitData
+        .map(
+          (data) => ExpenseParticipant(
+            userId: data['userId'] as String,
+            displayName: data['displayName'] as String,
+            shareAmount: (data['amount'] as num?)?.toDouble() ?? 0,
+            sharePercentage: (data['percentage'] as num?)?.toDouble() ?? 0,
+          ),
+        )
+        .toList();
+
+    final rescaled = ExpenseCalculator.recalculateSplit(
+      newTotalAmount: amount,
+      currentParticipants: current,
+      splitMethod: _splitMethod,
+    );
+    final byId = {
+      for (final participant in rescaled) participant.userId: participant,
+    };
+
+    setState(() {
+      _participantSplitData = _participantSplitData.map((data) {
+        final updated = byId[data['userId']];
+        if (updated == null) return data;
+        return {
+          ...data,
+          'amount': updated.shareAmount,
+          'percentage': updated.sharePercentage,
+        };
+      }).toList();
+    });
+
+    _validateSplit();
   }
 
   void _updateSplitCalculation() {
