@@ -267,6 +267,7 @@ import 'package:grex/features/payments/domain/entities/payment.dart';
 import 'package:grex/features/payments/domain/failures/failures.dart';
 import 'package:grex/features/payments/domain/failures/payment_failure.dart';
 import 'package:grex/features/payments/domain/repositories/payment_repository.dart';
+import 'package:grex/features/payments/domain/vietqr_payload.dart';
 import 'package:grex/features/payments/presentation/bloc/payment_bloc.dart';
 import 'package:grex/features/payments/presentation/bloc/payment_event.dart';
 import 'package:grex/features/payments/presentation/bloc/payment_state.dart';

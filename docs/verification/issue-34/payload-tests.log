@@ -1,0 +1,31 @@
+$ flutter test test/features/payments/domain/
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart
+00:00 +0: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: published reference vectors vietqr-parser, no amount has a CRC this implementation agrees with
+00:00 +1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: published reference vectors vietqr-parser, no amount parses as well-formed TLV
+00:00 +2: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: published reference vectors vietqr-parser, merchant with amount has a CRC this implementation agrees with
+00:00 +2: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/repositories/payment_repository_property_test.dart: PaymentRepository Property Tests placeholder
+  Skip: TODO(mockito-null-safety): rewrite using @GenerateMocks or mocktail any<T>() so argument types match Supabase builder signatures.
+00:00 +2 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: published reference vectors vietqr-parser, merchant with amount has a CRC this implementation agrees with
+00:00 +3 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: published reference vectors vietqr-parser, merchant with amount parses as well-formed TLV
+00:00 +4 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: published reference vectors viblo, TPBank transfer with amount and description has a CRC this implementation agrees with
+00:00 +5 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: published reference vectors viblo, TPBank transfer with amount and description parses as well-formed TLV
+00:00 +6 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: published reference vectors a vector with the same inputs reproduces byte for byte
+00:00 +7 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: structure every emitted field is valid TLV with nothing left over
+00:00 +8 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: structure the static fields match the spec
+00:00 +9 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: structure the NAPAS merchant account block is nested correctly
+00:00 +10 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: structure the checksum is correct for a payload we built
+00:00 +11 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: amount round-trips exactly across the realistic range
+00:00 +12 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: amount the boundary values round-trip
+00:00 +13 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: description a payload with one carries it under tag 62 sub-tag 08
+00:00 +14 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: description a payload without one omits tag 62 entirely
+00:00 +15 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: description an empty or whitespace description omits tag 62
+00:00 +16 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: description both forms still parse cleanly
+00:00 +17 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: invalid input is rejected, not encoded an empty BIN
+00:00 +18 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: invalid input is rejected, not encoded a non-numeric BIN
+00:00 +19 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: invalid input is rejected, not encoded a BIN of the wrong length
+00:00 +20 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: invalid input is rejected, not encoded an empty account number
+00:00 +21 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: invalid input is rejected, not encoded a non-positive amount
+00:00 +22 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: invalid input is rejected, not encoded an amount past the field length limit
+00:00 +23 ~1: /Users/nguyenanhkiet/Playground/grex/test/features/payments/domain/vietqr_payload_test.dart: invalid input is rejected, not encoded a description past the field length limit
+00:00 +24 ~1: All tests passed!

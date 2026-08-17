@@ -176,3 +176,27 @@ class UnknownPaymentFailure extends PaymentFailure {
             : 'An unknown error occurred',
       );
 }
+
+/// Failure when a bank BIN is not a valid six-digit identifier.
+class InvalidBankBinFailure extends PaymentFailure {
+  /// Creates an [InvalidBankBinFailure] instance
+  const InvalidBankBinFailure(super.message);
+}
+
+/// Failure when a beneficiary account number is missing or unusable.
+class InvalidBankAccountNumberFailure extends PaymentFailure {
+  /// Creates an [InvalidBankAccountNumberFailure] instance
+  const InvalidBankAccountNumberFailure(super.message);
+}
+
+/// Failure when a transfer amount is not positive or will not fit the field.
+class InvalidTransferAmountFailure extends PaymentFailure {
+  /// Creates an [InvalidTransferAmountFailure] instance
+  const InvalidTransferAmountFailure(super.message);
+}
+
+/// Failure when a transfer description is too long for the QR field.
+class InvalidTransferDescriptionFailure extends PaymentFailure {
+  /// Creates an [InvalidTransferDescriptionFailure] instance
+  const InvalidTransferDescriptionFailure(super.message);
+}
