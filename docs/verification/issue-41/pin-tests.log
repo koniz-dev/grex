@@ -1,0 +1,11 @@
+$ flutter test test/infrastructure/ci_toolchain_pin_test.dart
+88 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/nguyenanhkiet/Playground/grex/test/infrastructure/ci_toolchain_pin_test.dart
+00:00 +0: CI toolchain pin there are workflows to check
+00:00 +1: CI toolchain pin no workflow floats on a channel name
+00:00 +2: CI toolchain pin every declared version is an explicit x.y.z
+00:00 +3: CI toolchain pin all workflows pin the same version
+00:00 +4: CI toolchain pin every setup-flutter step declares a version
+00:00 +5: CI toolchain pin CLAUDE.md documents the pinned version
+00:00 +6: All tests passed!
