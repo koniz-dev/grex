@@ -19,6 +19,11 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    # Without this the job inherits the 6-hour Actions ceiling. A stalled
+    # `apt-get update` on the runner did exactly that on 2026-08-18: the run
+    # sat for 6h and was cancelled, blocking the queue for a whole day for a
+    # transient mirror problem. A green run takes ~7 minutes.
+    timeout-minutes: 30
     
     permissions:
       contents: read
@@ -77,6 +82,7 @@ jobs:
       # Coverage Processing - Critical Step
       # ========================================================================
       - name: Install lcov
+        timeout-minutes: 5
         run: |
           sudo apt-get update
           sudo apt-get install -y lcov
