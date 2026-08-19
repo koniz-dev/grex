@@ -62,16 +62,24 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _generateSettlementPlan() {
+    // `HapticFeedback.lightImpact` and `Navigator.pushNamed` return futures
+    // nobody has any reason to await, and both are annotated
+    // `@awaitNotRequired`. In a synchronous method that leaves no clean form:
+    // wrapping them in `unawaited()` trips `unnecessary_unawaited` (the
+    // annotation makes the wrapper redundant), while leaving them bare trips
+    // `discarded_futures` (that rule does not consult the annotation). The two
+    // rules contradict each other here, so the discard is made explicit rather
+    // than silenced project-wide. See issue #42.
+    // ignore: discarded_futures
     HapticFeedback.lightImpact();
-    unawaited(
-      Navigator.of(context).pushNamed(
-        '/settlement-plan',
-        arguments: {
-          'groupId': widget.groupId,
-          'groupName': widget.groupName,
-          'groupCurrency': widget.groupCurrency,
-        },
-      ),
+    // ignore: discarded_futures
+    Navigator.of(context).pushNamed(
+      '/settlement-plan',
+      arguments: {
+        'groupId': widget.groupId,
+        'groupName': widget.groupName,
+        'groupCurrency': widget.groupCurrency,
+      },
     );
   }
 
@@ -93,6 +101,7 @@ class _BalancePageState extends State<BalancePage> {
             IconButton(
               icon: const Icon(Icons.refresh_rounded),
               onPressed: () {
+                // ignore: discarded_futures
                 HapticFeedback.lightImpact();
                 _loadBalances();
               },
@@ -104,7 +113,7 @@ class _BalancePageState extends State<BalancePage> {
           builder: (context, state) {
             return RefreshIndicator(
               onRefresh: () async {
-                HapticFeedback.lightImpact();
+                await HapticFeedback.lightImpact();
                 _loadBalances();
               },
               child: _BalanceBody(
