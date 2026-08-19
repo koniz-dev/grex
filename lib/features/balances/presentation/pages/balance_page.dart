@@ -62,16 +62,11 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _generateSettlementPlan() {
-    // `HapticFeedback.lightImpact` and `Navigator.pushNamed` return futures
-    // nobody has any reason to await, and both are annotated
-    // `@awaitNotRequired`. In a synchronous method that leaves no clean form:
-    // wrapping them in `unawaited()` trips `unnecessary_unawaited` (the
-    // annotation makes the wrapper redundant), while leaving them bare trips
-    // `discarded_futures` (that rule does not consult the annotation). The two
-    // rules contradict each other here, so the discard is made explicit rather
-    // than silenced project-wide. See issue #42.
-    // ignore: discarded_futures
     HapticFeedback.lightImpact();
+    // Navigating away returns a future that resolves when the route pops,
+    // which nothing here waits for. Wrapping it in `unawaited()` trips
+    // `unnecessary_unawaited` because `pushNamed` is `@awaitNotRequired`, so
+    // the discard is made explicit instead. See issue #42.
     // ignore: discarded_futures
     Navigator.of(context).pushNamed(
       '/settlement-plan',
@@ -101,6 +96,8 @@ class _BalancePageState extends State<BalancePage> {
             IconButton(
               icon: const Icon(Icons.refresh_rounded),
               onPressed: () {
+                // Fire-and-forget haptic inside a synchronous callback; see
+                // the note in _generateSettlementPlan. Issue #42.
                 // ignore: discarded_futures
                 HapticFeedback.lightImpact();
                 _loadBalances();
