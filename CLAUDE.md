@@ -25,7 +25,7 @@ flutter run -d macos             # or -d chrome; both devices are available loca
 
 ## Toolchain
 
-CI pins **Flutter 3.41.9** in every workflow. Do not change it to `stable`.
+CI pins **Flutter 3.47.0** in every workflow. Do not change it to `stable`.
 
 Workflows used to set `flutter-version: 'stable'`, which floats. The Dart SDK
 advanced underneath the repo and `flutter analyze` went from 0 issues to 36 with

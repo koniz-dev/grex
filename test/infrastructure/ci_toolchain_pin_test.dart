@@ -16,7 +16,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   /// The version every workflow must install. Bump deliberately; see the
   /// "Toolchain" section of CLAUDE.md.
-  const pinnedFlutterVersion = '3.41.9';
+  const pinnedFlutterVersion = '3.47.0';
 
   List<File> workflowFiles() => Directory('.github/workflows')
       .listSync()
