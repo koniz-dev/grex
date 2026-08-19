@@ -128,6 +128,7 @@ class _SplitConfigurationWidgetState extends State<SplitConfigurationWidget> {
 
   Widget _buildEqualSplitView() {
     final splitAmounts = ExpenseCalculator.splitEqually(
+      currency: widget.currency,
       totalAmount: widget.totalAmount,
       participantIds: widget.participants
           .map((p) => p['userId'] as String)
@@ -434,6 +435,7 @@ class _SplitConfigurationWidgetState extends State<SplitConfigurationWidget> {
     switch (widget.splitMethod) {
       case SplitMethod.equal:
         return ExpenseCalculator.splitEqually(
+          currency: widget.currency,
           totalAmount: widget.totalAmount,
           participantIds: _participantData
               .map((p) => p['userId'] as String)
@@ -447,6 +449,7 @@ class _SplitConfigurationWidgetState extends State<SplitConfigurationWidget> {
               (participant['percentage'] as double?) ?? 0.0;
         }
         return ExpenseCalculator.splitByPercentage(
+          currency: widget.currency,
           totalAmount: widget.totalAmount,
           percentages: percentages,
         );
@@ -466,6 +469,7 @@ class _SplitConfigurationWidgetState extends State<SplitConfigurationWidget> {
               (participant['shares'] as int?) ?? 1;
         }
         return ExpenseCalculator.splitByShares(
+          currency: widget.currency,
           totalAmount: widget.totalAmount,
           shares: shares,
         );

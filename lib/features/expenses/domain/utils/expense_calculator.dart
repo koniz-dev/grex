@@ -1,11 +1,15 @@
+import 'dart:math';
+
 import 'package:grex/features/expenses/domain/entities/expense_participant.dart';
 import 'package:grex/features/expenses/domain/entities/split_method.dart';
+import 'package:grex/shared/utils/currency_formatter.dart';
 
 /// Utility class for calculating expense splits among participants
 class ExpenseCalculator {
   /// Split amount equally among participants with proper rounding
   static Map<String, double> splitEqually({
     required double totalAmount,
+    required String currency,
     required List<String> participantIds,
   }) {
     if (participantIds.isEmpty) {
@@ -13,7 +17,7 @@ class ExpenseCalculator {
     }
 
     final participantCount = participantIds.length;
-    final totalCents = _toCents(totalAmount);
+    final totalCents = _toMinorUnits(totalAmount, currency);
 
     // Divide in minor units, then hand the leftover cents out one each to the
     // first participants, so the shares always sum back to the total exactly.
@@ -22,8 +26,9 @@ class ExpenseCalculator {
 
     final result = <String, double>{};
     for (var i = 0; i < participantCount; i++) {
-      result[participantIds[i]] = _fromCents(
+      result[participantIds[i]] = _fromMinorUnits(
         baseCents + (i < leftoverCents ? 1 : 0),
+        currency,
       );
     }
 
@@ -33,6 +38,7 @@ class ExpenseCalculator {
   /// Split amount by percentage among participants
   static Map<String, double> splitByPercentage({
     required double totalAmount,
+    required String currency,
     required Map<String, double> percentages,
   }) {
     if (percentages.isEmpty) {
@@ -52,7 +58,7 @@ class ExpenseCalculator {
       );
     }
 
-    final totalCents = _toCents(totalAmount);
+    final totalCents = _toMinorUnits(totalAmount, currency);
     final result = <String, double>{};
     var assignedCents = 0;
     final participantIds = percentages.keys.toList();
@@ -62,13 +68,16 @@ class ExpenseCalculator {
       final participantId = participantIds[i];
       final percentage = percentages[participantId]!;
       final cents = (totalCents * percentage / 100).round();
-      result[participantId] = _fromCents(cents);
+      result[participantId] = _fromMinorUnits(cents, currency);
       assignedCents += cents;
     }
 
     // Assign remaining amount to last participant to ensure total matches
     final lastParticipantId = participantIds.last;
-    result[lastParticipantId] = _fromCents(totalCents - assignedCents);
+    result[lastParticipantId] = _fromMinorUnits(
+      totalCents - assignedCents,
+      currency,
+    );
 
     return result;
   }
@@ -76,6 +85,7 @@ class ExpenseCalculator {
   /// Split amount by exact amounts among participants
   static Map<String, double> splitByExactAmounts({
     required double totalAmount,
+    required String currency,
     required Map<String, double> exactAmounts,
   }) {
     if (exactAmounts.isEmpty) {
@@ -86,26 +96,30 @@ class ExpenseCalculator {
     // through `.toInt()` truncates every step, so any amount with cents in it
     // fails a sum that is in fact exact.
     final exactCents = exactAmounts.map(
-      (key, value) => MapEntry(key, _toCents(value)),
+      (key, value) => MapEntry(key, _toMinorUnits(value, currency)),
     );
     final totalExactCents = exactCents.values.fold<int>(
       0,
       (sum, cents) => sum + cents,
     );
-    final totalCents = _toCents(totalAmount);
+    final totalCents = _toMinorUnits(totalAmount, currency);
     if (totalExactCents != totalCents) {
+      final actual = _fromMinorUnits(totalExactCents, currency);
       throw ArgumentError(
         'Exact amounts must sum to total amount. '
-        'Expected: $totalAmount, Got: ${_fromCents(totalExactCents)}',
+        'Expected: $totalAmount, Got: $actual',
       );
     }
 
-    return exactCents.map((key, cents) => MapEntry(key, _fromCents(cents)));
+    return exactCents.map(
+      (key, cents) => MapEntry(key, _fromMinorUnits(cents, currency)),
+    );
   }
 
   /// Split amount by shares among participants
   static Map<String, double> splitByShares({
     required double totalAmount,
+    required String currency,
     required Map<String, int> shares,
   }) {
     if (shares.isEmpty) {
@@ -117,7 +131,7 @@ class ExpenseCalculator {
       throw ArgumentError('Total shares cannot be zero');
     }
 
-    final totalCents = _toCents(totalAmount);
+    final totalCents = _toMinorUnits(totalAmount, currency);
     final result = <String, double>{};
     var assignedCents = 0;
     final participantIds = shares.keys.toList();
@@ -127,13 +141,16 @@ class ExpenseCalculator {
       final participantId = participantIds[i];
       final share = shares[participantId]!;
       final cents = (totalCents * share / totalShares).round();
-      result[participantId] = _fromCents(cents);
+      result[participantId] = _fromMinorUnits(cents, currency);
       assignedCents += cents;
     }
 
     // Assign remaining amount to last participant to ensure total matches
     final lastParticipantId = participantIds.last;
-    result[lastParticipantId] = _fromCents(totalCents - assignedCents);
+    result[lastParticipantId] = _fromMinorUnits(
+      totalCents - assignedCents,
+      currency,
+    );
 
     return result;
   }
@@ -141,13 +158,14 @@ class ExpenseCalculator {
   /// Validate that split amounts sum to total amount
   static bool validateSplit({
     required double totalAmount,
+    required String currency,
     required Map<String, double> splitAmounts,
   }) {
     final totalSplitCents = splitAmounts.values.fold<int>(
       0,
-      (sum, amount) => sum + _toCents(amount),
+      (sum, amount) => sum + _toMinorUnits(amount, currency),
     );
-    return totalSplitCents == _toCents(totalAmount);
+    return totalSplitCents == _toMinorUnits(totalAmount, currency);
   }
 
   /// Round amount to two decimal places
@@ -155,14 +173,32 @@ class ExpenseCalculator {
     return (value * 100).round() / 100;
   }
 
-  /// Convert a currency amount to integer minor units (cents).
+  /// Convert a currency amount to integer minor units.
   ///
-  /// All split arithmetic runs in minor units: a cent is the smallest thing
-  /// this app can owe anyone, and integers neither drift nor lose a remainder.
-  static int _toCents(double amount) => (amount * 100).round();
+  /// All split arithmetic runs in minor units: the smallest thing the app can
+  /// owe anyone, where integers neither drift nor lose a remainder.
+  ///
+  /// The scale is per currency, not a constant. This used to be `* 100` for
+  /// everything, which meant VND -- the app's home currency, and one with no
+  /// minor unit at all -- was split into hundredths of a dong. The arithmetic
+  /// conserved the total, but in a unit that does not exist, so the shares on
+  /// screen no longer added up once `CurrencyFormatter` rendered them with zero
+  /// decimals. See issue #37.
+  static int _toMinorUnits(double amount, String currency) =>
+      (amount * _minorUnitScale(currency)).round();
 
-  /// Convert integer minor units (cents) back to a currency amount
-  static double _fromCents(int cents) => cents / 100;
+  /// Convert integer minor units back to a currency amount.
+  static double _fromMinorUnits(int units, String currency) =>
+      units / _minorUnitScale(currency);
+
+  /// Minor units per whole unit of [currency]: 1 for VND and JPY, 100 for USD,
+  /// 1000 for BHD and KWD.
+  ///
+  /// [CurrencyFormatter.getCurrencyPrecision] is the single source of truth
+  /// for the exponent; this file deliberately keeps no table of its own,
+  /// because two lists drift and that drift is what #37 was.
+  static num _minorUnitScale(String currency) =>
+      pow(10, CurrencyFormatter.getCurrencyPrecision(currency));
 
   /// Calculate percentage for each participant based on their amount
   static Map<String, double> calculatePercentages({
@@ -182,6 +218,7 @@ class ExpenseCalculator {
   /// Calculate expense split using domain entities
   static List<ExpenseParticipant> calculateSplit({
     required double totalAmount,
+    required String currency,
     required SplitMethod splitMethod,
     required List<Map<String, dynamic>> participantData,
   }) {
@@ -198,6 +235,7 @@ class ExpenseCalculator {
             .toList();
         splitAmounts = splitEqually(
           totalAmount: totalAmount,
+          currency: currency,
           participantIds: participantIds,
         );
 
@@ -209,6 +247,7 @@ class ExpenseCalculator {
         }
         splitAmounts = splitByPercentage(
           totalAmount: totalAmount,
+          currency: currency,
           percentages: percentages,
         );
 
@@ -220,6 +259,7 @@ class ExpenseCalculator {
         }
         splitAmounts = splitByExactAmounts(
           totalAmount: totalAmount,
+          currency: currency,
           exactAmounts: exactAmounts,
         );
 
@@ -231,6 +271,7 @@ class ExpenseCalculator {
         }
         splitAmounts = splitByShares(
           totalAmount: totalAmount,
+          currency: currency,
           shares: shares,
         );
     }
@@ -260,6 +301,7 @@ class ExpenseCalculator {
   /// Validate split configuration before calculation
   static String? validateSplitConfiguration({
     required double totalAmount,
+    required String currency,
     required SplitMethod splitMethod,
     required List<Map<String, dynamic>> participantData,
   }) {
@@ -307,11 +349,11 @@ class ExpenseCalculator {
           if (amount == null || amount < 0) {
             return 'All amounts must be non-negative';
           }
-          totalExactCents += _toCents(amount);
+          totalExactCents += _toMinorUnits(amount, currency);
         }
-        if (totalExactCents != _toCents(totalAmount)) {
+        if (totalExactCents != _toMinorUnits(totalAmount, currency)) {
           return 'Exact amounts must sum to total amount '
-              '(${_fromCents(totalExactCents).toStringAsFixed(2)} ≠ '
+              '(${_fromMinorUnits(totalExactCents, currency)} ≠ '
               '${totalAmount.toStringAsFixed(2)})';
         }
 
@@ -348,6 +390,7 @@ class ExpenseCalculator {
   /// old amounts against the new total. See #25.
   static List<ExpenseParticipant> recalculateSplit({
     required double newTotalAmount,
+    required String currency,
     required List<ExpenseParticipant> currentParticipants,
     required SplitMethod splitMethod,
   }) {
@@ -358,13 +401,15 @@ class ExpenseCalculator {
     final splitAmounts = splitMethod == SplitMethod.equal
         ? splitEqually(
             totalAmount: newTotalAmount,
+            currency: currency,
             participantIds: currentParticipants
                 .map((participant) => participant.userId)
                 .toList(),
           )
         : _rescaleToTotal(
             participants: currentParticipants,
-            newTotalCents: _toCents(newTotalAmount),
+            currency: currency,
+            newTotalCents: _toMinorUnits(newTotalAmount, currency),
           );
 
     final percentages = calculatePercentages(
@@ -388,10 +433,12 @@ class ExpenseCalculator {
   /// proportion and conserving the total exactly.
   static Map<String, double> _rescaleToTotal({
     required List<ExpenseParticipant> participants,
+    required String currency,
     required int newTotalCents,
   }) {
     final oldCents = [
-      for (final participant in participants) _toCents(participant.shareAmount),
+      for (final participant in participants)
+        _toMinorUnits(participant.shareAmount, currency),
     ];
     final oldTotalCents = oldCents.fold<int>(0, (sum, cents) => sum + cents);
 
@@ -399,7 +446,8 @@ class ExpenseCalculator {
     // preserve, so fall back to an equal division rather than dividing by zero.
     if (oldTotalCents == 0) {
       return splitEqually(
-        totalAmount: _fromCents(newTotalCents),
+        totalAmount: _fromMinorUnits(newTotalCents, currency),
+        currency: currency,
         participantIds: participants
             .map((participant) => participant.userId)
             .toList(),
@@ -411,14 +459,15 @@ class ExpenseCalculator {
 
     for (var i = 0; i < participants.length - 1; i++) {
       final cents = (newTotalCents * oldCents[i] / oldTotalCents).round();
-      result[participants[i].userId] = _fromCents(cents);
+      result[participants[i].userId] = _fromMinorUnits(cents, currency);
       assignedCents += cents;
     }
 
     // The last participant absorbs the rounding remainder, so the shares sum
     // back to the new total exactly.
-    result[participants.last.userId] = _fromCents(
+    result[participants.last.userId] = _fromMinorUnits(
       newTotalCents - assignedCents,
+      currency,
     );
 
     return result;

@@ -145,6 +145,7 @@ class _EditExpensePageState extends State<EditExpensePage> {
   SplitMethod _determineSplitMethod(Expense expense) {
     // Check if it's an equal split
     final equalSplit = ExpenseCalculator.splitEqually(
+      currency: _selectedCurrency,
       totalAmount: expense.amount,
       participantIds: expense.participants.map((p) => p.userId).toList(),
     );
@@ -631,6 +632,7 @@ class _EditExpensePageState extends State<EditExpensePage> {
         .toList();
 
     final rescaled = ExpenseCalculator.recalculateSplit(
+      currency: _selectedCurrency,
       newTotalAmount: amount,
       currentParticipants: current,
       splitMethod: _splitMethod,
@@ -692,6 +694,7 @@ class _EditExpensePageState extends State<EditExpensePage> {
     }
 
     final validationError = ExpenseCalculator.validateSplitConfiguration(
+      currency: _selectedCurrency,
       totalAmount: amount,
       splitMethod: _splitMethod,
       participantData: _participantSplitData,
@@ -763,6 +766,7 @@ class _EditExpensePageState extends State<EditExpensePage> {
 
     // Calculate final split
     final participants = ExpenseCalculator.calculateSplit(
+      currency: _selectedCurrency,
       totalAmount: amount,
       splitMethod: _splitMethod,
       participantData: _participantSplitData,

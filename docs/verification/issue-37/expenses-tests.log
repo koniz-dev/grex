@@ -1,0 +1,5 @@
+$ flutter test test/features/expenses/
+00:17 +94 ~186: /Users/nguyenanhkiet/Playground/grex/test/features/expenses/domain/utils/expense_calculator_test.dart: ExpenseCalculator conservation sweep recalculateSplit conserves the new total for every method
+00:17 +95 ~186: /Users/nguyenanhkiet/Playground/grex/test/features/expenses/domain/utils/expense_calculator_test.dart: ExpenseCalculator conservation sweep recalculateSplit conserves the new total for every method
+00:30 +96 ~186: /Users/nguyenanhkiet/Playground/grex/test/features/expenses/domain/utils/expense_calculator_test.dart: ExpenseCalculator conservation sweep validateSplit accepts every conserving split
+00:32 +97 ~186: All tests passed!
