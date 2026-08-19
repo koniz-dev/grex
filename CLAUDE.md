@@ -23,6 +23,28 @@ flutter build web --debug        # verified working build target
 flutter run -d macos             # or -d chrome; both devices are available locally
 ```
 
+## Toolchain
+
+CI pins **Flutter 3.41.9** in every workflow. Do not change it to `stable`.
+
+Workflows used to set `flutter-version: 'stable'`, which floats. The Dart SDK
+advanced underneath the repo and `flutter analyze` went from 0 issues to 36 with
+nobody committing anything — re-running `main`'s own last green workflow
+reproduced it exactly: success on 2026-08-12, failure on 2026-08-17, identical
+commit (issue #41). A floating pin also means the gate says one thing locally
+and another in CI, so nobody can reproduce the failure without upgrading.
+
+To upgrade, deliberately:
+
+1. Upgrade locally first and run `flutter analyze`. A new SDK usually enables
+   new lints; expect work.
+2. Fix what it reports **before** touching CI, so the queue never sits red.
+   Treat behaviour-changing lints (`unawaited_return_in_try_block` changes when
+   an error is caught) as their own issue with per-site tests, not a sweep.
+3. Bump the version in all workflow files and in
+   `test/infrastructure/ci_toolchain_pin_test.dart`, which fails if they drift
+   apart, if any workflow floats, or if this file stops naming the version.
+
 Known baseline as of 2026-08-05: `flutter analyze` clean, suite passes with a
 large number of `skip:` markers, and the money-math defects in
 `docs/audit/2026-08-04-code-audit.md` (F1-F3) are still open. Do not treat
