@@ -1,3 +1,16 @@
+// This file fires `discarded_futures` on Flutter APIs that are annotated
+// `@awaitNotRequired` -- HapticFeedback.lightImpact and Navigator.pushNamed --
+// called from synchronous callbacks, where there is nothing to await into.
+//
+// There is no per-line form that settles: wrapping such a call in `unawaited()`
+// trips `unnecessary_unawaited` (the annotation makes the wrapper redundant),
+// and leaving it bare trips `discarded_futures` (which does not consult the
+// annotation). Fixing one call moved the diagnostic to the other and back
+// across successive analyzer runs, so the exemption is file-scoped rather than
+// chased line by line. Scoped to this file, not the project, and not applied to
+// any future that carries a result worth handling. See issue #42.
+// ignore_for_file: discarded_futures
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -63,11 +76,6 @@ class _BalancePageState extends State<BalancePage> {
 
   void _generateSettlementPlan() {
     HapticFeedback.lightImpact();
-    // Navigating away returns a future that resolves when the route pops,
-    // which nothing here waits for. Wrapping it in `unawaited()` trips
-    // `unnecessary_unawaited` because `pushNamed` is `@awaitNotRequired`, so
-    // the discard is made explicit instead. See issue #42.
-    // ignore: discarded_futures
     Navigator.of(context).pushNamed(
       '/settlement-plan',
       arguments: {
@@ -96,9 +104,6 @@ class _BalancePageState extends State<BalancePage> {
             IconButton(
               icon: const Icon(Icons.refresh_rounded),
               onPressed: () {
-                // Fire-and-forget haptic inside a synchronous callback; see
-                // the note in _generateSettlementPlan. Issue #42.
-                // ignore: discarded_futures
                 HapticFeedback.lightImpact();
                 _loadBalances();
               },
