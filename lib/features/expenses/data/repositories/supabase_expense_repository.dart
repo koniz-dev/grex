@@ -112,7 +112,7 @@ class SupabaseExpenseRepository implements ExpenseRepository {
           .insert(participantsJson);
 
       // Fetch the complete expense with participants
-      return getExpenseById(createdExpenseId);
+      return await getExpenseById(createdExpenseId);
     } on PostgrestException catch (e) {
       return Left(_mapPostgrestException(e));
     } on Exception catch (e) {
@@ -131,7 +131,7 @@ class SupabaseExpenseRepository implements ExpenseRepository {
       // Check permissions
       final hasPermissionResult = await hasPermission(expense.id, 'update');
       if (hasPermissionResult.isLeft()) {
-        return hasPermissionResult.fold(
+        return await hasPermissionResult.fold(
           Left.new,
           (_) => const Left(
             InsufficientExpensePermissionsFailure('update expense'),
@@ -189,7 +189,7 @@ class SupabaseExpenseRepository implements ExpenseRepository {
           .insert(participantsJson);
 
       // Fetch updated expense
-      return getExpenseById(expense.id);
+      return await getExpenseById(expense.id);
     } on PostgrestException catch (e) {
       return Left(_mapPostgrestException(e));
     } on Exception catch (e) {
@@ -208,7 +208,7 @@ class SupabaseExpenseRepository implements ExpenseRepository {
       // Check permissions
       final hasPermissionResult = await hasPermission(expenseId, 'delete');
       if (hasPermissionResult.isLeft()) {
-        return hasPermissionResult.fold(
+        return await hasPermissionResult.fold(
           Left.new,
           (_) => const Left(
             InsufficientExpensePermissionsFailure('delete expense'),
@@ -313,7 +313,7 @@ class SupabaseExpenseRepository implements ExpenseRepository {
       }
 
       if (query.trim().isEmpty) {
-        return getGroupExpenses(groupId);
+        return await getGroupExpenses(groupId);
       }
 
       // Search by description or amount

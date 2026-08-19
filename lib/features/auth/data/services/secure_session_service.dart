@@ -115,7 +115,7 @@ class SecureSessionService implements SessionService {
     try {
       final sessionResult = await getStoredSession();
 
-      return sessionResult.fold(
+      return await sessionResult.fold(
         Left.new,
         (sessionData) async {
           if (sessionData == null) {
@@ -260,7 +260,7 @@ class SecureSessionService implements SessionService {
   Future<DateTime?> getSessionExpiry() async {
     try {
       final sessionResult = await getStoredSession();
-      return sessionResult.fold(
+      return await sessionResult.fold(
         (failure) => null,
         (sessionData) => sessionData?.expiresAt,
       );
@@ -273,7 +273,7 @@ class SecureSessionService implements SessionService {
   Future<bool> isSessionExpired() async {
     try {
       final sessionResult = await getStoredSession();
-      return sessionResult.fold(
+      return await sessionResult.fold(
         (failure) => true,
         (sessionData) => sessionData?.isExpired ?? true,
       );
@@ -286,7 +286,7 @@ class SecureSessionService implements SessionService {
   Future<bool> needsRefresh() async {
     try {
       final sessionResult = await getStoredSession();
-      return sessionResult.fold(
+      return await sessionResult.fold(
         (failure) => false,
         (sessionData) => sessionData?.needsRefresh ?? false,
       );

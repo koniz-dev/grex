@@ -69,7 +69,7 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
   ) async {
     try {
       final signInResult = await service.signIn();
-      return signInResult.fold(
+      return await signInResult.fold(
         Left.new,
         (tokens) => service.handleGoogleCredential(
           idToken: tokens.idToken,
@@ -152,7 +152,7 @@ class SupabaseSocialAuthRepository implements SocialAuthRepository {
         nonce: nonce.hashedNonce,
       );
 
-      return signInResult.fold(
+      return await signInResult.fold(
         Left.new,
         (appleResult) async {
           final credentialResult = await _nativeAppleSignInService

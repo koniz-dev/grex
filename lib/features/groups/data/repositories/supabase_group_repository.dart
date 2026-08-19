@@ -88,7 +88,7 @@ class SupabaseGroupRepository implements GroupRepository {
       );
 
       // Fetch the complete group with members
-      return getGroupById(createdGroupId);
+      return await getGroupById(createdGroupId);
     } on PostgrestException catch (e) {
       return Left(_mapPostgrestException(e));
     } on Exception catch (e) {
@@ -112,7 +112,7 @@ class SupabaseGroupRepository implements GroupRepository {
       // Check permissions
       final hasPermissionResult = await hasPermission(groupId, 'update');
       if (hasPermissionResult.isLeft()) {
-        return hasPermissionResult.fold(
+        return await hasPermissionResult.fold(
           Left.new,
           (_) => const Left(InsufficientPermissionsFailure('update group')),
         );
@@ -130,14 +130,14 @@ class SupabaseGroupRepository implements GroupRepository {
       if (description != null) updateData['description'] = description.trim();
 
       if (updateData.isEmpty) {
-        return getGroupById(groupId); // No changes to make
+        return await getGroupById(groupId); // No changes to make
       }
 
       // Update group
       await _supabaseClient.from('groups').update(updateData).eq('id', groupId);
 
       // Fetch updated group
-      return getGroupById(groupId);
+      return await getGroupById(groupId);
     } on PostgrestException catch (e) {
       return Left(_mapPostgrestException(e));
     } on Exception catch (e) {
@@ -161,7 +161,7 @@ class SupabaseGroupRepository implements GroupRepository {
       // Check permissions
       final hasPermissionResult = await hasPermission(groupId, 'invite');
       if (hasPermissionResult.isLeft()) {
-        return hasPermissionResult.fold(
+        return await hasPermissionResult.fold(
           Left.new,
           (_) => const Left(InsufficientPermissionsFailure('invite members')),
         );
@@ -242,7 +242,7 @@ class SupabaseGroupRepository implements GroupRepository {
         'manage_members',
       );
       if (hasPermissionResult.isLeft()) {
-        return hasPermissionResult.fold(
+        return await hasPermissionResult.fold(
           Left.new,
           (_) => const Left(InsufficientPermissionsFailure('manage members')),
         );
@@ -283,7 +283,7 @@ class SupabaseGroupRepository implements GroupRepository {
         'manage_members',
       );
       if (hasPermissionResult.isLeft()) {
-        return hasPermissionResult.fold(
+        return await hasPermissionResult.fold(
           Left.new,
           (_) => const Left(InsufficientPermissionsFailure('manage members')),
         );
@@ -453,7 +453,7 @@ class SupabaseGroupRepository implements GroupRepository {
       // Check if user is administrator
       final hasPermissionResult = await hasPermission(groupId, 'delete');
       if (hasPermissionResult.isLeft()) {
-        return hasPermissionResult.fold(
+        return await hasPermissionResult.fold(
           Left.new,
           (_) => const Left(InsufficientPermissionsFailure('delete group')),
         );

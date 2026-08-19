@@ -179,7 +179,7 @@ class OptimizedSessionService implements SessionService {
     try {
       final sessionResult = await getStoredSession();
 
-      return sessionResult.fold(
+      return await sessionResult.fold(
         Left.new,
         (sessionData) async {
           if (sessionData == null) {
@@ -372,7 +372,7 @@ class OptimizedSessionService implements SessionService {
   Future<DateTime?> getSessionExpiry() async {
     try {
       final sessionResult = await getStoredSession();
-      return sessionResult.fold(
+      return await sessionResult.fold(
         (failure) => null,
         (sessionData) => sessionData?.expiresAt,
       );
@@ -385,7 +385,7 @@ class OptimizedSessionService implements SessionService {
   Future<bool> isSessionExpired() async {
     try {
       final sessionResult = await getStoredSession();
-      return sessionResult.fold(
+      return await sessionResult.fold(
         (failure) => true,
         (sessionData) => sessionData?.isExpired ?? true,
       );
@@ -400,7 +400,7 @@ class OptimizedSessionService implements SessionService {
   Future<bool> needsRefresh() async {
     try {
       final sessionResult = await getStoredSession();
-      return sessionResult.fold(
+      return await sessionResult.fold(
         (failure) => false,
         (sessionData) {
           if (sessionData == null) return false;
@@ -545,7 +545,7 @@ class OptimizedSessionService implements SessionService {
     try {
       final profileResult = await _userRepository.getUserProfile(userId);
 
-      return profileResult.fold(
+      return await profileResult.fold(
         (failure) => Left(GenericAuthFailure(failure.message)),
         (profile) async {
           // Update cache

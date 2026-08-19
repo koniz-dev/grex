@@ -157,7 +157,7 @@ class SupabaseBalanceRepository implements BalanceRepository {
 
       // Get all group balances and find the specific user
       final balancesResult = await getGroupBalances(groupId);
-      return balancesResult.fold(
+      return await balancesResult.fold(
         Left.new,
         (balances) {
           final userBalance = balances.firstWhere(
@@ -281,7 +281,7 @@ class SupabaseBalanceRepository implements BalanceRepository {
       );
 
       // Return fresh balances
-      return getGroupBalances(groupId);
+      return await getGroupBalances(groupId);
     } on PostgrestException catch (e) {
       return Left(_mapPostgrestException(e));
     } on Exception catch (e) {
@@ -366,7 +366,7 @@ class SupabaseBalanceRepository implements BalanceRepository {
 
       // Get group balances
       final balancesResult = await getGroupBalances(groupId);
-      return balancesResult.fold(
+      return await balancesResult.fold(
         Left.new,
         (balances) {
           // Group is settled if all balances are zero (within tolerance)

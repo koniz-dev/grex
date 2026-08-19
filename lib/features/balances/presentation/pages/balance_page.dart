@@ -62,7 +62,7 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _generateSettlementPlan() {
-    unawaited(HapticFeedback.lightImpact());
+    HapticFeedback.lightImpact();
     unawaited(
       Navigator.of(context).pushNamed(
         '/settlement-plan',
@@ -93,7 +93,7 @@ class _BalancePageState extends State<BalancePage> {
             IconButton(
               icon: const Icon(Icons.refresh_rounded),
               onPressed: () {
-                unawaited(HapticFeedback.lightImpact());
+                HapticFeedback.lightImpact();
                 _loadBalances();
               },
               tooltip: l10n.refreshBalances,
@@ -104,7 +104,7 @@ class _BalancePageState extends State<BalancePage> {
           builder: (context, state) {
             return RefreshIndicator(
               onRefresh: () async {
-                unawaited(HapticFeedback.lightImpact());
+                HapticFeedback.lightImpact();
                 _loadBalances();
               },
               child: _BalanceBody(
