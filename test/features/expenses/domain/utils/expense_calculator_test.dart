@@ -8,6 +8,7 @@ void main() {
     group('splitEqually', () {
       test('should split amount equally among participants', () {
         final result = ExpenseCalculator.splitEqually(
+          currency: 'USD',
           totalAmount: 100,
           participantIds: ['user1', 'user2', 'user3', 'user4'],
         );
@@ -21,6 +22,7 @@ void main() {
 
       test('should conserve the total exactly when it does not divide', () {
         final result = ExpenseCalculator.splitEqually(
+          currency: 'USD',
           totalAmount: 100.01,
           participantIds: ['user1', 'user2', 'user3'],
         );
@@ -33,6 +35,7 @@ void main() {
         // 100.00 over 7 is 14.28 with 4 cents left over, so four participants
         // get 14.29 and three get 14.28 — summing to exactly 100.00.
         final result = ExpenseCalculator.splitEqually(
+          currency: 'USD',
           totalAmount: 100,
           participantIds: const [
             'user1',
@@ -60,6 +63,7 @@ void main() {
         // both of which `_validateSplitTotals` rejects outright.
         for (final count in const [3, 6, 7]) {
           final result = ExpenseCalculator.splitEqually(
+            currency: 'USD',
             totalAmount: 100,
             participantIds: List.generate(count, (i) => 'user$i'),
           );
@@ -72,6 +76,7 @@ void main() {
 
         // Regression: 0.10 over 7 returned 0.07.
         final tiny = ExpenseCalculator.splitEqually(
+          currency: 'USD',
           totalAmount: 0.10,
           participantIds: List.generate(7, (i) => 'user$i'),
         );
@@ -81,6 +86,7 @@ void main() {
       test('should throw error for empty participants', () {
         expect(
           () => ExpenseCalculator.splitEqually(
+            currency: 'USD',
             totalAmount: 100,
             participantIds: [],
           ),
@@ -92,6 +98,7 @@ void main() {
     group('splitByPercentage', () {
       test('should split amount by percentage correctly', () {
         final result = ExpenseCalculator.splitByPercentage(
+          currency: 'USD',
           totalAmount: 100,
           percentages: {
             'user1': 50,
@@ -107,6 +114,7 @@ void main() {
 
       test('should handle rounding in percentage splits', () {
         final result = ExpenseCalculator.splitByPercentage(
+          currency: 'USD',
           totalAmount: 100,
           percentages: {
             'user1': 33.33,
@@ -121,6 +129,7 @@ void main() {
       test('should throw error for invalid percentage total', () {
         expect(
           () => ExpenseCalculator.splitByPercentage(
+            currency: 'USD',
             totalAmount: 100,
             percentages: {
               'user1': 50,
@@ -135,6 +144,7 @@ void main() {
     group('splitByExactAmounts', () {
       test('should split by exact amounts correctly', () {
         final result = ExpenseCalculator.splitByExactAmounts(
+          currency: 'USD',
           totalAmount: 100,
           exactAmounts: {
             'user1': 60,
@@ -152,6 +162,7 @@ void main() {
         // Regression: the fold truncated on every step, so {5.50, 4.50} summed
         // to 9 and threw, while the form's pre-check reported the split valid.
         final result = ExpenseCalculator.splitByExactAmounts(
+          currency: 'USD',
           totalAmount: 10,
           exactAmounts: {
             'user1': 5.50,
@@ -167,6 +178,7 @@ void main() {
       test('should throw error for invalid total', () {
         expect(
           () => ExpenseCalculator.splitByExactAmounts(
+            currency: 'USD',
             totalAmount: 100,
             exactAmounts: {
               'user1': 60,
@@ -181,6 +193,7 @@ void main() {
     group('splitByShares', () {
       test('should split by shares correctly', () {
         final result = ExpenseCalculator.splitByShares(
+          currency: 'USD',
           totalAmount: 120,
           shares: {
             'user1': 2,
@@ -196,6 +209,7 @@ void main() {
 
       test('should handle rounding in share splits', () {
         final result = ExpenseCalculator.splitByShares(
+          currency: 'USD',
           totalAmount: 100,
           shares: {
             'user1': 1,
@@ -211,6 +225,7 @@ void main() {
     group('validateSplit', () {
       test('should validate correct split', () {
         final isValid = ExpenseCalculator.validateSplit(
+          currency: 'USD',
           totalAmount: 100,
           splitAmounts: {
             'user1': 50,
@@ -226,6 +241,7 @@ void main() {
         // Regression: the fold truncated each share, so this exact split of
         // 10.00 summed to 9 and was reported invalid.
         final isValid = ExpenseCalculator.validateSplit(
+          currency: 'USD',
           totalAmount: 10,
           splitAmounts: {
             'user1': 3.34,
@@ -239,6 +255,7 @@ void main() {
 
       test('should reject a split that is off by a single cent', () {
         final isValid = ExpenseCalculator.validateSplit(
+          currency: 'USD',
           totalAmount: 10,
           splitAmounts: {
             'user1': 3.33,
@@ -252,6 +269,7 @@ void main() {
 
       test('should reject incorrect split', () {
         final isValid = ExpenseCalculator.validateSplit(
+          currency: 'USD',
           totalAmount: 100,
           splitAmounts: {
             'user1': 50,
@@ -272,6 +290,7 @@ void main() {
         ];
 
         final result = ExpenseCalculator.calculateSplit(
+          currency: 'USD',
           totalAmount: 150,
           splitMethod: SplitMethod.equal,
           participantData: participantData,
@@ -291,6 +310,7 @@ void main() {
         ];
 
         final result = ExpenseCalculator.calculateSplit(
+          currency: 'USD',
           totalAmount: 100,
           splitMethod: SplitMethod.percentage,
           participantData: participantData,
@@ -312,6 +332,7 @@ void main() {
         ];
 
         final error = ExpenseCalculator.validateSplitConfiguration(
+          currency: 'USD',
           totalAmount: 100,
           splitMethod: SplitMethod.equal,
           participantData: participantData,
@@ -335,6 +356,7 @@ void main() {
         ];
 
         final error = ExpenseCalculator.validateSplitConfiguration(
+          currency: 'USD',
           totalAmount: 100,
           splitMethod: SplitMethod.percentage,
           participantData: participantData,
@@ -351,6 +373,7 @@ void main() {
         ];
 
         final error = ExpenseCalculator.validateSplitConfiguration(
+          currency: 'USD',
           totalAmount: 100,
           splitMethod: SplitMethod.equal,
           participantData: participantData,
@@ -368,6 +391,7 @@ void main() {
         // 3:1 split silently became 2:1 and 100 -> 200 produced 133.33/66.67
         // instead of 150.00/50.00.
         final original = ExpenseCalculator.calculateSplit(
+          currency: 'USD',
           totalAmount: 100,
           splitMethod: SplitMethod.shares,
           participantData: <Map<String, dynamic>>[
@@ -379,6 +403,7 @@ void main() {
         expect(original[1].shareAmount, equals(25.0));
 
         final doubled = ExpenseCalculator.recalculateSplit(
+          currency: 'USD',
           newTotalAmount: 200,
           currentParticipants: original,
           splitMethod: SplitMethod.shares,
@@ -391,6 +416,7 @@ void main() {
 
       test('should survive repeated recalculation without drifting', () {
         var participants = ExpenseCalculator.calculateSplit(
+          currency: 'USD',
           totalAmount: 100,
           splitMethod: SplitMethod.shares,
           participantData: <Map<String, dynamic>>[
@@ -401,6 +427,7 @@ void main() {
 
         for (final total in const [200.0, 50.0, 100.0]) {
           participants = ExpenseCalculator.recalculateSplit(
+            currency: 'USD',
             newTotalAmount: total,
             currentParticipants: participants,
             splitMethod: SplitMethod.shares,
@@ -422,6 +449,7 @@ void main() {
         // which cannot sum correctly by construction, so it threw
         // ArgumentError out of calculateSplit.
         final original = ExpenseCalculator.calculateSplit(
+          currency: 'USD',
           totalAmount: 100,
           splitMethod: SplitMethod.exact,
           participantData: <Map<String, dynamic>>[
@@ -431,6 +459,7 @@ void main() {
         );
 
         final rescaled = ExpenseCalculator.recalculateSplit(
+          currency: 'USD',
           newTotalAmount: 200,
           currentParticipants: original,
           splitMethod: SplitMethod.exact,
@@ -443,6 +472,7 @@ void main() {
 
       test('should keep percentage splits proportional', () {
         final original = ExpenseCalculator.calculateSplit(
+          currency: 'USD',
           totalAmount: 100,
           splitMethod: SplitMethod.percentage,
           participantData: <Map<String, dynamic>>[
@@ -452,6 +482,7 @@ void main() {
         );
 
         final rescaled = ExpenseCalculator.recalculateSplit(
+          currency: 'USD',
           newTotalAmount: 250,
           currentParticipants: original,
           splitMethod: SplitMethod.percentage,
@@ -465,6 +496,7 @@ void main() {
       test('should throw for an empty participant list', () {
         expect(
           () => ExpenseCalculator.recalculateSplit(
+            currency: 'USD',
             newTotalAmount: 100,
             currentParticipants: const [],
             splitMethod: SplitMethod.equal,
@@ -490,6 +522,7 @@ void main() {
         ];
 
         final result = ExpenseCalculator.recalculateSplit(
+          currency: 'USD',
           newTotalAmount: 200,
           currentParticipants: currentParticipants,
           splitMethod: SplitMethod.equal,
@@ -543,6 +576,144 @@ void main() {
       });
     });
 
+    group('zero-decimal currencies', () {
+      // VND, JPY and KRW have no minor unit: one dong is indivisible. The
+      // arithmetic used to multiply by 100 regardless, so 100,000 VND split
+      // three ways produced 33333.34 / 33333.33 / 33333.33 -- conserving the
+      // total in hundredths of a dong, a unit that does not exist. Rendered
+      // with zero decimals those became 33.333 each and summed to 99,999.
+      // See issue #37.
+      for (final currency in const ['VND', 'JPY', 'KRW']) {
+        test('$currency shares are whole units and sum to the total', () {
+          final total = currency == 'VND' ? 100000.0 : 10000.0;
+          final result = ExpenseCalculator.splitEqually(
+            currency: currency,
+            totalAmount: total,
+            participantIds: const ['a', 'b', 'c'],
+          );
+
+          for (final entry in result.entries) {
+            expect(
+              entry.value,
+              equals(entry.value.roundToDouble()),
+              reason:
+                  '$currency has no minor unit, so ${entry.key} must hold '
+                  'a whole number, got ${entry.value}',
+            );
+          }
+          expect(
+            result.values.fold<double>(0, (sum, v) => sum + v),
+            equals(total),
+            reason: 'the shares must sum to $total exactly',
+          );
+        });
+      }
+
+      test('VND 100,000 three ways is 33334 / 33333 / 33333', () {
+        final result = ExpenseCalculator.splitEqually(
+          currency: 'VND',
+          totalAmount: 100000,
+          participantIds: const ['a', 'b', 'c'],
+        );
+
+        expect(result['a'], equals(33334.0));
+        expect(result['b'], equals(33333.0));
+        expect(result['c'], equals(33333.0));
+      });
+
+      test('the leftover unit is one dong, not one hundredth of one', () {
+        final result = ExpenseCalculator.splitEqually(
+          currency: 'VND',
+          totalAmount: 10,
+          participantIds: const ['a', 'b', 'c'],
+        );
+
+        expect(result.values.toList(), equals([4.0, 3.0, 3.0]));
+      });
+    });
+
+    group('three-decimal currencies', () {
+      // BHD, KWD and OMR divide into thousandths. Treating them as 2-decimal
+      // would silently drop a digit, which criterion 4 of #37 forbids.
+      for (final currency in const ['BHD', 'KWD', 'OMR']) {
+        test('$currency round-trips at thousandth precision', () {
+          final result = ExpenseCalculator.splitEqually(
+            currency: currency,
+            totalAmount: 10,
+            participantIds: const ['a', 'b', 'c'],
+          );
+
+          expect(
+            result.values.fold<double>(0, (sum, v) => sum + v),
+            closeTo(10, 1e-9),
+            reason:
+                'floating point rendering of thousandths, not a tolerance '
+                'on the underlying minor units',
+          );
+          // 10.000 over 3 is 3.333 with 1 thousandth left over.
+          expect(result['a'], closeTo(3.334, 1e-9));
+          expect(result['b'], closeTo(3.333, 1e-9));
+          expect(result['c'], closeTo(3.333, 1e-9));
+        });
+      }
+    });
+
+    group('minor-unit property sweep', () {
+      // Across currencies with 0, 2 and 3 decimals, every share must be a whole
+      // number of that currency's minor units, and they must sum to the total.
+      // The old code satisfied the second half while violating the first, which
+      // is precisely why the numbers on screen stopped adding up.
+      const currencies = <String, int>{
+        'VND': 0,
+        'JPY': 0,
+        'KRW': 0,
+        'USD': 2,
+        'EUR': 2,
+        'BHD': 3,
+        'KWD': 3,
+      };
+
+      test('every share is a whole number of minor units', () {
+        for (final entry in currencies.entries) {
+          final currency = entry.key;
+          final scale = _scaleFor(entry.value);
+
+          // Walk whole minor units so the input is itself expressible.
+          for (var units = 1; units <= 5000; units += 7) {
+            final total = units / scale;
+
+            for (var n = 1; n <= 12; n++) {
+              final ids = List.generate(n, (i) => 'user$i');
+              final result = ExpenseCalculator.splitEqually(
+                currency: currency,
+                totalAmount: total,
+                participantIds: ids,
+              );
+
+              var sumUnits = 0;
+              for (final share in result.values) {
+                final shareUnits = (share * scale).round();
+                expect(
+                  (share * scale - shareUnits).abs() < 1e-6,
+                  isTrue,
+                  reason: '$currency share $share is not a whole minor unit',
+                );
+                sumUnits += shareUnits;
+              }
+
+              expect(
+                sumUnits,
+                equals(units),
+                reason:
+                    'splitEqually($currency, $total, n=$n) must sum to '
+                    '$units minor units',
+              );
+            }
+          }
+        }
+      });
+    });
+
     group('conservation sweep', () {
       // Every cent from 0.01 to 1000.00 against 1 to 12 participants, for all
       // four split methods. The property is conservation: the shares handed
@@ -570,6 +741,7 @@ void main() {
           final total = cents / 100;
           for (var n = 1; n <= maxParticipants; n++) {
             final result = ExpenseCalculator.splitEqually(
+              currency: 'USD',
               totalAmount: total,
               participantIds: idsByCount[n]!,
             );
@@ -589,6 +761,7 @@ void main() {
           final total = cents / 100;
           for (var n = 1; n <= maxParticipants; n++) {
             final result = ExpenseCalculator.splitByPercentage(
+              currency: 'USD',
               totalAmount: total,
               percentages: percentagesByCount[n]!,
             );
@@ -607,6 +780,7 @@ void main() {
           final total = cents / 100;
           for (var n = 1; n <= maxParticipants; n++) {
             final result = ExpenseCalculator.splitByShares(
+              currency: 'USD',
               totalAmount: total,
               shares: sharesByCount[n]!,
             );
@@ -627,11 +801,13 @@ void main() {
           final total = cents / 100;
           for (var n = 1; n <= maxParticipants; n++) {
             final equalSplit = ExpenseCalculator.splitEqually(
+              currency: 'USD',
               totalAmount: total,
               participantIds: idsByCount[n]!,
             );
 
             final result = ExpenseCalculator.splitByExactAmounts(
+              currency: 'USD',
               totalAmount: total,
               exactAmounts: equalSplit,
             );
@@ -656,6 +832,7 @@ void main() {
         final seedByCount = <int, List<ExpenseParticipant>>{
           for (var n = 1; n <= maxParticipants; n++)
             n: ExpenseCalculator.calculateSplit(
+              currency: 'USD',
               totalAmount: 100,
               splitMethod: SplitMethod.shares,
               participantData: <Map<String, dynamic>>[
@@ -676,6 +853,7 @@ void main() {
               final seed = seedByCount[n]!;
 
               final rescaled = ExpenseCalculator.recalculateSplit(
+                currency: 'USD',
                 newTotalAmount: total,
                 currentParticipants: seed,
                 splitMethod: method,
@@ -698,12 +876,14 @@ void main() {
           final total = cents / 100;
           for (var n = 1; n <= maxParticipants; n++) {
             final equalSplit = ExpenseCalculator.splitEqually(
+              currency: 'USD',
               totalAmount: total,
               participantIds: idsByCount[n]!,
             );
 
             expect(
               ExpenseCalculator.validateSplit(
+                currency: 'USD',
                 totalAmount: total,
                 splitAmounts: equalSplit,
               ),
@@ -716,6 +896,13 @@ void main() {
     });
   });
 }
+
+/// Minor units per whole unit for an exponent: 1, 100 or 1000.
+int _scaleFor(int decimals) => decimals == 0
+    ? 1
+    : decimals == 2
+    ? 100
+    : 1000;
 
 /// Convert a currency amount to integer minor units.
 ///

@@ -148,16 +148,50 @@ class CurrencyFormatter {
     }
   }
 
-  /// Get decimal digits for a given currency code
+  /// Currencies with no minor unit at all: one unit is indivisible.
+  ///
+  /// Mirrors `get_currency_decimal_places` in
+  /// `supabase/migrations/00013_create_currency_validation.sql`. Aligning the
+  /// two lists for real is issue #37's `(human)` criterion — it needs a live
+  /// Supabase project — so keep them in step by hand until then.
+  static const _zeroDecimalCurrencies = {
+    'JPY',
+    'KRW',
+    'VND',
+    'IDR',
+    'CLP',
+    'PYG',
+    'UGX',
+    'RWF',
+    'KMF',
+    'GNF',
+    'MGA',
+    'XOF',
+    'XAF',
+  };
+
+  /// Currencies whose minor unit is a thousandth, not a hundredth.
+  static const _threeDecimalCurrencies = {
+    'BHD',
+    'IQD',
+    'JOD',
+    'KWD',
+    'LYD',
+    'OMR',
+    'TND',
+  };
+
+  /// Get decimal digits for a given currency code.
+  ///
+  /// This is the only place in Dart that decides a currency's minor-unit
+  /// exponent. `ExpenseCalculator` reads it through [getCurrencyPrecision]
+  /// rather than keeping a second table, because two lists drift and the split
+  /// arithmetic silently assumed 100 minor units for every currency until #37.
   static int _getDecimalDigits(String currencyCode) {
-    switch (currencyCode.toUpperCase()) {
-      case 'VND':
-      case 'JPY':
-      case 'KRW':
-        return 0; // These currencies don't use decimal places
-      default:
-        return 2; // Most currencies use 2 decimal places
-    }
+    final code = currencyCode.toUpperCase().trim();
+    if (_zeroDecimalCurrencies.contains(code)) return 0;
+    if (_threeDecimalCurrencies.contains(code)) return 3;
+    return 2;
   }
 
   /// Validate currency code

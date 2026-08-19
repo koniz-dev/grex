@@ -464,6 +464,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
     }
 
     final validationError = ExpenseCalculator.validateSplitConfiguration(
+      currency: _selectedCurrency,
       totalAmount: amount,
       splitMethod: _splitMethod,
       participantData: _participantSplitData,
@@ -503,6 +504,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
 
     // Calculate final split
     final participants = ExpenseCalculator.calculateSplit(
+      currency: _selectedCurrency,
       totalAmount: amount,
       splitMethod: _splitMethod,
       participantData: _participantSplitData,
