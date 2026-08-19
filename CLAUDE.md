@@ -25,7 +25,7 @@ flutter run -d macos             # or -d chrome; both devices are available loca
 
 ## Toolchain
 
-CI pins **Flutter 3.41.9** in every workflow. Do not change it to `stable`.
+CI pins **Flutter 3.47.0** in every workflow. Do not change it to `stable`.
 
 Workflows used to set `flutter-version: 'stable'`, which floats. The Dart SDK
 advanced underneath the repo and `flutter analyze` went from 0 issues to 36 with
@@ -33,6 +33,12 @@ nobody committing anything — re-running `main`'s own last green workflow
 reproduced it exactly: success on 2026-08-12, failure on 2026-08-17, identical
 commit (issue #41). A floating pin also means the gate says one thing locally
 and another in CI, so nobody can reproduce the failure without upgrading.
+
+Developers must run 3.47.0 locally too. The analyzers genuinely disagree: 3.41.9
+emits `unreachable_from_main` where 3.47.0 calls the matching `// ignore`
+unnecessary, so the repo cannot be clean on both at once. On an older local SDK
+`flutter analyze` will report issues CI does not — upgrade rather than "fixing"
+them, or the next CI run undoes the fix.
 
 To upgrade, deliberately:
 

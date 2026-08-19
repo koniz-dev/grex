@@ -35,6 +35,63 @@ void main() {
     );
   });
 
+  group('validateSession error handling', () {
+    // One of the four sites in #42 where adding `await` genuinely changed
+    // behaviour. `validateSession` returns `sessionResult.fold(...)` from
+    // inside a `try`, and the success branch is `async`. Without `await` that
+    // future escaped the try before it could reject, so a throw inside the
+    // branch propagated to the caller as a raw exception — breaking the
+    // `Future<Either<AuthFailure, bool>>` contract the method advertises.
+    // Awaited, the enclosing `catch` converts it into a Left.
+    test(
+      'a throw inside the async branch becomes a Left, not an exception',
+      () async {
+        // Round-trip a real session through storeSession so the stored JSON is
+        // exactly what getStoredSession expects, then hand it back on read.
+        final user = generateValidUser();
+        final profile = UserProfile(
+          id: user.id,
+          email: user.email,
+          displayName: 'Test',
+          preferredCurrency: 'VND',
+          languageCode: 'vi',
+          createdAt: user.createdAt,
+          updatedAt: user.createdAt,
+        );
+        await service.storeSession(
+          accessToken: 'access_123',
+          refreshToken: 'refresh_456',
+          user: user,
+          userProfile: profile,
+        );
+        final storedJson =
+            verify(
+                  mockStorage.write(
+                    key: 'grex_session_data',
+                    value: captureAnyNamed('value'),
+                  ),
+                ).captured.last
+                as String;
+        when(
+          mockStorage.read(key: 'grex_session_data'),
+        ).thenAnswer((_) async => storedJson);
+
+        // Throw from inside the async fold branch.
+        when(mockSupabaseClient.auth).thenThrow(Exception('auth unavailable'));
+
+        final result = await service.validateSession();
+
+        expect(
+          result.isLeft(),
+          isTrue,
+          reason:
+              'the throw must surface as a typed failure, not escape the '
+              'Either contract',
+        );
+      },
+    );
+  });
+
   group('SecureSessionService token sync', () {
     test(
       'storeSession writes accessToken and refreshToken to token keys',

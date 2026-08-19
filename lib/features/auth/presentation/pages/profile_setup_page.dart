@@ -158,7 +158,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
       context.go(AppRoutes.groups);
     } on Object {
       if (!context.mounted) return;
-      unawaited(Navigator.of(context).pushReplacementNamed('/home'));
+      Navigator.of(context).pushReplacementNamed('/home');
     }
   }
 
@@ -287,13 +287,11 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
   void _scrollToFirstError() {
     final ctx = _nameFieldKey.currentContext;
     if (ctx == null) return;
-    unawaited(
-      Scrollable.ensureVisible(
-        ctx,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-        alignment: 0.2,
-      ),
+    Scrollable.ensureVisible(
+      ctx,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      alignment: 0.2,
     );
   }
 
@@ -309,7 +307,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     try {
       context.go(AppRoutes.login);
     } on Object {
-      unawaited(Navigator.of(context).pushReplacementNamed('/login'));
+      Navigator.of(context).pushReplacementNamed('/login');
     }
   }
 

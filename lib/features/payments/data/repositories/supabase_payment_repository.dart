@@ -77,7 +77,7 @@ class SupabasePaymentRepository implements PaymentRepository {
       // Validate payment constraints
       final constraintValidation = await validatePayment(payment);
       if (constraintValidation.isLeft()) {
-        return constraintValidation.fold(
+        return await constraintValidation.fold(
           Left.new,
           (_) => const Left(PaymentDatabaseFailure('Validation failed')),
         );
@@ -94,7 +94,7 @@ class SupabasePaymentRepository implements PaymentRepository {
       final createdPaymentId = paymentResponse['id'] as String;
 
       // Fetch the complete payment
-      return getPaymentById(createdPaymentId);
+      return await getPaymentById(createdPaymentId);
     } on PostgrestException catch (e) {
       return Left(_mapPostgrestException(e));
     } on Exception catch (e) {
@@ -113,7 +113,7 @@ class SupabasePaymentRepository implements PaymentRepository {
       // Check permissions
       final hasPermissionResult = await hasPermission(paymentId, 'delete');
       if (hasPermissionResult.isLeft()) {
-        return hasPermissionResult.fold(
+        return await hasPermissionResult.fold(
           Left.new,
           (_) => const Left(
             InsufficientPaymentPermissionsFailure('delete payment'),

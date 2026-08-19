@@ -391,7 +391,6 @@ void main() {
 extension UserCopyWith on User {
   // Extension method is used via method call syntax but linter doesn't
   // detect it
-  // ignore: unreachable_from_main
   User copyWith({
     String? id,
     String? email,

@@ -62,7 +62,6 @@ class TestDependencies {
   late ProfileBloc profileBloc;
 
   // Method is called by test files in tearDown but linter doesn't detect it
-  // ignore: unreachable_from_main
   Future<void> dispose() async {
     await authBloc.close();
     await profileBloc.close();
