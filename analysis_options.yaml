@@ -14,6 +14,13 @@ analyzer:
     # Exclude generated mock files from analysis
     - "**/*.mocks.dart"
     - "**/*.g.dart"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
   errors:
     # TODO(scope): comments track intentional follow-up work (i18n wiring,
     # mockito null-safety rewrites, realtime hookup, etc.). Keep the markers

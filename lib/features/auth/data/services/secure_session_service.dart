@@ -65,18 +65,6 @@ class SecureSessionService implements SessionService {
         value: now.toIso8601String(),
       );
 
-      // Mirror the tokens to the shared keys. Their only reader is
-      // AuthInterceptor, which is unused scaffolding (issue #7), so nothing
-      // consumes these today. See issue #35.
-      await _secureStorage.write(
-        key: AppConstants.tokenKey,
-        value: accessToken,
-      );
-      await _secureStorage.write(
-        key: AppConstants.refreshTokenKey,
-        value: refreshToken,
-      );
-
       return const Right(null);
     } on Object catch (e) {
       return Left(GenericAuthFailure('Failed to store session: $e'));
