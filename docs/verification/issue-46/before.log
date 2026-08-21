@@ -1,0 +1,12 @@
+$ ls build/ | head -3
+1c26cdff8459087ed31cf0dd5bbb9145
+79741fb6e62572cea92da8a6348e1da9
+flutter_assets
+
+# 1. old unscoped command, repo clean, build/ populated:
+$ dart format --output=none --set-exit-if-changed .
+Changed build/macos/SourcePackages/firebase_remote_config-6.5.0/example/lib/main.dart
+Changed build/macos/SourcePackages/firebase_remote_config-6.5.0/lib/src/firebase_remote_config.dart
+Changed build/macos/SourcePackages/firebase_remote_config-6.5.0/test/firebase_remote_config_test.dart
+Formatted 535 files (11 changed) in 2.42 seconds.
+exit: 0

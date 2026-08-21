@@ -13,7 +13,7 @@ client directly; the Dio layer in `lib/core/network` is unreferenced scaffolding
 ```bash
 flutter pub get                  # run this first after any clone or pull; a stale
                                  # .dart_tool produces phantom resolution errors
-dart format .                    # CI fails on unformatted code
+dart format lib test integration_test tool   # CI fails on unformatted code
 flutter analyze                  # must report 0 issues
 flutter test                     # full suite
 flutter test path/to/file_test.dart
@@ -100,7 +100,7 @@ existed.
 |---|---|---|
 | Unit / widget / BLoC tests | `flutter test <path>` | Deterministic pass/fail, log output |
 | Static analysis | `flutter analyze` | Lint and type errors, must be 0 |
-| Formatting | `dart format --set-exit-if-changed .` | Same gate as CI |
+| Formatting | `dart format --set-exit-if-changed lib test integration_test tool` | Same gate as CI |
 | Golden screenshots | `flutter test <path> --update-goldens` then `flutter test <path>` | Real PNG files on disk — the only automated visual evidence here |
 | Build verification | `flutter build web --debug`, `flutter build macos` | Proves the target compiles |
 | Coverage | `flutter test --coverage` + `scripts/linux/testing/calculate_layer_coverage.sh` | Per-layer coverage numbers |

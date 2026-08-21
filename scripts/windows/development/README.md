@@ -50,7 +50,7 @@ Manages version numbers using semantic versioning.
 The setup-git-hooks.sh script installs the following hooks:
 
 ### Pre-commit
-- Runs dart format --set-exit-if-changed
+- Runs dart format --set-exit-if-changed lib test integration_test tool
 - Runs lutter analyze
 - Prevents commits with formatting or analysis issues
 

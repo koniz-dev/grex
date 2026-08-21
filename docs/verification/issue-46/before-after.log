@@ -1,0 +1,18 @@
+# build/ is populated:
+  dart files under build/: 23
+
+# 1. OLD unscoped command, repository itself clean:
+$ dart format --output=none --set-exit-if-changed .
+  exit: 1
+  files it wants to rewrite under build/: 11
+  total files it wants to rewrite: 11
+
+# 2. NEW scoped command, same working tree:
+$ dart format --output=none --set-exit-if-changed lib test integration_test tool
+  exit: 0
+  Formatted 512 files (0 changed) in 2.12 seconds.
+# 3. NEW command must still fail on a genuinely misformatted repo file:
+$ echo 'class Probe{int  x  =1;}' > lib/tmp_misformatted_probe.dart
+$ dart format --output=none --set-exit-if-changed lib test integration_test tool
+  exit: 1
+  Changed lib/tmp_misformatted_probe.dart

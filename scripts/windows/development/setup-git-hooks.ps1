@@ -24,9 +24,9 @@ fi
 
 # Run dart format
 echo "[*] Checking code formatting..."
-dart format --set-exit-if-changed . || {
+dart format --set-exit-if-changed lib test integration_test tool || {
   echo "[FAIL] Code formatting check failed!"
-  echo "Please run: dart format ."
+  echo "Please run: dart format lib test integration_test tool"
   exit 1
 }
 
