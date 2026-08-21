@@ -7,7 +7,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grex/core/config/app_config.dart';
 import 'package:grex/core/config/env_config.dart';
 import 'package:grex/core/config/supabase_config.dart';
-import 'package:grex/core/constants/app_constants.dart';
 import 'package:grex/core/di/injection.dart';
 import 'package:grex/core/di/providers.dart';
 import 'package:grex/core/localization/localization_providers.dart';
@@ -24,7 +23,6 @@ import 'package:grex/l10n/app_localizations.dart';
 import 'package:grex/shared/theme/app_theme.dart';
 import 'package:grex/shared/utils/locale_defaults.dart';
 import 'package:grex/shared/widgets/dev_logout_overlay.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 void main() async {
   // Ensure Flutter binding is initialized first (required for all Flutter APIs)
@@ -94,43 +92,19 @@ void main() async {
   container.read(localeStateProvider.notifier).locale = savedLocale;
   LocaleDefaults.appLocale = savedLocale;
 
-  // Restore the user session, then mirror its tokens into secure storage.
+  // Restore the user session.
   //
-  // NOTE: nothing reads those tokens today. AuthInterceptor is their only
-  // reader and it is unused scaffolding (issue #7), so this write currently
-  // feeds no one. It is kept rather than removed because #7 chose to keep the
-  // Dio layer, and dropping the write would have to be undone the moment the
-  // layer is wired up. See issue #35 for the open question of whether an
-  // unread copy of the credentials should be persisted at all.
+  // This used to also mirror the session's access and refresh tokens into the
+  // shared secure-storage keys, for AuthInterceptor -- which is unused
+  // scaffolding (#7). So the app kept a second copy of live credentials that
+  // nothing read. The tokens are already inside the stored session record
+  // (`SessionData.toJson`), so whoever wires the Dio layer up can read them
+  // from the session service rather than from a duplicate. See issue #35.
   try {
     await container
         .read(authNotifierProvider.notifier)
         .getCurrentUser()
         .timeout(const Duration(seconds: 5));
-
-    // If the user is restored from Supabase, mirror the session tokens to the
-    // shared secure-storage keys. Supabase holds its own copy of the session;
-    // this is the second one, and it has no reader today.
-    final authState = container.read(authNotifierProvider);
-    if (authState.user != null) {
-      final authRepository = container.read(authRepositoryProvider);
-      final session = authRepository.currentSession;
-      if (session != null) {
-        final supabaseSession = session as supabase.Session;
-        final secureStorage = container.read(secureStorageServiceProvider);
-        await secureStorage.setString(
-          AppConstants.tokenKey,
-          supabaseSession.accessToken,
-        );
-        final refreshToken = supabaseSession.refreshToken;
-        if (refreshToken != null && refreshToken.isNotEmpty) {
-          await secureStorage.setString(
-            AppConstants.refreshTokenKey,
-            refreshToken,
-          );
-        }
-      }
-    }
   } on Exception {
     // Session restore failed, continue without session
   }

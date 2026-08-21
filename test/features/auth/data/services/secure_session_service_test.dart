@@ -92,52 +92,86 @@ void main() {
     );
   });
 
-  group('SecureSessionService token sync', () {
-    test(
-      'storeSession writes accessToken and refreshToken to token keys',
-      () async {
-        const accessToken = 'access_123';
-        const refreshToken = 'refresh_456';
-        final user = generateValidUser();
-        final profile = UserProfile(
-          id: user.id,
-          email: user.email,
-          displayName: 'Test',
-          preferredCurrency: 'VND',
-          languageCode: 'vi',
-          createdAt: user.createdAt,
-          updatedAt: user.createdAt,
-        );
+  group('SecureSessionService token storage', () {
+    // #35: the app used to mirror the session's tokens into
+    // AppConstants.tokenKey / refreshTokenKey for AuthInterceptor, which is
+    // unused scaffolding (#7). That left a second copy of live credentials that
+    // nothing read. The tokens are already inside the stored session record, so
+    // the duplicate is gone. Whoever wires the Dio layer up reads them from the
+    // session service instead of re-adding this.
+    test('storeSession does not write the standalone token keys', () async {
+      final user = generateValidUser();
+      final profile = UserProfile(
+        id: user.id,
+        email: user.email,
+        displayName: 'Test',
+        preferredCurrency: 'VND',
+        languageCode: 'vi',
+        createdAt: user.createdAt,
+        updatedAt: user.createdAt,
+      );
 
-        final result = await service.storeSession(
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-          user: user,
-          userProfile: profile,
-        );
-
-        expect(result.isRight(), isTrue);
-        verify(
-          mockStorage.write(
-            key: AppConstants.tokenKey,
-            value: accessToken,
-          ),
-        ).called(1);
-        verify(
-          mockStorage.write(
-            key: AppConstants.refreshTokenKey,
-            value: refreshToken,
-          ),
-        ).called(1);
-      },
-    );
-
-    test('clearSession deletes tokenKey and refreshTokenKey', () async {
-      final result = await service.clearSession();
+      final result = await service.storeSession(
+        accessToken: 'access_123',
+        refreshToken: 'refresh_456',
+        user: user,
+        userProfile: profile,
+      );
 
       expect(result.isRight(), isTrue);
+      verifyNever(
+        mockStorage.write(key: AppConstants.tokenKey, value: anyNamed('value')),
+      );
+      verifyNever(
+        mockStorage.write(
+          key: AppConstants.refreshTokenKey,
+          value: anyNamed('value'),
+        ),
+      );
+    });
+
+    test('storeSession still persists the session itself', () async {
+      // Removing the duplicate must not remove the record that actually
+      // matters -- the tokens live inside it.
+      final user = generateValidUser();
+      final profile = UserProfile(
+        id: user.id,
+        email: user.email,
+        displayName: 'Test',
+        preferredCurrency: 'VND',
+        languageCode: 'vi',
+        createdAt: user.createdAt,
+        updatedAt: user.createdAt,
+      );
+
+      await service.storeSession(
+        accessToken: 'access_123',
+        refreshToken: 'refresh_456',
+        user: user,
+        userProfile: profile,
+      );
+
+      final stored =
+          verify(
+                mockStorage.write(
+                  key: 'grex_session_data',
+                  value: captureAnyNamed('value'),
+                ),
+              ).captured.last
+              as String;
+      expect(stored, contains('access_123'));
+      expect(stored, contains('refresh_456'));
+    });
+
+    test('clearSession still deletes any token an older build wrote', () async {
+      // The deletes are kept deliberately: installs upgraded from a build that
+      // did write these keys must still have them cleared on sign-out. A stale
+      // delete is harmless; a missing one leaves credentials behind.
+      await service.clearSession();
+
       verify(mockStorage.delete(key: AppConstants.tokenKey)).called(1);
       verify(mockStorage.delete(key: AppConstants.refreshTokenKey)).called(1);
+      verify(mockStorage.delete(key: 'grex_session_data')).called(1);
     });
   });
 }
